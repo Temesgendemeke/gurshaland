@@ -26,57 +26,72 @@ cd gurshaland
 ```
 
 ### 2. Install dependencies
+
+```sh
 npm install
 # or
 yarn install
+```
 
+#### 3. Environment Variables
 
-### 3. Environment Variables
+Create a `.env.local` file in the root of your project and add the following variables:
 
+```env
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
 
+Replace `your-supabase-url` and `your-supabase-anon-key` with your actual [Supabase](https://supabase.com/) project credentials.
 
-### 4. Run the development server 
+### 4. Run the development server
+```sh
 npm run dev
 # or
 yarn dev
+```
 
 
-🛠️ Tech Stack
-Next.js 14
-Supabase (Auth & Database)
-shadcn/ui (UI components)
-Tailwind CSS
-Zustand (State management)
-React Hook Form + Zod (Forms & validation)
-Lucide Icons
+## 🛠️ Tech Stack
 
+- **Next.js 14** – React framework for server-side rendering and routing
+- **Supabase** – Authentication & database as a service
+- **shadcn/ui** – Accessible, customizable UI components
+- **Tailwind CSS** – Utility-first CSS framework for rapid styling
+- **Zustand** – Simple, fast state management for React
+- **React Hook Form + Zod** – Form handling and schema validation
+- **Lucide Icons** – Beautiful, open-source icon set
 
-📁 Project Structure
+## 📁 Project Structure
+
+```
 gurshaland/
-├── app/                # Next.js app directory (routes, layouts, pages)
-├── components/         # Reusable React components
-├── constants/          # Static data and config
-├── store/              # Zustand stores
-├── utils/              # Utility functions and types
-├── public/             # Static assets
-├── styles/             # Global styles
-└── ...
+├── app/         # Next.js app directory (routes, layouts, pages)
+├── components/  # Reusable React components
+├── constants/   # Static data and configuration
+├── store/       # Zustand state stores
+├── utils/       # Utility functions and TypeScript types
+├── public/      # Static assets (images, icons, etc.)
+├── styles/      # Global styles (CSS, Tailwind)
+└── ...          # Additional files and folders
+```
 
+## 🤝 Contributing
 
+We welcome contributions from the community!  
+If you have ideas, find a bug, or want to add a new feature, please [open an issue](https://github.com/yourusername/gurshaland/issues) or submit a pull request.
 
-🤝 Contributing
-Contributions are welcome! Please open an issue or submit a pull request.
+---
 
+## 📜 License
 
-📜 License
-MIT
+This project is licensed under the [MIT License](LICENSE).
 
-🌍 About
-Gurshaland is dedicated to preserving and sharing the flavors of Ethiopia.
+---
+
+## 🌍 About
+
+**Gurshaland** is dedicated to preserving and sharing the vibrant flavors of Ethiopia.  
 Share your family’s recipes, discover new favorites, and help keep culinary traditions alive!
 
-
 Enjoy cooking and sharing! 🇪🇹
-
