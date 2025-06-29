@@ -1,103 +1,82 @@
-gurshaland
+# 🥘 Gurshaland
 
-blogs
-// id
-// title
-// excerpt
-// author
-// date
-// readtime: minute
-// category: table
-// image
-// featured bool
-// tag: table
-// slug
+**Gurshaland** is a modern web platform for discovering, sharing, and preserving authentic Ethiopian recipes and culinary traditions. Built with Next.js, Supabase, and shadcn/ui, Gurshaland empowers the community to contribute family recipes, explore diverse dishes, and celebrate Ethiopia’s rich food heritage.
 
-content
-- type: string
-- text: string
-- ingredients: string[]
-- instructions: string[]
+---
 
+## ✨ Features
 
+- **Recipe Sharing:** Submit your own recipes with images, ingredients, instructions, and cultural notes.
+- **Modern UI:** Beautiful, responsive design with light/dark mode support.
+- **Search & Filter:** Quickly find recipes by category, tags, or keywords.
+- **Personal Accounts:** Sign up, log in, and manage your own recipe collection.
+- **Favorites:** Save your favorite recipes for easy access.
+- **AI-Powered:** Discover AI-generated suggestions and features (coming soon).
+- **Cultural Notes:** Learn about the history and significance of each dish.
 
-blog
-- id
-- title
-- subtitle
-- authoer
-- date
-- readtime: number
-- category: relations
-- tags
-- image
-- content: table
-- slug
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```sh
+git clone https://github.com/yourusername/gurshaland.git
+cd gurshaland
+```
+
+### 2. Install dependencies
+npm install
+# or
+yarn install
 
 
+### 3. Environment Variables
 
-category
-- name
-- description
-- color
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 
-comments
-- author
-- avater
-- comment
-- rating
-- date
-- likes
 
-like
+### 4. Run the development server 
+npm run dev
+# or
+yarn dev
 
-- post: unique
-- user: uniuqe
 
-recipe
+🛠️ Tech Stack
+Next.js 14
+Supabase (Auth & Database)
+shadcn/ui (UI components)
+Tailwind CSS
+Zustand (State management)
+React Hook Form + Zod (Forms & validation)
+Lucide Icons
 
-- id
-- title
-- descripion
-- image
-- category: table
-- difficulty
-- time: strings
-- servings: number
-- rating: number
-- reviews: reviews
-- authoer: user
-- tag: user defines
-- prepTime: strings
-- totalTime: strings
-- likes: Like
-- ingerdients
-- culturalNote: sting
 
-ingerdients
-- item
-- amount
-- notes
+📁 Project Structure
+gurshaland/
+├── app/                # Next.js app directory (routes, layouts, pages)
+├── components/         # Reusable React components
+├── constants/          # Static data and config
+├── store/              # Zustand stores
+├── utils/              # Utility functions and types
+├── public/             # Static assets
+├── styles/             # Global styles
+└── ...
 
-instructions
-- step: number
-- title: string
-- description: string
-- time: string
-- tips: strings
 
-nutrition
-- calories: number
-- protein: string
-- carbs: string
-- fat: string
-- fiber: string
 
-author
-- recipes
-- blogs
-- username
-- full name
-- password
-- avater
-- bio
+🤝 Contributing
+Contributions are welcome! Please open an issue or submit a pull request.
+
+
+📜 License
+MIT
+
+🌍 About
+Gurshaland is dedicated to preserving and sharing the flavors of Ethiopia.
+Share your family’s recipes, discover new favorites, and help keep culinary traditions alive!
+
+
+Enjoy cooking and sharing! 🇪🇹
+
