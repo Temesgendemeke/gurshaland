@@ -87,7 +87,8 @@ export default function RecipeDetailPage({ params }: { params: { id: string } })
     },
     culturalNote:
       "Injera is more than just bread in Ethiopian culture - it's a symbol of community and sharing. Traditionally, families gather around a large platter of injera topped with various stews, eating together with their hands in a practice called 'gursha'.",
-  }
+  
+    }
 
   const comments = [
     {

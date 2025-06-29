@@ -7,12 +7,14 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import Link from "next/link"
-import { Search, Calendar, User, Clock, TrendingUp } from "lucide-react"
+import { Search} from "lucide-react"
 import NewsletterSignup from "@/components/NewsletterSignup"
 import BlogPostCard from "@/components/BlogPostCard"
 import categories from "@/constants/categories"
 import FeaturedPost from "@/components/FeaturedPost"
+
+
+
 
 const blogPosts = [
   {

@@ -1,52 +1,82 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import Link from "next/link"
-import { Star, Search, User, Plus, Menu, Sparkles } from "lucide-react"
-import { useState } from "react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { Star, Search, User, Plus, Menu, Sparkles } from "lucide-react";
+import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { supabase } from "@/lib/supabase-client";
+import { logout } from "@/actions/auth";
+import { toast } from "sonner";
+import { useAuth } from "@/store/useAuth";
+import ShareRecipeButton from "./ShareRecipeButton";
+import AccountDropDown from "./AccountDropDown";
 
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
+  const user = useAuth((state) => state.user);
+
+  // const handleLogout = async () => {
+  //   try {
+  //     await logout();
+  //     toast.success("Logged out successfully.");
+  //   } catch (error) {
+  //     toast.error("Failed to log out.");
+  //   }
+  // };
+
+  const navigations = [
+    {
+      route: "/recipes",
+      page: "Recipes",
+    },
+    {
+      route: "/categories",
+      page: "Categories",
+    },
+    {
+      route: "/culture",
+      page: "Culture",
+    },
+    {
+      route: "/blog",
+      page: "Blog",
+    },
+  ];
 
   return (
     <header className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div className=" mx-auto flex items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center space-x-2">
           <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-yellow-500 rounded-full flex items-center justify-center">
             <Star className="w-5 h-5 text-white" />
           </div>
-          <div className="text-2xl font-bold gradient-text-primary">Gurshaland</div>
+          <div className="text-2xl font-bold gradient-text-primary">
+            Gurshaland
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link
-            href="/recipes"
-            className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
-          >
-            Recipes
-          </Link>
-          <Link
-            href="/categories"
-            className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
-          >
-            Categories
-          </Link>
-          <Link
-            href="/culture"
-            className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
-          >
-            Culture
-          </Link>
-          <Link
-            href="/blog"
-            className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
-          >
-            Blog
-          </Link>
+          {navigations.map((navigation, index) => (
+            <Link
+              key={index}
+              href={navigation.route}
+              className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
+            >
+              {navigation.page}
+            </Link>
+          ))}
           <Link
             href="/ai-features"
             className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium flex items-center space-x-1"
@@ -66,38 +96,20 @@ export function Header() {
             />
           </div>
 
-          <Button asChild className="btn-primary-modern rounded-full">
-            <Link href="/recipes/create">
-              <Plus className="w-4 h-4 mr-2" />
-              Share Recipe
-            </Link>
-          </Button>
+          <ShareRecipeButton />
 
           <ThemeToggle />
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <User className="w-5 h-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link href="/profile">Profile</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/my-recipes">My Recipes</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/favorites">Favorites</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>Sign Out</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <AccountDropDown user={user} />
         </div>
 
         {/* Mobile Menu */}
-        <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
           <Menu className="w-5 h-5" />
         </Button>
       </div>
@@ -110,30 +122,15 @@ export function Header() {
               placeholder="Search recipes..."
               className="border-slate-200 dark:border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-white dark:bg-slate-800"
             />
-            <Link
-              href="/recipes"
-              className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
-            >
-              Recipes
-            </Link>
-            <Link
-              href="/categories"
-              className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
-            >
-              Categories
-            </Link>
-            <Link
-              href="/culture"
-              className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
-            >
-              Culture
-            </Link>
-            <Link
-              href="/blog"
-              className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
-            >
-              Blog
-            </Link>
+            {navigations.map((navigation, index) => (
+              <Link
+                key={index}
+                href={navigation.route}
+                className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
+              >
+                {navigation.page}
+              </Link>
+            ))}
             <Link
               href="/ai-features"
               className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium flex items-center space-x-1"
@@ -151,5 +148,5 @@ export function Header() {
         </div>
       )}
     </header>
-  )
+  );
 }

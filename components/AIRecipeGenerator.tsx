@@ -1,10 +1,10 @@
 import { ChefHat, Sparkles } from "lucide-react";
 import { Card } from "./ui/card";
 import { Textarea } from "./ui/textarea";
-import { Button } from "react-day-picker";
 import { useState } from "react";
 import GeneratedRecipeCard from "./GeneratedRecipeCard";
 import EmptyRecipePrompt from "./EmptyRecipePrompt";
+import { Button } from "./ui/button";
 
 export default function AIRecipeGenerator() {
   const [ingredients, setIngredients] = useState("");

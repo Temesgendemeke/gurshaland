@@ -19,7 +19,7 @@ function HowItWorksSection({ steps }: { steps: typeof howItWorks }) {
             <div
               className={`w-16 h-16 bg-gradient-to-br ${step.bg} rounded-2xl flex items-center justify-center mb-6 mx-auto`}
             >
-              {step.icon}
+              <step.icon/>
             </div>
             <h3 className="text-xl font-bold heading-primary mb-4">
               {step.title}
