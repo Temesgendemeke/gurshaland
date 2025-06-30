@@ -7,8 +7,6 @@ async function EditRecipe({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const recipe = await getRecipebySlug(slug);
 
-  console.log(recipe);
-
   return <SubmitRecipeForm recipe={recipe} />;
 }
 

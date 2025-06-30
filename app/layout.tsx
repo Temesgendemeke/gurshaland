@@ -13,8 +13,9 @@ export const metadata: Metadata = {
   title: "Gurshaland - Ethiopian Recipe Sharing",
   description:
     "Discover and share authentic Ethiopian recipes and culinary traditions",
-  generator: "v0.dev",
 };
+
+// className={inter.className}
 
 export default function RootLayout({
   children,
@@ -24,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={inter.className + "   backdrop-blur-xl "}
+        
       >
         <ThemeProvider
           attribute="class"
@@ -35,7 +36,7 @@ export default function RootLayout({
           <SyncAuth>{children}</SyncAuth>
 
           <AIChatWidget />
-          <Toaster position="top-center" />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

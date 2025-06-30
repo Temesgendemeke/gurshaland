@@ -86,8 +86,8 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-r from-emerald-600 to-red-600">
-        <div className="max-w-4xl mx-auto text-center text-white">
+      <Card className="p-12 text-center bg-gradient-to-r from-emerald-600/10 to-red-600/10 dark:from-emerald-600/20 dark:to-red-600/20 border-emerald-200 dark:border-emerald-700">
+        <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-6">
             Ready to Start Your Culinary Journey?
           </h2>
@@ -107,13 +107,13 @@ export default function HomePage() {
               asChild
               variant="outline"
               size="lg"
-              className="border-2 border-white text-white hover:bg-white hover:text-emerald-600 px-8 py-4 text-lg rounded-full"
+              className="border-2 border-white text-white bg-emerald-600 hover:bg-white hover:text-emerald-600 px-8 py-4 text-lg rounded-full"
             >
               <Link href="/recipes/create">Share Your Recipe</Link>
             </Button>
           </div>
         </div>
-      </section>
+      </Card>
 
       <Footer />
     </div>
