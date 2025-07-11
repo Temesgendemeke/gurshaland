@@ -1,52 +1,95 @@
-import z from "zod";
+import z, { string } from "zod";
 
 export const ingredientSchema = z.object({
   item: z.string().min(1, "Required"),
   amount: z.string().min(1, "Required"),
   notes: z.string().optional(),
 });
+
+const imageSchema = z.object({
+  path: z.string(),
+  url: z.string(),
+});
+
+export const recipeImageSchema = imageSchema.extend({
+  recipe_id: z.string(),
+});
+
+export const instructionImageSchema = imageSchema.extend({
+  instruction_id: z.string(),
+});
+
+export const RecipeRatingSchema = z.object({
+  recipe_id: z.string(),
+  user_id: z.string(),
+  rating: z.number().min(0).max(5).optional(),
+})
+
 export const instructionSchema = z.object({
   title: z.string().min(1, "Required"),
   description: z.string().min(1, "Required"),
   time: z.string().optional(),
   tips: z.string().optional(),
+  step: z.number().nonnegative().min(1),
+  image: instructionImageSchema.optional(),
 });
+
+export const nutritionSchema = z.object({
+  calories: z.preprocess((val) => Number(val), z.number()),
+  protein: z.preprocess((val) => Number(val), z.number()),
+  carbs: z.preprocess((val)=> Number(val), z.number()), 
+  fat:  z.preprocess((val) => Number(val), z.number()),
+  fiber: z.preprocess((val) => Number(val), z.number()),
+});
+
+
 export const formSchema = z.object({
-  title: z.string().min(1, "Required"),
-  category: z.string().min(1, "Required"),
-  description: z.string().min(1, "Required"),
-  prepTime: z.string().optional(),
-  cookTime: z.string().optional(),
-  servings: z.string().optional(),
-  difficulty: z.string().optional(),
+  recipe: z.object({
+    title: z.string().min(1, "Required"),
+    category: z.string().min(1, "Required"),
+    description: z.string().min(1, "Required"),
+    prepTime: z.preprocess((val)=> Number(val), z.number().min(0)),
+    cookTime: z.preprocess((val) => Number(val),z.number().min(0)),
+    servings:  z.number().min(1),
+    difficulty: z.string().optional(),
+    tags: z.array(z.string()),
+    culturalNote: z.string().optional(),
+    image: recipeImageSchema.optional(),
+    status: z.enum(["draft", "published"]),
+    author_id: z.string(),
+    slug: z.string(),
+  }),
   ingredients: z.array(ingredientSchema).min(1),
   instructions: z.array(instructionSchema).min(1),
-  tags: z.array(z.string()),
-  culturalNote: z.string().optional(),
-  image: z.any().optional(),
-  status: z.enum(["draft", "published"]),
+  nutrition: nutritionSchema,
 });
 
 export const loginFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
-  password: z.string().min(2, { message: "Password must be at least 8 characters" }),
+  password: z
+    .string()
+    .min(2, { message: "Password must be at least 8 characters" }),
 });
 
 export const signupFormSchema = z.object({
-  username: z.string().min(2, { message: "Username must be at least 2 characters" }).max(12, { message: "Username must be at most 12 characters" }),
+  username: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters" })
+    .max(12, { message: "Username must be at most 12 characters" }),
   email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(1, { message: "Password is required" }),
-  full_name: z.string().min(1, { message: "Full name is required" })
+  full_name: z.string().min(1, { message: "Full name is required" }),
 });
 
-
 export const forgotPasswordSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" })
+  email: z.string().email({ message: "Invalid email address" }),
 });
 
 export const resetPasswordSchema = z.object({
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  confirm_password: z.string().min(8, { message: "Password must be at least 8 characters" })
-})
-
-
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+  confirm_password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+});

@@ -1,6 +1,6 @@
 import SubmitRecipeForm from "@/components/SubmitRecipe";
 import { supabase } from "@/lib/supabase-client";
-import { getRecipebySlug } from "@/actions/recipe";
+import { getRecipebySlug } from "@/actions/Recipe/recipe";
 import React from "react";
 
 async function EditRecipe({ params }: { params: Promise<{ slug: string }> }) {

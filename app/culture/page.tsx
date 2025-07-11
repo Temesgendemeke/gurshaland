@@ -162,7 +162,6 @@ export default function CulturePage() {
           </div>
         </section>
 
-        {/* Cultural Topics */}
         <section>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-4">Explore Ethiopian Culture</h2>

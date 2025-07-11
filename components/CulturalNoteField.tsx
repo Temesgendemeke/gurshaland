@@ -19,7 +19,7 @@ export default function CulturalNoteField({ form }) {
       </h2>
       <FormField
         control={form.control}
-        name="culturalNote"
+        name="recipe.culturalNote"
         render={({ field }) => (
           <FormItem>
             <FormControl>

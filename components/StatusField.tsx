@@ -24,16 +24,15 @@ export default function StatusField({ form }) {
       </h2>
       <FormField
         control={form.control}
-        name="status"
+        name="recipe.status"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Status *</FormLabel>
             <FormControl>
               <Select onValueChange={field.onChange} value={field.value}>
                 <SelectTrigger className="border-emerald-300 dark:border-emerald-700  bg-white dark:bg-gray-900">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
-                <SelectContent position="popper" className="absolute">
+                <SelectContent position="popper" className="absolute bg-background">
                   {statuses.map((s) => (
                     <SelectItem key={s.value} value={s.value}>
                       {s.label}

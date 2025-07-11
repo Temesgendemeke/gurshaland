@@ -29,7 +29,7 @@ export default function BasicInfoFields({ form, recipe }) {
       <div className="grid md:grid-cols-2 gap-6">
         <FormField
           control={form.control}
-          name="title"
+          name="recipe.title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Recipe Title *</FormLabel>
@@ -42,7 +42,7 @@ export default function BasicInfoFields({ form, recipe }) {
         />
         <FormField
           control={form.control}
-          name="category"
+          name="recipe.category"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Category *</FormLabel>
@@ -51,7 +51,7 @@ export default function BasicInfoFields({ form, recipe }) {
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-background">
                     {categories.map((cat) => (
                       <SelectItem key={cat.value} value={cat.value}>
                         {cat.label}
@@ -67,7 +67,7 @@ export default function BasicInfoFields({ form, recipe }) {
       </div>
       <FormField
         control={form.control}
-        name="description"
+        name="recipe.description"
         render={({ field }) => (
           <FormItem className="mt-6">
             <FormLabel>Description *</FormLabel>
@@ -85,13 +85,13 @@ export default function BasicInfoFields({ form, recipe }) {
       <div className="grid md:grid-cols-4 gap-4 mt-6">
         <FormField
           control={form.control}
-          name="prepTime"
+          name="recipe.prepTime"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Prep Time</FormLabel>
+              <FormLabel>Prep Time (min)</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <Input placeholder="30 min" {...field} className="pr-10" />
+                  <Input {...field} type="number" className="pr-10" />
                   <Clock className="w-4 h-4 text-gray-400 absolute right-3 pointer-events-none" />
                 </div>
               </FormControl>
@@ -101,13 +101,13 @@ export default function BasicInfoFields({ form, recipe }) {
         />
         <FormField
           control={form.control}
-          name="cookTime"
+          name="recipe.cookTime"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Cook Time</FormLabel>
+              <FormLabel>Cook Time (min)</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <Input placeholder="1 hour" {...field} className="pr-10" />
+                  <Input {...field} className="pr-10" type="number" />
                   <Clock className="w-4 h-4 text-gray-400 absolute right-3 pointer-events-none" />
                 </div>
               </FormControl>
@@ -117,13 +117,19 @@ export default function BasicInfoFields({ form, recipe }) {
         />
         <FormField
           control={form.control}
-          name="servings"
+          name="recipe.servings"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Servings</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <Input placeholder="4" {...field} className="pr-10" />
+                  <Input
+                    type="number"
+                    placeholder="4"
+                    {...field}
+                    className="pr-10"
+                    min={1}
+                  />
                   <Users className="w-4 h-4 text-gray-400 absolute right-3 pointer-events-none" />
                 </div>
               </FormControl>
@@ -133,7 +139,7 @@ export default function BasicInfoFields({ form, recipe }) {
         />
         <FormField
           control={form.control}
-          name="difficulty"
+          name="recipe.difficulty"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Difficulty</FormLabel>
@@ -142,7 +148,7 @@ export default function BasicInfoFields({ form, recipe }) {
                   <SelectTrigger>
                     <SelectValue placeholder="Level" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-background">
                     {difficulties.map((d) => (
                       <SelectItem key={d.value} value={d.value}>
                         {d.label}
@@ -151,29 +157,6 @@ export default function BasicInfoFields({ form, recipe }) {
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
               <FormMessage />
             </FormItem>
           )}

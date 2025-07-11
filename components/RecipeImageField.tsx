@@ -2,9 +2,22 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Upload, X } from "lucide-react";
+import React from "react";
 
+interface RecipeImageFieldProps {
+  image?: File;
+  setImage: (file?: File) => void;
+}
 
-export default function RecipeImageField({ image, setImage, handleImage }) {
+export default function RecipeImageField({
+  image,
+  setImage,
+}: RecipeImageFieldProps) {
+  const handleImage = (e) => {
+    e.preventDefault();
+    document.getElementById("recipe-image-input")?.click();
+  };
+
   return (
     <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
       <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">

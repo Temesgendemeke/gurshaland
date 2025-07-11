@@ -67,7 +67,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden 2xl:flex  items-center space-x-8">
           {navigations.map((navigation, index) => (
             <Link
               key={index}
@@ -87,7 +87,7 @@ export function Header() {
         </nav>
 
         {/* Search Bar */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden 2xl:flex items-center space-x-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
@@ -107,7 +107,7 @@ export function Header() {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden"
+          className="2xl:hidden"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <Menu className="w-5 h-5" />
@@ -116,7 +116,7 @@ export function Header() {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-700/50 p-4 md:hidden">
+        <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-700/50 p-4 2xl:hidden">
           <div className="flex flex-col space-y-4">
             <Input
               placeholder="Search recipes..."

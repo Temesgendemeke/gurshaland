@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-    FormField,
-    FormItem,
-    FormControl,
-    FormMessage,
+  FormField,
+  FormItem,
+  FormControl,
+  FormMessage,
 } from "@/components/ui/form";
 
 interface IngredientField {
@@ -19,7 +19,7 @@ interface IngredientField {
 }
 
 interface IngredientsFieldProps {
-  form: any; // Replace 'any' with your form type if available
+  form: any; 
   ingredientFields: IngredientField[] | any;
   appendIngredient: (ingredient: Omit<IngredientField, "id">) => void;
   removeIngredient: (index: number) => void;
