@@ -16,12 +16,9 @@ import {
   Bookmark,
   Share2,
   MessageCircle,
-  ThumbsUp,
   ArrowLeft,
-  Trash,
 } from "lucide-react";
-import { recipeStore } from "@/store/Recipe";
-import Recipe, { PostComment } from "@/utils/types/recipe";
+import { PostComment } from "@/utils/types/recipe";
 import { useParams } from "next/navigation";
 import RecipeComment from "@/components/RecipeComment";
 import { useAuth } from "@/store/useAuth";
@@ -32,11 +29,16 @@ import RecipeDetailSkeleton from "@/components/skeleton/RecipeDetailSkeleton";
 import RecipeCommentList from "@/components/RecipeCommentList";
 import { useRecipeDetailStore } from "@/store/Recipedetail";
 import { toast } from "sonner";
+import NutritionView from "@/components/NutritionView";
+import AuthorInfo from "@/components/AuthorInfo";
+import RecipeCulturalNote from "@/components/RecipeCulturalNote";
+import InstructionsView from "@/components/InstructionsView";
+import IngredientsView from "@/components/IngredientsView";
+import ActionButtons from "@/components/recipe/ActionButtons";
 
 export default function RecipeDetailPage() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [newComment, setNewComment] = useState("");
   const params = useParams();
   const { slug } = params;
   const user = useAuth((store) => store.user);
@@ -115,7 +117,7 @@ export default function RecipeDetailPage() {
                     Total Time
                   </div>
                   <div className="font-semibold text-gray-800 dark:text-gray-200">
-                    {recipe.prepTime + recipe.cookTime || "unkown"}
+                    {recipe.preptime + recipe.cooktime || "unkown"}
                   </div>
                 </div>
                 <div className="text-center p-4 bg-white/70 dark:bg-gray-800/70 rounded-xl border border-emerald-100 dark:border-emerald-800">
@@ -150,59 +152,13 @@ export default function RecipeDetailPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-4 mb-6">
-                <Button
-                  onClick={() => setIsLiked(!isLiked)}
-                  variant={isLiked ? "default" : "outline"}
-                  className="flex-1 sm:flex-none"
-                >
-                  <Heart
-                    className={`w-4 h-4 mr-2 ${isLiked ? "fill-current" : ""}`}
-                  />
-                  {isLiked ? "Liked" : "Like"} ({recipe.likes.length})
-                </Button>
-                <Button
-                  onClick={() => setIsBookmarked(!isBookmarked)}
-                  variant={isBookmarked ? "default" : "outline"}
-                  className="flex-1 sm:flex-none"
-                >
-                  <Bookmark
-                    className={`w-4 h-4 mr-2 ${
-                      isBookmarked ? "fill-current" : ""
-                    }`}
-                  />
-                  {isBookmarked ? "Saved" : "Save"}
-                </Button>
-                <Button variant="outline">
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share
-                </Button>
-              </div>
+              <ActionButtons
+                recipe_id={recipe.id ?? ""}
+                user_id={user?.id ?? ""}
+              />
 
               {/* Author Info */}
-              <Card className="p-4 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-                <div className="flex items-center space-x-4">
-                  <img
-                    src={
-                      recipe.author?.avatar_url ||
-                      "https://avatar.iran.liara.run/public/boy"
-                    }
-                    alt={recipe.author?.full_name}
-                    className="w-12 h-12 rounded-full"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-200">
-                      @{recipe.author?.username}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {recipe.author?.bio}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">
-                      {recipe.author?.recipes} recipes shared
-                    </p>
-                  </div>
-                </div>
-              </Card>
+              <AuthorInfo author={recipe?.author} />
             </div>
           </div>
 
@@ -210,155 +166,27 @@ export default function RecipeDetailPage() {
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 space-y-8">
               {/* Ingredients */}
-              <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
-                  Ingredients
-                </h2>
-                <ul className="space-y-4">
-                  {recipe.ingredients.map((ingredient, index) => (
-                    <li
-                      key={index}
-                      className="flex justify-between items-start"
-                    >
-                      <div className="flex-1">
-                        <span className="font-medium text-gray-800 dark:text-gray-200">
-                          {ingredient.amount}
-                        </span>
-                        <span className="ml-2 text-gray-700 dark:text-gray-300">
-                          {ingredient.item}
-                        </span>
-                        {ingredient.notes && (
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            {ingredient.notes}
-                          </p>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
+              <IngredientsView ingredients={recipe?.ingredients} />
 
               {/* Instructions */}
-              <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
-                  Instructions
-                </h2>
-                <div className="space-y-6">
-                  {recipe.instructions.map((instruction) => (
-                    <div key={instruction.step} className="flex space-x-4">
-                      <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-emerald-600 to-yellow-500 rounded-full flex items-center justify-center text-white font-bold">
-                        {instruction.step}
-                      </div>
-
-                      {instruction.image?.url && (
-                        <Image
-                          src={instruction.image?.url}
-                          width={400}
-                          height={400}
-                          alt={`${instruction.step} image`}
-                        />
-                      )}
-
-                      <div className="flex-1">
-                        <h2 className="font-semibold text-2xl text-gray-800 dark:text-gray-200 mb-2">
-                          {instruction.title}
-                        </h2>
-                        <p className="text-gray-700 dark:text-gray-300 mb-2">
-                          {instruction.description}
-                        </p>
-                        <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-                          <span>⏱️ {instruction.time}</span>
-                        </div>
-                        {instruction.tips && (
-                          <div className="mt-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border-l-4 border-emerald-500">
-                            <p className="text-sm text-emerald-700 dark:text-emerald-300">
-                              <strong>Tip:</strong> {instruction.tips}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Card>
+              <InstructionsView instructions={recipe?.instructions} />
 
               {/* Cultural Note */}
-              {recipe.culturalNote && (
-                <Card className="p-6 bg-gradient-to-r from-emerald-50 to-yellow-50 dark:from-emerald-900/20 dark:to-yellow-900/20 border-emerald-200 dark:border-emerald-700">
-                  <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
-                    Cultural Significance
-                  </h2>
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {recipe.culturalNote}
-                  </p>
-                </Card>
-              )}
+              <RecipeCulturalNote culturalNote={recipe?.culturalNote} />
             </div>
 
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Nutrition */}
-              <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
-                  Nutrition (per serving)
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Calories
-                    </span>
-                    <span className="font-medium text-gray-800 dark:text-gray-200">
-                      {recipe.nutrition?.calories ?? "unknown"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Protein
-                    </span>
-                    <span className="font-medium text-gray-800 dark:text-gray-200">
-                      {recipe.nutrition?.protein}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Carbs
-                    </span>
-                    <span className="font-medium text-gray-800 dark:text-gray-200">
-                      {recipe.nutrition?.carbs}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Fat
-                    </span>
-                    <span className="font-medium text-gray-800 dark:text-gray-200">
-                      {recipe.nutrition?.fat}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Fiber
-                    </span>
-                    <span className="font-medium text-gray-800 dark:text-gray-200">
-                      {recipe.nutrition?.fiber}
-                    </span>
-                  </div>
-                </div>
-              </Card>
+              <NutritionView nutrition={recipe?.nutrition} />
 
-              <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-                <h2 className="text-xl font-bold dark:bg-gray-800 dark:text-gray-100 mb-4 flex items-center">
-                  Rate this recipe
-                </h2>
-                <RecipeRating
-                  user_id={user?.id ?? ""}
-                  recipe_id={recipe.id ?? ""}
-                  rating={
-                    recipe.rating.find((r) => r.user_id === user?.id)?.rating ||
-                    0
-                  }
-                />
-              </Card>
+              <RecipeRating
+                user_id={user?.id ?? ""}
+                recipe_id={recipe.id ?? ""}
+                rating={
+                  recipe.rating.find((r) => r.user_id === user?.id)?.rating || 0
+                }
+              />
 
               {/* Comments */}
               <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">

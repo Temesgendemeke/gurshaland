@@ -39,8 +39,8 @@ export default interface Recipe {
   title: string;
   category: string;
   description: string;
-  prepTime: number;
-  cookTime: number
+  preptime: number;
+  cooktime: number
   servings: number;
   difficulty: string;
   ingredients: Ingredient[];
@@ -59,6 +59,7 @@ export default interface Recipe {
   likes: RecipeLike[] | [];
   comments: RecipeComment[];
   average_rating: number;
+  bookmarks?: RecipeBookmark[]
 }
 
 export interface Profile{
@@ -92,7 +93,7 @@ interface Like {
   liked_by: string;
 }
 
-interface RecipeLike extends Like {
+export interface RecipeLike extends Like {
   recipe_id: string;
 }
 
@@ -112,4 +113,10 @@ export interface PostComment extends RecipeComment {
   id: string;
   author: Profile;
   rating: number;
+}
+
+
+export interface RecipeBookmark{
+  user_id: string;
+  recipe_id: string;
 }

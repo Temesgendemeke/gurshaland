@@ -2,9 +2,9 @@ import { PostComment, Profile, RecipeComment } from "@/utils/types/recipe";
 import { Star, Trash } from "lucide-react";
 import React from "react";
 import { Button } from "./ui/button";
-import { deleteComment } from "@/actions/Recipe/recipe";
 import { useRecipeDetailStore } from "@/store/Recipedetail";
 import { format_date } from "@/utils/formatdate";
+import avater from "@/public/placeholder-user.jpg";
 
 interface RecipeCommentListProps {
   comments: PostComment[];
@@ -22,10 +22,7 @@ const RecipeCommentList = ({ comments, user_id }: RecipeCommentListProps) => {
         >
           <div className="flex items-start space-x-3">
             <img
-              src={
-                comment.author?.avatar_url ||
-                "https://avatar.iran.liara.run/public"
-              }
+              src={comment.author?.avatar_url || avater.src}
               alt={comment.author.username}
               className="w-8 h-8 rounded-full"
             />

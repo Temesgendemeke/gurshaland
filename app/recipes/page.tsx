@@ -22,6 +22,8 @@ import { supabase } from "@/lib/supabase-client";
 import { useAuth } from "@/store/useAuth";
 import { recipeStore } from "@/store/Recipe";
 import RecipeListSkeleton from "@/components/skeleton/RecipeList";
+import { format_date } from "@/utils/formatdate";
+import format_time from "@/utils/format_time";
 
 export default function RecipesPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,8 +37,6 @@ export default function RecipesPage() {
 
   useEffect(() => {
     fetchRecipes();
-    supabase.storage.from("gurshaland-bucket").list().then(console.log);
-    supabase.storage.from("gurshaland-bucket").list("recipe").then(console.log);
 
     const fetchRecipe = async () => {
       try {
@@ -51,105 +51,6 @@ export default function RecipesPage() {
 
     fetchRecipe();
   }, []);
-
-  // const recipes = [
-  //   ...data,
-  // {
-  //   id: 1,
-  //   title: "Traditional Injera",
-  //   slug: "traditional-injera",
-  //   description:
-  //     "Fermented flatbread made from teff flour - the foundation of Ethiopian cuisine",
-  //   image: "/placeholder.svg?height=200&width=300",
-  //   category: "Bread",
-  //   difficulty: "Medium",
-  //   time: "3 days",
-  //   servings: 8,
-  //   rating: 4.8,
-  //   reviews: 124,
-  //   author: "Almaz Tadesse",
-  //   tags: ["Traditional", "Gluten-Free", "Fermented"],
-  // },
-  // {
-  //   id: 2,
-  //   title: "Doro Wat",
-  //   slug: "doro-wat",
-  //   description:
-  //     "Ethiopia's national dish - spicy chicken stew with berbere and hard-boiled eggs",
-  //   image: "/placeholder.svg?height=200&width=300",
-  //   category: "Meat",
-  //   difficulty: "Hard",
-  //   time: "2 hours",
-  //   servings: 6,
-  //   rating: 4.9,
-  //   reviews: 89,
-  //   author: "Kebede Alemu",
-  //   tags: ["Spicy", "Traditional", "Festive"],
-  // },
-  // {
-  //   id: 3,
-  //   title: "Shiro Wat",
-  //   slug: "shiro-wat",
-  //   description: "Creamy chickpea flour stew - a beloved vegetarian staple",
-  //   image: "/placeholder.svg?height=200&width=300",
-  //   category: "Vegetarian",
-  //   difficulty: "Easy",
-  //   time: "45 min",
-  //   servings: 4,
-  //   rating: 4.7,
-  //   reviews: 156,
-  //   author: "Hanan Mohammed",
-  //   tags: ["Vegetarian", "Quick", "Protein-Rich"],
-  // },
-  // {
-  //   id: 4,
-  //   title: "Kitfo",
-  //   slug: "kitfo",
-  //   description:
-  //     "Ethiopian steak tartare seasoned with mitmita spice and clarified butter",
-  //   image: "/placeholder.svg?height=200&width=300",
-  //   category: "Meat",
-  //   difficulty: "Medium",
-  //   time: "30 min",
-  //   servings: 2,
-  //   rating: 4.6,
-  //   reviews: 67,
-  //   author: "Dawit Bekele",
-  //   tags: ["Raw", "Spicy", "Gourmet"],
-  // },
-  // {
-  //   id: 5,
-  //   title: "Berbere Spice Blend",
-  //   slug: "berbere-spice-blend",
-  //   description:
-  //     "The soul of Ethiopian cooking - aromatic spice blend with over 15 ingredients",
-  //   image: "/placeholder.svg?height=200&width=300",
-  //   category: "Spices",
-  //   difficulty: "Easy",
-  //   time: "1 hour",
-  //   servings: 20,
-  //   rating: 4.9,
-  //   reviews: 203,
-  //   author: "Tigist Haile",
-  //   tags: ["Spice", "Essential", "Homemade"],
-  // },
-  // {
-  //   id: 6,
-  //   title: "Ethiopian Coffee",
-  //   slug: "ethiopian-coffee",
-  //   description:
-  //     "Traditional coffee ceremony - from green beans to the perfect cup",
-  //   image: "/placeholder.svg?height=200&width=300",
-  //   category: "Beverages",
-  //   difficulty: "Medium",
-  //   time: "1 hour",
-  //   servings: 6,
-  //   rating: 4.8,
-  //   reviews: 91,
-  //   author: "Selamawit Girma",
-  //   tags: ["Coffee", "Ceremony", "Traditional"],
-  // },
-  // ];
 
   const categories = [
     "all",
@@ -303,16 +204,20 @@ export default function RecipesPage() {
 
                   <div className="flex items-center justify-between text-sm text-body-muted mb-4">
                     <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-1">
-                        <Clock className="w-4 h-4" />
-                        <span>{recipe.time}</span>
+                      <div className="flex items-basline space-x-1">
+                        <Clock size={16} />
+                        <span>
+                          {format_time(
+                            recipe.cooktime ?? 0 + recipe.preptime ?? 0
+                          ) || "Unkown"}
+                        </span>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <Users className="w-4 h-4" />
+                      <div className="flex items-basline space-x-1">
+                        <Users size={16} />
                         <span>{recipe.servings}</span>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <ChefHat className="w-4 h-4" />
+                      <div className="flex items-basline space-x-1">
+                        <ChefHat size={16} />
                         <span>{recipe.difficulty}</span>
                       </div>
                     </div>
