@@ -60,6 +60,7 @@ export default interface Recipe {
   comments: RecipeComment[];
   average_rating: number;
   bookmarks?: RecipeBookmark[]
+  profile: Profile;
 }
 
 export interface Profile{
@@ -120,3 +121,10 @@ export interface RecipeBookmark{
   user_id: string;
   recipe_id: string;
 }
+
+
+export interface Follower{
+  follower_id: string;
+  profile_id: string;
+}
+

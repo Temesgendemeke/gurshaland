@@ -42,7 +42,6 @@ const ActionButtons = ({ recipe_id, user_id }: ActionButtonsProps) => {
 
   return (
     <div className="flex flex-wrap gap-4 mb-6">
-      <p>{JSON.stringify(isBookmarked)}</p>
       <Button
         onClick={handleLike}
         variant={isLiked ? "default" : "outline"}

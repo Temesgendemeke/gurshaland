@@ -2,28 +2,20 @@
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Card } from "@/components/ui/card";
+import { useEffect } from "react";
 import {
   Clock,
   Users,
   ChefHat,
   Star,
-  Heart,
-  Bookmark,
-  Share2,
   MessageCircle,
-  ArrowLeft,
 } from "lucide-react";
 import { PostComment } from "@/utils/types/recipe";
 import { useParams } from "next/navigation";
 import RecipeComment from "@/components/RecipeComment";
 import { useAuth } from "@/store/useAuth";
-import Image from "next/image";
-import { useRef } from "react";
 import RecipeRating from "@/components/RecipeRating";
 import RecipeDetailSkeleton from "@/components/skeleton/RecipeDetailSkeleton";
 import RecipeCommentList from "@/components/RecipeCommentList";
@@ -35,10 +27,9 @@ import RecipeCulturalNote from "@/components/RecipeCulturalNote";
 import InstructionsView from "@/components/InstructionsView";
 import IngredientsView from "@/components/IngredientsView";
 import ActionButtons from "@/components/recipe/ActionButtons";
+import BackNavigation from "@/components/BackNavigation";
 
 export default function RecipeDetailPage() {
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
   const params = useParams();
   const { slug } = params;
   const user = useAuth((store) => store.user);
@@ -65,16 +56,7 @@ export default function RecipeDetailPage() {
       ) : (
         <div className="w-full md:max-w-9xl mx-auto px-6 py-12">
           {/* Back Navigation */}
-          <Button
-            asChild
-            variant="ghost"
-            className="mb-6 hover:bg-emerald-100 dark:hover:bg-emerald-900/50"
-          >
-            <Link href="/recipes">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Recipes
-            </Link>
-          </Button>
+          <BackNavigation pagename={"Recipes"}/>
 
           {/* Recipe Header */}
           <div className="grid lg:grid-cols-2 gap-12 mb-12">
@@ -158,7 +140,7 @@ export default function RecipeDetailPage() {
               />
 
               {/* Author Info */}
-              <AuthorInfo author={recipe?.author} />
+              {recipe.author && <AuthorInfo author={recipe.author} />}
             </div>
           </div>
 
