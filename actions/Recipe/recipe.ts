@@ -98,16 +98,6 @@ export const uploadRecipeImage = async (
       url,
       recipe_id,
     });
-    console.log("SUPABASE_URL", process.env.NEXT_PUBLIC_SUPABASE_URL);
-    console.log("SUPABASE_KEY", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-    console.log(
-      "Inserted recipe image:",
-      data,
-      "with path:",
-      path,
-      "and url:",
-      url
-    );
 
     if (error) throw error;
     return data;

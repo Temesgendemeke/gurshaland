@@ -47,8 +47,8 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
         title: recipe?.title || "",
         category: recipe?.category || "",
         description: recipe?.description || "",
-        prepTime: recipe?.prepTime || 0,
-        cookTime: recipe?.cookTime || 0,
+        prepTime: recipe?.preptime || 0,
+        cookTime: recipe?.cooktime || 0,
         servings: recipe?.servings || 1,
         difficulty: recipe?.difficulty || "",
         tags: recipe?.tags || [],
@@ -165,12 +165,11 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Header />
-      <p>ll{JSON.stringify(form.formState.errors, null, 2)}</p>
       <div className=" mx-auto px-6 py-12">
         <BackNavigation route="/recipes" pagename="Recipes" />
         <div className="text-center mb-12">
           <h1 className="text-7xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-emerald-700 via-yellow-600 to-red-600 bg-clip-text text-transparent">
+            <span className="">
               Share Your Recipe
             </span>
           </h1>
@@ -207,7 +206,6 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
             />
             <CulturalNoteField form={form} />
             <StatusField form={form} />
-            <p>{JSON.stringify(form.watch())}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 type="submit"

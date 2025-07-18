@@ -2,6 +2,7 @@ import { Calendar, Clock, TrendingUp, User } from "lucide-react";
 import Link from "next/link";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
+import { format_date } from "@/utils/formatdate";
 
 export default function FeaturedPost({ post }: { post: typeof blogPosts[0] }) {
   return (
@@ -10,12 +11,12 @@ export default function FeaturedPost({ post }: { post: typeof blogPosts[0] }) {
         <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2" />
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Featured Article</h2>
       </div>
-      <Link href={`/blog/${post.id}`}>
+      <Link href={`/blog/${post.slug}`}>
         <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-emerald-100 dark:border-emerald-800">
           <div className="grid md:grid-cols-2 gap-0">
             <div className="relative">
               <img
-                src={post.image || "/placeholder.svg"}
+                src={post.image.url || "/placeholder.svg"}
                 alt={post.title}
                 className="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -35,16 +36,16 @@ export default function FeaturedPost({ post }: { post: typeof blogPosts[0] }) {
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2">
                     <User className="w-4 h-4" />
-                    <span>{post.author}</span>
+                    <span>{post.author?.full_name || post.author?.username || "unkown"}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Calendar className="w-4 h-4" />
-                    <span>{post.date}</span>
+                    <span>{format_date(post.created_at)}</span>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Clock className="w-4 h-4" />
-                  <span>{post.readTime}</span>
+                  <span>{post.read_time}</span>
                 </div>
               </div>
             </div>

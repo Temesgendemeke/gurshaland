@@ -93,3 +93,54 @@ export const resetPasswordSchema = z.object({
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
 });
+
+export const ImageSchema = z.object({
+    file: z.any().refine((file) => file instanceof File || file == null, {message:"Invalid file"}).nullable().optional(),
+    path: z.string().optional(),
+    url:  z.string().optional(),
+  })
+
+
+const IngredientSchema = z.array(
+            z.object({
+              amount: z.string().default(0),
+              name: z.string().min(1, "Ingredient name is required"),
+            }),
+          )
+          .optional()
+
+
+const TipsSchema = z.object({
+  title: z.string(),
+  items: z.array(z.string()).optional()
+})
+
+const ContentIngredient = z.object({
+  amount: z.number(),
+  measurement: z.string(),
+  name: z.string()
+})
+
+export const ContentSchema = z
+    .array(
+      z.object({
+        image: ImageSchema,
+        body: z.string().min(1, "Content is required"),
+        title: z.string(),
+        instructions: z.array(z.string()).optional(),
+        items: z.array(z.string()).optional(),
+        tips: TipsSchema.optional(),
+        ingredients: z.array(ContentIngredient).optional(),
+      }),
+    )
+    .optional()
+
+export const blogSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  subtitle: z.string().optional(),
+  category: z.string().min(1, "Category is required"),
+  tags: z.array(z.string()).optional(),
+  status: z.enum(["draft", "published"]),
+  image: ImageSchema,
+  content: ContentSchema, 
+});

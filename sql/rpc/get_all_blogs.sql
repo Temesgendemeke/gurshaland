@@ -10,7 +10,7 @@ BEGIN
         'subtitle', b.subtitle,
         'author_id', b.author_id,
         'author', (
-            SELECT COALESCE(row_to_json(profile), '{}'::jsonb)
+            SELECT COALESCE(row_to_json(profile), '{}'::json)
             FROM profile
             WHERE b.author_id = profile.id
             LIMIT 1
@@ -19,7 +19,7 @@ BEGIN
         'read_time', b.read_time,
         'category', b.category,
         'image', (
-            SELECT COALESCE(row_to_json(b_img), '{}'::jsonb)
+            SELECT COALESCE(row_to_json(b_img), '{}'::json)
             FROM blog_image b_img
             WHERE b_img.blog_id = b.id
             LIMIT 1
@@ -41,11 +41,11 @@ BEGIN
                                 'name', ingredient.name
                             )
                         )
-                        FROM ingredient
+                        FROM blog_ingredient ingredient
                         WHERE ingredient.content_id = content.id
                     ),
                     'image', (
-                        SELECT COALESCE(row_to_json(c_img), '{}'::jsonb)
+                        SELECT COALESCE(row_to_json(c_img), '{}'::json)
                         FROM content_image c_img
                         WHERE c_img.content_id = content.id
                         LIMIT 1

@@ -18,7 +18,7 @@ function NewsletterSignup() {
             placeholder="Enter your email"
             className="flex-1 border-emerald-200 dark:border-emerald-700 bg-white dark:bg-gray-900"
           />
-          <Button className="bg-gradient-to-r from-emerald-600 to-yellow-500 hover:from-emerald-700 hover:to-yellow-600 text-white">
+          <Button className="bg-gradient-to-r from-emerald-600 text-white">
             Subscribe
           </Button>
         </div>

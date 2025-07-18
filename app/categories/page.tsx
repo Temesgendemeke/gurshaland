@@ -79,7 +79,7 @@ export default function CategoriesPage() {
         {/* Page Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-emerald-700 via-yellow-600 to-red-600 bg-clip-text text-transparent">
+            <span className="">
               Recipe Categories
             </span>
           </h1>

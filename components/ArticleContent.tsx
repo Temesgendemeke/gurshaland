@@ -1,27 +1,29 @@
 import React from "react";
 import { Card } from "./ui/card";
+import { Blog } from "@/utils/types/blog";
+import format_calories from "@/utils/formatcalories";
 
-const ArticleContent = ({blogPost}) => {
+const ArticleContent = ({ blogPost }: { blogPost: Blog }) => {
   return (
     <div className="prose prose-lg max-w-none dark:prose-invert mb-12">
-      {blogPost.content.map((section, index) => {
-        switch (section.type) {
+      {blogPost?.contents?.map((section, index) => {
+        switch (section.body) {
           case "paragraph":
             return (
               <p
                 key={index}
                 className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6"
               >
-                {section.text}
+                {section.body}
               </p>
             );
-          case "heading":
+          case section.title:
             return (
               <h2
                 key={index}
                 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-8 mb-4"
               >
-                {section.text}
+                {section.title}
               </h2>
             );
           case "recipe":
@@ -40,7 +42,10 @@ const ArticleContent = ({blogPost}) => {
                     </h4>
                     <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
                       {section.ingredients?.map((ingredient, i) => (
-                        <li key={i}>{ingredient}</li>
+                        <li key={i}>
+                          {format_calories(parseInt(ingredient.amount))}{" "}
+                          {ingredient.name}
+                        </li>
                       ))}
                     </ul>
                   </div>

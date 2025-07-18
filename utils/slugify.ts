@@ -19,9 +19,16 @@ export const generateUniqueSlug = async (title: string, table: string) => {
       .from(table)
       .select("id")
       .eq("slug", slug)
-      .single();
+      .limit(1);
+  
+    if (error) {
+      throw error;
+    }
+    if (!data || data.length === 0) {
+      break;
+    }
 
-    if (error || !data) break;
+  
     counter++;
     slug = `${base}-${counter}`;
   }

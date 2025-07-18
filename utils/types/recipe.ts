@@ -98,7 +98,7 @@ export interface RecipeLike extends Like {
   recipe_id: string;
 }
 
-interface BlogLike extends Like {
+export interface BlogLike extends Like {
   blog_id: string;
 }
 

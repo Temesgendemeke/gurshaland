@@ -1,6 +1,6 @@
 import { BUCKET } from "@/constants/image";
 import { supabase } from "@/lib/supabase-client";
-import { Blog, Content } from "@/utils/types/blog";
+import { Blog, BlogComment, Content } from "@/utils/types/blog";
 import { Ingredient } from "@/utils/types/recipe";
 
 
@@ -17,7 +17,7 @@ export const getBlogs = async() => {
 
 export const getBlogBySlug = async(slug:string) =>{
     const {data, error}  = await supabase.rpc("get_blog_by_slug",
-        {_slug: slug}
+        {blog_slug: slug}
     )
 
     if(error) throw error
@@ -26,20 +26,14 @@ export const getBlogBySlug = async(slug:string) =>{
 }
 
 
-interface PostBlogFormData {
-    blog: Blog;
-    contents: Content[];
-    ingredients: Ingredient[];
-}
-
-export const postBlog = async(formData: PostBlogFormData): Promise<Blog | null> => {
+export const postBlog = async(blog: Blog): Promise<Blog> => {
     const {data: newBlog, error} = await supabase.rpc("insert_blog", {
-        _blog: formData.blog,
-        _contents: formData.contents,
-        _ingredients: formData.ingredients,
+        _blog: blog,
     })
+     console.log("from post", error);
 
     if(error) throw error
+   
     return newBlog
 }
 
@@ -59,50 +53,21 @@ export const deleteBlog = async(blog: Blog) => {
 }
 
 
-// export const uploadBlogImage = async(user_id: string, blog_id: string, file: File)=>{
-//     const filePath = `blog/${user_id}/${file.name}_${Date.now()}`;
-
-//     const {error} = await supabase.storage.from(BUCKET).upload(filePath, file, {
-//         cacheControl:"3600",
-//         upsert: true,
-//     })
-
-//     if(error) throw error
-
-//     const {data} = await supabase.storage.from(BUCKET).getPublicUrl(filePath)
-//     const {error: saveError} = await supabase.from("blog_image").insert({blog_id, url: data.publicUrl, path: filePath})
-
-//     if(saveError) throw saveError
-// } 
-
-
-// export const uploadContentImage = async(user_id: string, content_id: string, file: File)=>{
-//     const filePath = `content/${user_id}/${file.name}_${Date.now()}`
-    
-//     const {error} = await supabase.storage.from(BUCKET).upload(filePath, file,{
-//         cacheControl:"3600",
-//         upsert: true
-//     })
-
-//     if(error) throw error;
-
-//     const {data} = await supabase.storage.from(BUCKET).getPublicUrl(filePath)
-//     const {error: saveError} = await supabase.from("content_image").insert({content_id, url: data.publicUrl, path: filePath})
-
-//     if(saveError) throw saveError
-// }
-
 
 export const uploadImage = async(type: 'content' | 'blog', user_id: string, post_id:string, file:File)=>{
     const filePath = `${type}/${user_id}/${file.name}_${Date.now()}`
     const table = type == 'blog' ? 'blog_image' : 'content_image'
 
+    console.log('table ', table);
+    console.log('file path ', filePath);
     const {error} = await supabase.storage.from(BUCKET).upload(filePath, file, {
         cacheControl: "3600",
-        upsert: true
+        upsert: true,
+        contentType: file.type || "image/jpeg"
     })
+    console.log("from here ", error);
+    if(error) throw error;
 
-    if(error) throw error
 
     const {data} = await supabase.storage.from(BUCKET).getPublicUrl(filePath)
     const row = {
@@ -111,6 +76,6 @@ export const uploadImage = async(type: 'content' | 'blog', user_id: string, post
         ...(type === 'blog' ? { blog_id: post_id } : { content_id: post_id })
     };
     const {error: saveError} = await supabase.from(table).insert(row)
-
     if(saveError) throw saveError
 }
+

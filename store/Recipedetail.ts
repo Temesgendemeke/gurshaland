@@ -96,9 +96,7 @@ export const useRecipeDetailStore = create<RecipeDetailStore>((set, get) => ({
     setIsLiked: (user_id) => set((state) => ({isLiked: state.recipe?.likes.some(l => l.liked_by === user_id)})),
     toggleBookmark: async(user_id, recipe_id)=> {
         try{
-            // api call
             await apiToggleBookmark(user_id, recipe_id)
-            // local 
             let bookmarked;
             set((state)=>{
                  const alreadyBookmarked = state.recipe?.bookmarks?.some(bookmark => bookmark.user_id === user_id)

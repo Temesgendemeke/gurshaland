@@ -40,7 +40,7 @@ BEGIN
                                 'name', ingredient.name
                             )
                         )
-                        FROM ingredient
+                        FROM blog_ingredient ingredient
                         WHERE ingredient.content_id = content.id
                     ),
                     'image', (

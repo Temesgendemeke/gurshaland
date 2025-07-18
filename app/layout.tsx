@@ -7,12 +7,16 @@ import { AIChatWidget } from "@/components/ai-chat-widget";
 import { Toaster } from "@/components/ui/sonner";
 import SyncAuth from "@/components/SyncAuth";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Gurshaland - Ethiopian Recipe Sharing",
   description:
     "Discover and share authentic Ethiopian recipes and culinary traditions",
+  icons: {
+    icon: "gurshaland.png",
+  },
 };
 
 // className={inter.className}
@@ -24,9 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        
-      >
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

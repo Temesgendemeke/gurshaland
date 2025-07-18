@@ -88,7 +88,7 @@ export default function RecipesPage() {
         {/* Page Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4">
-            <span className="gradient-text-primary">Ethiopian Recipes</span>
+            <span className="">Ethiopian Recipes</span>
           </h1>
           <p className="text-xl text-body max-w-2xl mx-auto">
             Discover authentic Ethiopian dishes from our community of passionate
@@ -160,8 +160,8 @@ export default function RecipesPage() {
           <RecipeListSkeleton />
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredRecipes.map((recipe) => (
-              <RecipeCard recipe={recipe}/>
+            {filteredRecipes.map((recipe, index) => (
+              <RecipeCard recipe={recipe} key={index}/>
             ))}
           </div>
         )}

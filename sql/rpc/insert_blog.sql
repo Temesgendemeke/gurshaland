@@ -1,7 +1,5 @@
 CREATE OR REPLACE FUNCTION insert_blog(
-  _blog jsonb,
-  _contents jsonb,
-  _ingredients jsonb
+  _blog jsonb
 )
 RETURNS jsonb
 LANGUAGE plpgsql
@@ -34,16 +32,16 @@ BEGIN
         c ->> 'title',
         ARRAY(SELECT jsonb_array_elements_text(c -> 'instructions')),
         ARRAY(SELECT jsonb_array_elements_text(c -> 'items'))
-     FROM jsonb_array_elements(_contents) as c;
+     FROM jsonb_array_elements(_blog -> 'contents') as c;
 
-   INSERT INTO ingredient (
+   INSERT INTO blog_ingredient (
      content_id, amount, name
    ) 
    SELECT 
        (i ->> 'content_id')::BIGINT,
-       i ->> 'amount',
+       (i ->> 'amount')::INT,
        i ->> 'name'
-   FROM jsonb_array_elements(_ingredients) as i;
+   FROM jsonb_array_elements(_blog -> 'ingredients') as i;
 
    SELECT jsonb_build_object(
         'id', b.id,
@@ -51,7 +49,7 @@ BEGIN
         'subtitle', b.subtitle,
         'author_id', b.author_id,
         'author', (
-            SELECT COALESCE(row_to_json(profile), '{}'::jsonb)
+            SELECT COALESCE(row_to_json(profile), '{}'::json)
             FROM profile
             WHERE b.author_id = profile.id
             LIMIT 1
@@ -60,7 +58,7 @@ BEGIN
         'read_time', b.read_time,
         'category', b.category,
         'image', (
-            SELECT COALESCE(row_to_json(b_img), '{}'::jsonb)
+            SELECT COALESCE(row_to_json(b_img), '{}'::json)
             FROM blog_image b_img
             WHERE b_img.blog_id = b.id
             LIMIT 1
@@ -82,11 +80,11 @@ BEGIN
                                 'name', ingredient.name
                             )
                         )
-                        FROM ingredient
+                        FROM blog_ingredient ingredient
                         WHERE ingredient.content_id = content.id
                     ),
                     'image', (
-                        SELECT COALESCE(row_to_json(c_img), '{}'::jsonb)
+                        SELECT COALESCE(row_to_json(c_img), '{}'::json)
                         FROM content_image c_img
                         WHERE c_img.content_id = content.id
                         LIMIT 1
@@ -101,8 +99,8 @@ BEGIN
         'status', b.status
     ) INTO new_blog
     FROM blog b
-    WHERE b.id = blog_id AND b.status = 'published';
+    WHERE b.id = blog_id;
 
     RETURN new_blog;
 END;
-$$
+$$;
