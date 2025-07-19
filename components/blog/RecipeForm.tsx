@@ -3,7 +3,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useFieldArray } from "react-hook-form";
 import { Label } from "../ui/label";
-import { ChefHat, Minus, NotepadTextIcon, Plus } from "lucide-react";
+import { ChefHat, Minus, NotepadTextIcon, Plus, Trash, X } from "lucide-react";
 import RecipeIngredient from "./RecipeIngredient";
 import ContentRecipeInstruction from "./ContentRecipeInstruction";
 
@@ -13,32 +13,17 @@ interface RecipeFormProps {
 }
 
 const RecipeForm = ({ form, index }: RecipeFormProps) => {
-  const {
-    fields: recipeFields,
-    append: appendRecipe,
-    remove: removeRecipe,
-  } = useFieldArray({ control: form.control, name: `content.${index}.tips` });
-
-  const {
-    fields: itemFields,
-    append: appendItem,
-    remove: removeItem,
-  } = useFieldArray({
-    control: form.control,
-    name: `content.${index}.tip.item`,
-  });
+  const recipe_name = `content.${index}.recipe`;
   return (
-    <div className="space-y-2">
+    <div className="space-y-2  p-4 border rounded-lg bg-background/50">
       <Label className="flex items-center gap-2">
         <NotepadTextIcon className="h-4 w-4" />
         Recipes
       </Label>
-      {recipeFields.map((recipe, recipeIndex) => (
-        <div key={recipe.id} className="space-y-4">
+      {form.watch(`content.${index}.recipe`) && (
+        <div className="space-y-4">
           <Input
-            {...form.register(
-              `content.${index}.ingredients.${recipeIndex}.title`
-            )}
+            {...form.register(`content.${index}.recipe.title`)}
             placeholder="Example: Chocolate Cake"
             className=""
             type="text"
@@ -48,37 +33,44 @@ const RecipeForm = ({ form, index }: RecipeFormProps) => {
           <RecipeIngredient form={form} control={form.control} index={index} />
 
           {/* instruction */}
-          <ContentRecipeInstruction form={form} control={form.control} index={index}/>
-
-
-          <Input
-            {...form.register(
-              `content.${index}.ingredients.${recipeIndex}.instructions`
-            )}
-            placeholder="Ingredient name"
-            className="flex-1"
+          <ContentRecipeInstruction
+            form={form}
+            control={form.control}
+            index={index}
           />
-
-          <Button
-            type="button"
-            onClick={() => removeRecipe(recipeIndex)}
-            variant={"outline"}
-            size="sm"
-          >
-            <Minus className="h-4 w-4" />
-          </Button>
         </div>
-      ))}
+      )}
 
-      <Button
-        type="button"
-        onClick={() => appendRecipe({ title: "", item: [] })}
-        variant={"outline"}
-        size="sm"
-      >
-        <Plus className="h-4 w-4 mr-2" />
-        Add Recipe
-      </Button>
+      {!form.watch(recipe_name) ? (
+        <Button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            form.setValue(recipe_name, {
+              title: "",
+              ingredients: { amount: undefined, measurement: "", name: "" },
+              instructions: [],
+            });
+          }}
+          variant={"outline"}
+          size="sm"
+          className="w-full"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Add Recipe
+        </Button>
+      ) : (
+        <Button
+          type="button"
+          onClick={() => form.setValue(recipe_name, undefined)}
+          variant={`outline`}
+          size="sm"
+          className="w-full"
+        >
+          <Trash className="h-4 w-4 mr-2" />
+          Delete Recipe
+        </Button>
+      )}
     </div>
   );
 };

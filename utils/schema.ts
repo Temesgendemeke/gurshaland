@@ -121,16 +121,21 @@ const ContentIngredient = z.object({
   name: z.string()
 })
 
+const RecipeSchema =  z.object({
+          title: z.string(),
+          ingredients: ContentIngredient,
+          instructions: z.array(z.string())
+        })
+
 export const ContentSchema = z
     .array(
       z.object({
         image: ImageSchema,
         body: z.string().min(1, "Content is required"),
         title: z.string(),
-        instructions: z.array(z.string()).optional(),
-        items: z.array(z.string()).optional(),
         tips: TipsSchema.optional(),
         ingredients: z.array(ContentIngredient).optional(),
+        recipe: RecipeSchema.optional()
       }),
     )
     .optional()

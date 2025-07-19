@@ -13,11 +13,7 @@ interface TipsFormProps {
   index: number;
 }
 const TipsForm = ({ form, index }: TipsFormProps) => {
-  const {
-    fields: tipFields,
-    append: appendTip,
-    remove: removeTip,
-  } = useFieldArray({ control: form.control, name: `content.${index}.tips` });
+  const tips_name = `content.${index}.tips`;
 
   return (
     <div className="space-y-4 p-4 border rounded-lg bg-background/50">
@@ -25,20 +21,17 @@ const TipsForm = ({ form, index }: TipsFormProps) => {
         <NotebookPen className="h-5 w-5" />
         Tips Section
       </Label>
-      {tipFields.map((tip, tipIndex) => (
-        <div
-          key={tip.id}
-          className="p-4 bg-background rounded-md space-y-3 border"
-        >
+      {form.watch(tips_name) && (
+        <div className={`p-4 bg-background rounded-md space-y-3 border`}>
           <div className="flex items-center gap-2">
             <Input
-              {...form.register(`content.${index}.tips.${tipIndex}.title`)}
+              {...form.register(`content.${index}.tips.title`)}
               placeholder="Tip Title (e.g., 'Pro Tips for Perfect Injera')"
               className="flex-1 font-medium"
             />
             <Button
               type="button"
-              onClick={() => removeTip(tipIndex)}
+              onClick={() => form.setValue(tips_name, undefined)}
               variant={"ghost"}
               size="icon"
               className="h-9 w-9 shrink-0"
@@ -46,14 +39,14 @@ const TipsForm = ({ form, index }: TipsFormProps) => {
               <Trash className="h-4 w-4 text-red-500" />
             </Button>
           </div>
+
           <TipItems contentIndex={index} control={form.control} />
         </div>
-      ))}
-
-      {tipFields.length > 0 ? (
+      )}
+      {form.watch(tips_name) ? (
         <Button
           type="button"
-          onClick={() => removeTip(index)}
+          onClick={() => form.setValue(tips_name, undefined)}
           variant={"outline"}
           className="w-full"
         >
@@ -63,7 +56,7 @@ const TipsForm = ({ form, index }: TipsFormProps) => {
       ) : (
         <Button
           type="button"
-          onClick={() => appendTip({ title: "", items: [] })}
+          onClick={() => form.setValue(tips_name, { title: "", items: [] })}
           variant={"outline"}
           className="w-full"
         >

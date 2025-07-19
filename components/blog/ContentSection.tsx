@@ -22,9 +22,7 @@ import {
 import ImageBox from "../ImageBox";
 import TipsForm from "./TipsForm";
 import RecipeForm from "./RecipeForm";
-import InstructionList from "./InstructionList";
-import ItemList from "./ItemList";
-import IngredientsList from "./IngredientsList";
+
 
 interface ContentSectionProps {
   index: number;
@@ -112,18 +110,6 @@ export function ContentSection({
                 </p>
               )}
             </div>
-
-            {/* instruction list */}
-            <InstructionList form={form} index={index}/>
-
-
-            {/* Items List */}
-            <ItemList form={form} index={index}/>
-    
-
-            {/* Ingredients */}
-            <IngredientsList form={form} index={index}/>
-
             {/* recipe */}
             <RecipeForm form={form} index={index} />
 

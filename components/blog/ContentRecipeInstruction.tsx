@@ -20,7 +20,7 @@ const ContentRecipeInstruction = ({
     fields: instructionsFields,
     append: appendInstruction,
     remove: removeInstruction,
-  } = useFieldArray({ control, name: `content.${index}.instructions` });
+  } = useFieldArray({ control, name: `content.${index}.recipe.instructions` });
 
   return (
     <div className="space-y-4 ml-4 border-l-2 pl-2 ">
@@ -32,7 +32,7 @@ const ContentRecipeInstruction = ({
         <div className="flex items-center  gap-2" key={instruction.id}>
           <Input
             {...form.register(
-              `content.${index}.instructions.${instructionIndex}`
+              `content.${index}.recipe.instructions.${instructionIndex}`
             )}
             type="text"
             placeholder="e.g. Mix the flour and water together."

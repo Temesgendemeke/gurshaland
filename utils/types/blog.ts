@@ -30,10 +30,21 @@ export interface Content{
     body: string;
     title: string;
     blog_id?: string;
-    ingredients?: Ingredient[];
     image?: ContentImage;
-    instructions?: string[];
     items?: string[];
+    recipe?: BlogContentRecipe;
+    tips?: Tips;
+}
+
+interface Tips{
+    title: string;
+    items: string[];
+}
+
+interface BlogContentRecipe{
+    title: string;
+    ingredients: Ingredient;
+    instructions: string[];
 }
 
 interface Image{

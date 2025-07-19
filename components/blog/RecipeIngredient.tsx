@@ -30,32 +30,32 @@ const RecipeIngredient = ({ form, control, index }: RecipeIngredientProps) => {
         <div key={ingredient.id} className="flex gap-2 ">
           <Input
             {...form.register(
-              `content.${index}.ingredients.${ingredientIndex}.amount`
+              `content.${index}.recipe.ingredients.${ingredientIndex}.amount`
             )}
             placeholder="Amount (e.g., 2)"
             type="number"
             min={0}
             className="w-24"
-          >
-            {/* measrements select */}
-          </Input>
+          />
           <MeasurementSelect
             form={form}
-            name={`content.${index}.ingredients.${ingredientIndex}.measurement`}
+            name={`content.${index}.recipe.ingredients.${ingredientIndex}.measurement`}
           />
           <Input
             {...form.register(
-              `content.${index}.ingredients.${index}.ingredients`
+              `content.${index}.recipe.ingredients.${ingredientIndex}.name`
             )}
-            placeholder="Ingredient name (e.g., Sugar)"
-            className=""
+            placeholder="name: e.g., Sugar"
+            type="text"
           />
           <Button
             type="button"
             variant={"outline"}
-            onClick={() => removeIngredient(ingredientIndex)}
+            onClick={() =>
+              removeIngredient(ingredientIndex)
+            }
           >
-            <X />
+            <X className="w-4 h-4"/>
           </Button>
         </div>
       ))}

@@ -51,6 +51,7 @@ import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
 import { ApiError } from "next/dist/server/api-utils";
 import generate_error from "@/utils/generate_error";
+import StatusSelect from "./StatusSelect";
 
 type BlogFormData = z.infer<typeof blogSchema>;
 
@@ -67,7 +68,7 @@ export default function BlogForm() {
       title: "",
       subtitle: "",
       category: "",
-      tags: [],
+      tags: [] as string[],
       status: "draft",
       image: {
         path: "",
@@ -107,29 +108,18 @@ export default function BlogForm() {
     appendContent({
       body: "",
       title: "",
-      instructions: [],
-      items: [],
       image: {
         path: "",
         url: "",
         file: null,
       },
-      ingredients: [],
-      tips: {
-        title: "",
-        items: [],
-      }, 
-      recipe: [],
     });
   };
-
   const toggleSection = (index: number) => {
     setOpenSections((prev) =>
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     );
   };
-
-  const handleImage = () => {};
 
   const onSubmit = async (data: BlogFormData) => {
     if (!user || !user.id) {
@@ -242,7 +232,7 @@ export default function BlogForm() {
                       <SelectTrigger>
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-background">
                         {categories.map((category, index) => (
                           <SelectItem
                             className="captalize"
@@ -267,6 +257,24 @@ export default function BlogForm() {
             {/* Tags */}
             <div className="space-y-2">
               <Label>Tags</Label>
+              <div className="flex flex-wrap gap-2 mt-4 mb-4">
+                {(form.watch("tags") || []).map((tag, index) => (
+                  <Badge
+                    key={index}
+                    variant="secondary"
+                    className="flex items-center gap-1 bg-emerald-500 cursor-pointer"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => removeTag(index)}
+                      className="ml-1 hover:text-red-500"
+                    >
+                      <Minus className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                ))}
+              </div>
               <div className="flex gap-2">
                 <Input
                   value={tagInput}
@@ -279,24 +287,6 @@ export default function BlogForm() {
                 <Button type="button" onClick={addTag} variant="outline">
                   <Plus className="h-4 w-4" />
                 </Button>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {(form.watch("tags") || []).map((tag, index) => (
-                  <Badge
-                    key={index}
-                    variant="secondary"
-                    className="flex items-center gap-1"
-                  >
-                    {tag}
-                    <button
-                      type="button"
-                      onClick={() => removeTag(index)}
-                      className="ml-1 hover:text-red-500"
-                    >
-                      <Minus className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                ))}
               </div>
             </div>
           </CardContent>
@@ -337,42 +327,8 @@ export default function BlogForm() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ChefHat className="h-5 w-5" />
-              Status
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Controller
-              name="status"
-              control={form.control}
-              render={({ field }) => (
-                <Select
-                  defaultValue="draft"
-                  onValueChange={field.onChange}
-                  value={field.value}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="published">Published</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            {form.formState.errors.status && (
-              <p className="text-sm text-red-500">
-                {form.formState.errors.status.message}
-              </p>
-            )}
-          </CardContent>
-        </Card>
-
-        <p>{JSON.stringify(form.watch())}</p>
+        {/* status select */}
+        <StatusSelect form={form}/>
 
         {/* Submit Button */}
         <div className="flex justify-center gap-4">
