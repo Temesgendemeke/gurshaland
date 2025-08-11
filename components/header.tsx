@@ -31,6 +31,7 @@ import {
   DropdownMenuSeparator,
 } from "@radix-ui/react-dropdown-menu";
 import CreateAPost from "./CreateAPost";
+import Logo from "./Logo";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -54,14 +55,7 @@ export function Header() {
   return (
     <header className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 shadow-sm sticky top-0 z-50">
       <div className=" mx-auto flex items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center space-x-2">
-          <div className="w-10 h-10 bg-gradient-to-br btn-primary-modern  rounded-full flex items-center justify-center">
-            {/* <Star className="w-5 h-5 text-white" /> */}
-            <CookingPot className="w-5 h-5 text-white" />
-          </div>
-          <div className="text-2xl font-bold  modern-logo">Gurshaland</div>
-        </Link>
-
+        <Logo/>
 
         {/* Desktop Navigation */}
         <nav className="hidden 2xl:flex  items-center space-x-8">

@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   route?: string;
-  pagename: string;
+  pagename?: string;
 }
 
 const BackNavigation = ({ route, pagename }: Props) => {
@@ -26,12 +26,12 @@ const BackNavigation = ({ route, pagename }: Props) => {
     <Button
       asChild
       variant="ghost"
-      className="mb-6 hover:bg-emerald-100 dark:hover:bg-emerald-900/50"
+      className="hover:bg-emerald-100 dark:hover:bg-emerald-900/50 w-full justify-start"
       onClick={handleGoBack}
     >
       <span>
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        {from ? "Go back" : `Back to ${pagename}`}
+      <ArrowLeft className="w-4 h-4 mr-2" />
+      {from ? `Back to ${pagename}` : "Go back"}
       </span>
     </Button>
   );

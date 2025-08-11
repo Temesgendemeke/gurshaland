@@ -23,20 +23,11 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
   Plus,
   Minus,
-  ChevronDown,
-  ChevronRight,
   FileText,
   List,
-  ChefHat,
   Upload,
-  X,
 } from "lucide-react";
 import { blogSchema } from "@/utils/schema";
 import { ContentSection } from "./ContentSection";
@@ -49,7 +40,6 @@ import { blogStore } from "@/store/Blog";
 import { toast } from "sonner";
 import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
-import { ApiError } from "next/dist/server/api-utils";
 import generate_error from "@/utils/generate_error";
 import StatusSelect from "./StatusSelect";
 

@@ -124,6 +124,7 @@ export interface RecipeBookmark{
 
 
 export interface Follower{
+  id?: string;
   follower_id: string;
   profile_id: string;
 }

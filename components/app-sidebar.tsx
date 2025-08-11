@@ -1,4 +1,13 @@
-import { Calendar, ChevronUp, Home, Inbox, Search, Settings, User2 } from "lucide-react";
+"use client";
+import {
+  Calendar,
+  ChevronUp,
+  Home,
+  Inbox,
+  Search,
+  Settings,
+  User2,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -9,56 +18,77 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarFooter
+  SidebarFooter,
 } from "@/components/ui/sidebar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import Logo from "./Logo";
+import Link from "next/link";
+import Logout from "./Logout";
+import BackNavigation from "./BackNavigation";
+import { usePathname } from "next/navigation";
 
 // Menu items.
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/dashboard",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
+    title: "Followers",
+    url: "/dashboard/followers",
+    icon: User2, 
+  },
+  {
+    title: "Recipes",
+    url: "/dashboard/recipes",
     icon: Inbox,
   },
   {
-    title: "Calendar",
-    url: "#",
+    title: "Blogs",
+    url: "/dashboard/blogs",
     icon: Calendar,
   },
   {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
     title: "Settings",
-    url: "#",
+    url: "/dashboard/settings",
     icon: Settings,
   },
 ];
 
 export function AppSidebar() {
+  const currentPath =
+    typeof window !== "undefined" ? usePathname().split("dashboard/") : [];
+
   return (
     <Sidebar>
-      <SidebarContent>
+      <SidebarContent className="p-4 bg-background/70">
         <SidebarGroup>
           <SidebarGroupLabel>
-            <h1 className="text-4xl font-bold my-10">Gurshaland</h1>
+            <Logo />
           </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu className="mt-5">
+          <SidebarGroupContent className="w-full">
+            <SidebarMenu className="mt-10  w-full">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                  <SidebarMenuButton
+                    asChild
+                    className={`${
+                      (currentPath.length < 2 && item.url === "/dashboard") ||
+                      ("/dashboard/" + currentPath[1] === item.url)
+                        ? "bg-muted"
+                        : ""
+                    } p-4`}
+                  >
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -66,7 +96,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="bg-background/70">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
@@ -78,16 +108,13 @@ export function AppSidebar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 side="top"
-                className="w-[--radix-popper-anchor-width]"
+                className="w-[--radix-popper-anchor-width] flex flex-col items-start"
               >
-                <DropdownMenuItem>
-                  <span>Account</span>
+                <DropdownMenuItem className=" w-full">
+                  <BackNavigation />
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Sign out</span>
+                <DropdownMenuItem className="w-full">
+                  <Logout />
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

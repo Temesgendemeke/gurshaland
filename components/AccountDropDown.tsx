@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import {
   ForkKnifeIcon,
   Heart,
+  LayoutDashboard,
   LogInIcon,
   LogOutIcon,
   User as UserIcon,
@@ -46,6 +47,11 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
       route: "/my-recipes",
       page: "My Recipes",
       icon: ForkKnifeIcon,
+    },
+    {
+      route: "/dashboard",
+      page: "Dashboard",
+      icon: LayoutDashboard
     },
     {
       route: "/favorites",

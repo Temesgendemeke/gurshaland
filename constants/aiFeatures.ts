@@ -16,7 +16,7 @@ const aiFeatures = [
     description: "Identify Ethiopian dishes and get recipes instantly",
     icon: Camera,
     color: "from-blue-500 to-indigo-600",
-    badge: "New",
+    badge: "Coming Soon",
   },
   {
     id: "cooking-assistant",
@@ -24,7 +24,7 @@ const aiFeatures = [
     description: "Get real-time cooking guidance and tips",
     icon: MessageCircle,
     color: "from-purple-500 to-pink-600",
-    badge: "Beta",
+    badge: "Coming Soon",
   },
   {
     id: "meal-planner",
@@ -40,7 +40,7 @@ const aiFeatures = [
     description: "Analyze nutritional content of Ethiopian dishes",
     icon: Heart,
     color: "from-pink-500 to-rose-600",
-    badge: "Pro",
+    badge: "Coming Soon",
   },
   {
     id: "recipe-translator",
@@ -48,7 +48,7 @@ const aiFeatures = [
     description: "Translate recipes between Amharic and English",
     icon: BookOpen,
     color: "from-teal-500 to-cyan-600",
-    badge: "Featured",
+    badge: "Coming Soon",
   },
 ];
 

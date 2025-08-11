@@ -44,7 +44,9 @@ function AIFeaturesGrid({
               <Button
                 variant="ghost"
                 size="sm"
-                className="mt-4 text-emerald-600 hover:text-emerald-700 p-0"
+                disabled={feature.badge == "Coming Soon"}
+                aria-disabled={feature.badge == "Coming Soon"}
+                className="mt-4 text-emerald-600  p-4  hover:bg-emerald-500 "
               >
                 Try Now →
               </Button>
