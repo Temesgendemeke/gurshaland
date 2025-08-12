@@ -19,6 +19,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarFooter,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
@@ -42,7 +43,7 @@ const items = [
   {
     title: "Followers",
     url: "/dashboard/followers",
-    icon: User2, 
+    icon: User2,
   },
   {
     title: "Recipes",
@@ -62,8 +63,34 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const currentPath =
-    typeof window !== "undefined" ? usePathname().split("dashboard/") : [];
+  const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
+
+  // Helper function to check if a menu item is active
+  const isActive = (itemUrl: string) => {
+    if (itemUrl === "/dashboard") {
+      // For home, check if we're exactly on /dashboard or if no other dashboard sub-route is active
+      return (
+        pathname === "/dashboard" ||
+        (pathname.startsWith("/dashboard") &&
+          ![
+            "/dashboard/followers",
+            "/dashboard/recipes",
+            "/dashboard/blogs",
+            "/dashboard/settings",
+          ].some((route) => pathname.startsWith(route)))
+      );
+    }
+    // For other items, check if the current path starts with the item URL
+    return pathname.startsWith(itemUrl);
+  };
+
+  const handleMenuItemClick = () => {
+    // Small delay to ensure smooth navigation before closing sidebar
+    setTimeout(() => {
+      setOpenMobile(false);
+    }, 100);
+  };
 
   return (
     <Sidebar>
@@ -73,21 +100,39 @@ export function AppSidebar() {
             <Logo />
           </SidebarGroupLabel>
           <SidebarGroupContent className="w-full">
-            <SidebarMenu className="mt-10  w-full">
+            <SidebarMenu className="mt-10 w-full space-y-1">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
                     className={`${
-                      (currentPath.length < 2 && item.url === "/dashboard") ||
-                      ("/dashboard/" + currentPath[1] === item.url)
-                        ? "bg-muted"
-                        : ""
-                    } p-4`}
+                      isActive(item.url)
+                        ? "bg-muted/80 border-l-4 border-l-emerald-400 text-primary shadow-sm"
+                        : "hover:bg-muted/50 hover:border-l-4 hover:border-l-muted-foreground/20"
+                    } p-4 transition-all duration-200 relative rounded-lg mx-2`}
                   >
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
+                    <Link
+                      href={item.url}
+                      className="flex items-center gap-3 w-full"
+                      onClick={handleMenuItemClick}
+                    >
+                      <item.icon
+                        className={`${
+                          isActive(item.url)
+                            ? "text-emerald-400 "
+                            : "text-muted-foreground"
+                        } transition-colors`}
+                      />
+                      <span
+                        className={`font-medium transition-colors ${
+                          isActive(item.url) ? "text-emerald-400" : ""
+                        }`}
+                      >
+                        {item.title}
+                      </span>
+                      {isActive(item.url) && (
+                        <div className="absolute right-2 w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                      )}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -111,7 +156,7 @@ export function AppSidebar() {
                 className="w-[--radix-popper-anchor-width] flex flex-col items-start"
               >
                 <DropdownMenuItem className=" w-full">
-                  <BackNavigation />
+                  <BackNavigation route="/" pagename="home" />
                 </DropdownMenuItem>
                 <DropdownMenuItem className="w-full">
                   <Logout />

@@ -12,7 +12,6 @@ const page = () => {
       like: 340,
       comments: 45,
       created_at: "2023-10-27",
-      slug: "spicy-lentil-soup",
       status: "published",
     },
     {
@@ -22,7 +21,6 @@ const page = () => {
       like: 800,
       comments: 120,
       created_at: "2023-10-26",
-      slug: "classic-margherita-pizza",
       status: "published",
     },
     {
@@ -32,7 +30,6 @@ const page = () => {
       like: 210,
       comments: 30,
       created_at: "2023-10-25",
-      slug: "vegan-chocolate-avocado-mousse",
       status: "draft",
     },
     {
@@ -42,7 +39,6 @@ const page = () => {
       like: 650,
       comments: 90,
       created_at: "2023-10-24",
-      slug: "garlic-butter-shrimp-scampi",
       status: "published",
     },
     {
@@ -52,15 +48,14 @@ const page = () => {
       like: 150,
       comments: 25,
       created_at: "2023-10-23",
-      slug: "quinoa-salad-roasted-vegetables",
       status: "published",
     },
   ];
 
   return (
-    <div>
-      <div className="ml-10">
-        <h2 className="text-4xl font-bold mb-4">🍽️ Your Recipe Posts</h2>
+    <div className="mx-5 md:mx-10">
+      <div className="mt-4 text-center md:text-left">
+        <h2 className="text-4xl font-bold mb-4">Your Recipe Posts</h2>
         <p className="mb-6 text-gray-600">
           Here’s a creative overview of all your recipe sections. Track
           progress, assign reviewers, and cook up something amazing!

@@ -7,7 +7,6 @@ export interface Post {
   like: number;
   comments: number;
   created_at: string;
-  slug: string;
   status: "published" | "draft";
 }
 

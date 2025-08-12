@@ -45,6 +45,20 @@ export const getRecipes = async () => {
   return data;
 };
 
+export const getFeaturedRecipes = async () => {
+  const { data, error } = await supabase.rpc("get_featured_recipes");
+
+  if (error) throw error;
+  return data;
+};
+
+export const getTrendingRecipes = async () => {
+  const { data, error } = await supabase.rpc("get_trending_recipes");
+
+  if (error) throw error;
+  return data;
+};
+
 export const deleteRecipe = async (_slug: string) => {
   const { data, error } = await supabase.rpc("get_full_recipe", {
     _slug,
@@ -105,6 +119,4 @@ export const uploadRecipeImage = async (
     throw error;
   }
 };
-
-
 

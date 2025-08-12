@@ -83,26 +83,26 @@ import { getBlogBySlug } from "@/actions/blog/blog";
 //   ],
 // };
 
-const relatedPosts = [
-  {
-    title: "Berbere Spice Blend Guide",
-    excerpt: "Learn to make Ethiopia's most important spice blend",
-    image: "/placeholder.svg?height=150&width=200",
-    slug: "berbere-spice-guide",
-  },
-  {
-    title: "Ethiopian Coffee Ceremony",
-    excerpt: "The sacred ritual of coffee in Ethiopian culture",
-    image: "/placeholder.svg?height=150&width=200",
-    slug: "coffee-ceremony",
-  },
-  {
-    title: "Vegetarian Ethiopian Dishes",
-    excerpt: "Plant-based recipes for fasting and everyday meals",
-    image: "/placeholder.svg?height=150&width=200",
-    slug: "vegetarian-dishes",
-  },
-];
+// const relatedPosts = [
+//   {
+//     title: "Berbere Spice Blend Guide",
+//     excerpt: "Learn to make Ethiopia's most important spice blend",
+//     image: "/placeholder.svg?height=150&width=200",
+//     slug: "berbere-spice-guide",
+//   },
+//   {
+//     title: "Ethiopian Coffee Ceremony",
+//     excerpt: "The sacred ritual of coffee in Ethiopian culture",
+//     image: "/placeholder.svg?height=150&width=200",
+//     slug: "coffee-ceremony",
+//   },
+//   {
+//     title: "Vegetarian Ethiopian Dishes",
+//     excerpt: "Plant-based recipes for fasting and everyday meals",
+//     image: "/placeholder.svg?height=150&width=200",
+//     slug: "vegetarian-dishes",
+//   },
+// ];
 
 const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
   let blogPost;
@@ -118,10 +118,7 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Header />
 
-      <p>{JSON.stringify(blogPost)}</p>
-      <p>{slug}</p>
-
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-6 py-12 space-y-4">
         {/* Back Navigation */}
         <BackNavigation route="/blog" pagename="Blogs" />
 
@@ -176,7 +173,7 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
           </h3>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {relatedPosts.map((post, index) => (
+            {blogPost?.relatives_posts?.map((post: any, index: number) => (
               <Link key={index} href={`/blog/${post.slug}`}>
                 <Card className="overflow-hidden hover:shadow-lg dark:hover:shadow-xl transition-all duration-300 group bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
                   <img
@@ -189,7 +186,7 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
                       {post?.title}
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {post.subtitle}
+                      {post?.subtitle}
                     </p>
                   </div>
                 </Card>

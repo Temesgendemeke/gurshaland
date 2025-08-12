@@ -30,6 +30,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      
+
       {/* Features */}
       <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto">

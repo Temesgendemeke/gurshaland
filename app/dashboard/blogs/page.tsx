@@ -12,7 +12,6 @@ const page = () => {
       like: 350,
       comments: 45,
       created_at: "2023-10-26",
-      slug: "classic-italian-lasagna",
       status: "published",
     },
     {
@@ -22,7 +21,6 @@ const page = () => {
       like: 280,
       comments: 32,
       created_at: "2023-09-15",
-      slug: "spicy-thai-green-curry",
       status: "published",
     },
     {
@@ -32,7 +30,6 @@ const page = () => {
       like: 150,
       comments: 60,
       created_at: "2023-11-01",
-      slug: "beginners-sourdough-bread",
       status: "draft",
     },
     {
@@ -42,7 +39,6 @@ const page = () => {
       like: 800,
       comments: 120,
       created_at: "2023-08-20",
-      slug: "ultimate-chocolate-chip-cookies",
       status: "published",
     },
     {
@@ -52,7 +48,6 @@ const page = () => {
       like: 180,
       comments: 25,
       created_at: "2023-10-05",
-      slug: "healthy-quinoa-salad",
       status: "published",
     },
     {
@@ -62,15 +57,14 @@ const page = () => {
       like: 60,
       comments: 15,
       created_at: "2023-11-05",
-      slug: "vegan-lentil-soup-ideas",
       status: "draft",
     },
   ];
   return (
-    <div>
-      <div className="ml-10 mt-4">
-        <h2 className="text-4xl font-bold mb-4">📝 Your Blog Posts</h2>
-        <p className="mb-6 text-gray-600">
+    <div className="mx-5 md:mx-10">
+      <div className="mt-4 text-center md:text-left">
+        <h2 className="text-4xl font-bold mb-4">Your Blog Posts</h2>
+        <p className="mb-6 text-gray-600 max-w-full">
           Here’s a creative overview of all your recipe sections. Track
           progress, assign reviewers, and cook up something amazing!
         </p>

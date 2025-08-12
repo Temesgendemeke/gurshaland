@@ -16,21 +16,17 @@ const BackNavigation = ({ route, pagename }: Props) => {
   const from = searchParams.get("from");
 
   const handleGoBack = () => {
-    if (from) {
-      router.push(`/${from}`);
-    } else {
-      router.back();
-    }
+    router.back();
   };
   return (
     <Button
       asChild
       variant="ghost"
-      className="hover:bg-emerald-100 dark:hover:bg-emerald-900/50 w-full justify-start"
+      className="hover:bg-emerald-100 dark:hover:bg-emerald-900/50 justify-start"
       onClick={handleGoBack}
     >
       <span>
-      <ArrowLeft className="w-4 h-4 mr-2" />
+      <ArrowLeft className="w-4 h-4" />
       {from ? `Back to ${pagename}` : "Go back"}
       </span>
     </Button>

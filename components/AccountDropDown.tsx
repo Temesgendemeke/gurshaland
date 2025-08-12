@@ -61,13 +61,13 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
   ];
 
   return (
-    <DropdownMenu>
+    <DropdownMenu >
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full">
           <UserIcon className="w-5 h-5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-background w-60">
+      <DropdownMenuContent align="end" className="bg-background w-40 z-50">
         {dropdownList.map((element) => (
           <DropdownMenuItem asChild className="w-full p-0" key={element.route}>
             <Button

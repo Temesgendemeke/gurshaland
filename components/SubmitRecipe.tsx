@@ -165,7 +165,7 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Header />
-      <div className=" mx-auto px-6 py-12">
+      <div className=" mx-auto px-6 py-12 space-y-4">
         <BackNavigation route="/recipes" pagename="Recipes" />
         <div className="text-center mb-12">
           <h1 className="text-7xl font-bold mb-4">

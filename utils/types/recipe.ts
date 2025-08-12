@@ -122,10 +122,37 @@ export interface RecipeBookmark{
   recipe_id: string;
 }
 
+export interface FeaturedRecipe extends Recipe {
+  rating_count: number;
+  average_rating: number;
+  image: any; // The image field from recipe_image table
+  tags: string[];
+  prepTime: number;
+  totalTime: number;
+  status: "draft" | "published";
+  slug: string;
+  author_id: string;
+}
+
+export interface TrendingRecipe extends Recipe {
+  rating_count: number;
+  average_rating: number;
+  recent_rating_count: number;
+  recent_comment_count: number;
+  recent_like_count: number;
+  trending_score: number;
+  image: any; // The image field from recipe_image table
+  tags: string[];
+  prepTime: number;
+  totalTime: number;
+  status: "draft" | "published";
+  slug: string;
+  author_id: string;
+}
+
 
 export interface Follower{
   id?: string;
   follower_id: string;
   profile_id: string;
 }
-

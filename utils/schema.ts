@@ -149,3 +149,14 @@ export const blogSchema = z.object({
   image: ImageSchema,
   content: ContentSchema, 
 });
+
+
+
+
+// dashboard settings
+
+export const changePasswordSchema = z.object({
+  current_password: z.string().min(1, "Current password is required"),
+  new_password: z.string().min(1, "New password is required"),
+  confirm_password: z.string().min(1, "Confirm password is required"),
+});

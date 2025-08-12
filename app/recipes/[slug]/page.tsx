@@ -54,7 +54,7 @@ export default function RecipeDetailPage() {
       {loading || !recipe ? (
         <RecipeDetailSkeleton />
       ) : (
-        <div className="w-full md:max-w-9xl mx-auto px-6 py-12">
+        <div className="w-full md:max-w-7xl mx-auto px-6 py-12 space-y-4">
           {/* Back Navigation */}
           <BackNavigation pagename={"Recipes"}/>
 

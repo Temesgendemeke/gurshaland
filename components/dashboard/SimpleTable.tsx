@@ -12,8 +12,8 @@ import { ArrowUpRight, Eye } from "lucide-react";
 import React from "react";
 
 interface SimpleTableProps {
-  data: Post[]; // pass already sorted by views desc (top 10)
-  maxViews?: number; // optional override
+  data: Post[]; 
+  maxViews?: number;
   name: string;
 }
 
@@ -47,7 +47,7 @@ export function SimpleTable({ data, maxViews, name }: SimpleTableProps) {
               const pct = Math.min(100, Math.round((views / peak) * 100));
               return (
                 <TableRow
-                  key={post.id ?? i}
+                  key={post.id?.toString() ?? i}
                   className={cn(
                     "group transition-colors hover:bg-muted/40",
                     i < 3 &&

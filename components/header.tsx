@@ -55,7 +55,7 @@ export function Header() {
   return (
     <header className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 shadow-sm sticky top-0 z-50">
       <div className=" mx-auto flex items-center justify-between px-6 py-4">
-        <Logo/>
+        <Logo />
 
         {/* Desktop Navigation */}
         <nav className="hidden 2xl:flex  items-center space-x-8">
@@ -90,19 +90,21 @@ export function Header() {
           <CreateAPost />
 
           <ThemeToggle />
-
           <AccountDropDown user={user} />
         </div>
 
         {/* Mobile Menu */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="2xl:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <Menu className="w-5 h-5" />
-        </Button>
+        <div className="2xl:hidden">
+          <Button
+            variant="ghost"
+            size="icon"
+            className=""
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+          <AccountDropDown user={user} />
+        </div>
       </div>
 
       {/* Mobile Navigation */}

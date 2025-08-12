@@ -17,8 +17,6 @@ import FollowerColumn from "@/components/dashboard/FollowerColumn";
 import { FollowerColumnType } from "@/utils/types/Dashboard";
 import { DataTable } from "@/components/data-table";
 
-
-
 const page = () => {
   const headers = ["Username", "Followed You Since", "Like", "Comments"];
   const followers: FollowerColumnType[] = [
@@ -330,7 +328,7 @@ const page = () => {
       follower_id: "follower28",
       profile_id: "profile28",
     },
-     {
+    {
       id: "29",
       username: "joshua_evans",
       followed_since: "2023-11-10",
@@ -387,53 +385,21 @@ const page = () => {
     },
   ];
   return (
-    <div>
-      <div className="ml-10 mt-4">
-        <h2 className="text-4xl font-bold mb-4">🧑‍🤝‍🧑 Your Followers</h2>
-        <p className="mb-6 text-gray-600">
-          Here’s a summary of everyone following you. See when they started, how
+    <div className="mx-5 md:mx-10">
+      <div className="mt-4 text-center md:text-left">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
+          Your Followers
+        </h2>
+        <p className="mb-4 sm:mb-6 text-gray-600 max-w-full text-sm sm:text-base">
+          Here's a summary of everyone following you. See when they started, how
           they interact, and connect with your community!
         </p>
       </div>
-      <div className="mx-5">
-        {/* <Table className="border">
-          <TableCaption>A list of your recent invoices.</TableCaption>
-          <TableHeader className="">
-            <TableRow className="captalize">
-              {headers.map((header, index) => (
-                <TableHead key={index} colSpan={index === 0 ? 4 : 0}>{header}</TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {followers.map((follower) => (
-              <TableRow key={follower.id} className="">
-                <TableCell className="font-medium cursor-pointer" colSpan={4}>
-                  <Link href={`/recipe/${follower.username}`}>
-                    {follower.username}
-                  </Link>
-                </TableCell>
-                <TableCell className="">{follower.follwed_since}</TableCell>
-                <TableCell className="">{follower.like}</TableCell>
-                <TableCell className="">{follower.comments}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter className="bg-transparent hover:bg-transparent">
-            <TableRow className="hover:bg-transparent">
-              <TableCell
-                colSpan={headers.length}
-                className="hover:bg-transparent"
-              >
-                <p>0 of 68 row(s) selected.</p>
-              </TableCell>
-              <TableCell className="flex justify-end">
-                <TablePagination />
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table> */}
-        <DataTable<FollowerColumnType, any> columns={FollowerColumn}  data={followers}></DataTable>
+      <div className="overflow-x-visible w-full px-2 sm:px-4 md:px-0">
+        <DataTable<FollowerColumnType, any>
+          columns={FollowerColumn}
+          data={followers}
+        />
       </div>
     </div>
   );

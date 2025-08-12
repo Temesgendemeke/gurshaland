@@ -19,11 +19,6 @@ import { MoreVerticalIcon } from "lucide-react";
 const columnHelper = createColumnHelper<FollowerColumnType>();
 
 export const FollowerColumn = [
-  columnHelper.accessor("id", {
-    header: (info) => <DefaultHeader info={info as any} name="ID" />,
-    cell: (info) => info.getValue(),
-    size: 50,
-  }),
   columnHelper.accessor("username", {
     header: (info) => <DefaultHeader info={info as any} name="Username" />,
     cell: (info) => info.getValue(),
@@ -33,8 +28,16 @@ export const FollowerColumn = [
     header: (info) => (
       <DefaultHeader info={info as any} name="Followed Since" />
     ),
-    cell: (info) =>
-      info.getValue() ? new Date(info.getValue()).toLocaleDateString() : "",
+    cell: (info) =>{
+      const data = info.getValue();
+      if (!data) return "";
+
+      return new Date(data as string).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    },
     size: 100,
   }),
   columnHelper.accessor("like", {

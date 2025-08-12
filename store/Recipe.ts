@@ -1,27 +1,52 @@
-import Recipe, { RecipeComment } from "@/utils/types/recipe";
+import Recipe, { RecipeComment, FeaturedRecipe, TrendingRecipe } from "@/utils/types/recipe";
 import { create } from "zustand";
-import { getRecipes } from "@/actions/Recipe/recipe";
+import { getRecipes, getFeaturedRecipes, getTrendingRecipes } from "@/actions/Recipe/recipe";
 import { deleteComment } from "@/actions/Recipe/comment";
+
 
 interface RecipeStore {
   recipes: Recipe[] | null;
+  featuredRecipes: FeaturedRecipe[] | null;
+  trendingRecipes: TrendingRecipe[] | null;
   loading: Boolean;
   setRecipe: (recipes: Recipe[]) => void;
   addRecipe: (recipe: Recipe) => void;
-  removeRecipe: (recipe_id: string) => void;
+  removeRecipe: (recipe_id:   string) => void;
   fetchRecipes: () => void;
+  fetchFeaturedRecipes: () => void;
+  fetchTrendingRecipes: () => void;
   addComment: (comment: RecipeComment) => void;
   removeComment: (recipe_id: string, comment_id: string) => void;
 }
 
 export const recipeStore = create<RecipeStore>((set, get) => ({
   recipes: null,
+  featuredRecipes: null,
+  trendingRecipes: null,
   loading: false,
   fetchRecipes: async () => {
     set({ loading: true });
     try {
       const recipes = await getRecipes();
       set({ recipes, loading: false });
+    } catch (error) {
+      set({ loading: false });
+    }
+  },
+  fetchFeaturedRecipes: async () => {
+    set({ loading: true });
+    try {
+      const recipes = await getFeaturedRecipes();
+      set({ featuredRecipes: recipes, loading: false });
+    } catch (error) {
+      set({ loading: false });
+    }
+  },
+  fetchTrendingRecipes: async () => {
+    set({ loading: true });
+    try {
+      const recipes = await getTrendingRecipes();
+      set({ trendingRecipes: recipes, loading: false });
     } catch (error) {
       set({ loading: false });
     }
