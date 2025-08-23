@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import CTACard from "@/components/CTACard";
@@ -14,6 +14,14 @@ import AIRecipeGenerator from "@/components/AIRecipeGenerator";
 
 export default function AIFeaturesPage() {
   const [selectedFeature, setSelectedFeature] = useState("recipe-generator");
+  const recipeGeneratorRef = useRef<HTMLDivElement>(null);
+
+  const scrollToRecipeGenerator = () => {
+    recipeGeneratorRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   return (
     <div className="modern-gradient-bg min-h-screen">
@@ -21,12 +29,14 @@ export default function AIFeaturesPage() {
 
       <main className="max-w-7xl mx-auto px-6 py-12">
         <PageHeader />
+
         <AIFeaturesGrid
           features={aiFeatures}
           selected={selectedFeature}
           onSelect={setSelectedFeature}
+          onGenerateRecipe={scrollToRecipeGenerator}
         />
-        <section className="mb-16">
+        <section className="mb-16" ref={recipeGeneratorRef}>
           <AIRecipeGenerator />
         </section>
         <StatsSection stats={stats} />
@@ -38,11 +48,3 @@ export default function AIFeaturesPage() {
     </div>
   );
 }
-
-
-
-
-
-
-
-

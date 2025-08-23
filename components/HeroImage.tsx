@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React from "react";
 import FloatingRecipeCard from "./FloatingRecipeCard";
-import injera from "@/public/injera.png";
-import dorowet_image from "@/public/dorowet.png";
-import gursh_image from "@/public/gursha.png";
+import injera from "@/public/injera.webp";
+import dorowet_image from "@/public/dorowet.webp";
+import gursh_image from "@/public/gursha.webp";
 
 
 const HeroImage = () => {

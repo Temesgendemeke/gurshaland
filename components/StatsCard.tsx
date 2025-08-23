@@ -2,15 +2,27 @@ import React from "react";
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { StatsCardSkeleton } from "@/components/ui/loading-skeleton";
 
 interface StatsCardProps {
   name: string;
   count: number;
   Icon: LucideIcon;
   className?: string;
+  loading: Boolean;
 }
 
-const StatsCard = ({ name, count, Icon, className }: StatsCardProps) => {
+const StatsCard = ({
+  name,
+  count,
+  Icon,
+  className,
+  loading,
+}: StatsCardProps) => {
+  if (loading) {
+    return <StatsCardSkeleton className={className} />;
+  }
+
   return (
     <Link
       href={`/dashboard/${name}`}

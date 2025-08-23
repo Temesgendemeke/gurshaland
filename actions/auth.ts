@@ -2,19 +2,42 @@ import { supabase } from "@/lib/supabase-client";
 import { SignUpData } from "@/utils/types/account";
 
 export const signup = async (formData: SignUpData) => {
-  const { data, error } = await supabase.auth.signUp({
-    email: formData.email,
-    password: formData.password,
-    options: {
-      data: {
-        full_name: formData.full_name,
-        username: formData.username,
-      },
-    },
-  });
+  try {
+    console.log("Signup attempt with data:", {
+      email: formData.email,
+      username: formData.username,
+      full_name: formData.full_name,
+      password_length: formData.password.length
+    });
 
-  if (error) throw error;
-  return data;
+    // Debug: Check environment variables
+    console.log("Environment check:", {
+      hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+      hasSupabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    });
+
+    const { data, error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: {
+        data: {
+          full_name: formData.full_name,
+          username: formData.username,
+        },
+      },
+    });
+
+    if (error) {
+      console.error("Supabase signup error:", error);
+      throw error;
+    }
+
+    console.log("Signup successful:", data);
+    return data;
+  } catch (error) {
+    console.error("Signup function error:", error);
+    throw error;
+  }
 };
 
 export const login = async (email: string, password: string) => {
@@ -30,9 +53,11 @@ export const login = async (email: string, password: string) => {
 };
 
 export const logout = async () => {
-  const error = await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
 
   if (error) throw error;
+
+  return true;
 };
 
 export const resetPassword = async (email: string) => {

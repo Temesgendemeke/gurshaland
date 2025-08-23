@@ -1,6 +1,7 @@
 export interface Ingredient {
   item: string;
-  amount: string;
+  amount?: string;
+  unit?: string;
   notes?: string;
 }
 
@@ -19,6 +20,7 @@ export interface Instruction {
   time?: string;
   tips?: string;
   image?: InstructionImage;
+  imagePrompt?: string;
 }
 
 interface Image {
@@ -37,7 +39,10 @@ export interface InstructionImage extends Image {
 export default interface Recipe {
   id?: string;
   title: string;
-  category: string;
+  category: {
+    id: string;
+    name: string;
+  };
   description: string;
   preptime: number;
   cooktime: number
@@ -61,6 +66,7 @@ export default interface Recipe {
   average_rating: number;
   bookmarks?: RecipeBookmark[]
   profile: Profile;
+  view_count?: number;
 }
 
 export interface Profile{

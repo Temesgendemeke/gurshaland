@@ -5,6 +5,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,12 +16,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { categories } from "@/constants/recipe";
 import { Textarea } from "./ui/textarea";
 import { Clock, Users } from "lucide-react";
 import { difficulties } from "@/constants/recipe";
 
-export default function BasicInfoFields({ form, recipe }) {
+interface BasicInfoFieldsProps {
+  form: any;
+  recipe: any;
+  categories: any[];
+}
+
+export default function BasicInfoFields({
+  form,
+  recipe,
+  categories,
+}: BasicInfoFieldsProps) {
   return (
     <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
       <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
@@ -42,19 +52,33 @@ export default function BasicInfoFields({ form, recipe }) {
         />
         <FormField
           control={form.control}
-          name="recipe.category"
+          name="category"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Category *</FormLabel>
               <FormControl>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  // When a category is selected, set both id and name on the field
+                  onValueChange={(selectedName) => {
+                    const selectedCat = categories.find(
+                      (cat) => cat.name === selectedName
+                    );
+                    if (selectedCat) {
+                      form.setValue("category", {
+                        id: selectedCat.id,
+                        name: selectedCat.name,
+                      });
+                    }
+                  }}
+                  value={field.value?.name || ""}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent className="bg-background">
                     {categories.map((cat) => (
-                      <SelectItem key={cat.value} value={cat.value}>
-                        {cat.label}
+                      <SelectItem key={cat.id} value={cat.name}>
+                        {cat.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

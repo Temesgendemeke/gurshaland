@@ -7,8 +7,10 @@ import { TrendingSection } from "@/components/trending-section";
 import Link from "next/link";
 import { Users, BookOpen, Award } from "lucide-react";
 import HeroSection from "@/components/HeroSection";
+import generateImage from "@/utils/genAI";
 
-export default function HomePage() {
+export default async function HomePage() {
+ 
   return (
     <div className="modern-gradient-bg min-h-screen">
       <Header />
@@ -29,8 +31,6 @@ export default function HomePage() {
           <TrendingSection />
         </div>
       </section>
-
-      
 
       {/* Features */}
       <section className="py-20 px-6">

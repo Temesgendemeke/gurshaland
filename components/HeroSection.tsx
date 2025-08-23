@@ -3,9 +3,9 @@ import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Heart, Star, Utensils } from "lucide-react";
-import injera from "@/public/injera.png";
+import injera from "@/public/injera.webp";
 import FloatingRecipeCard from "./FloatingRecipeCard";
-import dorowet_image from "@/public/dorowet.png";
+import dorowet_image from "@/public/dorowet.webp";
 import HeroImage from "./HeroImage";
 
 const HeroSection = () => {

@@ -38,17 +38,21 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
+import { useRouter } from "next/navigation";
+import TableSkeleton from "./skeleton/TableSkeleton";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   onDeleteSelected?: (rows: TData[]) => void;
+  loading: Boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   onDeleteSelected,
+  loading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pagination, setPagination] = React.useState<PaginationState>({
@@ -116,6 +120,13 @@ export function DataTable<TData, TValue>({
     if (onDeleteSelected) onDeleteSelected(selectedRows as TData[]);
     setRowSelection({});
   };
+
+  if (loading)
+    return (
+      <div className="mt-4">
+        <TableSkeleton />
+      </div>
+    );
 
   return (
     <div className="space-y-4 max-w-full overflow-hidden">

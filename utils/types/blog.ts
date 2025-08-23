@@ -16,7 +16,8 @@ export interface Blog{
     comments?: BlogComment[];
     featured?: Boolean;
     author?: Author;
-    like?: BlogLike[]
+    like?: BlogLike[];
+    view_count?: number;
 }
 
 interface Author {

@@ -20,13 +20,13 @@ import Link from "next/link";
 import { login } from "@/actions/auth";
 import EyeButton from "@/components/EyeButton";
 import { useRouter } from "next/navigation";
-
+import { z } from "zod";
 
 export type LoginFormSchema = z.infer<typeof loginFormSchema>;
 
 const Page = () => {
-  const form = useForm({
-    resolver: zodResolver<LoginFormSchema>(loginFormSchema),
+  const form = useForm<LoginFormSchema>({
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -44,6 +44,7 @@ const Page = () => {
       toast.success("You have successfully logged in. እንኳን ደህና መጡ።");
       router.push("/");
     } catch (error) {
+      console.log(error);
       toast.error(
         error instanceof Error
           ? error.message
@@ -110,7 +111,9 @@ const Page = () => {
                   </FormItem>
                 )}
               />
-              <Link href={"/forgot-password"} className="block text-sm">forgot password?</Link>
+              <Link href={"/forgot-password"} className="block text-sm">
+                forgot password?
+              </Link>
               <Button
                 type="submit"
                 className="w-full lg:w-40"

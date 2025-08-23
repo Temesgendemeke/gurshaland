@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -38,10 +38,27 @@ import {
   Save,
   RefreshCw,
   Link as LinkIcon,
+  Pen,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { SettingProfileSchema } from "@/schema/SettingsProfile";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { getSettingProfile } from "@/actions/profile/profile";
+import { useAuth } from "@/store/useAuth";
+import { Profile } from "@/utils/types/Settings";
+import DeleteAccount from "@/components/dashboard/DeleteAccount";
 
 export default function SettingsPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
   const [notifications, setNotifications] = React.useState({
     email: true,
@@ -49,6 +66,35 @@ export default function SettingsPage() {
     marketing: true,
     updates: true,
   });
+  const [profile, setProfile] = useState<Profile>();
+  const user = useAuth((store) => store.user);
+  const [loading, setLoading] = useState<Boolean>(true);
+  const form = useForm({
+    resolver: zodResolver(SettingProfileSchema),
+    defaultValues: {
+      full_name: "",
+      username: "",
+      image_url: "",
+      bio: "",
+    },
+  });
+
+  useEffect(() => {
+    (async () => {
+      if (user?.id) {
+        setLoading(true);
+        const data = await getSettingProfile(user?.id);
+        console.log(data);
+        setProfile(data);
+        setLoading(false);
+        form.reset({
+          ...profile,
+        });
+      }
+    })();
+  }, [user, user?.id]);
+
+  const onSubmit = () => {};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -64,14 +110,16 @@ export default function SettingsPage() {
           </p>
         </div>
 
-        <div className="">
+        <div>{JSON.stringify(profile)}</div>
+        <p>{user?.id}</p>
+
+        <div className="bg-background">
           {/* Left Sidebar - Navigation */}
-          
 
           {/* Main Content */}
-          <div className=" space-y-6">
+          <div className=" space-y-6 bg-background">
             {/* Profile Settings */}
-            <Card className="border-emerald-100 dark:border-emerald-800">
+            <Card className="border-emerald-100 dark:border-emerald-800 bg-background">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-emerald-600">
                   <User className="h-5 w-5" />
@@ -86,7 +134,10 @@ export default function SettingsPage() {
                 <div className="flex items-center gap-6">
                   <div className="relative">
                     <Avatar className="h-20 w-20 border-4 border-emerald-100 dark:border-emerald-800">
-                      <AvatarImage src="/placeholder-user.jpg" alt="Profile" />
+                      <AvatarImage
+                        src={profile?.image?.url ?? "/placeholder-user.jpg"}
+                        alt="Profile"
+                      />
                       <AvatarFallback className="bg-emerald-100 text-emerald-600 text-xl font-semibold">
                         JD
                       </AvatarFallback>
@@ -126,62 +177,128 @@ export default function SettingsPage() {
                 <Separator />
 
                 {/* Form Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name</Label>
-                    <Input
-                      id="firstName"
-                      placeholder="John"
-                      className="border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+
+                {/* Profile Form using react-hook-form, zod, and shadcn */}
+                <FormProvider {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                  >
+                    {/* Full Name */}
+                    <FormField
+                      control={form.control}
+                      name="full_name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel htmlFor="full_name">Full Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              id="full_name"
+                              placeholder="John"
+                              className="border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input
-                      id="lastName"
-                      placeholder="Doe"
-                      className="border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+
+                    {/* Username */}
+                    <FormField
+                      control={form.control}
+                      name="username"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel htmlFor="username">Username</FormLabel>
+                          <FormControl>
+                            <Input
+                              id="username"
+                              placeholder="johndoe"
+                              className="border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="username">Username</Label>
-                    <Input
-                      id="username"
-                      placeholder="johndoe"
-                      className="border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+
+                    {/* Bio */}
+                    <FormField
+                      control={form.control}
+                      name="bio"
+                      render={({ field }) => (
+                        <FormItem className="md:col-span-2">
+                          <FormLabel htmlFor="bio">Bio</FormLabel>
+                          <FormControl>
+                            <Input
+                              id="bio"
+                              placeholder="Tell us about yourself..."
+                              className="border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john@example.com"
-                      className="border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500/20"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="bio">Bio</Label>
-                    <Input
-                      id="bio"
-                      placeholder="Tell us about yourself..."
-                      className="border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500/20"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="location">Location</Label>
-                    <Input
-                      id="location"
-                      placeholder="City, Country"
-                      className="border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500/20"
-                    />
-                  </div>
-                </div>
+
+                    {/* Submit Button */}
+                    <div className="md:col-span-2 flex justify-end">
+                      <Button
+                        type="submit"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                        disabled={form.formState.isSubmitting}
+                      >
+                        {form.formState.isSubmitting
+                          ? "Saving..."
+                          : "Save Changes"}
+                      </Button>
+                    </div>
+                  </form>
+                </FormProvider>
               </CardContent>
             </Card>
 
+            {/* Email Settings */}
+            <Card className="border-emerald-100 dark:border-emerald-800 bg-background">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-emerald-600">
+                  <Lock className="h-5 w-5" />
+                  Email Settings
+                </CardTitle>
+                <CardDescription>
+                  Manage your password and security preferences
+                </CardDescription>
+                <CardContent className="m-0 mt-5 p-0">
+                  <div className="flex items-center justify-between ">
+                    <div className="flex flex-col">
+                      <span className="text-xs text-muted-foreground font-medium">
+                        Email Address
+                      </span>
+                      <span className="text-base font-semibold text-emerald-700 dark:text-emerald-200 tracking-tight">
+                        {user?.email}
+                      </span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="border-emerald-200 dark:border-emerald-700 hover:bg-emerald-100 dark:hover:bg-emerald-800 transition"
+                      aria-label="Edit Email"
+                      onClick={() =>
+                        router.push("/dashboard/settings/change-email")
+                      }
+                    >
+                      <Pen className="h-4 w-4 text-emerald-600" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </CardHeader>
+            </Card>
+
             {/* Security Settings */}
-            <Card className="border-emerald-100 dark:border-emerald-800">
+            <Card className="border-emerald-100 dark:border-emerald-800 bg-background">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-emerald-600">
                   <Lock className="h-5 w-5" />
@@ -213,8 +330,11 @@ export default function SettingsPage() {
               </CardContent>
             </Card>
 
+            <DeleteAccount profile_id={user?.id as string} />
+            <div className="h-20"></div>
+
             {/* Notification Settings */}
-            <Card className="border-emerald-100 dark:border-emerald-800">
+            {/* <Card className="border-emerald-100 dark:border-emerald-800 bg-background">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-emerald-600">
                   <Bell className="h-5 w-5" />
@@ -294,7 +414,7 @@ export default function SettingsPage() {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Appearance Settings */}
             {/* <Card className="border-emerald-100 dark:border-emerald-800">
@@ -353,7 +473,7 @@ export default function SettingsPage() {
             </Card> */}
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            {/* <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <Button className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white gap-2">
                 <Save className="h-4 w-4" />
                 Save Changes
@@ -365,7 +485,7 @@ export default function SettingsPage() {
                 <RefreshCw className="h-4 w-4" />
                 Reset to Default
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

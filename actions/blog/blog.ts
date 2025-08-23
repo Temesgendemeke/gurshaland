@@ -25,6 +25,16 @@ export const getBlogBySlug = async(slug:string) =>{
     return data
 }
 
+export const getBlogByAuthor = async(author_id: string)=>{
+    const {data, error}  = await supabase.rpc("get_blogs_by_author", 
+        {_author_id: author_id}
+    )
+
+    if(error) throw error 
+
+    return data
+}
+
 
 export const postBlog = async(blog: Blog): Promise<Blog> => {
     const {data: newBlog, error} = await supabase.rpc("insert_blog", {
@@ -37,19 +47,31 @@ export const postBlog = async(blog: Blog): Promise<Blog> => {
     return newBlog
 }
 
-export const deleteBlog = async(blog: Blog) => {
-    const imagePaths = [
-        blog.image?.path,
-        ...blog?.contents.map((content: Content) => content.image?.path)
-    ].filter((path) => typeof path === "string")
+export const deleteBlog = async (blog: Blog) => {
+  const contentImagePaths = Array.isArray(blog?.contents)
+    ? blog.contents
+        .map((content: Content) => content?.image?.path)
+        .filter((p): p is string => typeof p === "string" && p.length > 0)
+    : [];
 
-    const {error: BlogDeleteError, count} = await supabase.from("blog").delete({count: 'exact'}).eq("id", blog.id)
+  const imagePaths = [
+    ...(typeof blog?.image?.path === "string" ? [blog.image.path] : []),
+    ...contentImagePaths,
+  ];
 
-    if(BlogDeleteError) throw BlogDeleteError
+  const { error: BlogDeleteError, count } = await supabase
+    .from("blog")
+    .delete({ count: "exact" })
+    .eq("id", blog.id);
 
-    if(count && imagePaths.length > 0){
-       await supabase.storage.from(BUCKET).remove(imagePaths);
-    }
+  if (BlogDeleteError) throw BlogDeleteError;
+
+  if ((count ?? 0) > 0 && imagePaths.length > 0) {
+    const { error: storageError } = await supabase.storage
+      .from(BUCKET)
+      .remove([...new Set(imagePaths)]);
+    if (storageError) console.warn("Storage removal error:", storageError);
+  }
 }
 
 

@@ -6,12 +6,12 @@ BEGIN
    RETURN (
     SELECT COALESCE(
       jsonb_agg(
-        jsonb_build_object(
-          'id', r.id,
-          'title', r.title,
-          'description', r.description,
-          'difficulty', r.difficulty,
-          'servings', r.servings,
+    jsonb_build_object(
+        'id', r.id,
+        'title', r.title,
+        'description', r.description,
+        'difficulty', r.difficulty,
+        'servings', r.servings,
           'average_rating', r.avg_rating,
           'rating_count', r.rating_count,
           'image', r.image_data,
@@ -46,7 +46,7 @@ BEGIN
           WHERE img.recipe_id = r.id
           LIMIT 1
         ) as image_data
-      FROM recipe r
+    FROM recipe r
       LEFT JOIN recipe_rating rating ON r.id = rating.recipe_id
       WHERE r.status = 'published'
       GROUP BY r.id, r.title, r.description, r.difficulty, r.servings, r.tags, r.preptime, r.totaltime, r.status, r.slug, r.author_id

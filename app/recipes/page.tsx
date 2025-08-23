@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getRecipes } from "@/actions/Recipe/recipe";
+import { getFeaturedRecipes, getTrendingRecipes, getRecipes } from "@/actions/Recipe/recipe";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase-client";
 import { useAuth } from "@/store/useAuth";
@@ -25,6 +25,7 @@ import RecipeListSkeleton from "@/components/skeleton/RecipeList";
 import { format_date } from "@/utils/formatdate";
 import format_time from "@/utils/format_time";
 import RecipeCard from "@/components/recipe/RecipeCard";
+import { useSearchParams } from "next/navigation";
 
 export default function RecipesPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,13 +36,22 @@ export default function RecipesPage() {
   const fetchRecipes = recipeStore((store) => store.fetchRecipes);
   const recipes = recipeStore((store) => store.recipes) || [];
   const loading = recipeStore((store) => store.loading);
+  const searchParams = useSearchParams();
+  const sorted_by = searchParams.get("sorted_by");
 
   useEffect(() => {
     fetchRecipes();
 
     const fetchRecipe = async () => {
       try {
-        const data = await getRecipes();
+        let data = [];
+        if (sorted_by == "trending") {
+           data = await getTrendingRecipes();
+        } else if (sorted_by == "featured") {
+           data = await getFeaturedRecipes();
+        }else{
+          data = await getRecipes();
+        }
         console.log(data);
         setData(data);
       } catch (error) {
@@ -72,7 +82,7 @@ export default function RecipesPage() {
         tag.toLowerCase().includes(searchTerm.toLowerCase())
       );
     const matchesCategory =
-      selectedCategory === "all" || recipe.category === selectedCategory;
+      selectedCategory === "all" || recipe.category.name === selectedCategory;
     const matchesDifficulty =
       selectedDifficulty === "all" ||
       recipe.difficulty === selectedDifficulty.toLowerCase();
@@ -161,7 +171,7 @@ export default function RecipesPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredRecipes.map((recipe, index) => (
-              <RecipeCard recipe={recipe} key={index}/>
+              <RecipeCard recipe={recipe} key={index} />
             ))}
           </div>
         )}

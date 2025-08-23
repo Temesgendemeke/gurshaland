@@ -5,44 +5,37 @@ import { useState } from "react";
 import GeneratedRecipeCard from "./GeneratedRecipeCard";
 import EmptyRecipePrompt from "./EmptyRecipePrompt";
 import { Button } from "./ui/button";
+import GeneratingSkeleton from "./skeleton/GenerateSkeleton";
+import { generateAIRecipe } from "@/actions/Recipe/airecipe";
 
 export default function AIRecipeGenerator() {
   const [ingredients, setIngredients] = useState("");
   const [preferences, setPreferences] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedRecipe, setGeneratedRecipe] = useState<any>(null);
-
+  const [error, setError] = useState<string | null>(null);
   const handleGenerate = async () => {
     setIsGenerating(true);
-    setTimeout(() => {
-      setGeneratedRecipe({
-        title: "AI-Generated Vegetarian Shiro Wat",
-        description:
-          "A personalized version of traditional Ethiopian chickpea stew based on your available ingredients",
-        ingredients: [
-          "2 cups chickpea flour (shiro powder)",
-          "1 large onion, finely chopped",
-          "3 cloves garlic, minced",
-          "1 tbsp berbere spice blend",
-          "2 cups vegetable broth",
-          "2 tbsp olive oil",
-          "Salt to taste",
-        ],
-        instructions: [
-          "Heat olive oil in a large pan over medium heat",
-          "Add onions and cook until golden brown",
-          "Add garlic and berbere, cook for 1 minute",
-          "Gradually whisk in chickpea flour",
-          "Slowly add broth while whisking continuously",
-          "Simmer for 15-20 minutes until thick",
-          "Season with salt and serve with injera",
-        ],
-        cookTime: "25 minutes",
-        difficulty: "Easy",
-        servings: 4,
-      });
+    setError(null); // Clear previous errors
+
+    try {
+      console.log("Starting recipe generation...");
+      const result = await generateAIRecipe(ingredients, preferences);
+      console.log("Generation result:", result);
+
+      if (result.success) {
+        setGeneratedRecipe(result.recipe);
+      } else {
+        setError(result.error || "Failed to generate recipe");
+        console.error("Failed to generate recipe:", result.error);
+      }
+    } catch (error: any) {
+      const errorMessage = error?.message || "An unexpected error occurred";
+      setError(errorMessage);
+      console.error("Error generating recipe:", error);
+    } finally {
       setIsGenerating(false);
-    }, 3000);
+    }
   };
 
   return (
@@ -106,6 +99,8 @@ export default function AIRecipeGenerator() {
             <GeneratingSkeleton />
           ) : generatedRecipe ? (
             <GeneratedRecipeCard recipe={generatedRecipe} />
+          ) : error ? (
+            <div className="text-red-500">{error}</div>
           ) : (
             <EmptyRecipePrompt />
           )}

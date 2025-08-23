@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,16 +17,14 @@ import TagsField from "./TagsField";
 import InstructionsField from "./InstructionsField";
 import IngredientsField from "./IngredientsField";
 import RecipeImageField from "./RecipeImageField";
-import {
-  insertRecipe,
-  uploadRecipeImage,
-} from "@/actions/Recipe/recipe";
+import { insertRecipe, uploadRecipeImage } from "@/actions/Recipe/recipe";
 import { useAuth } from "@/store/useAuth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { generateUniqueSlug } from "@/utils/slugify";
 import NutritionField from "./NutritionField";
 import { uploadInstructionImage } from "@/actions/Recipe/instruction";
+import { getCategories } from "@/actions/Recipe/category";
 type FormValues = z.infer<typeof formSchema>;
 
 interface SubmitRecipeFormProps {
@@ -35,9 +33,24 @@ interface SubmitRecipeFormProps {
 
 export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
   const [newTag, setNewTag] = useState("");
+  const [categories, setCategories] = useState([]);
   const clickRef = useRef(false);
   const isEditMode = !!recipe;
   const router = useRouter();
+
+  // Fetch categories on component mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesData = await getCategories();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -45,7 +58,6 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
       recipe: {
         author_id: recipe?.author_id || "",
         title: recipe?.title || "",
-        category: recipe?.category || "",
         description: recipe?.description || "",
         prepTime: recipe?.preptime || 0,
         cookTime: recipe?.cooktime || 0,
@@ -64,6 +76,7 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
         fat: 0,
         fiber: 0,
       },
+      category: recipe?.category || { id: "", name: "" },
       ingredients: recipe?.ingredients?.length
         ? recipe.ingredients
         : [{ item: "", amount: "", notes: "" }],
@@ -122,7 +135,6 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
       return;
     }
 
-    console.log("working..........");
     try {
       data.recipe.author_id = user?.id ?? "";
 
@@ -169,9 +181,7 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
         <BackNavigation route="/recipes" pagename="Recipes" />
         <div className="text-center mb-12">
           <h1 className="text-7xl font-bold mb-4">
-            <span className="">
-              Share Your Recipe
-            </span>
+            <span className="">Share Your Recipe</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300">
             Help preserve Ethiopian culinary traditions by sharing your family
@@ -180,7 +190,11 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
         </div>
         <Form {...form}>
           <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
-            <BasicInfoFields form={form} recipe={recipe} />
+            <BasicInfoFields
+              form={form}
+              recipe={recipe}
+              categories={categories}
+            />
             <RecipeImageField image={recipeImage} setImage={setRecipeImage} />
             <IngredientsField
               form={form}
@@ -211,8 +225,10 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
                 type="submit"
                 size="lg"
                 className="btn-primary-modern rounded-full"
+                disabled={form.formState.isSubmitting}
+                aria-disabled={form.formState.isSubmitting}
               >
-                Publish Recipe
+                {form.formState.isSubmitting ? "Publishing..." : "Publish Recipe"}
               </Button>
             </div>
           </form>

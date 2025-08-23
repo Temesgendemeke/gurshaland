@@ -129,7 +129,7 @@ export default function BlogPage() {
         </div>
 
         {/* Newsletter Signup */}
-        <NewsletterSignup />
+        {/* <NewsletterSignup /> */}
       </div>
 
       <Footer />

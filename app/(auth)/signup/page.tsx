@@ -1,14 +1,13 @@
-"use client"
+"use client";
 import { Header } from "@/components/header";
 import { signupFormSchema } from "@/utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,10 +22,9 @@ import { toast } from "sonner";
 import { SignUpData } from "@/utils/types/account";
 import { useRouter } from "next/navigation";
 
-
-
-
 const page = () => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   const form = useForm({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -36,7 +34,6 @@ const page = () => {
       password: "",
     },
   });
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
 
   const onSubmit = async (formData: SignUpData) => {
@@ -47,6 +44,7 @@ const page = () => {
       );
       router.push("/login");
     } catch (error) {
+      console.log(error);
       toast.error(
         error instanceof Error
           ? error.message
@@ -147,6 +145,7 @@ const page = () => {
                   </FormItem>
                 )}
               />
+
               <Button type="submit" className="w-full">
                 Create an account
               </Button>

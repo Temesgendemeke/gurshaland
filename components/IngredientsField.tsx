@@ -10,16 +10,25 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import measurements from "@/constants/measurements";
 
 interface IngredientField {
   id: string;
   item: string;
-  amount: string;
+  amount?: string;
+  unit?: string;
   notes: string;
 }
 
 interface IngredientsFieldProps {
-  form: any; 
+  form: any;
   ingredientFields: IngredientField[] | any;
   appendIngredient: (ingredient: Omit<IngredientField, "id">) => void;
   removeIngredient: (index: number) => void;
@@ -49,96 +58,137 @@ export default function IngredientsField({
         </Button>
       </div>
       <div className="space-y-4">
-        {ingredientFields.map(
-          (
-            field: IngredientField,
-            index: number
-          ) => (
-            <div
-              key={field.id}
-              className="grid md:grid-cols-12 gap-4 items-start"
-            >
-              <FormField
-          control={form.control}
-          name={`ingredients.${index}.amount`}
-          render={({
-            field,
-          }: {
-            field: {
-              name: string;
-              value: string;
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-              onBlur: () => void;
-              ref: React.Ref<HTMLInputElement>;
-            };
-          }) => (
-            <FormItem className="md:col-span-3">
-              <FormControl>
-                <Input placeholder="Amount (e.g., 2 cups)" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-              />
-              <FormField
-          control={form.control}
-          name={`ingredients.${index}.item`}
-          render={({
-            field,
-          }: {
-            field: {
-              name: string;
-              value: string;
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-              onBlur: () => void;
-              ref: React.Ref<HTMLInputElement>;
-            };
-          }) => (
-            <FormItem className="md:col-span-4">
-              <FormControl>
-                <Input placeholder="Ingredient name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-              />
-              <FormField
-          control={form.control}
-          name={`ingredients.${index}.notes`}
-          render={({
-            field,
-          }: {
-            field: {
-              name: string;
-              value: string;
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-              onBlur: () => void;
-              ref: React.Ref<HTMLInputElement>;
-            };
-          }) => (
-            <FormItem className="md:col-span-4">
-              <FormControl>
-                <Input placeholder="Notes (optional)" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-              />
-              <div className="md:col-span-1">
-          {ingredientFields.length > 1 && (
-            <Button
-              onClick={() => removeIngredient(index)}
-              variant="ghost"
-              size="sm"
-              type="button"
-              className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          )}
-              </div>
+        {ingredientFields.map((field: IngredientField, index: number) => (
+          <div
+            key={field.id}
+            className="grid md:grid-cols-3 gap-4 items-start"
+          >
+            <FormField
+              control={form.control}
+              name={`ingredients.${index}.amount`}
+              render={({
+                field,
+              }: {
+                field: {
+                  name: string;
+                  value: string;
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+                  onBlur: () => void;
+                  ref: React.Ref<HTMLInputElement>;
+                };
+              }) => (
+                <FormItem className="">
+                  <FormControl>
+                    <Input placeholder="Amount (e.g., 2 cups)" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name={`ingredients.${index}.unit`}
+              render={({
+                field,
+              }: {
+                field: {
+                  name: string;
+                  value: string;
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+                  onBlur: () => void;
+                  ref: React.Ref<HTMLInputElement>;
+                };
+              }) => (
+                <FormItem className="">
+                  <FormControl>
+                    <Select
+                      onValueChange={(value) =>
+                        field.onChange({
+                          target: {
+                            value: value as string,
+                          },
+                        } as React.ChangeEvent<HTMLInputElement>)
+                      }
+                      value={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select unit" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {measurements.map((measurement) => (
+                          <SelectItem
+                            key={measurement.code}
+                            value={measurement.code}
+                          >
+                            {measurement.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={`ingredients.${index}.item`}
+              render={({
+                field,
+              }: {
+                field: {
+                  name: string;
+                  value: string;
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+                  onBlur: () => void;
+                  ref: React.Ref<HTMLInputElement>;
+                };
+              }) => (
+                <FormItem className="">
+                  <FormControl>
+                    <Input placeholder="Ingredient name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={`ingredients.${index}.notes`}
+              render={({
+                field,
+              }: {
+                field: {
+                  name: string;
+                  value: string;
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+                  onBlur: () => void;
+                  ref: React.Ref<HTMLInputElement>;
+                };
+              }) => (
+                <FormItem className="md:col-span-3">
+                  <FormControl>
+                    <Input placeholder="Notes (optional)" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <div className="md:col-span-1">
+              {ingredientFields.length > 1 && (
+                <Button
+                  onClick={() => removeIngredient(index)}
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              )}
             </div>
-          )
-        )}
+          </div>
+        ))}
       </div>
     </Card>
   );

@@ -2,8 +2,9 @@ CREATE OR REPLACE FUNCTION insert_full_recipe(
   _recipe jsonb,
   _ingredients jsonb,
   _instructions jsonb,
-  _nutrition jsonb
-  _recipe_rating jsonb
+  _nutrition jsonb,
+  _recipe_rating jsonb,
+  _category jsonb
 )
 RETURNS jsonb
 LANGUAGE plpgsql
@@ -32,11 +33,12 @@ BEGIN
   )
   RETURNING id INTO new_recipe_id;
 
-  INSERT INTO ingredient (recipe_id, item, amount, notes)
+  INSERT INTO ingredient (recipe_id, item, amount, unit, notes)
   SELECT
     new_recipe_id,
     i ->> 'item',
-    i ->> 'amount',
+    (i ->> 'amount')::int,
+    i ->> 'unit',
     i ->> 'notes'
   FROM jsonb_array_elements(_ingredients) AS i;
 
@@ -60,6 +62,12 @@ BEGIN
      (_nutrition ->> 'fiber')::int
   );
 
+  -- Append new recipe_id to existing category row (don't create new rows)
+  UPDATE recipe_category 
+  SET recipe_id = COALESCE(recipe_id, ARRAY[]::int[]) || new_recipe_id::int
+  WHERE id = (_category ->> 'id')::int;
+  
+
 
   SELECT jsonb_build_object(
     'recipe', jsonb_build_object(
@@ -68,10 +76,11 @@ BEGIN
       'description', r.description,
       'difficulty', r.difficulty,
       'servings', r.servings,
+      'rating', r.rating,
       'author_id', r.author_id,
       'tags', r.tags,
       'prepTime', r.prepTime,
-      'totalTime', r.totalTime,
+      'cooktime', r.cooktime,
       'cultural_notes', r.cultural_notes,
       'status', r.status,
       'slug', r.slug,
@@ -106,8 +115,6 @@ BEGIN
       FROM instruction ins
       WHERE ins.recipe_id = new_recipe_id
     )
-
-
   )
   INTO result
   FROM recipe r

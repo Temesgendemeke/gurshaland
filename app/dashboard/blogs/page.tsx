@@ -1,65 +1,27 @@
-import { postColumn } from "@/components/dashboard/PostColumn";
+"use client";
+import { getBlogByAuthor } from "@/actions/blog/blog";
+import { createPostColumns } from "@/components/dashboard/PostColumn";
 import { DataTable } from "@/components/data-table";
+import { useBlog } from "@/store/DashboardBlog";
+import { useAuth } from "@/store/useAuth";
+import generate_error from "@/utils/generate_error";
 import { Post } from "@/utils/types/Dashboard";
-import React from "react";
+import { PlusCircle } from "lucide-react";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const page = () => {
-  const data: Post[] = [
-    {
-      id: "1",
-      title: "Classic Italian Lasagna",
-      view: 2500,
-      like: 350,
-      comments: 45,
-      created_at: "2023-10-26",
-      status: "published",
-    },
-    {
-      id: "2",
-      title: "Spicy Thai Green Curry",
-      view: 1800,
-      like: 280,
-      comments: 32,
-      created_at: "2023-09-15",
-      status: "published",
-    },
-    {
-      id: "3",
-      title: "Beginner's Sourdough Bread",
-      view: 950,
-      like: 150,
-      comments: 60,
-      created_at: "2023-11-01",
-      status: "draft",
-    },
-    {
-      id: "4",
-      title: "The Ultimate Chocolate Chip Cookies",
-      view: 5200,
-      like: 800,
-      comments: 120,
-      created_at: "2023-08-20",
-      status: "published",
-    },
-    {
-      id: "5",
-      title: "Healthy Quinoa Salad",
-      view: 1200,
-      like: 180,
-      comments: 25,
-      created_at: "2023-10-05",
-      status: "published",
-    },
-    {
-      id: "6",
-      title: "Vegan Lentil Soup Recipe Ideas",
-      view: 450,
-      like: 60,
-      comments: 15,
-      created_at: "2023-11-05",
-      status: "draft",
-    },
-  ];
+  const user_id = useAuth((store) => store.user?.id);
+  const fetchBlogs = useBlog((store) => store.fetchBlogs);
+  const loading = useBlog((store) => store.loading);
+  const blogs = useBlog((store) => store.blogs);
+
+  useEffect(() => {
+    if (user_id) {
+      fetchBlogs(user_id);
+    }
+  }, [user_id]);
   return (
     <div className="mx-5 md:mx-10">
       <div className="mt-4 text-center md:text-left">
@@ -69,7 +31,21 @@ const page = () => {
           progress, assign reviewers, and cook up something amazing!
         </p>
       </div>
-      <DataTable<Post, any> columns={postColumn} data={data} />
+
+      <div className="flex justify-end">
+        <Link
+          href="/blog/create"
+          className="flex gap-1 p-2 rounded-sm btn-primary-modern"
+        >
+          <PlusCircle />
+          <span>create new blog</span>
+        </Link>
+      </div>
+      <DataTable<Post, any>
+        columns={createPostColumns("/blog")}
+        data={blogs}
+        loading={loading}
+      />
     </div>
   );
 };

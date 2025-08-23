@@ -8,12 +8,16 @@ import Recipe, {
   RecipeComment,
 } from "@/utils/types/recipe";
 
+// Helper: strip non-JSON noise and ensure we only parse JSON
+
+
 
 export const getRecipebySlug = async (slug: string) => {
   const { data, error } = await supabase.rpc("get_full_recipe", {
     _slug: slug,
   });
 
+  console.log("recipes error ", error)
   if (error) throw error;
 
   return data;
@@ -119,4 +123,14 @@ export const uploadRecipeImage = async (
     throw error;
   }
 };
+
+
+export const getRecipeByAuthor = async(author_id: string)=>{
+  const {data, error} = await supabase.rpc("get_recipe_by_author", {
+    _author_id: author_id
+  })
+
+  if(error) throw error;
+  return data
+}
 

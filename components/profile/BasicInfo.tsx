@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import avatar from "@/public/avater.png";
+import avatar from "@/public/avater.webp";
 import { Button } from "../ui/button";
 import { useAuth } from "@/store/useAuth";
 import { Profile } from "@/utils/types/profile";

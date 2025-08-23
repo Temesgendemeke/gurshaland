@@ -7,11 +7,19 @@ function AIFeaturesGrid({
   features,
   selected,
   onSelect,
+  onGenerateRecipe,
 }: {
   features: typeof aiFeatures;
   selected: string;
   onSelect: (id: string) => void;
+  onGenerateRecipe: () => void;
 }) {
+  const handleClick = (featureId: string) => {
+    if (featureId === "recipe-generator") {
+      onGenerateRecipe();
+    }
+  };
+
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
       {features.map((feature) => {
@@ -46,10 +54,12 @@ function AIFeaturesGrid({
                 size="sm"
                 disabled={feature.badge == "Coming Soon"}
                 aria-disabled={feature.badge == "Coming Soon"}
-                className="mt-4 text-emerald-600  p-4  hover:bg-emerald-500 "
+                className="mt-4 text-emerald-600  p-4 hover:text-white  hover:bg-emerald-500 "
+                onClick={() => handleClick(feature.id)}
               >
                 Try Now →
               </Button>
+              
             </div>
           </Card>
         );
@@ -57,5 +67,4 @@ function AIFeaturesGrid({
     </div>
   );
 }
-
 export default AIFeaturesGrid;

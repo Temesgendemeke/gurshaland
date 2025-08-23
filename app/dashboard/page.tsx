@@ -1,3 +1,5 @@
+"use client";
+import { getStatus } from "@/actions/dashboard/stats";
 import { AppSidebar } from "@/components/app-sidebar";
 import { postColumn } from "@/components/dashboard/PostColumn";
 import { SimpleTable } from "@/components/dashboard/SimpleTable";
@@ -20,82 +22,37 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/store/useAuth";
+import { Blog } from "@/utils/types/blog";
 import { Post } from "@/utils/types/Dashboard";
+import Recipe from "@/utils/types/recipe";
 import { Send, User2, UtensilsCrossed } from "lucide-react";
+import { useEffect, useState } from "react";
+
+interface Status {
+  followers_count: number;
+  recipes: Post[];
+  blogs: Post[];
+}
 
 export default function Page() {
-  const data: Post[] = [
-    {
-      id: "1",
-      title: "Understanding React Hooks",
-      like: 120,
-      view: 1500,
-      status: "published",
-      slug: "understanding-react-hooks",
-      created_at: "2024-06-01",
-      comments: 45,
-    },
-    {
-      id: "2",
-      title: "A Guide to TypeScript",
-      like: 80,
-      view: 900,
-      status: "draft",
-      slug: "a-guide-to-typescript",
-      created_at: "2024-06-02",
-      comments: 30,
-    },
-    {
-      id: "3",
-      title: "Styling in Next.js",
-      like: 95,
-      view: 1100,
-      status: "published",
-      slug: "styling-in-nextjs",
-      created_at: "2024-06-03",
-      comments: 38,
-    },
-    {
-      id: "4",
-      title: "Deploying with Vercel",
-      like: 60,
-      view: 700,
-      status: "draft",
-      slug: "deploying-with-vercel",
-      created_at: "2024-06-04",
-      comments: 22,
-    },
-    {
-      id: "5",
-      title: "API Routes Explained",
-      like: 130,
-      view: 1700,
-      status: "published",
-      slug: "api-routes-explained",
-      created_at: "2024-06-05",
-      comments: 50,
-    },
-    {
-      id: "6",
-      title: "Optimizing Performance",
-      like: 75,
-      view: 850,
-      status: "draft",
-      slug: "optimizing-performance",
-      created_at: "2024-06-06",
-      comments: 27,
-    },
-    {
-      id: "7",
-      title: "Authentication Strategies",
-      like: 110,
-      view: 1400,
-      status: "published",
-      slug: "authentication-strategies",
-      created_at: "2024-06-07",
-      comments: 41,
-    },
-  ];
+  const [status, setStatus] = useState<Status>({
+    followers_count: 0,
+    recipes: [],
+    blogs: [],
+  });
+  const [loading, setLoading] = useState<Boolean>(true);
+  const user = useAuth((store) => store.user);
+
+  useEffect(() => {
+    (async () => {
+      if (user) {
+        const data = await getStatus(user.id as string);
+        setStatus(data);
+        setLoading(false);
+      }
+    })();
+  });
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0 space-y-5">
@@ -106,26 +63,32 @@ export default function Page() {
           <span className="text-muted-foreground text-lg">Welcome back!</span>
         </div>
         <div className="grid auto-rows-min gap-4 md:grid-cols-3 mx-5">
-          <StatsCard name={"followers"} count={400} Icon={User2} />
-          <StatsCard name={"recipes"} count={400} Icon={UtensilsCrossed} />
-          <StatsCard name={"blogs"} count={400} Icon={Send} />
+          <StatsCard
+            name={"followers"}
+            count={status.followers_count}
+            Icon={User2}
+            loading={loading}
+          />
+          <StatsCard
+            name={"recipes"}
+            count={status.recipes.length}
+            Icon={UtensilsCrossed}
+            loading={loading}
+          />
+          <StatsCard
+            name={"blogs"}
+            count={status.blogs.length}
+            Icon={Send}
+            loading={loading}
+          />
         </div>
       </div>
       <div className="flex flex-col gap-5">
         <div className="flex-1">
-          
-          {/* <DataTable data={data} /> */}
-          <SimpleTable
-            data={data.sort((a, b) => Number(b.view) - Number(a.view))}
-            name="Recipe"
-          />
+          <SimpleTable data={status.recipes} name="Recipe" loading={loading} />
         </div>
         <div className="flex-1">
-          {/* <DataTable<Post, any> columns={postColumn} data={data} /> */}
-          <SimpleTable
-            data={data.sort((a, b) => Number(b.view) - Number(a.view))}
-            name="Blog"
-          />
+          <SimpleTable data={status.blogs} name="Blog" loading={loading} />
         </div>
       </div>
     </div>

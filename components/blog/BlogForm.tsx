@@ -28,6 +28,7 @@ import {
   FileText,
   List,
   Upload,
+  LoaderCircleIcon,
 } from "lucide-react";
 import { blogSchema } from "@/utils/schema";
 import { ContentSection } from "./ContentSection";
@@ -119,6 +120,7 @@ export default function BlogForm() {
     const { image, ...rest } = data;
     const cleanData = {
       ...rest,
+      author_id: user.id,
       read_time: calculate_read_time(data) as string,
       slug: await generateUniqueSlug(data.title, "blog"),
       contents: data.content
@@ -149,7 +151,7 @@ export default function BlogForm() {
       });
       addBlog(newBlog);
       toast.success("Blog post created successfully!");
-      router.push("/blog");
+      router.back();
     } catch (error) {
       console.log(error);
       toast.error(generate_error(error));
@@ -166,6 +168,8 @@ export default function BlogForm() {
           Fill in the details to create your blog post
         </p>
       </div>
+
+
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* Basic Information */}
@@ -318,13 +322,26 @@ export default function BlogForm() {
         </Card>
 
         {/* status select */}
-        <StatusSelect form={form}/>
+        <StatusSelect form={form} />
 
         {/* Submit Button */}
         <div className="flex justify-center gap-4">
-          <Button type="submit" className="btn-primary-modern">
-            <Upload className="h-5 w-5" />
-            Create Blog Post
+          <Button
+            type="submit"
+            className="btn-primary-modern"
+            disabled={form.formState.isSubmitting}
+            aria-disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting ? (
+              <>
+                <LoaderCircleIcon className="animate-spin"/> posting....{" "}
+              </>
+            ) : (
+              <>
+                <Upload className="h-5 w-5" />
+                Create Blog Post
+              </>
+            )}
           </Button>
         </div>
       </form>

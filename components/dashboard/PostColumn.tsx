@@ -14,6 +14,12 @@ import {
 } from "../ui/dropdown-menu";
 import { MoreVertical, MoreVerticalIcon, Eye } from "lucide-react";
 import { Button } from "../ui/button";
+import Link from "next/link";
+import generate_error from "@/utils/generate_error";
+import { toast } from "sonner";
+import { deleteBlog, getBlogBySlug } from "@/actions/blog/blog";
+import { Blog } from "@/utils/types/blog";
+import { useBlog } from "@/store/DashboardBlog";
 
 // Modern Status Badge Component
 const StatusBadge = ({ status }: { status: string }) => {
@@ -57,7 +63,9 @@ const StatusBadge = ({ status }: { status: string }) => {
 
 const columnHelper = createColumnHelper<Post>();
 
-export const postColumn: ColumnDef<Post, any>[] = [
+export const createPostColumns = (
+  linkBasePath: "/recipes" | "/blog" = "/recipes"
+): ColumnDef<Post, any>[] => [
   // columnHelper.display({
   //   id: "action",
   //   header: ({ table }) => (
@@ -86,7 +94,18 @@ export const postColumn: ColumnDef<Post, any>[] = [
   // }),
   columnHelper.accessor("title", {
     header: (info) => <DefaultHeader info={info as any} name="Title" />,
-    cell: (info) => info.getValue(),
+    cell: (info) => {
+      const title = info.getValue() as string;
+      const slug = (info.row.original as Post).slug;
+      if (slug) {
+        return (
+          <Link href={`${linkBasePath}/${slug}`} className="hover:underline">
+            {title}
+          </Link>
+        );
+      }
+      return title;
+    },
   }),
   columnHelper.accessor("created_at", {
     header: (info) => <DefaultHeader info={info as any} name="Created At" />,
@@ -115,10 +134,8 @@ export const postColumn: ColumnDef<Post, any>[] = [
         engagementRate = ((likes + comments) / views) * 100;
       }
 
-      
       const displayRate = Math.min(100, Math.round(engagementRate * 100) / 100);
 
-      
       const getEngagementColor = (rate: number) => {
         if (rate >= 15) return "bg-emerald-600"; // High engagement
         if (rate >= 8) return "bg-emerald-500"; // Good engagement
@@ -163,7 +180,7 @@ export const postColumn: ColumnDef<Post, any>[] = [
     cell: (row) => {
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild>
             <Button variant={"ghost"}>
               <MoreVerticalIcon />
             </Button>
@@ -174,11 +191,24 @@ export const postColumn: ColumnDef<Post, any>[] = [
           >
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/${linkBasePath}/edit/${row.row.original.slug}`}>
+                Edit
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                const deleteBlog =  useBlog((store) => store.deleteBlog);
+                deleteBlog(row.row.original.slug as string);
+              }}
+            >
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
     },
   }),
 ];
+
+export const postColumn: ColumnDef<Post, any>[] = createPostColumns("/recipes");

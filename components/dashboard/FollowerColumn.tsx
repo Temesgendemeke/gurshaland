@@ -15,20 +15,24 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { MoreVerticalIcon } from "lucide-react";
+import Link from "next/link";
 
 const columnHelper = createColumnHelper<FollowerColumnType>();
 
 export const FollowerColumn = [
   columnHelper.accessor("username", {
     header: (info) => <DefaultHeader info={info as any} name="Username" />,
-    cell: (info) => info.getValue(),
+    cell: (info) => {
+      const username = info.getValue();
+      return <Link href={`/${username}`}>{username}</Link>;
+    },
     size: 150,
   }),
   columnHelper.accessor("followed_since", {
     header: (info) => (
       <DefaultHeader info={info as any} name="Followed Since" />
     ),
-    cell: (info) =>{
+    cell: (info) => {
       const data = info.getValue();
       if (!data) return "";
 

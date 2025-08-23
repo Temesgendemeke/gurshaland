@@ -3,33 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import {
-  Star,
-  Search,
-  User,
-  Plus,
-  Menu,
-  Sparkles,
-  CookingPot,
-} from "lucide-react";
+import { Search, Menu, Sparkles } from "lucide-react";
 import { useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { ThemeToggle } from "@/components/theme-toggle";
-import { supabase } from "@/lib/supabase-client";
-import { logout } from "@/actions/auth";
-import { toast } from "sonner";
 import { useAuth } from "@/store/useAuth";
-import ShareRecipeButton from "./ShareRecipeButton";
 import AccountDropDown from "./AccountDropDown";
-import {
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@radix-ui/react-dropdown-menu";
 import CreateAPost from "./CreateAPost";
 import Logo from "./Logo";
 
@@ -54,7 +33,7 @@ export function Header() {
 
   return (
     <header className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 shadow-sm sticky top-0 z-50">
-      <div className=" mx-auto flex items-center justify-between px-6 py-4">
+      <div className="mx-auto flex items-center justify-between px-6 py-4">
         <Logo />
 
         {/* Desktop Navigation */}

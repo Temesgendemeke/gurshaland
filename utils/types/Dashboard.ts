@@ -1,13 +1,14 @@
 import { Follower, Profile } from "./recipe";
 
 export interface Post {
-  id: String;
+  id: string;
   title: string;
-  view: number;
+  view_count: number;
   like: number;
-  comments: number;
+  comment_count: number;
   created_at: string;
   status: "published" | "draft";
+  slug?: string;
 }
 
 export interface FollowerColumnType extends Profile, Follower {
@@ -16,3 +17,5 @@ export interface FollowerColumnType extends Profile, Follower {
   like: string;
   comments: string;
 }
+
+

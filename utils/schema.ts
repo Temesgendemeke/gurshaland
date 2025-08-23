@@ -2,7 +2,8 @@ import z, { string } from "zod";
 
 export const ingredientSchema = z.object({
   item: z.string().min(1, "Required"),
-  amount: z.string().min(1, "Required"),
+  amount: z.string().optional(),
+  unit: z.string().optional(),
   notes: z.string().optional(),
 });
 
@@ -43,10 +44,16 @@ export const nutritionSchema = z.object({
 });
 
 
+// category schema
+export const categorySchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+
+
 export const formSchema = z.object({
   recipe: z.object({
     title: z.string().min(1, "Required"),
-    category: z.string().min(1, "Required"),
     description: z.string().min(1, "Required"),
     prepTime: z.preprocess((val)=> Number(val), z.number().min(0)),
     cookTime: z.preprocess((val) => Number(val),z.number().min(0)),
@@ -59,6 +66,7 @@ export const formSchema = z.object({
     author_id: z.string(),
     slug: z.string(),
   }),
+  category: categorySchema.optional(),
   ingredients: z.array(ingredientSchema).min(1),
   instructions: z.array(instructionSchema).min(1),
   nutrition: nutritionSchema,
@@ -75,7 +83,8 @@ export const signupFormSchema = z.object({
   username: z
     .string()
     .min(2, { message: "Username must be at least 2 characters" })
-    .max(12, { message: "Username must be at most 12 characters" }),
+    .max(12, { message: "Username must be at most 12 characters" })
+    .regex(/^[a-zA-Z0-9]+$/, { message: "Username must contain only letters and numbers" }),
   email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(1, { message: "Password is required" }),
   full_name: z.string().min(1, { message: "Full name is required" }),
