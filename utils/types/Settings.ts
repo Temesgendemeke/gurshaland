@@ -1,5 +1,10 @@
 export interface Profile{
-    image_url: string;
+    id?: string;
+    image?: {
+        id?: string;
+        url?: string;
+        profile_id?: string;
+    };
     full_name: string;
     username: string;
     bio: string;

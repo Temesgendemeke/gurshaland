@@ -1,107 +1,97 @@
-CREATE OR REPLACE FUNCTION get_account_detail(_profile_id UUID)
+CREATE OR REPLACE FUNCTION get_user_images(_profile_id UUID)
 RETURNS jsonb
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    -- GET all recipes and recipe with images (with path)
-    -- profile image(path)
-    -- GET all blogs and blog with images (with path)
+    -- Get all user images: profile, recipe (main + instruction), blog (main + content)
     
     RETURN (
         SELECT jsonb_build_object(
-            'profile', p,
+            'profile_image', COALESCE(profile_image_data, '{}'::jsonb),
             'recipes', COALESCE(recipes_data, '[]'::jsonb),
-            'blogs', COALESCE(blogs_data, '[]'::jsonb),
-            'profile_image', COALESCE(profile_image_data, '{}'::jsonb)
+            'blogs', COALESCE(blogs_data, '[]'::jsonb)
         )
         FROM (
             SELECT 
-                to_jsonb(p.*) as p,
-                (
-                    SELECT jsonb_agg(
-                        jsonb_build_object(
-                            'recipe', r,
-                            'main_image', COALESCE(recipe_main_image, '{}'::jsonb),
-                            'instruction_images', COALESCE(recipe_instruction_images, '[]'::jsonb)
-                        )
-                    )
-                    FROM (
-                        SELECT 
-                            to_jsonb(rec.*) as r,
-                            (
-                                SELECT jsonb_build_object(
-                                    'id', ri.id,
-                                    'path', ri.path,
-                                    'alt_text', ri.alt_text
-                                )
-                                FROM recipe_images ri
-                                WHERE ri.recipe_id = rec.id AND ri.is_main = true
-                                LIMIT 1
-                            ) as recipe_main_image,
-                            (
-                                SELECT jsonb_agg(
-                                    jsonb_build_object(
-                                        'id', ri.id,
-                                        'path', ri.path,
-                                        'alt_text', ri.alt_text
-                                    )
-                                )
-                                FROM recipe_images ri
-                                WHERE ri.recipe_id = rec.id AND ri.is_main = false
-                            ) as recipe_instruction_images
-                        FROM recipes rec
-                        WHERE rec.author_id = _profile_id
-                    ) recipe_data
-                ) as recipes_data,
-                (
-                    SELECT jsonb_agg(
-                        jsonb_build_object(
-                            'blog', b,
-                            'main_image', COALESCE(blog_main_image, '{}'::jsonb),
-                            'content_images', COALESCE(blog_content_images, '[]'::jsonb)
-                        )
-                    )
-                    FROM (
-                        SELECT 
-                            to_jsonb(blg.*) as b,
-                            (
-                                SELECT jsonb_build_object(
-                                    'id', bi.id,
-                                    'path', bi.path,
-                                    'alt_text', bi.alt_text
-                                )
-                                FROM blog_images bi
-                                WHERE bi.blog_id = blg.id AND bi.is_main = true
-                                LIMIT 1
-                            ) as blog_main_image,
-                            (
-                                SELECT jsonb_agg(
-                                    jsonb_build_object(
-                                        'id', bi.id,
-                                        'path', bi.path,
-                                        'alt_text', bi.alt_text
-                                    )
-                                )
-                                FROM blog_images bi
-                                WHERE bi.blog_id = blg.id AND bi.is_main = false
-                            ) as blog_content_images
-                        FROM blogs blg
-                        WHERE blg.author_id = _profile_id
-                    ) blog_data
-                ) as blogs_data,
+                -- Get profile image
                 (
                     SELECT jsonb_build_object(
                         'id', pi.id,
-                        'path', pi.path,
-                        'alt_text', pi.alt_text
+                        'url', pi.url,
+                        'path', pi.path
                     )
-                    FROM profile_images pi
+                    FROM profile_image pi
                     WHERE pi.profile_id = _profile_id
                     LIMIT 1
-                ) as profile_image_data
-            FROM profiles p
-            WHERE p.id = _profile_id
-        ) account_data
+                ) as profile_image_data,
+                
+                -- Get recipe images (main + instruction)
+                (
+                    SELECT jsonb_agg(
+                        jsonb_build_object(
+                            'recipe_id', r.id,
+                            'main_image', (
+                                SELECT jsonb_build_object(
+                                    'id', ri.id,
+                                    'url', ri.url,
+                                    'path', ri.path
+                                )
+                                FROM recipe_image ri
+                                WHERE ri.recipe_id = r.id
+                                LIMIT 1
+                            ),
+                            'instruction_images', (
+                                SELECT jsonb_agg(
+                                    jsonb_build_object(
+                                        'id', ii.id,
+                                        'url', ii.url,
+                                        'path', ii.path
+                                    )
+                                )
+                                FROM instruction_image ii
+                                JOIN instruction i ON i.id = ii.instruction_id
+                                WHERE i.recipe_id = r.id
+                            )
+                        )
+                    )
+                    FROM recipe r
+                    WHERE r.author_id = _profile_id
+                ) as recipes_data,
+                
+                -- Get blog images (main + content)
+                (
+                    SELECT jsonb_agg(
+                        jsonb_build_object(
+                            'blog_id', b.id,
+                            'main_image', (
+                                SELECT jsonb_build_object(
+                                    'id', bi.id,
+                                    'url', bi.url,
+                                    'path', bi.path
+                                )
+                                FROM blog_image bi
+                                WHERE bi.blog_id = b.id
+                                LIMIT 1
+                            ),
+                            'content_images', (
+                                SELECT jsonb_agg(
+                                    jsonb_build_object(
+                                        'id', ci.id,
+                                        'url', ci.url,
+                                        'path', ci.path
+                                    )
+                                )
+                                FROM content_image ci
+                                JOIN content c ON c.id = ci.content_id
+                                WHERE c.blog_id = b.id
+                            )
+                        )
+                    )
+                    FROM blog b
+                    WHERE b.author_id = _profile_id
+                ) as blogs_data
+                
+        ) image_data
     );
 END;
 $$;
