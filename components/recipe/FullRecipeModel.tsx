@@ -9,22 +9,72 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Users } from "lucide-react";
+import { Clock, Users, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { insertRecipe } from "@/actions/Recipe/recipe";
 import { toast } from "sonner";
 import { useAuth } from "@/store/useAuth";
+import { useLazyImageGeneration } from "@/hooks/useLazyImageGeneration";
+import { useState, useEffect } from "react";
 
 const FullRecipeModel = ({ recipe }: { recipe: any }) => {
   const user = useAuth((store) => store.user);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Initialize lazy image generation
+  const { stepImages, generateImageForStep, isGenerating } =
+    useLazyImageGeneration({
+      instructions: recipe.instructions || [],
+    });
+
+  // Auto-generate images when dialog opens (with intersection observer for better UX)
+  useEffect(() => {
+    console.log(
+      `🔍 Dialog open: ${isDialogOpen}, Instructions: ${recipe.instructions?.length}`
+    );
+    if (isDialogOpen && recipe.instructions) {
+      // Test direct image generation first
+      console.log(`🧪 Testing direct image generation...`);
+      const testPrompt = "Ethiopian traditional cuisine, colorful food";
+
+      // Import and test generateRecipeImage directly
+      import("@/utils/genAI").then(({ generateRecipeImage }) => {
+        console.log(`🧪 Calling generateRecipeImage with: "${testPrompt}"`);
+        generateRecipeImage(testPrompt)
+          .then((result) => {
+            console.log(`🧪 Direct test result:`, result);
+          })
+          .catch((error) => {
+            console.error(`🧪 Direct test error:`, error);
+          });
+      });
+
+      // Generate first few images immediately
+      const firstFewSteps = Math.min(3, recipe.instructions.length);
+      console.log(`🚀 Generating first ${firstFewSteps} images immediately`);
+      for (let i = 0; i < firstFewSteps; i++) {
+        console.log(`📞 Calling generateImageForStep(${i})`);
+        generateImageForStep(i);
+      }
+
+      // Generate remaining images with delay to avoid overwhelming the API
+      const remainingSteps = recipe.instructions.slice(firstFewSteps);
+      for (let index = 0; index < remainingSteps.length; index++) {
+        setTimeout(() => {
+          generateImageForStep(firstFewSteps + index);
+        }, (index + 1) * 2000); // 2 second delay between each
+      }
+    }
+  }, [isDialogOpen, recipe.instructions]); // Removed generateImageForStep from dependencies
   const handleSaveRecipe = async () => {
-    if(!user){
+    if (!user) {
       toast.error("Please login to save recipe");
       return;
     }
     try {
+      console.log("recipe ", recipe, "ingredients ", recipe.ingredients, " instructions ", recipe.instructions, " nutrition ", recipe.nutrition);
       await insertRecipe({
-        recipe: recipe,
+        recipe: {...recipe, profile_id: user.id},
         ingredients: recipe.ingredients,
         instructions: recipe.instructions,
         nutrition: recipe.nutrition,
@@ -36,8 +86,9 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
     }
   };
 
+
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <form>
         <DialogTrigger asChild>
           <Button
@@ -76,7 +127,7 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
                     src={recipe.image?.url ?? "/placeholder.jpg"}
                     alt={recipe.title}
                     fill
-                    className="object-cover w-full h-full rounded-lg"
+                    className="object-contain w-full h-full rounded-lg"
                   />
                 </div>
 
@@ -155,12 +206,23 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
                               <div className="relative w-full h-96 mb-4">
                                 <Image
                                   src={
-                                    instruction.image?.url ?? "/placeholder.jpg"
+                                    stepImages[idx]?.url ??
+                                    "/placeholder-step.svg"
                                   }
                                   alt={instruction.title}
                                   fill
-                                  className="object-cover w-full h-full rounded-lg"
+                                  className="object-contain w-full h-full rounded-lg"
                                 />
+                                {stepImages[idx]?.isLoading && (
+                                  <div className="absolute inset-0 bg-white/80 dark:bg-slate-900/80 flex items-center justify-center rounded-lg">
+                                    <div className="flex flex-col items-center gap-2">
+                                      <Loader2 className="w-6 h-6 animate-spin text-emerald-600" />
+                                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                                        Generating image...
+                                      </span>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                               <p className="text-body leading-relaxed md:text-2xl font-bold">
                                 {instruction.title}

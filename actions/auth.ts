@@ -1,5 +1,7 @@
 import { supabase } from "@/lib/supabase-client";
 import { SignUpData } from "@/utils/types/account";
+import { createClient } from "@/utils/supabase/server";
+import { createClient as createBrowserClient } from "@/utils/supabase/client";
 
 export const signup = async (formData: SignUpData) => {
   try {

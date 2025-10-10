@@ -62,6 +62,7 @@ import { Profile } from "@/utils/types/Settings";
 import DeleteAccount from "@/components/dashboard/DeleteAccount";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
+import { deleteProfilePicture } from "@/actions/profile/profile";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -133,8 +134,8 @@ export default function SettingsPage() {
     if (!user?.id) return;
 
     if(!data.image.url){
-      await deleteProfilePicture(image.path)
-    }else (data.image_url !== profile?.image?.url && data.image_file) {
+      await deleteProfilePicture(data.image.path)
+    }else if (data.image_url !== profile?.image?.url && data.image_file) {
       // upload new picture new image
       await upsertProfilePicure(user.id, data.image_file);
     }

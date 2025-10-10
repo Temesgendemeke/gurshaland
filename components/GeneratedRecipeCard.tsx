@@ -18,8 +18,6 @@ import generateImage from "@/utils/getImage";
 import FullRecipeModel from "./recipe/FullRecipeModel";
 
 export default function GeneratedRecipeCard({ recipe }: { recipe: any }) {
-  const [showFullRecipe, setShowFullRecipe] = useState(false);
-  console.log(recipe);
   return (
     <>
       <div className="space-y-4">
@@ -28,6 +26,15 @@ export default function GeneratedRecipeCard({ recipe }: { recipe: any }) {
           <Badge className="bg-emerald-100 text-emerald-700">
             AI Generated
           </Badge>
+        </div>
+        <div>
+          <Image
+            width={400}
+            height={300}
+            src={recipe.image?.url ?? "/placeholder.jpg"}
+            alt={recipe.title}
+            className="object-cover w-full h-48 rounded-lg"
+          />
         </div>
         <p className="text-body text-sm">{recipe.description}</p>
         <div className="flex items-center space-x-4 text-sm text-body-muted">

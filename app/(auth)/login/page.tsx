@@ -18,9 +18,9 @@ import { loginFormSchema } from "@/utils/schema";
 import HeroImage from "@/components/HeroImage";
 import Link from "next/link";
 import { login } from "@/actions/auth";
-import EyeButton from "@/components/EyeButton";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import PasswordField from "@/components/PasswordField";
 
 export type LoginFormSchema = z.infer<typeof loginFormSchema>;
 
@@ -38,7 +38,6 @@ const Page = () => {
   const router = useRouter();
 
   const onSubmit = async (formData: { email: string; password: string }) => {
-    setLoading(true);
     try {
       await login(formData.email, formData.password);
       toast.success("You have successfully logged in. እንኳን ደህና መጡ።");
@@ -50,23 +49,21 @@ const Page = () => {
           ? error.message
           : "An error occurred while logging in. Please check your credentials and try again."
       );
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <div>
       <Header />
-      <div className="flex m-10">
-        <HeroImage />
-        <div className="flex-1 mt-10">
+      <div className="flex m-10 flex-wrap">
+        <HeroImage cls="flex-1 hidden sm:block" />
+        <div className="flex-1 mt-10 w-full">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="w-2/3 space-y-6 mx-auto"
+              className="w-full md:w-2/3 space-y-6 mx-auto"
             >
-              <h1 className="text-5xl my-5 font-bold text-center text-emerald-600">
+              <h1 className="text-5xl md:text-5xl my-5 font-bold text-center text-emerald-600">
                 Welcome back
               </h1>
               <p className="text-center text-gray-500">Login with</p>
@@ -94,7 +91,7 @@ const Page = () => {
                   <FormItem>
                     <FormLabel className="capitalize">password</FormLabel>
                     <FormControl>
-                      <div className="relative">
+                      {/* <div className="relative">
                         <Input
                           placeholder="enter your password"
                           type={showPassword ? "text" : "password"}
@@ -105,7 +102,8 @@ const Page = () => {
                           showPassword={showPassword}
                           setShowPassword={setShowPassword}
                         />
-                      </div>
+                      </div> */}
+                      <PasswordField {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -117,8 +115,8 @@ const Page = () => {
               <Button
                 type="submit"
                 className="w-full lg:w-40"
-                disabled={form.formState.isSubmitting || loading}
-                aria-disabled={form.formState.isSubmitting || loading}
+                disabled={form.formState.isSubmitting}
+                aria-disabled={form.formState.isSubmitting}
               >
                 Login
               </Button>

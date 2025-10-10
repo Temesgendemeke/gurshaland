@@ -6,6 +6,7 @@ import GeneratedRecipeCard from "./GeneratedRecipeCard";
 import EmptyRecipePrompt from "./EmptyRecipePrompt";
 import { Button } from "./ui/button";
 import GeneratingSkeleton from "./skeleton/GenerateSkeleton";
+import RecipeProgressBar from "./RecipeProgressBar";
 import { generateAIRecipe } from "@/actions/Recipe/airecipe";
 
 export default function AIRecipeGenerator() {
@@ -96,7 +97,7 @@ export default function AIRecipeGenerator() {
         </div>
         <div className="modern-card p-6">
           {isGenerating ? (
-            <GeneratingSkeleton />
+            <RecipeProgressBar isGenerating={isGenerating} />
           ) : generatedRecipe ? (
             <GeneratedRecipeCard recipe={generatedRecipe} />
           ) : error ? (

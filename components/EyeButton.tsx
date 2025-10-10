@@ -10,7 +10,7 @@ interface EyeButtonProps{
 
 const EyeButton = ({ showPassword, setShowPassword} : EyeButtonProps ) => {
     return (
-        <Button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute transform -translate-y-1/2 top-1/2 right-2" variant={'ghost'}>
+        <Button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute  hover:bg-transparent transform -translate-y-1/2 top-1/2 right-2" variant={'ghost'}>
             {showPassword ? <Eye /> : <EyeOff />}
         </Button>
     );

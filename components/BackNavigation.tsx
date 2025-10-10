@@ -16,6 +16,10 @@ const BackNavigation = ({ route, pagename }: Props) => {
   const from = searchParams.get("from");
 
   const handleGoBack = () => {
+    if (route) {
+      router.push(route);
+      return;
+    }
     router.back();
   };
   return (

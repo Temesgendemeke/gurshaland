@@ -34,8 +34,6 @@ interface SubmitRecipeFormProps {
 export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
   const [newTag, setNewTag] = useState("");
   const [categories, setCategories] = useState([]);
-  const clickRef = useRef(false);
-  const isEditMode = !!recipe;
   const router = useRouter();
 
   // Fetch categories on component mount

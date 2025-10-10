@@ -27,6 +27,7 @@ interface AccountDropDownProps {
 
 const AccountDropDown = ({ user }: AccountDropDownProps) => {
   const router = useRouter();
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -68,7 +69,7 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-background w-40 z-50">
-        {dropdownList.map((element) => (
+        {user && dropdownList.map((element) => (
           <DropdownMenuItem asChild className="w-full p-0" key={element.route}>
             <Button
               variant="ghost"
@@ -80,6 +81,7 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
             </Button>
           </DropdownMenuItem>
         ))}
+
         <DropdownMenuItem asChild className="w-full p-0">
           {user ? (
             <Button

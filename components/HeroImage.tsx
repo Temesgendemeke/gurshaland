@@ -6,10 +6,10 @@ import dorowet_image from "@/public/dorowet.webp";
 import gursh_image from "@/public/gursha.webp";
 
 
-const HeroImage = () => {
+const HeroImage = ({cls}: {cls?: string}) => {
   return (
     <>
-      <div className="relative">
+      <div className={`relative ${cls}`}>
         <div className="relative">
           <Image
             src={gursh_image}

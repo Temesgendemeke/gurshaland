@@ -118,58 +118,52 @@ Example shape:
       // Generate main recipe image professionally
       try {
         const mainPrompt = recipeData?.title 
-          ? `${recipeData.title} Ethiopian cuisine, traditional food, high quality, appetizing`
-          : "Ethiopian traditional cuisine, colorful food, high quality";
+          ? `${recipeData.title} Ethiopian cuisine`
+          : "Ethiopian traditional cuisine, colorful food";
         
-        const mainImage = await generateRecipeImage(mainPrompt);
+          const mainImage = await generateRecipeImage(mainPrompt);
         
         if (mainImage) {
           recipeData.image = {
             url: mainImage.url,
             path: mainImage.path,
-            recipe_id: "" // Will be set when recipe is saved
+            recipe_id: "temp-" + Date.now() // Temporary ID until saved
           };
         } else {
           // Set a default placeholder image
           recipeData.image = {
-            url: "/placeholder.jpg", // Your placeholder image
+            url: "/placeholder.jpg", 
             path: "placeholder.jpg",
-            recipe_id: ""
+            recipe_id: "temp-" + Date.now()
           };
         }
 
         console.log("recipeData", recipeData)
         console.log("recipeData.instructions", recipeData.instructions)
 
-        // Generate step images professionally
+        // Initialize step images with placeholders for lazy loading
         if (Array.isArray(recipeData?.instructions)) {
-          for (const instruction of recipeData.instructions) {
-            try {
-              const stepImage = await generateRecipeImage(instruction?.imagePrompt);
-              console.log("stepImage", stepImage)
-              if (stepImage) {
-                instruction.image = {
-                  url: stepImage.url,
-                  path: stepImage.path,
-                  instruction_id: ""
-                };
-              }
-            } catch (error) {
-              console.error("Error generating step image:", error);
-            }
-          }
+          recipeData.instructions.forEach((instruction, index) => {
+            instruction.image = {
+              url: "/placeholder-step.svg", 
+              path: `placeholder-step-${index}`,
+              instruction_id: `temp-instruction-${index}-${Date.now()}`,
+              isLoading: true, // Flag to indicate this needs to be generated
+              imagePrompt: instruction.imagePrompt || "" // Store the prompt for later generation
+            };
+          });
         }
         
         console.log("recipeData", recipeData)
       } catch (error) {
         console.error("Error generating main recipe image:", error);
-        // Set default image on error
         recipeData.image = {
           url: "/placeholder.jpg",
           path: "placeholder.jpg",
-          recipe_id: ""
+          recipe_id: "temp-" + Date.now()
         };
       }
+
   
       return { success: true, recipe: recipeData };
     } catch (error: any) {

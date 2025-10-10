@@ -34,6 +34,8 @@ export interface RecipeImage extends Image {
 
 export interface InstructionImage extends Image {
   instruction_id: string;
+  isLoading?: boolean;
+  imagePrompt?: string;
 }
 
 export default interface Recipe {
