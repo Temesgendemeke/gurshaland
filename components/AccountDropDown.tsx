@@ -32,6 +32,7 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
     try {
       await logout();
       toast.success("Logged out successfully.");
+      router.push("/login");
     } catch (error) {
       console.log(error);
       toast.error("Failed to log out.");

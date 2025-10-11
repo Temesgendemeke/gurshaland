@@ -1,5 +1,5 @@
 import { BUCKET } from "@/constants/image";
-import { supabase } from "@/lib/supabase-client";
+import { createClient } from "@/utils/supabase/client";
 import Recipe, {
   Ingredient,
   Instruction,
@@ -8,9 +8,9 @@ import Recipe, {
   RecipeComment,
 } from "@/utils/types/recipe";
 
-// Helper: strip non-JSON noise and ensure we only parse JSON
 
 
+const supabase = createClient()
 
 export const getRecipebySlug = async (slug: string) => {
   const { data, error } = await supabase.rpc("get_full_recipe", {

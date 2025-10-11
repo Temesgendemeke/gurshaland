@@ -1,6 +1,8 @@
 import { BUCKET } from "@/constants/image";
-import { supabase } from "@/lib/supabase-client";
+import { createClient } from "@/utils/supabase/client";
 
+
+const supabase = createClient()
 
 export const uploadImage = async (file: File, userId: string) => {
   const filePath = `recipe/${userId}/${file.name}_${Date.now()}`;

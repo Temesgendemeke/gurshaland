@@ -1,4 +1,8 @@
-import { supabase } from "@/lib/supabase-client";
+import { createClient } from "@/utils/supabase/client";
+
+
+const supabase = createClient()
+
 
 export const getCategories = async () => {
   const { data, error } = await supabase.rpc("get_all_categories");

@@ -8,8 +8,6 @@ import {
   Star,
   Users,
   ChefHat,
-  TrendingUp,
-  MessageCircle,
   Heart,
   Zap,
 } from "lucide-react";

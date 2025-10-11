@@ -1,5 +1,7 @@
 import { BUCKET } from "@/constants/image";
-import { supabase } from "@/lib/supabase-client";
+import { createClient } from "@/utils/supabase/client";
+
+const supabase = createClient();
 import { Blog, BlogComment, Content } from "@/utils/types/blog";
 import { Ingredient } from "@/utils/types/recipe";
 

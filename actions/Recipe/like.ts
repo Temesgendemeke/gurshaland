@@ -1,5 +1,7 @@
-import { supabase } from "@/lib/supabase-client";
+import { createClient } from "@/utils/supabase/client";
 
+
+const supabase = createClient()
 
 export const postOrDeleteLike = async (liked_by: string, recipe_id: string) => {
     const { error: deleteError, count } = await supabase

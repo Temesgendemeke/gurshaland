@@ -1,4 +1,6 @@
-import { supabase } from "@/lib/supabase-client"
+import { createClient } from "@/utils/supabase/client";
+
+const supabase = createClient();
 
 export const postBlogComment = async(comment: BlogComment)=>{
     const {data:newComment, error} = await supabase.rpc('post_blog_comment',

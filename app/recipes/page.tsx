@@ -18,7 +18,9 @@ import {
 } from "@/components/ui/select";
 import { getFeaturedRecipes, getTrendingRecipes, getRecipes } from "@/actions/Recipe/recipe";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase-client";
+import { createClient } from "@/utils/supabase/client";
+
+const supabase = createClient();
 import { useAuth } from "@/store/useAuth";
 import { recipeStore } from "@/store/Recipe";
 import RecipeListSkeleton from "@/components/skeleton/RecipeList";

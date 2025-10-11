@@ -1,6 +1,8 @@
 import { BUCKET } from "@/constants/image";
-import { supabase } from "@/lib/supabase-client";
+import { createClient } from "@/utils/supabase/client";
 
+
+const supabase = createClient()
 
 export const uploadInstructionImage = async (
   image_file: File,

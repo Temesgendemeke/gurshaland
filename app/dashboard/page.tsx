@@ -27,6 +27,7 @@ import { Blog } from "@/utils/types/blog";
 import { Post } from "@/utils/types/Dashboard";
 import Recipe from "@/utils/types/recipe";
 import { Send, User2, UtensilsCrossed } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface Status {
@@ -43,6 +44,9 @@ export default function Page() {
   });
   const [loading, setLoading] = useState<Boolean>(true);
   const user = useAuth((store) => store.user);
+  const router = useRouter();
+
+
 
   useEffect(() => {
     (async () => {
@@ -57,6 +61,7 @@ export default function Page() {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0 space-y-5">
       <div className="space-y-2.5">
+        {JSON.stringify(user)}
         <div className="flex items-center gap-3 ml-5 mt-2">
           <h2 className="text-3xl md:text-4xl font-bold">Dashboard Overview</h2>
           <Separator orientation="vertical" className="h-8" />

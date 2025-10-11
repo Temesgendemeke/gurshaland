@@ -1,4 +1,6 @@
-import { supabase } from "@/lib/supabase-client"
+import { createClient } from "@/utils/supabase/client";
+
+const supabase = createClient();
 
 
 // fetch followers

@@ -1,9 +1,9 @@
-import { supabase } from "@/lib/supabase-client";
-
+import { createClient } from "@/utils/supabase/client";
 
 
 
 export const toggleBookmark = async(user_id: string, recipe_id: string)=>{
+    const supabase = createClient()
     const {error: deleteError, count} = await supabase
     .from("recipe_bookmark")
     .delete({count:"exact"})

@@ -1,5 +1,7 @@
-import { supabase } from "@/lib/supabase-client";
+import { createClient } from "@/utils/supabase/client";
 import { Rating } from "@/utils/types/recipe";
+
+const supabase = createClient();
 
 export const postRating = async (rating: Rating)=>{
   const { error } = await supabase

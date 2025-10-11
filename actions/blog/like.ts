@@ -1,4 +1,6 @@
-import { supabase } from "@/lib/supabase-client"
+import { createClient } from "@/utils/supabase/client";
+
+const supabase = createClient();
 
 
 export const toggleBlogLike = async(user_id: string, blog_id: string)=>{

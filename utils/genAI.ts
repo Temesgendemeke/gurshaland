@@ -1,6 +1,6 @@
 "use server"
 import { GoogleGenAI, Modality } from "@google/genai";
-import supabase from "./supabase-server";
+import { createClient } from "./supabase/server";
 
 import { BUCKET } from "@/constants/image";
 import generateImage from "./getImage";
@@ -8,6 +8,8 @@ import generateImage from "./getImage";
 const genAI = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
+
+const supabase = createClient();
 
 // Professional image generation function
 export const AIgenerateImage = async (prompt: string): Promise<{ url: string; path: string } | null> => {
@@ -119,7 +121,7 @@ export const uploadAIImageToStorage = async (imageData: string, filename: string
     const uniqueFilename = `/recipe/ai_generated/${timestamp}_${filename}`;
 
     // Upload to Supabase Storage
-    const { data, error } = await supabase.storage.from(BUCKET).upload(uniqueFilename, buffer, {
+    const { data, error } = await (await supabase).storage.from(BUCKET).upload(uniqueFilename, buffer, {
       cacheControl: "3600",
       upsert: true,
       contentType: `image/${fileExtension === 'webp' ? 'webp' : 'jpeg'}`,
@@ -128,7 +130,7 @@ export const uploadAIImageToStorage = async (imageData: string, filename: string
     if (error) throw error;
 
     // Get the public URL
-    const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(uniqueFilename);
+    const { data: urlData } = await (await supabase).storage.from(BUCKET).getPublicUrl(uniqueFilename);
 
     return {
       url: urlData.publicUrl,

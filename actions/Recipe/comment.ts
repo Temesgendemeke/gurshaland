@@ -1,7 +1,8 @@
-import { supabase } from "@/lib/supabase-client";
+import { createClient } from "@/utils/supabase/client";
 import { RecipeComment } from "@/utils/types/recipe";
 
 
+const supabase = createClient()
 
 export const postComment = async (comment: RecipeComment) => {
  const {data, error} = await supabase.rpc("post_recipe_comment", {

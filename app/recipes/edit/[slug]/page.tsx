@@ -1,5 +1,7 @@
 import SubmitRecipeForm from "@/components/SubmitRecipe";
-import { supabase } from "@/lib/supabase-client";
+import { createClient } from "@/utils/supabase/client";
+
+const supabase = createClient();
 import { getRecipebySlug } from "@/actions/Recipe/recipe";
 import React from "react";
 
