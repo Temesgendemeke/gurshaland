@@ -4,12 +4,12 @@ import { createClient } from "./supabase/server";
 
 import { BUCKET } from "@/constants/image";
 import generateImage from "./getImage";
+import { da } from "date-fns/locale";
 
 const genAI = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-const supabase = createClient();
 
 // Professional image generation function
 export const AIgenerateImage = async (prompt: string): Promise<{ url: string; path: string } | null> => {
@@ -49,14 +49,16 @@ export const AIgenerateImage = async (prompt: string): Promise<{ url: string; pa
       console.log(`🔍 Processing part:`, part);
       if (part.inlineData && part.inlineData.mimeType?.startsWith('image/')) {
         console.log(`🖼️ Found image data with mime type:`, part.inlineData.mimeType);
-        // Convert base64 to data URL
+        // Convert base64 to data URL and upload to storage
         const dataUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
         console.log(`✅ Generated data URL (length: ${dataUrl.length})`);
 
-        return {url: dataUrl, path: ""};
-
-        // const { url, path } = await uploadAIImageToStorage(dataUrl, `ai-generated-${Date.now()}.webp`) ?? { url: null, path: null }
-        // return { url: url ?? "", path: path ?? "" }
+        // const uploaded = await uploadAIImageToStorage(
+        //   dataUrl,
+        //   `ai-generated-${Date.now()}.${part.inlineData.mimeType.split('/')[1] || 'webp'}`
+        // );
+        // return uploaded;
+        return {url: dataUrl, path: 'inlineData'};
       }
     }
 
@@ -72,8 +74,8 @@ export const generateRecipeImage = async (prompt: string): Promise<{ url: string
   try {
     console.log(`🖼️ generateRecipeImage called with prompt: "${prompt}"`);
 
-    // Try AI generation first with timeout
-    const aiImagePromise = await AIgenerateImage(prompt);
+  // Try AI generation first with timeout
+  const aiImagePromise = AIgenerateImage(prompt);
     const timeoutPromise = new Promise<null>((_, reject) =>
       setTimeout(() => reject(new Error('Image generation timeout')), 15000)
     );
@@ -85,21 +87,6 @@ export const generateRecipeImage = async (prompt: string): Promise<{ url: string
       return aiImage;
     }
     console.log(`❌ AI image generation failed for: "${prompt}"`);
-
-    // Fallback to stock image service with timeout
-    const stockImagePromise = await generateImage(prompt);
-    const stockTimeoutPromise = new Promise<null>((_, reject) =>
-      setTimeout(() => reject(new Error('Stock image timeout')), 10000)
-    );
-
-    const stockImage = await Promise.race([stockImagePromise, stockTimeoutPromise]);
-    if (stockImage) {
-      const filename = `stock-${Date.now()}.jpg`;
-      const uploadedImage = await uploadAIImageToStorage(stockImage.url, filename);
-
-      return uploadedImage;
-    }
-
     return null;
   } catch (error) {
     console.error("Error generating recipe image:", error);
@@ -111,26 +98,45 @@ export const generateRecipeImage = async (prompt: string): Promise<{ url: string
 // Add this function for production use
 export const uploadAIImageToStorage = async (imageData: string, filename: string): Promise<{ url: string; path: string } | null> => {
   try {
-    // Convert data URL to buffer
-    const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
-    const buffer = Buffer.from(base64Data, 'base64');
+    const supabase = await createClient();
+
+    let buffer: Buffer;
+    let contentType = 'image/webp';
+
+    if (imageData.startsWith('data:image/')) {
+      // Convert data URL to buffer
+      const match = imageData.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+      if (!match) throw new Error('Invalid data URL');
+      contentType = match[1];
+      buffer = Buffer.from(match[2], 'base64');
+    } else if (imageData.startsWith('http://') || imageData.startsWith('https://')) {
+      // Fetch remote image and convert to buffer
+      const resp = await fetch(imageData);
+      if (!resp.ok) throw new Error(`Failed to fetch image: ${resp.status}`);
+      const arr = await resp.arrayBuffer();
+      buffer = Buffer.from(arr);
+      const ct = resp.headers.get('content-type');
+      if (ct && ct.startsWith('image/')) contentType = ct;
+    } else {
+      throw new Error('Unsupported imageData format');
+    }
 
     // Generate unique filename with timestamp
     const timestamp = Date.now();
-    const fileExtension = filename.split('.').pop() || 'webp';
-    const uniqueFilename = `/recipe/ai_generated/${timestamp}_${filename}`;
+  const safeFilename = filename.replace(/\s+/g, '_');
+  const uniqueFilename = `recipe/ai_generated/${timestamp}_${safeFilename}`;
 
     // Upload to Supabase Storage
-    const { data, error } = await (await supabase).storage.from(BUCKET).upload(uniqueFilename, buffer, {
+    const { data, error } = await supabase.storage.from(BUCKET).upload(uniqueFilename, buffer, {
       cacheControl: "3600",
       upsert: true,
-      contentType: `image/${fileExtension === 'webp' ? 'webp' : 'jpeg'}`,
+      contentType,
     });
 
     if (error) throw error;
 
     // Get the public URL
-    const { data: urlData } = await (await supabase).storage.from(BUCKET).getPublicUrl(uniqueFilename);
+  const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(uniqueFilename);
 
     return {
       url: urlData.publicUrl,

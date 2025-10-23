@@ -5,8 +5,8 @@ import { Upload, X } from "lucide-react";
 import React from "react";
 
 interface RecipeImageFieldProps {
-  image?: File;
-  setImage: (file?: File) => void;
+  image?: File | string;
+  setImage: (file?: File | string) => void;
 }
 
 export default function RecipeImageField({
@@ -30,7 +30,7 @@ export default function RecipeImageField({
         {image ? (
           <div className="flex flex-col items-center">
             <img
-              src={URL.createObjectURL(image)}
+              src={typeof image === "string" ? image : URL.createObjectURL(image)}
               alt="Recipe Preview"
               className="max-h-48 rounded-lg mb-2 object-contain"
             />

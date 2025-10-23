@@ -5,6 +5,9 @@ import generateImage from "@/utils/getImage";
 import AIgenerateImage from "@/utils/genAI";
 import { generateRecipeImage } from "@/utils/genAI";
 import Recipe from "@/utils/types/recipe";
+import categories from "@/constants/categories";
+import measurements from "@/constants/measurements";
+import { findYoutubeVideo } from "../youtube";
 
 
 function extractJSON(text: string): string {
@@ -34,17 +37,27 @@ export async function generateAIRecipe(ingredients: string, preferences: string)
         apiKey: process.env.GEMINI_API_KEY,
       });
 
+      const allowedCategories = (categories as string[]).filter((c) => c !== 'all');
+      const allowedUnits = (measurements as Array<{code:string;name:string}>).map(m => m.code);
+
       const formattedPrompt = `
 You are a professional Ethiopian chef. Given user ingredients and preferences, return a single STRICT JSON object only.
 Do NOT include markdown, code fences, comments, or any prose. No trailing commas.
 
 Constraints:
 - Fields: title (string), description (string),
-  ingredients (array of { amount: number|null, unit: string|null, item: string }),
+  ingredients (array of { item: string, amount: string|null, unit: string|null, notes?: string|null }),
   instructions (array of { step: number, title: string, description: string, imagePrompt: string }),
   nutrition ({ calories:number, protein:number, carbs:number, fat:number, fiber:number }),
-  cooktime (number), difficulty (string), servings (number).
+  preptime (number), cooktime (number), difficulty (string), servings (number).
 - imagePrompt must be a short, descriptive phrase for image generation (no URLs, no base64).
+ - category (string) must be ONE OF: ${allowedCategories.join(", ")}
+ - Each ingredient.unit must be ONE OF: ${allowedUnits.join(", ")} or null. Use only these codes.
+ - difficulty must be "Easy", "Medium", or "Hard".
+- Use numbers for preptime, cooktime, servings, and nutrition values.
+- Use "null" (not empty or 0) for optional fields if unknown.
+- Provide concise but complete recipe instructions.
+- Ensure JSON is valid and parsable.
 
 User ingredients: ${ingredients}
 User preferences: ${preferences}
@@ -54,15 +67,18 @@ Example shape:
   "title": "AI-Generated Vegetarian Shiro Wat",
   "description": "A personalized version of traditional Ethiopian chickpea stew.",
   "ingredients": [
-    { "amount": 2, "unit": "tbsp", "item": "olive oil" }
+    { "item": "olive oil", "amount": 2, "unit": "tbsp" }
   ],
   "instructions": [
     { "step": 1, "title": "Heat Oil", "description": "Heat olive oil...", "imagePrompt": "Heating olive oil in a pan" }
   ],
   "nutrition": { "calories": 200, "protein": 10, "carbs": 20, "fat": 10, "fiber": 5 },
-  "cooktime": "25",
+  "preptime": 10,
+  "cooktime": 25,
   "difficulty": "Easy",
-  "servings": 4
+  "servings": 4,
+  "category": "${allowedCategories[0] ?? 'Recipes'}"
+  "youtube_search_query": "how to make Shiro wat "
 }
 `;
 
@@ -112,8 +128,86 @@ Example shape:
       const jsonString = extractJSON(responseText.trim());
       console.log("Extracted JSON string:", jsonString);
       
-      const recipeData: Recipe = parseMarkdownJSON(jsonString);
-      console.log("Parsed recipe data:", recipeData);
+      const raw: any = parseMarkdownJSON<any>(jsonString);
+      const normalizeDifficulty = (d: any): string => {
+        const v = String(d ?? '').toLowerCase();
+        if (v === 'easy') return 'Easy';
+        if (v === 'medium') return 'Medium';
+        if (v === 'hard') return 'Hard';
+        return 'Easy';
+      };
+      const pickCategory = (c: any): string => {
+        const name = String(c ?? '').trim();
+        return allowedCategories.includes(name) ? name : (allowedCategories[0] ?? 'Recipes');
+      };
+      // Normalize AI output to match our app schema precisely
+      const recipeData: Recipe = {
+        id: undefined,
+        title: String(raw.title ?? '').trim(),
+        category: { id: '', name: '' },
+        description: String(raw.description ?? '').trim(),
+        preptime: Number(raw.preptime ?? 0) || 0,
+        cooktime: Number(raw.cooktime ?? 0) || 0,
+        servings: Number(raw.servings ?? 1) || 1,
+        difficulty: normalizeDifficulty(raw.difficulty),
+        ingredients: Array.isArray(raw.ingredients)
+          ? raw.ingredients.map((ing: any) => ({
+              item: String(ing.item ?? '').trim(),
+              amount: ing.amount == null ? undefined : String(ing.amount),
+              unit: ((): string | undefined => {
+                const u = ing.unit == null ? undefined : String(ing.unit);
+                return u && allowedUnits.includes(u) ? u : undefined;
+              })(),
+              notes: ing.notes == null ? undefined : String(ing.notes),
+            }))
+          : [],
+        instructions: Array.isArray(raw.instructions)
+          ? raw.instructions.map((ins: any, idx: number) => ({
+              step: Number(ins.step ?? idx + 1) || idx + 1,
+              title: String(ins.title ?? `Step ${idx + 1}`),
+              description: String(ins.description ?? ''),
+              time: ins.time == null ? undefined : String(ins.time),
+              tips: ins.tips == null ? undefined : String(ins.tips),
+              imagePrompt: String(ins.imagePrompt ?? ''),
+            }))
+          : [],
+        nutrition: {
+          calories: Number(raw?.nutrition?.calories ?? 0) || 0,
+          protein: Number(raw?.nutrition?.protein ?? 0) || 0,
+          carbs: Number(raw?.nutrition?.carbs ?? 0) || 0,
+          fat: Number(raw?.nutrition?.fat ?? 0) || 0,
+          fiber: Number(raw?.nutrition?.fiber ?? 0) || 0,
+        },
+        tags: Array.isArray(raw.tags) ? raw.tags.map((t: any) => String(t)) : [],
+        culturalNote: String(raw.culturalNote ?? ''),
+        image: { path: '', url: '', recipe_id: '' },
+        status: 'draft',
+        author_id: '',
+        slug: '',
+        author: undefined as any,
+        time: '',
+        reviews: 0,
+        rating: [],
+        likes: [],
+        comments: [],
+        average_rating: 0,
+        bookmarks: [],
+        profile: {
+          id: '', username: '', full_name: '', avatar_url: '', bio: ''
+        },
+        youtube_search_query: ''
+      };
+      // set category from model (string) to our object shape
+      (recipeData as any).category = { id: '', name: pickCategory(raw.category) };
+      console.log("Parsed + normalized recipe data:", recipeData);
+
+
+      const youtube_video_id = await findYoutubeVideo(recipeData.youtube_search_query!)
+
+      if(youtube_video_id){
+        recipeData.youtubeVideoId = youtube_video_id;
+      }
+
   
       // Generate main recipe image professionally
       try {
@@ -142,16 +236,34 @@ Example shape:
         console.log("recipeData.instructions", recipeData.instructions)
 
         // Initialize step images with placeholders for lazy loading
-        if (Array.isArray(recipeData?.instructions)) {
-          recipeData.instructions.forEach((instruction, index) => {
-            instruction.image = {
-              url: "/placeholder-step.svg", 
-              path: `placeholder-step-${index}`,
-              instruction_id: `temp-instruction-${index}-${Date.now()}`,
-              isLoading: true, // Flag to indicate this needs to be generated
-              imagePrompt: instruction.imagePrompt || "" // Store the prompt for later generation
-            };
-          });
+        // if (Array.isArray(recipeData?.instructions)) {
+        //   recipeData.instructions.forEach(async(instruction, index) => {
+        //     console.log("Generating image for instruction:", instruction);
+        //     console.log("instruction.imagePrompt", instruction.imagePrompt);
+        //       const ins_image = await generateRecipeImage(instruction.imagePrompt);
+        //       instruction.image = {
+        //         url: ins_image?.url || "/placeholder-step.svg",
+        //         path: ins_image?.path || `placeholder-step-${index}`,
+        //         instruction_id: ''
+        //       };
+        //   });
+        // }
+
+
+        if(Array.isArray(recipeData?.instructions)) {
+          recipeData.instructions = await Promise.all(
+            recipeData.instructions.map(async (instruction, index) => {
+              console.log("Generating image for instruction:", instruction);
+              console.log("instruction.imagePrompt", instruction.imagePrompt);
+              const ins_image = await generateRecipeImage(instruction?.imagePrompt);
+              const image = {
+                url: ins_image?.url || "/placeholder-step.svg",
+                path: ins_image?.path || `placeholder-step-${index}`,
+                instruction_id: ''
+              };
+              return { ...instruction, image };
+            })
+          );
         }
         
         console.log("recipeData", recipeData)

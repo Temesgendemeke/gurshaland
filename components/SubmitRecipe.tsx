@@ -29,9 +29,10 @@ type FormValues = z.infer<typeof formSchema>;
 
 interface SubmitRecipeFormProps {
   recipe?: Recipe;
+  mode?: 'create' | 'edit';
 }
 
-export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
+export default function SubmitRecipeForm({ recipe, mode = 'create' }: SubmitRecipeFormProps) {
   const [newTag, setNewTag] = useState("");
   const [categories, setCategories] = useState([]);
   const router = useRouter();
@@ -93,7 +94,9 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
     },
   });
   const user = useAuth((store) => store.user);
-  const [recipeImage, setRecipeImage] = useState<File>();
+  const [recipeImage, setRecipeImage] = useState<File | string>(
+    mode !== "create" ? (recipe?.image.url ?? "") : ""
+  );
   const [instructionImages, setinstructionImage] = useState<
     { step: number; image: File }[]
   >([]);
@@ -109,6 +112,7 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
     append: appendInstruction,
     remove: removeInstruction,
   } = useFieldArray({ control: form.control, name: "instructions" });
+
 
   const tags = form.watch("recipe.tags");
 
@@ -173,19 +177,7 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <Header />
-      <div className=" mx-auto px-6 py-12 space-y-4">
-        <BackNavigation route="/recipes" pagename="Recipes" />
-        <div className="text-center mb-12">
-          <h1 className="text-7xl font-bold mb-4">
-            <span className="">Share Your Recipe</span>
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
-            Help preserve Ethiopian culinary traditions by sharing your family
-            recipes
-          </p>
-        </div>
+    <>      
         <Form {...form}>
           <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
             <BasicInfoFields
@@ -205,8 +197,6 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
               instructionFields={instructionFields}
               appendInstruction={appendInstruction}
               removeInstruction={removeInstruction}
-              images={instructionImages}
-              setImage={setinstructionImage}
             />
             <NutritionField form={form} />
             <TagsField
@@ -218,21 +208,19 @@ export default function SubmitRecipeForm({ recipe }: SubmitRecipeFormProps) {
             />
             <CulturalNoteField form={form} />
             <StatusField form={form} />
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                type="submit"
-                size="lg"
-                className="btn-primary-modern rounded-full"
-                disabled={form.formState.isSubmitting}
+            <div className={`flex flex-col sm:flex-row gap-4 justify-center`}>
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="btn-primary-modern rounded-full"
+                  disabled={form.formState.isSubmitting}
                 aria-disabled={form.formState.isSubmitting}
               >
-                {form.formState.isSubmitting ? "Publishing..." : "Publish Recipe"}
+                {mode == 'create' ? (form.formState.isSubmitting ? "Publishing..." : "Publish Recipe") : (form.formState.isSubmitting ? "Updating..." : "Update Recipe")}
               </Button>
             </div>
           </form>
         </Form>
-      </div>
-      <Footer />
-    </div>
+    </> 
   );
 }

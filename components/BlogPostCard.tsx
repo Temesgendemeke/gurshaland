@@ -39,7 +39,6 @@ export default function BlogPostCard({ post }: { post: Blog }) {
               </Badge>
             ))}
           </div>
-          <p>{JSON.stringify(post.author)}</p>
           <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mt-auto">
             <div className="flex items-center space-x-2">
               <User className="w-4 h-4" />

@@ -20,7 +20,12 @@ export interface Instruction {
   time?: string;
   tips?: string;
   image?: InstructionImage;
-  imagePrompt?: string;
+  
+}
+
+export interface AIRecipeInstruction extends Instruction {
+  imagePrompt: string;
+  isLoading: boolean;
 }
 
 interface Image {
@@ -69,7 +74,14 @@ export default interface Recipe {
   bookmarks?: RecipeBookmark[]
   profile: Profile;
   view_count?: number;
+  youtube_search_query?: string;
+  youtubeVideoId?: string;
 }
+
+
+
+
+
 
 export interface Profile{
   avatar_url: string,

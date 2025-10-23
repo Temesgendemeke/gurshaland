@@ -17,7 +17,7 @@ export default function AIRecipeGenerator() {
   const [error, setError] = useState<string | null>(null);
   const handleGenerate = async () => {
     setIsGenerating(true);
-    setError(null); // Clear previous errors
+    setError(null); 
 
     try {
       console.log("Starting recipe generation...");

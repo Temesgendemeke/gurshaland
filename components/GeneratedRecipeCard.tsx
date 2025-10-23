@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { Clock, Users, X } from "lucide-react";
+import { Clock, Edit, Users, X } from "lucide-react";
 import { useState } from "react";
 import {
   Dialog,
@@ -16,6 +16,7 @@ import { DialogDescription } from "./ui/dialog";
 import Image from "next/image";
 import generateImage from "@/utils/getImage";
 import FullRecipeModel from "./recipe/FullRecipeModel";
+import SubmitRecipeForm from "./SubmitRecipe";
 
 export default function GeneratedRecipeCard({ recipe }: { recipe: any }) {
   return (

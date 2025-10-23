@@ -22,64 +22,7 @@ import {
 } from "./ui/select";
 import { TablePagination } from "./TablePagination";
 
-const posts = [
-  {
-    id: 1,
-    title: "Understanding React Hooks",
-    like: 120,
-    view: 1500,
-    status: "Published",
-    slug: "understanding-react-hooks",
-  },
-  {
-    id: 2,
-    title: "A Guide to TypeScript",
-    like: 80,
-    view: 900,
-    status: "Draft",
-    slug: "a-guide-to-typescript",
-  },
-  {
-    id: 3,
-    title: "Styling in Next.js",
-    like: 95,
-    view: 1100,
-    status: "Published",
-    slug: "styling-in-nextjs",
-  },
-  {
-    id: 4,
-    title: "Deploying with Vercel",
-    like: 60,
-    view: 700,
-    status: "Archived",
-    slug: "deploying-with-vercel",
-  },
-  {
-    id: 5,
-    title: "API Routes Explained",
-    like: 130,
-    view: 1700,
-    status: "Published",
-    slug: "api-routes-explained",
-  },
-  {
-    id: 6,
-    title: "Optimizing Performance",
-    like: 75,
-    view: 850,
-    status: "Draft",
-    slug: "optimizing-performance",
-  },
-  {
-    id: 7,
-    title: "Authentication Strategies",
-    like: 110,
-    view: 1400,
-    status: "Published",
-    slug: "authentication-strategies",
-  },
-];
+
 const headers = ["Title", "Like", "View", "Status"];
 const status = ["All", "Published", "Draft"];
 

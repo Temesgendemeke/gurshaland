@@ -61,7 +61,6 @@ export default function Page() {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0 space-y-5">
       <div className="space-y-2.5">
-        {JSON.stringify(user)}
         <div className="flex items-center gap-3 ml-5 mt-2">
           <h2 className="text-3xl md:text-4xl font-bold">Dashboard Overview</h2>
           <Separator orientation="vertical" className="h-8" />

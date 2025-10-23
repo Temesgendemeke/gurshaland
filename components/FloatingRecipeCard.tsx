@@ -5,7 +5,7 @@ import React from "react";
 interface Props {
   cls: string;
   image: string;
-  text: image;
+  text: string;
   rating: number;
 }
 

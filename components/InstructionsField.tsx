@@ -15,6 +15,7 @@ import { useAuth } from "@/store/useAuth";
 import Image from "next/image";
 import { InstructionImage } from "@/utils/types/recipe";
 import { deleteImage } from "@/actions/Recipe/image";
+import ImageBoxSkeleton from "./skeleton/ImageBoxSkeleton";
 
 type Instruction = {
   id: string;
@@ -31,10 +32,6 @@ type InstructionsFieldProps = {
   instructionFields: Instruction[] | any;
   appendInstruction: (instruction: Omit<Instruction, "id">) => void;
   removeInstruction: (index: number) => void;
-  images: { step: number; image: File }[];
-  setImage: React.Dispatch<
-    React.SetStateAction<{ step: number; image: File }[]>
-  >;
 };
 
 export default function InstructionsField({
@@ -42,10 +39,9 @@ export default function InstructionsField({
   instructionFields,
   appendInstruction,
   removeInstruction,
-  images,
-  setImage,
 }: InstructionsFieldProps) {
   const user = useAuth((store) => store.user);
+  const watchInstructions = form.watch("instructions");
 
   const handleImage = (input_cls: string) => {
     document.getElementById(input_cls)?.click();
@@ -58,7 +54,7 @@ export default function InstructionsField({
     const files = e.target.files;
     const file = files && files[0];
     if (!file) return;
-    setImage((prev) => [...prev, { step, image: file }]);
+    form.setValue(`instructions.${step - 1}.image`, { step, url: "", path: "", file });
 
     // if (file && user) {
     //   try {
@@ -83,7 +79,6 @@ export default function InstructionsField({
     e.stopPropagation();
     await deleteImage(form.getValues(`instructions.${step - 1}.image.path`));
     form.setValue(`instructions.${step - 1}.image`, undefined);
-    setImage((prev) => prev.filter((img) => img.step != step));
   };
 
   return (
@@ -93,6 +88,7 @@ export default function InstructionsField({
           Instructions
         </h2>
       </div>
+
       <div className="space-y-6">
         {instructionFields.map((field: any, index: number) => (
           <div
@@ -128,14 +124,13 @@ export default function InstructionsField({
                 onClick={() =>
                   document.getElementById(`input-${index + 1}`)?.click()
                 }
+
               >
-                {images.find((img) => img.step === index + 1)?.image ? (
-                  <div className="flex flex-col items-center w-full">
-                    <Image
-                      src={URL.createObjectURL(
-                        images.find((img) => img.step === index + 1)
-                          ?.image as File
-                      )}
+                {JSON.stringify(watchInstructions[index] )}
+                {watchInstructions[index].image ? (
+                    <div className="flex flex-col items-center w-full">
+                      <Image
+                      src={watchInstructions[index].image?.file ? URL.createObjectURL(watchInstructions[index].image?.file) : watchInstructions[index].image?.url}
                       width={800}
                       height={400}
                       alt="Recipe Preview"
@@ -153,8 +148,8 @@ export default function InstructionsField({
                       Remove
                     </Button>
                   </div>
-                ) : (
-                  <Button
+                  ):(
+                    <Button
                     type="button"
                     variant="outline"
                     className="mt-4 border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
@@ -162,7 +157,11 @@ export default function InstructionsField({
                   >
                     Choose File
                   </Button>
-                )}
+                  )
+                }
+                {/* { 
+                  
+                } */}
               </div>
               <FormField
                 control={form.control}

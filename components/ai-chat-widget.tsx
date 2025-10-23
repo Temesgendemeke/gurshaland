@@ -74,7 +74,7 @@ export function AIChatWidget() {
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 w-80 h-96 modern-card shadow-2xl z-50 flex flex-col">
+    <Card className="fixed bottom-6 right-6 w-96 h-96 modern-card shadow-2xl z-50 flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
         <div className="flex items-center space-x-2">
@@ -95,33 +95,38 @@ export function AIChatWidget() {
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.map((message) => (
           <div key={message.id} className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}>
-            <div
-              className={`max-w-[80%] p-3 rounded-lg text-sm ${
-                message.type === "user" ? "bg-emerald-600 text-white" : "bg-slate-100 dark:bg-slate-800 text-body"
-              }`}
-            >
-              {message.type === "ai" && (
-                <div className="flex items-center space-x-1 mb-1">
-                  <Sparkles className="w-3 h-3 text-emerald-600" />
-                  <span className="text-xs font-medium text-emerald-600">AI Assistant</span>
-                </div>
-              )}
-              {message.content}
+        <div
+          className={`max-w-[80%] p-3 rounded-lg text-sm ${
+            message.type === "user" ? "bg-emerald-600 text-white" : "bg-slate-100 dark:bg-slate-800 text-body"
+          }`}
+        >
+          {message.type === "ai" && (
+            <div className="flex items-center space-x-1 mb-1">
+          <Sparkles className="w-3 h-3 text-emerald-600" />
+          <span className="text-xs font-medium text-emerald-600">AI Assistant</span>
             </div>
+          )}
+          {message.content}
+        </div>
           </div>
         ))}
 
         {isTyping && (
           <div className="flex justify-start">
-            <div className="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg">
-              <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-100"></div>
-                <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-200"></div>
-              </div>
-            </div>
+        <div className="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg">
+          <div className="flex space-x-1">
+            <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-100"></div>
+            <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-200"></div>
+          </div>
+        </div>
           </div>
         )}
+
+        <div
+          key={`bottom-${messages.length}`}
+          ref={(el) => el?.scrollIntoView({ behavior: "smooth", block: "end" })}
+        />
       </div>
 
       {/* Input */}

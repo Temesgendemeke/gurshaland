@@ -24,24 +24,21 @@ export const uploadInstructionImage = async (
       data: { publicUrl: url },
     } = supabase.storage.from(BUCKET).getPublicUrl(path);
 
-    const { data, error } = await supabase.from("instruction_image").insert({
+    const { error } = await supabase.from("instruction_image").insert({
       path,
       url,
       instruction_id,
     });
 
     console.log(
-      "Inserted instruction image:",
-      data,
-      "with path:",
+      "Inserted instruction image with path:",
       path,
       "and url:",
       url
     );
 
     if (error) throw error;
-    console.log("from upload instruction image ", error);
-    return data;
+    return { url, path };
   } catch (error) {
     throw error;
   }
