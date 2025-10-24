@@ -58,7 +58,7 @@ export const AIgenerateImage = async (prompt: string): Promise<{ url: string; pa
         //   `ai-generated-${Date.now()}.${part.inlineData.mimeType.split('/')[1] || 'webp'}`
         // );
         // return uploaded;
-        return {url: dataUrl, path: 'inlineData'};
+        return {url: dataUrl, path: `ai-generated-${Date.now()}.${part.inlineData.mimeType.split('/')[1] || 'webp'}`};
       }
     }
 
@@ -90,6 +90,7 @@ export const generateRecipeImage = async (prompt: string): Promise<{ url: string
     return null;
   } catch (error) {
     console.error("Error generating recipe image:", error);
+    
     return null;
   }
 };
@@ -123,8 +124,8 @@ export const uploadAIImageToStorage = async (imageData: string, filename: string
 
     // Generate unique filename with timestamp
     const timestamp = Date.now();
-  const safeFilename = filename.replace(/\s+/g, '_');
-  const uniqueFilename = `recipe/ai_generated/${timestamp}_${safeFilename}`;
+    const safeFilename = filename.replace(/\s+/g, '_');
+    const uniqueFilename = `recipe/ai_generated/${timestamp}_${safeFilename}`;
 
     // Upload to Supabase Storage
     const { data, error } = await supabase.storage.from(BUCKET).upload(uniqueFilename, buffer, {

@@ -24,7 +24,7 @@ import { useBlog } from "@/store/DashboardBlog";
 // Modern Status Badge Component
 const StatusBadge = ({ status }: { status: string }) => {
   const getStatusConfig = (status: string) => {
-    switch (status.toLowerCase()) {
+    switch (status?.toLowerCase()) {
       case "published":
         return {
           bg: "bg-emerald-100 dark:bg-emerald-900/30",
@@ -192,7 +192,7 @@ export const createPostColumns = (
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`/${linkBasePath}/edit/${row.row.original.slug}`}>
+              <Link href={`${linkBasePath}/edit/${row.row.original.slug}`}>
                 Edit
               </Link>
             </DropdownMenuItem>

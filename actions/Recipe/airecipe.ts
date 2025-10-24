@@ -58,6 +58,8 @@ Constraints:
 - Use "null" (not empty or 0) for optional fields if unknown.
 - Provide concise but complete recipe instructions.
 - Ensure JSON is valid and parsable.
+- youtube_search_query: A search query string to find a relevant YouTube video for this recipe.
+- instructions description must be very clear and easy to follow for home cooks.
 
 User ingredients: ${ingredients}
 User preferences: ${preferences}
@@ -78,7 +80,7 @@ Example shape:
   "difficulty": "Easy",
   "servings": 4,
   "category": "${allowedCategories[0] ?? 'Recipes'}"
-  "youtube_search_query": "how to make Shiro wat "
+  "youtube_search_query": "how to make Shiro wat"
 }
 `;
 
@@ -128,7 +130,8 @@ Example shape:
       const jsonString = extractJSON(responseText.trim());
       console.log("Extracted JSON string:", jsonString);
       
-      const raw: any = parseMarkdownJSON<any>(jsonString);
+      let recipeData: any = parseMarkdownJSON<any>(jsonString);
+
       const normalizeDifficulty = (d: any): string => {
         const v = String(d ?? '').toLowerCase();
         if (v === 'easy') return 'Easy';
@@ -140,72 +143,19 @@ Example shape:
         const name = String(c ?? '').trim();
         return allowedCategories.includes(name) ? name : (allowedCategories[0] ?? 'Recipes');
       };
-      // Normalize AI output to match our app schema precisely
-      const recipeData: Recipe = {
-        id: undefined,
-        title: String(raw.title ?? '').trim(),
-        category: { id: '', name: '' },
-        description: String(raw.description ?? '').trim(),
-        preptime: Number(raw.preptime ?? 0) || 0,
-        cooktime: Number(raw.cooktime ?? 0) || 0,
-        servings: Number(raw.servings ?? 1) || 1,
-        difficulty: normalizeDifficulty(raw.difficulty),
-        ingredients: Array.isArray(raw.ingredients)
-          ? raw.ingredients.map((ing: any) => ({
-              item: String(ing.item ?? '').trim(),
-              amount: ing.amount == null ? undefined : String(ing.amount),
-              unit: ((): string | undefined => {
-                const u = ing.unit == null ? undefined : String(ing.unit);
-                return u && allowedUnits.includes(u) ? u : undefined;
-              })(),
-              notes: ing.notes == null ? undefined : String(ing.notes),
-            }))
-          : [],
-        instructions: Array.isArray(raw.instructions)
-          ? raw.instructions.map((ins: any, idx: number) => ({
-              step: Number(ins.step ?? idx + 1) || idx + 1,
-              title: String(ins.title ?? `Step ${idx + 1}`),
-              description: String(ins.description ?? ''),
-              time: ins.time == null ? undefined : String(ins.time),
-              tips: ins.tips == null ? undefined : String(ins.tips),
-              imagePrompt: String(ins.imagePrompt ?? ''),
-            }))
-          : [],
-        nutrition: {
-          calories: Number(raw?.nutrition?.calories ?? 0) || 0,
-          protein: Number(raw?.nutrition?.protein ?? 0) || 0,
-          carbs: Number(raw?.nutrition?.carbs ?? 0) || 0,
-          fat: Number(raw?.nutrition?.fat ?? 0) || 0,
-          fiber: Number(raw?.nutrition?.fiber ?? 0) || 0,
-        },
-        tags: Array.isArray(raw.tags) ? raw.tags.map((t: any) => String(t)) : [],
-        culturalNote: String(raw.culturalNote ?? ''),
-        image: { path: '', url: '', recipe_id: '' },
-        status: 'draft',
-        author_id: '',
-        slug: '',
-        author: undefined as any,
-        time: '',
-        reviews: 0,
-        rating: [],
-        likes: [],
-        comments: [],
-        average_rating: 0,
-        bookmarks: [],
-        profile: {
-          id: '', username: '', full_name: '', avatar_url: '', bio: ''
-        },
-        youtube_search_query: ''
-      };
-      // set category from model (string) to our object shape
-      (recipeData as any).category = { id: '', name: pickCategory(raw.category) };
-      console.log("Parsed + normalized recipe data:", recipeData);
 
+      recipeData = {
+        ...recipeData,
+        category: pickCategory(recipeData.category),
+        difficulty: normalizeDifficulty(recipeData.difficulty)
+      }
+
+      console.log("recipe data", recipeData)
 
       const youtube_video_id = await findYoutubeVideo(recipeData.youtube_search_query!)
 
       if(youtube_video_id){
-        recipeData.youtubeVideoId = youtube_video_id;
+        recipeData.youtube_video_id = youtube_video_id;
       }
 
   
@@ -223,32 +173,10 @@ Example shape:
             path: mainImage.path,
             recipe_id: "temp-" + Date.now() // Temporary ID until saved
           };
-        } else {
-          // Set a default placeholder image
-          recipeData.image = {
-            url: "/placeholder.jpg", 
-            path: "placeholder.jpg",
-            recipe_id: "temp-" + Date.now()
-          };
         }
 
         console.log("recipeData", recipeData)
         console.log("recipeData.instructions", recipeData.instructions)
-
-        // Initialize step images with placeholders for lazy loading
-        // if (Array.isArray(recipeData?.instructions)) {
-        //   recipeData.instructions.forEach(async(instruction, index) => {
-        //     console.log("Generating image for instruction:", instruction);
-        //     console.log("instruction.imagePrompt", instruction.imagePrompt);
-        //       const ins_image = await generateRecipeImage(instruction.imagePrompt);
-        //       instruction.image = {
-        //         url: ins_image?.url || "/placeholder-step.svg",
-        //         path: ins_image?.path || `placeholder-step-${index}`,
-        //         instruction_id: ''
-        //       };
-        //   });
-        // }
-
 
         if(Array.isArray(recipeData?.instructions)) {
           recipeData.instructions = await Promise.all(
@@ -257,8 +185,8 @@ Example shape:
               console.log("instruction.imagePrompt", instruction.imagePrompt);
               const ins_image = await generateRecipeImage(instruction?.imagePrompt);
               const image = {
-                url: ins_image?.url || "/placeholder-step.svg",
-                path: ins_image?.path || `placeholder-step-${index}`,
+                url: ins_image?.url,
+                path: ins_image?.path,
                 instruction_id: ''
               };
               return { ...instruction, image };

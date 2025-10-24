@@ -36,6 +36,7 @@ export default function SubmitRecipeForm({ recipe, mode = 'create' }: SubmitReci
   const [newTag, setNewTag] = useState("");
   const [categories, setCategories] = useState([]);
   const router = useRouter();
+  
 
   // Fetch categories on component mount
   useEffect(() => {

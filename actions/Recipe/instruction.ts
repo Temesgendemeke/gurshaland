@@ -5,11 +5,12 @@ import { createClient } from "@/utils/supabase/client";
 const supabase = createClient()
 
 export const uploadInstructionImage = async (
-  image_file: File,
+  image_file: File | string,
   user_id: string,
   instruction_id: string
 ) => {
   try {
+    
     const path = `recipe/${user_id}/${image_file.name}_${Date.now()}`;
     const { error: storageError } = await supabase.storage
       .from(BUCKET)

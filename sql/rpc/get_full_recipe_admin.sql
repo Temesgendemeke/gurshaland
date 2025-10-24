@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION get_full_recipe(_slug text)
+CREATE OR REPLACE FUNCTION get_full_recipe_admin(_slug text)
 RETURNS jsonb
 LANGUAGE plpgsql
 AS $$
@@ -44,7 +44,7 @@ BEGIN
     )
     INTO result
     FROM recipe r
-    WHERE r.slug = _slug AND r.status = 'published';
+    WHERE r.slug = _slug;
     RETURN result;
 END 
 $$;

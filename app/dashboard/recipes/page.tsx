@@ -28,6 +28,7 @@ const page = () => {
           progress, assign reviewers, and cook up something amazing!
         </p>
       </div>
+      {JSON.stringify(recipes)}
       <DataTable<Post, any>
         columns={postColumn}
         data={recipes}

@@ -75,7 +75,7 @@ export default interface Recipe {
   profile: Profile;
   view_count?: number;
   youtube_search_query?: string;
-  youtubeVideoId?: string;
+  youtube_video_id?: string;
 }
 
 

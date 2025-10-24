@@ -26,7 +26,7 @@ const BackNavigation = ({ route, pagename }: Props) => {
     <Button
       asChild
       variant="ghost"
-      className="hover:bg-emerald-100 dark:hover:bg-emerald-900/50 justify-start"
+      className="hover:bg-emerald-100 cursor-pointer dark:hover:bg-emerald-900/50 justify-start"
       onClick={handleGoBack}
     >
       <span>

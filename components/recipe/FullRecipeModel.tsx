@@ -22,10 +22,14 @@ import InstructionsSection from "./RecipeModel/InstructionsSection";
 import IngredientsSection from "./RecipeModel/IngredientsSection";
 import RecipeStats from "./RecipeModel/RecipeStats";
 import YoutubeVideoSection from "./YoutubeVideoSection";
+import ImageBoxSkeleton from "../skeleton/ImageBoxSkeleton";
+import { generateUniqueSlug } from "@/utils/slugify";
+import { uploadAIImageToStorage } from "@/utils/genAI";
 
 const FullRecipeModel = ({ recipe }: { recipe: any }) => {
   const user = useAuth((store) => store.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   // const { stepImages, generateImageForStep, isGenerating } =
   //   useLazyImageGeneration({
@@ -53,7 +57,7 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
 
   const handleSaveRecipe = async () => {
         console.log("recipe ", recipe, "ingredients ", recipe.ingredients, " instructions ", recipe.instructions, " nutrition ", recipe.nutrition);
-
+    setIsSaving(true);
     if (!user) {
       toast.error("Please login to save recipe");
       return;
@@ -61,24 +65,39 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
     try {
       console.log("recipe ", recipe, "ingredients ", recipe.ingredients, " instructions ", recipe.instructions, " nutrition ", recipe.nutrition);
       // Only upload if we actually have a File selected for the main image.
-      if (recipe?.image?.file instanceof File) {
-        await uploadRecipeImage(recipe.image.file as File, user.id, recipe.id as string);
-      }
+      const recipe_image = await uploadAIImageToStorage(
+        recipe.image.url,
+        recipe.title.replace(/\s+/g, "_"),
+      );
+
+      // set additional recipe fields
+      recipe.author_id = user.id;
+      recipe.rating = 0;
+      recipe.status = "draft";
+      recipe.slug = await generateUniqueSlug(recipe.title, "recipe");
+      recipe.image = {
+        url: recipe_image?.url,
+        path: recipe_image?.path,
+      };
+
+
+      console.log("recipe " , recipe);
+      console.log("author id ", recipe.author_id)
 
       await Promise.all(
         recipe.instructions.map(
           async (instruction: any) => {
-            if (instruction?.image?.file instanceof File) {
-              const uploaded = await uploadInstructionImage(
-                instruction.image.file as File,
-                user.id,
-                instruction.id as string
-              );
+            if (instruction?.image?.url) {
+
+                const uploaded = await uploadAIImageToStorage(
+                instruction.image.url,
+                instruction.title.replace(/\s+/g, "_"),
+                );
               // ensure image object exists
               instruction.image = {
-                ...(instruction.image || {}),
-                url: uploaded?.url ?? instruction.image.url,
-                path: uploaded?.path ?? instruction.image.path,
+                // ...(instruction.image || {}),
+                url: uploaded?.url,
+                path: uploaded?.path,
               };
             }
           }
@@ -99,6 +118,8 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
       toast.error("Failed to save recipe");
       console.log(error);
     }
+    setIsDialogOpen(false);
+    setIsSaving(false);
   };
 
 
@@ -113,9 +134,45 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
             Open Dialog
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-7xl p-0 bg-white  dark:bg-slate-900">
+        <DialogContent className="max-w-7xl p-0 bg-white  dark:bg-slate-900 ">
           <DialogTitle className="sr-only">{recipe.title}</DialogTitle>
-          <div className="flex justify-center items-center w-full bg-white dark:bg-slate-900">
+
+
+            <div
+            className={`fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
+              isSaving ? "opacity-100 pointer-events-auto delay-0" : "opacity-0 pointer-events-none delay-1000"
+            }`}
+            >
+            <div
+              role="status"
+              aria-live="polite"
+              className="flex items-center gap-3 px-10 py-6 rounded-lg shadow-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700"
+            >
+              {isSaving ? (
+              <Loader2 className="h-7 w-7 animate-spin text-emerald-600" />
+              ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-7 w-7 text-emerald-600"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="m9 12 2 2 4-4"></path>
+              </svg>
+              )}
+              <span className="text-lg text-slate-700 dark:text-slate-300">
+              {isSaving ? "Saving recipe..." : "Saved"}
+              </span>
+            </div>
+            </div>
+
+          {/*  */}
+          <div className={`flex justify-center items-center w-full bg-white dark:bg-slate-900 ${isSaving ?  "blur-lg pointer-events-none" : ""}`}>
             <div className="dark:bg-slate-900 bg-white rounded-2xl  max-w-9xl w-full overflow-y-auto flex flex-col max-h-[80vh]">
               {/* Modal Header */}
               <div className="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 p-6 rounded-t-2xl">
@@ -134,16 +191,19 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
                 </p>
               </div>
 
+
               {/* Modal Content */}
               <div className="p-6 space-y-10 flex-1">
                 {/* Recipe Image */}
                 <div className="relative w-full h-96 mb-4">
-                  <Image
-                    src={recipe.image?.url ?? "/placeholder.jpg"}
+                  {recipe.image?.url ? <Image
+                    src={recipe.image?.url}
                     alt={recipe.title}
                     fill
                     className="object-contain w-full h-full rounded-lg"
-                  />
+                  />  : (
+                    <ImageBoxSkeleton/>
+                  )}
                 </div>
 
                 {/* Recipe Stats */}
@@ -153,165 +213,26 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
                     difficulty: recipe.difficulty,
                   }
                 } />
-                {/* <div className="flex  sm:flex-row sm:items-center  text-sm text-body-muted bg-slate-50 dark:bg-slate-800 py-4  rounded-xl">
-                  <div className="flex items-center gap-2 min-w-[120px] justify-center">
-                    <Clock className="w-5 h-5" />
-                    <span className="font-medium">{recipe.cooktime}min</span>
-                  </div>
-                  <div className="flex items-center gap-2 min-w-[120px] justify-center">
-                    <Users className="w-5 h-5" />
-                    <span className="font-medium">
-                      {recipe.servings} servings
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 min-w-[120px] justify-center">
-                    <Badge variant="secondary" className="text-sm px-3 py-1">
-                      {recipe.difficulty}
-                    </Badge>
-                  </div>
-                </div> */}
+                
 
                 {/* Ingredients Section */}
                 <IngredientsSection ingredients={recipe.ingredients}/>
-                {/* <div className="space-y-4 mt-4">
-                  <h3 className="text-xl font-semibold text-body border-b border-slate-200 dark:border-slate-700 pb-3">
-                    Ingredients
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {recipe?.ingredients?.map(
-                      (
-                        ingredient: {
-                          amount: number;
-                          unit: string;
-                          item: string;
-                        },
-                        idx: number
-                      ) => (
-                        <div
-                          key={idx}
-                          className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg"
-                        >
-                          <div className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></div>
-                          <span className="text-sm text-body leading-relaxed">
-                            {ingredient.amount} {ingredient.unit}{" "}
-                            {ingredient.item}
-                          </span>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div> */}
+
 
                 {/* Instructions Section */}
                 <InstructionsSection instructions={recipe.instructions}/>
-                {/* <div className="space-y-4 mt-4">
-                  <h3 className="text-xl font-semibold text-body border-b border-slate-200 dark:border-slate-700 pb-3">
-                    Instructions
-                  </h3>
-                  <div className="flex flex-col gap-6">
-                    {recipe?.instructions?.map(
-                      (
-                        instruction: {
-                          step: number;
-                          title: string;
-                          description: string;
-                          tips: string;
-                          image: { url: string };
-                        },
-                        idx: number
-                      ) => {
-                        return (
-                          <div key={idx} className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-10 h-10 bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 rounded-full flex items-center justify-center text-lg font-bold">
-                              {idx + 1}
-                            </div>
-                            <div className="flex-1 pt-2">
-                              <div className="relative w-full h-96 mb-4">
-                                <Image
-                                  src={
-                                    recipe.instructions[idx]?.url ??
-                                    "/placeholder-step.svg"
-                                  }
-                                  alt={instruction.title}
-                                  fill
-                                  className="object-contain w-full h-full rounded-lg"
-                                />
-                                {recipe.instructions[idx]?.isLoading && (
-                                  <div className="absolute inset-0 bg-white/80 dark:bg-slate-900/80 flex items-center justify-center rounded-lg">
-                                    <div className="flex flex-col items-center gap-2">
-                                      <Loader2 className="w-6 h-6 animate-spin text-emerald-600" />
-                                      <span className="text-sm text-gray-600 dark:text-gray-400">
-                                        Generating image...
-                                      </span>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                              <p className="text-body leading-relaxed md:text-2xl font-bold">
-                                {instruction.title}
-                              </p>
-                              <p className="text-body-muted text-sm">
-                                {instruction.description}
-                              </p>
-                              <p className="text-body-muted text-sm">
-                                {instruction.tips}
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      }
-                    )}
-                  </div>
-                </div> */}
+
 
                 {/* Nutrition Section */}
                 <NutritionSection nutrition={recipe.nutrition}/>
-                {/* <div className="space-y-4 mt-4">
-                  <h3 className="text-xl font-semibold text-body border-b border-slate-200 dark:border-slate-700 pb-3">
-                    Nutrition
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {recipe?.nutrition && (
-                      <>
-                        <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                          <div className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></div>
-                          <span className="text-sm text-body leading-relaxed">
-                            Calories: {recipe.nutrition.calories}g
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                          <span className="text-sm text-body leading-relaxed">
-                            Protein: {recipe.nutrition.protein}g
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                          <div className="w-2 h-2 bg-yellow-500 rounded-full flex-shrink-0"></div>
-                          <span className="text-sm text-body leading-relaxed">
-                            Carbs: {recipe.nutrition.carbs}g
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                          <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0"></div>
-                          <span className="text-sm text-body leading-relaxed">
-                            Fat: {recipe.nutrition.fat}g
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full flex-shrink-0"></div>
-                          <span className="text-sm text-body leading-relaxed">
-                            Fiber: {recipe.nutrition.fiber}g
-                          </span>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div> */}
-                <YoutubeVideoSection videoId={recipe.}  videoQuery={recipe.youtube_search_query}/>
+                
+                {/* Youtube video section */}
+                <YoutubeVideoSection videoId={recipe.youtubeVideoId}  videoQuery={recipe.youtube_search_query}/>
               </div>
             </div>
           </div>
-          <DialogFooter className="pb-4 mr-5">
+          
+          <DialogFooter className={`pb-4 mr-5 ${isSaving ? "pointer-events-none blur-lg" : ""}`}>
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>

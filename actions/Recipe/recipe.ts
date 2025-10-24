@@ -24,6 +24,20 @@ export const getRecipebySlug = async (slug: string) => {
 };
 
 
+export const getRecipebySlugAdmin = async (slug: string) => {
+
+  console.log("Fetching recipe for admin with slug: ", slug);
+  const { data, error } = await supabase.rpc("get_full_recipe_admin", {
+    _slug: 'authentic-ethiopian-shiro-wat',
+  });
+
+  console.log("recipe data from admin ", data, " error ", error);
+  
+  if (error) throw error;
+
+  return data;
+}
+
 
 export const insertRecipe = async (formData: {
   recipe: any;

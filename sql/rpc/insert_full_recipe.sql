@@ -1,35 +1,24 @@
-CREATE OR REPLACE FUNCTION insert_full_recipe(
-  _recipe jsonb,
-  _ingredients jsonb,
-  _instructions jsonb,
-  _nutrition jsonb,
-  _recipe_rating jsonb,
-  _category jsonb
-)
-RETURNS jsonb
-LANGUAGE plpgsql
-AS $$
 DECLARE
   new_recipe_id INT;
   result jsonb;
 BEGIN
   INSERT INTO recipe (
-    title, description, difficulty, servings, rating,
-    author_id, tags, prepTime,  cooktime, cultural_notes, status, slug
+    title, description, difficulty, servings, 
+    author_id, tags, prepTime,  cooktime, cultural_notes, status, slug, youtube_video_id
   )
   VALUES (
     _recipe ->> 'title',
     _recipe ->> 'description',
     _recipe ->> 'difficulty',
     (_recipe ->> 'servings')::int,
-    (_recipe ->> 'rating')::numeric,
     (_recipe ->> 'author_id')::uuid,
     ARRAY(SELECT jsonb_array_elements_text(_recipe -> 'tags')),
     (_recipe ->> 'prepTime')::int,
     (_recipe ->> 'cooktime')::int,
     _recipe ->> 'cultural_notes',
     _recipe ->> 'status',
-    _recipe ->> 'slug'
+    _recipe ->> 'slug',
+    _recipe ->> 'youtube_video_id'
   )
   RETURNING id INTO new_recipe_id;
 
@@ -37,7 +26,7 @@ BEGIN
   SELECT
     new_recipe_id,
     i ->> 'item',
-    (i ->> 'amount')::int,
+    (i ->> 'amount')::float,
     i ->> 'unit',
     i ->> 'notes'
   FROM jsonb_array_elements(_ingredients) AS i;
@@ -52,6 +41,23 @@ BEGIN
     i ->> 'tips'
   FROM jsonb_array_elements(_instructions) AS i;
 
+  INSERT INTO recipe_image(recipe_id, url, path)
+  VALUES(
+   (new_recipe_id)::int, 
+  _recipe -> 'image' ->> 'url',
+  _recipe -> 'image' ->> 'path'
+  );
+
+
+
+  INSERT INTO instruction_image(instruction_id, url, path)
+   SELECT
+       (ins ->> 'instruction_id')::int,
+        ins -> 'image' ->> 'url',
+        ins -> 'image' ->> 'path'
+   FROM jsonb_array_elements(_instructions) AS ins
+   WHERE ins -> 'image' IS NOT NULL;
+
   INSERT INTO nutrition(recipe_id, calories, protein, carbs, fat, fiber)
   VALUES(
     new_recipe_id, 
@@ -62,11 +68,7 @@ BEGIN
      (_nutrition ->> 'fiber')::int
   );
 
-  -- Append new recipe_id to existing category row (don't create new rows)
-  UPDATE recipe_category 
-  SET recipe_id = COALESCE(recipe_id, ARRAY[]::int[]) || new_recipe_id::int
-  WHERE id = (_category ->> 'id')::int;
-  
+
 
 
   SELECT jsonb_build_object(
@@ -76,7 +78,17 @@ BEGIN
       'description', r.description,
       'difficulty', r.difficulty,
       'servings', r.servings,
-      'rating', r.rating,
+      'youtube_video_id', r.youtube_video_id,
+      'rating', (
+      SELECT COALESCE(jsonb_agg(rating), '[]'::jsonb)
+      FROM recipe_rating rating
+      WHERE rating.recipe_id = r.id
+    ),
+    'average_rating', (
+      SELECT COALESCE(ROUND(AVG(rating.rating)::numeric, 2), 0)
+      FROM recipe_rating rating
+      WHERE rating.recipe_id = r.id
+    ),
       'author_id', r.author_id,
       'tags', r.tags,
       'prepTime', r.prepTime,

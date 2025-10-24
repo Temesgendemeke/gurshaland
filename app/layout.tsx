@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "Discover and share authentic Ethiopian recipes and culinary traditions",
   icons: {
-    icon: "gurshaland.png",
+    icon: "/gurshaland.png",
   },
 };
 
