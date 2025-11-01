@@ -8,7 +8,11 @@ BEGIN
     SELECT jsonb_build_object(
         'recipes', COALESCE(recipes_data, '[]'::jsonb),
         'blogs', COALESCE(blogs_data, '[]'::jsonb),
-        'followers_count', COALESCE(followers_count, 0)
+        'followers_count', COALESCE(followers_count, 0),
+        'recipes_published_count', COALESCE(recipes_published_count, 0),
+        'recipes_draft_count', COALESCE(recipes_draft_count, 0),
+        'blogs_published_count', COALESCE(blogs_published_count, 0),
+        'blogs_draft_count', COALESCE(blogs_draft_count, 0)
     ) INTO result
     FROM (
         -- Get top 10 recipes by engagement (rating * rating_count + like_count + comment_count + view_count)
@@ -27,7 +31,7 @@ BEGIN
             ) ORDER BY COALESCE(r.engagement_score, 0) DESC
         ) AS recipes_data
         FROM (
-            SELECT 
+            SELECT
                 r.id,
                 r.title,
                 r.slug,
@@ -39,8 +43,8 @@ BEGIN
                 COALESCE(view_stats.view_count, 0) as view_count,
                 (
                     -- Engagement score: rating * rating_count + like_count + comment_count + view_count
-                    COALESCE(ROUND(AVG(rating.rating)::numeric, 2), 0) * COUNT(rating.id) + 
-                    COUNT(DISTINCT "like".id) + 
+                    COALESCE(ROUND(AVG(rating.rating)::numeric, 2), 0) * COUNT(rating.id) +
+                    COUNT(DISTINCT "like".id) +
                     COUNT(DISTINCT comment.id) +
                     COALESCE(view_stats.view_count, 0)
                 ) as engagement_score
@@ -50,7 +54,7 @@ BEGIN
             LEFT JOIN recipe_comment comment ON r.id = comment.recipe_id
             LEFT JOIN LATERAL (
                 SELECT COUNT(*)::bigint AS view_count
-                FROM recipe_view rv 
+                FROM recipe_view rv
                 WHERE rv.recipe_id = r.id
             ) view_stats ON true
             WHERE r.author_id = _profile_id AND r.status = 'published'
@@ -75,7 +79,7 @@ BEGIN
             ) ORDER BY COALESCE(b.engagement_score, 0) DESC
         ) AS blogs_data
         FROM (
-            SELECT 
+            SELECT
                 b.id,
                 b.title,
                 b.slug,
@@ -85,14 +89,14 @@ BEGIN
                 COALESCE(comment_stats.comment_count, 0) as comment_count,
                 (
                     -- Engagement score: view_count + like_count + comment_count
-                    COALESCE(view_stats.view_count, 0) + 
-                    COALESCE(like_stats.like_count, 0) + 
+                    COALESCE(view_stats.view_count, 0) +
+                    COALESCE(like_stats.like_count, 0) +
                     COALESCE(comment_stats.comment_count, 0)
                 ) as engagement_score
             FROM blog b
             LEFT JOIN LATERAL (
                 SELECT COUNT(*)::bigint AS view_count
-                FROM blog_view bv 
+                FROM blog_view bv
                 WHERE bv.blog_id = b.id
             ) view_stats ON true
             LEFT JOIN LATERAL (
@@ -105,7 +109,7 @@ BEGIN
                 FROM blog_comment bc
                 WHERE bc.blog_id = b.id
             ) comment_stats ON true
-            WHERE b.author_id = _profile_id AND b.status = 'published'
+            WHERE b.author_id = _profile_id
             ORDER BY engagement_score DESC
             LIMIT 10
         ) b
@@ -116,8 +120,32 @@ BEGIN
         SELECT COUNT(*) AS followers_count
         FROM follower f
         WHERE f.profile_id = _profile_id
-    ) followers;
-    
+    ) followers,
+    (
+        -- Get recipe published count
+        SELECT COUNT(*) AS recipes_published_count
+        FROM recipe r
+        WHERE r.author_id = _profile_id AND r.status = 'published'
+    ) recipes_published,
+    (
+        -- Get recipe draft count
+        SELECT COUNT(*) AS recipes_draft_count
+        FROM recipe r
+        WHERE r.author_id = _profile_id AND r.status = 'draft'
+    ) recipes_draft,
+    (
+        -- Get blog published count
+        SELECT COUNT(*) AS blogs_published_count
+        FROM blog b
+        WHERE b.author_id = _profile_id AND b.status = 'published'
+    ) blogs_published,
+    (
+        -- Get blog draft count
+        SELECT COUNT(*) AS blogs_draft_count
+        FROM blog b
+        WHERE b.author_id = _profile_id AND b.status = 'draft'
+    ) blogs_draft;
+
     RETURN result;
 END;
 $$;

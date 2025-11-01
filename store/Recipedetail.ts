@@ -11,7 +11,7 @@ interface RecipeDetailStore {
     error: string | null;
     isLiked: boolean | null;
     isBookmarked: boolean | null
-    fetchRecipe: (slug: string) => Promise<void>;
+    fetchRecipe: (slug: string, user_id?: string) => Promise<void>;
     addComment: (comment: RecipeComment) => Promise<void>;
     deleteComment: (commentId: string) => Promise<void>;
     toggleLike: (liked_by: string, recipe_id: string) => Promise<void>;
@@ -27,10 +27,10 @@ export const useRecipeDetailStore = create<RecipeDetailStore>((set, get) => ({
     isLiked: false,
     isBookmarked: false,
 
-    fetchRecipe: async (slug: string) => {
+    fetchRecipe: async (slug: string, user_id?:string) => {
         set({ loading: true, error: null });
         try {
-            const data: Recipe = await getRecipebySlug(slug);
+            const data: Recipe = await getRecipebySlug(slug, user_id);
             set({ recipe: data, loading: false });
         } catch (error: any) {
             set({ error: error.message, loading: false });

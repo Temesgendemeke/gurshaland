@@ -16,7 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getFeaturedRecipes, getTrendingRecipes, getRecipes } from "@/actions/Recipe/recipe";
+import {
+  getFeaturedRecipes,
+  getTrendingRecipes,
+  getRecipes,
+} from "@/actions/Recipe/recipe";
 import { toast } from "sonner";
 import { createClient } from "@/utils/supabase/client";
 
@@ -48,10 +52,10 @@ export default function RecipesPage() {
       try {
         let data = [];
         if (sorted_by == "trending") {
-           data = await getTrendingRecipes();
+          data = await getTrendingRecipes();
         } else if (sorted_by == "featured") {
-           data = await getFeaturedRecipes();
-        }else{
+          data = await getFeaturedRecipes();
+        } else {
           data = await getRecipes();
         }
         console.log(data);
@@ -81,7 +85,7 @@ export default function RecipesPage() {
       recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       recipe.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       recipe.tags.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase())
+        tag.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     const matchesCategory =
       selectedCategory === "all" || recipe.category.name === selectedCategory;

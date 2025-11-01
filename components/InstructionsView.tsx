@@ -16,18 +16,23 @@ const InstructionsView = ({
       <div className="space-y-6">
         {instructions.map((instruction: Instruction) => (
           <div key={instruction.step} className="flex space-x-4">
-            <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-emerald-600 to-yellow-500 rounded-full flex items-center justify-center text-white font-bold">
+            <div className="flex-shrink-0 w-8 h-8  bg-emerald-600  rounded-full flex items-center justify-center text-white font-bold">
               {instruction.step}
             </div>
 
+
             {instruction.image?.url && (
+            <div className="w-60 h-60">
               <Image
                 src={instruction.image?.url}
                 width={400}
                 height={400}
                 alt={`${instruction.step} image`}
+                className="object-cover w-full h-full rounded-lg"
               />
+            </div>
             )}
+
 
             <div className="flex-1">
               <h2 className="font-semibold text-2xl text-gray-800 dark:text-gray-200 mb-2">
@@ -36,7 +41,7 @@ const InstructionsView = ({
               <p className="text-gray-700 dark:text-gray-300 mb-2">
                 {instruction.description}
               </p>
-              <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+              <div className={`flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 ${instruction.time ? "" :"hidden"}`}>
                 <span>⏱️ {instruction.time}</span>
               </div>
               {instruction.tips && (

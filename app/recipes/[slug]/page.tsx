@@ -11,6 +11,7 @@ import {
   ChefHat,
   Star,
   MessageCircle,
+  PenBoxIcon,
 } from "lucide-react";
 import { PostComment } from "@/utils/types/recipe";
 import { useParams } from "next/navigation";
@@ -28,6 +29,8 @@ import InstructionsView from "@/components/InstructionsView";
 import IngredientsView from "@/components/IngredientsView";
 import ActionButtons from "@/components/recipe/ActionButtons";
 import BackNavigation from "@/components/BackNavigation";
+import Link from "next/link";
+import PreviewWarning from "@/components/PreviewWarning";
 
 export default function RecipeDetailPage() {
   const params = useParams();
@@ -45,8 +48,8 @@ export default function RecipeDetailPage() {
   }, [error]);
 
   useEffect(() => {
-    fetchRecipe(slug as string);
-  }, [slug]);
+    fetchRecipe(slug as string, user?.id);
+  }, [slug, user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -57,6 +60,12 @@ export default function RecipeDetailPage() {
         <div className="w-full md:max-w-7xl mx-auto px-6 py-12 space-y-4">
           {/* Back Navigation */}
           <BackNavigation pagename={"Recipes"}/>
+          {/* Compare user id with recipe author id */}
+
+
+          {/* Preview Mode Warning */}
+          <PreviewWarning slug={recipe.slug} postType="recipe" author_id={recipe?.author?.id || ""} user_id={user?.id || ""} status={recipe?.status || ""}/>
+          
 
           {/* Recipe Header */}
           <div className="grid lg:grid-cols-2 gap-12 mb-12">

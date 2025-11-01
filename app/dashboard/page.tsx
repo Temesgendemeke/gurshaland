@@ -34,6 +34,10 @@ interface Status {
   followers_count: number;
   recipes: Post[];
   blogs: Post[];
+  recipes_draft_count: number;
+  recipes_published_count: number;
+  blogs_draft_count: number;
+  blogs_published_count: number;
 }
 
 export default function Page() {
@@ -41,12 +45,14 @@ export default function Page() {
     followers_count: 0,
     recipes: [],
     blogs: [],
+    recipes_draft_count: 0,
+    recipes_published_count: 0,
+    blogs_draft_count: 0,
+    blogs_published_count: 0,
   });
   const [loading, setLoading] = useState<Boolean>(true);
   const user = useAuth((store) => store.user);
   const router = useRouter();
-
-
 
   useEffect(() => {
     (async () => {
@@ -72,18 +78,25 @@ export default function Page() {
             count={status.followers_count}
             Icon={User2}
             loading={loading}
+            type="follower"
           />
           <StatsCard
             name={"recipes"}
             count={status.recipes.length}
             Icon={UtensilsCrossed}
             loading={loading}
+            type="post"
+            published_posts_count={status.recipes_published_count}
+            draft_posts_count={status.recipes_draft_count}
           />
           <StatsCard
             name={"blogs"}
             count={status.blogs.length}
             Icon={Send}
             loading={loading}
+            type="post"
+            published_posts_count={status.blogs_published_count}
+            draft_posts_count={status.blogs_draft_count}
           />
         </div>
       </div>

@@ -40,15 +40,23 @@ import {
 import { Checkbox } from "./ui/checkbox";
 import { useRouter } from "next/navigation";
 import TableSkeleton from "./skeleton/TableSkeleton";
+import { toast } from "sonner";
+import { deleteRecipe } from "@/actions/Recipe/recipe";
+import Recipe from "@/utils/types/recipe";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableRow {
+  id?: string;
+  slug: string;
+}
+
+interface DataTableProps<TData extends DataTableRow, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   onDeleteSelected?: (rows: TData[]) => void;
   loading: Boolean;
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends DataTableRow, TValue>({
   columns,
   data,
   onDeleteSelected,
@@ -61,6 +69,12 @@ export function DataTable<TData, TValue>({
   });
   const [rowSelection, setRowSelection] = React.useState({});
   const [isMobile, setIsMobile] = React.useState(false);
+  const [currentData, SetCurrent] = React.useState(data)
+
+  // Update currentData when data prop changes
+  React.useEffect(() => {
+    SetCurrent(data);
+  }, [data]);
 
   // Responsive breakpoint detection
   React.useEffect(() => {
@@ -110,15 +124,24 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
+    
     state: { sorting, pagination, rowSelection },
     getRowId: (row: any, index) => row.id ?? index.toString(),
   });
 
   const LINK_ICON_COLUMN_ID = "title";
   const selectedRows = table.getSelectedRowModel().rows.map((r) => r.original);
-  const handleDelete = () => {
-    if (onDeleteSelected) onDeleteSelected(selectedRows as TData[]);
-    setRowSelection({});
+
+
+  const handleDelete = async (rows: TData[]) => {
+    try {
+      toast.success(`Successfully deleted ${rows.length} recipe(s)`);
+      if (onDeleteSelected) onDeleteSelected(rows);
+      setRowSelection({});
+    } catch (error) {
+      toast.error("Failed to delete recipe");
+      console.error(error);
+    }
   };
 
   if (loading)
@@ -136,7 +159,7 @@ export function DataTable<TData, TValue>({
           <Button
             variant="destructive"
             size="sm"
-            onClick={handleDelete}
+            onClick={() => handleDelete(selectedRows)}
             className="gap-2 w-full sm:w-auto"
           >
             <Trash2 className="h-4 w-4" />

@@ -1,10 +1,14 @@
 import React from "react";
 
-const CategoryHeader = ({ currentCategory }:{currentCategory:{
-  color: string;
-  name: string;
-  description: string;
-}}) => {
+const CategoryHeader = ({
+  currentCategory,
+}: {
+  currentCategory: {
+    color: string;
+    name: string;
+    description: string;
+  };
+}) => {
   return (
     <div className="text-center mb-12">
       <div

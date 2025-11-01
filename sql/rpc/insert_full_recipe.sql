@@ -3,7 +3,7 @@ DECLARE
   result jsonb;
 BEGIN
   INSERT INTO recipe (
-    title, description, difficulty, servings, 
+    title, description, difficulty, servings,
     author_id, tags, prepTime,  cooktime, cultural_notes, status, slug, youtube_video_id
   )
   VALUES (
@@ -31,44 +31,54 @@ BEGIN
     i ->> 'notes'
   FROM jsonb_array_elements(_ingredients) AS i;
 
-  INSERT INTO instruction (recipe_id, step, title, description, time, tips)
-  SELECT
-    new_recipe_id,
-    (i ->> 'step')::int,
-    i ->> 'title',
-    i ->> 'description',
-    i ->> 'time',
-    i ->> 'tips'
-  FROM jsonb_array_elements(_instructions) AS i;
 
-  INSERT INTO recipe_image(recipe_id, url, path)
-  VALUES(
-   (new_recipe_id)::int, 
-  _recipe -> 'image' ->> 'url',
-  _recipe -> 'image' ->> 'path'
-  );
-
-
+  WITH ins AS (
+      SELECT elem AS ins_obj, ord
+      FROM jsonb_array_elements(coalesce(_instructions, '[]'::jsonb)) WITH ORDINALITY AS t(elem, ord)
+  ),
+  inserted AS (
+      INSERT INTO instruction (recipe_id, step, title, description, time, tips)
+      SELECT
+          new_recipe_id,
+          (ins_obj ->> 'step')::int,
+          ins_obj ->> 'title',
+          ins_obj ->> 'description',
+          ins_obj ->> 'time',
+          ins_obj ->> 'tips'
+      FROM ins
+      RETURNING id, step
+  )
 
   INSERT INTO instruction_image(instruction_id, url, path)
-   SELECT
-       (ins ->> 'instruction_id')::int,
-        ins -> 'image' ->> 'url',
-        ins -> 'image' ->> 'path'
-   FROM jsonb_array_elements(_instructions) AS ins
-   WHERE ins -> 'image' IS NOT NULL;
+  SELECT
+      i.id,
+      ins.ins_obj -> 'image' ->> 'url',
+      ins.ins_obj -> 'image' ->> 'path'
+  FROM inserted i
+  JOIN ins ON (ins.ins_obj ->> 'step')::int = i.step
+  WHERE ins.ins_obj -> 'image' IS NOT NULL;
+
+
+
+
+
+  -- Insert main recipe image (if present)
+  INSERT INTO recipe_image(recipe_id, url, path)
+  SELECT
+    new_recipe_id::int,
+    _recipe -> 'image' ->> 'url',
+    _recipe -> 'image' ->> 'path'
+  WHERE (_recipe -> 'image') IS NOT NULL;
 
   INSERT INTO nutrition(recipe_id, calories, protein, carbs, fat, fiber)
   VALUES(
-    new_recipe_id, 
+    new_recipe_id,
      (_nutrition ->> 'calories')::int,
      (_nutrition ->> 'protein')::int,
      (_nutrition ->> 'carbs')::int,
      (_nutrition ->> 'fat')::int,
      (_nutrition ->> 'fiber')::int
   );
-
-
 
 
   SELECT jsonb_build_object(

@@ -18,19 +18,12 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import measurements from "@/constants/measurements";
-
-interface IngredientField {
-  id: string;
-  item: string;
-  amount?: string;
-  unit?: string;
-  notes: string;
-}
+import { Ingredient, Instruction } from "@/utils/types/recipe";
 
 interface IngredientsFieldProps {
   form: any;
-  ingredientFields: IngredientField[] | any;
-  appendIngredient: (ingredient: Omit<IngredientField, "id">) => void;
+  ingredientFields: Ingredient[] | any;
+  appendIngredient: (ingredient: Omit<Ingredient, "id">) => void;
   removeIngredient: (index: number) => void;
 }
 
@@ -47,7 +40,7 @@ export default function IngredientsField({
           Ingredients
         </h2>
         <Button
-          onClick={() => appendIngredient({ item: "", amount: "", notes: "" })}
+          onClick={() => appendIngredient({ item: "", amount: 0, notes: "" })}
           type="button"
           variant="outline"
           size="sm"
@@ -58,11 +51,12 @@ export default function IngredientsField({
         </Button>
       </div>
       <div className="space-y-4">
-        {ingredientFields.map((field: IngredientField, index: number) => (
-          <div className={`flex  ${ingredientFields.length > 1 ? "border-primary/50 border-b p-4" : ""}`} key={field.id}>
-            <div
-              className="grid flex-grow md:grid-cols-3 gap-4 items-start"
-            >
+        {ingredientFields.map((field: Ingredient, index: number) => (
+          <div
+            className={`flex  ${ingredientFields.length > 1 ? "border-primary/50 border-b p-4" : ""}`}
+            key={field.id!}
+          >
+            <div className="grid flex-grow md:grid-cols-3 gap-4 items-start">
               <FormField
                 control={form.control}
                 name={`ingredients.${index}.amount`}
@@ -85,7 +79,7 @@ export default function IngredientsField({
                   </FormItem>
                 )}
               />
-  
+
               <FormField
                 control={form.control}
                 name={`ingredients.${index}.unit`}
@@ -176,7 +170,7 @@ export default function IngredientsField({
               />
             </div>
 
-              <div className="">
+            <div className="">
               {ingredientFields.length > 1 && (
                 <Button
                   onClick={() => removeIngredient(index)}
@@ -189,7 +183,7 @@ export default function IngredientsField({
                 </Button>
               )}
             </div>
-          </div> 
+          </div>
         ))}
       </div>
     </Card>

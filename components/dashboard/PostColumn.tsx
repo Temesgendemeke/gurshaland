@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { MoreVertical, MoreVerticalIcon, Eye } from "lucide-react";
+import { MoreVertical, MoreVerticalIcon, Eye, PenBox, DeleteIcon, Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import generate_error from "@/utils/generate_error";
@@ -20,6 +20,9 @@ import { toast } from "sonner";
 import { deleteBlog, getBlogBySlug } from "@/actions/blog/blog";
 import { Blog } from "@/utils/types/blog";
 import { useBlog } from "@/store/DashboardBlog";
+import useRecipe from "@/store/DashboardRecipe";
+import DeleteWarning from "./DeleteWarning";
+import { useRouter } from "next/navigation";
 
 // Modern Status Badge Component
 const StatusBadge = ({ status }: { status: string }) => {
@@ -178,8 +181,28 @@ export const createPostColumns = (
   columnHelper.display({
     id: "more",
     cell: (row) => {
+      // Call hooks at top-level of the render path (not inside event handlers)
+      const deleteBlogFn = useBlog((store) => store.deleteBlog);
+      const deleteRecipeFn = useRecipe((store) => store.deleteRecipe);
+
+      const handleDelete = async () => {
+        try {
+          if (linkBasePath === "/blog") {
+            deleteBlogFn(row.row.original.slug as string);
+          } else {
+            deleteRecipeFn(row.row.original.slug as string);
+          }
+        } catch (err) {
+          console.error("Error deleting post:", err);
+          toast.error("Failed to delete");
+        }
+
+
+      };
+      const router = useRouter();
+
       return (
-        <DropdownMenu>
+        <DropdownMenu >
           <DropdownMenuTrigger asChild>
             <Button variant={"ghost"}>
               <MoreVerticalIcon />
@@ -187,22 +210,23 @@ export const createPostColumns = (
           </DropdownMenuTrigger>
           <DropdownMenuContent
             onCloseAutoFocus={(e) => e.preventDefault()}
-            className="bg-background"
+            className="bg-background z-50"
           >
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`${linkBasePath}/edit/${row.row.original.slug}`}>
-                Edit
-              </Link>
+              <Button onClick={()=> router.push(`${linkBasePath}/edit/${row.row.original.slug}`)} className="flex gap-1 justify-center" variant="ghost"
+                >
+                <PenBox />
+                <span>Edit</span>
+              </Button>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={async () => {
-                const deleteBlog =  useBlog((store) => store.deleteBlog);
-                deleteBlog(row.row.original.slug as string);
-              }}
-            >
-              Delete
+            <DropdownMenuItem>
+              <Button onClick={handleDelete} variant="ghost" className="flex">
+                <Trash/>
+                <span>Delete</span>
+              </Button>
+              {/* <DeleteWarning post={linkBasePath} slug={row.row.original.slug!}/> */}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

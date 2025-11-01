@@ -63,6 +63,7 @@ BEGIN
               LIMIT 1
             )
           )
+          ORDER BY ins.step
         ), '[]'::jsonb)
         FROM instruction ins
         WHERE ins.recipe_id = r.id

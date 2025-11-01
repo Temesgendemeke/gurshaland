@@ -11,6 +11,7 @@ interface RecipeStore{
      error: string | null;
      fetchRecipes: (profile_id: string)=> void;
      deleteRecipe: (reicpe_id: string) => void;
+     updateRecipeInStore: (updatedRecipe: Post) => Promise<Post>;
 }
 
 
@@ -22,9 +23,12 @@ const useRecipe = create<RecipeStore>((set)=>({
     fetchRecipes: async(profile_id)=>{
         try {
             set({loading: true})
+            console.log('Fetching recipes for profile:', profile_id)
             const data: Post[] = await getRecipeByAuthor(profile_id)
+            console.log('Fetched recipes:', data.length, 'recipes')
             set({recipes: data, loading: false})
         } catch (error) {
+            console.error('Error fetching recipes:', error)
             set({error: generate_error(error), loading: false})
         }
     },
@@ -41,6 +45,17 @@ const useRecipe = create<RecipeStore>((set)=>({
         } catch (error) {
             set({error: generate_error(error)})
         }
+    },
+
+    updateRecipeInStore: async(updatedRecipe: Post) => {
+        const updatedRecipeData = await getRecipebySlug(updatedRecipe.slug)
+        set((state) => ({
+            recipes: state.recipes.map((recipe) => 
+                recipe.id === updatedRecipe.id ? updatedRecipe : recipe
+            )
+        }))
+
+        return updatedRecipeData
     }
 }))
 

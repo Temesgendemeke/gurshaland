@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import GeneratingSkeleton from "./skeleton/GenerateSkeleton";
 import RecipeProgressBar from "./RecipeProgressBar";
 import { generateAIRecipe } from "@/actions/Recipe/airecipe";
+import { toast } from "sonner";
 
 export default function AIRecipeGenerator() {
   const [ingredients, setIngredients] = useState("");
@@ -33,6 +34,7 @@ export default function AIRecipeGenerator() {
     } catch (error: any) {
       const errorMessage = error?.message || "An unexpected error occurred";
       setError(errorMessage);
+      toast.error(errorMessage);
       console.error("Error generating recipe:", error);
     } finally {
       setIsGenerating(false);

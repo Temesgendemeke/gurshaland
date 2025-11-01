@@ -1,26 +1,27 @@
 export interface Ingredient {
   item: string;
-  amount?: string;
+  amount?: number;
   unit?: string;
   notes?: string;
+  id?: number;
 }
 
 export interface Nutrition {
-  protein:  number;
-  carbs:  number;
-  fat:  number;
-  fiber:  number;
-  calories:  number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  fiber: number;
+  calories: number;
 }
 
 export interface Instruction {
   step: number;
   title: string;
   description: string;
-  time?: string;
+  time?: number;
   tips?: string;
   image?: InstructionImage;
-  
+  id: number;
 }
 
 export interface AIRecipeInstruction extends Instruction {
@@ -38,7 +39,7 @@ export interface RecipeImage extends Image {
 }
 
 export interface InstructionImage extends Image {
-  instruction_id: string;
+  instruction_id?: number;
   isLoading?: boolean;
   imagePrompt?: string;
 }
@@ -47,12 +48,12 @@ export default interface Recipe {
   id?: string;
   title: string;
   category: {
-    id: string;
+    id: number;
     name: string;
   };
   description: string;
   preptime: number;
-  cooktime: number
+  cooktime: number;
   servings: number;
   difficulty: string;
   ingredients: Ingredient[];
@@ -71,24 +72,19 @@ export default interface Recipe {
   likes: RecipeLike[] | [];
   comments: RecipeComment[];
   average_rating: number;
-  bookmarks?: RecipeBookmark[]
+  bookmarks?: RecipeBookmark[];
   profile: Profile;
   view_count?: number;
   youtube_search_query?: string;
   youtube_video_id?: string;
 }
 
-
-
-
-
-
-export interface Profile{
-  avatar_url: string,
-  id: string,
-  username: string,
-  full_name: string,
-  bio?: string,
+export interface Profile {
+  avatar_url: string;
+  id: string;
+  username: string;
+  full_name: string;
+  bio?: string;
 }
 
 export interface RecipeComment {
@@ -122,13 +118,11 @@ export interface BlogLike extends Like {
   blog_id: string;
 }
 
-
-export interface Rating{
-  user_id: string,
-  recipe_id: string,
-  rating: number
+export interface Rating {
+  user_id: string;
+  recipe_id: string;
+  rating: number;
 }
-
 
 export interface PostComment extends RecipeComment {
   id: string;
@@ -136,8 +130,7 @@ export interface PostComment extends RecipeComment {
   rating: number;
 }
 
-
-export interface RecipeBookmark{
+export interface RecipeBookmark {
   user_id: string;
   recipe_id: string;
 }
@@ -170,8 +163,7 @@ export interface TrendingRecipe extends Recipe {
   author_id: string;
 }
 
-
-export interface Follower{
+export interface Follower {
   id?: string;
   follower_id: string;
   profile_id: string;

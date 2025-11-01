@@ -37,3 +37,28 @@ export const generateUniqueSlug = async (title: string, table: string) => {
 
   return slug;
 };
+
+export const generateUniqueTitle = async (title: string) => {
+  let uniqueTitle = title;
+  let counter = 1;
+
+  while (true) {
+    const { data, error } = await supabase
+      .from("recipe")
+      .select("id")
+      .eq("title", uniqueTitle)
+      .limit(1);
+  
+    if (error) {
+      throw error;
+    }
+    if (!data || data.length === 0) {
+      break;
+    }
+
+    counter++;
+    uniqueTitle = `${title} (${counter})`;
+  }
+
+  return uniqueTitle;
+};

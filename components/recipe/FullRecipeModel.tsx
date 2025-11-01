@@ -23,7 +23,7 @@ import IngredientsSection from "./RecipeModel/IngredientsSection";
 import RecipeStats from "./RecipeModel/RecipeStats";
 import YoutubeVideoSection from "./YoutubeVideoSection";
 import ImageBoxSkeleton from "../skeleton/ImageBoxSkeleton";
-import { generateUniqueSlug } from "@/utils/slugify";
+import { generateUniqueSlug, generateUniqueTitle } from "@/utils/slugify";
 import { uploadAIImageToStorage } from "@/utils/genAI";
 
 const FullRecipeModel = ({ recipe }: { recipe: any }) => {
@@ -64,6 +64,11 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
     }
     try {
       console.log("recipe ", recipe, "ingredients ", recipe.ingredients, " instructions ", recipe.instructions, " nutrition ", recipe.nutrition);
+      
+      // Generate unique title to avoid duplicate key constraint violation
+      const uniqueTitle = await generateUniqueTitle(recipe.title);
+      recipe.title = uniqueTitle;
+      
       // Only upload if we actually have a File selected for the main image.
       const recipe_image = await uploadAIImageToStorage(
         recipe.image.url,
@@ -93,9 +98,7 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
                 instruction.image.url,
                 instruction.title.replace(/\s+/g, "_"),
                 );
-              // ensure image object exists
               instruction.image = {
-                // ...(instruction.image || {}),
                 url: uploaded?.url,
                 path: uploaded?.path,
               };
@@ -137,7 +140,7 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
         <DialogContent className="max-w-7xl p-0 bg-white  dark:bg-slate-900 ">
           <DialogTitle className="sr-only">{recipe.title}</DialogTitle>
 
-
+            
             <div
             className={`fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
               isSaving ? "opacity-100 pointer-events-auto delay-0" : "opacity-0 pointer-events-none delay-1000"
@@ -190,6 +193,9 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
                   {recipe.description}
                 </p>
               </div>
+
+
+          
 
 
               {/* Modal Content */}

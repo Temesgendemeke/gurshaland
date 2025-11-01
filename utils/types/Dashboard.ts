@@ -8,7 +8,7 @@ export interface Post {
   comment_count: number;
   created_at: string;
   status: "published" | "draft";
-  slug?: string;
+  slug: string;
 }
 
 export interface FollowerColumnType extends Profile, Follower {

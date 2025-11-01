@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "4mb",
+    },
   },
   typescript: {
     ignoreBuildErrors: true,
@@ -9,10 +11,10 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'bwztmrqtdlmlaoxseuus.supabase.co',
-        port: '',
-        pathname: '/storage/v1/object/public/**',
+        protocol: "https",
+        hostname: "bwztmrqtdlmlaoxseuus.supabase.co",
+        port: "",
+        pathname: "/storage/v1/object/public/**",
       },
     ],
     formats: ["image/webp", "image/avif"],

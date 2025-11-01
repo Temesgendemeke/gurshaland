@@ -10,6 +10,9 @@ interface StatsCardProps {
   Icon: LucideIcon;
   className?: string;
   loading: Boolean;
+  type: "post" | "follower";
+  published_posts_count?: number;
+  draft_posts_count?: number;
 }
 
 const StatsCard = ({
@@ -18,6 +21,9 @@ const StatsCard = ({
   Icon,
   className,
   loading,
+  type,
+  published_posts_count,
+  draft_posts_count,
 }: StatsCardProps) => {
   if (loading) {
     return <StatsCardSkeleton className={className} />;
@@ -35,7 +41,7 @@ const StatsCard = ({
         "shadow-sm hover:shadow-lg transition-all duration-300",
         "focus:outline-none focus:ring-2 focus:ring-emerald-500/60 focus:ring-offset-2 dark:focus:ring-offset-gray-900",
         "p-5 aspect-[5/3]",
-        className
+        className,
       )}
     >
       {/* soft glow */}
@@ -55,19 +61,54 @@ const StatsCard = ({
         <Icon className="h-5 w-5" />
       </div>
       {/* content */}
-      <div className="relative h-full flex flex-col justify-end">
-        <div
-          className="text-9xl md:text-7xl lg:text-9xl font-extrabold tracking-tight
-          bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-400
-          dark:from-emerald-300 dark:via-emerald-400 dark:to-emerald-500
-          bg-clip-text text-transparent drop-shadow-sm select-none"
-        >
-          {count.toLocaleString()}
+      {
+        <div className="relative h-full flex flex-col justify-end">
+          <div
+            className="text-9xl md:text-7xl lg:text-9xl font-extrabold tracking-tight
+            bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-400
+            dark:from-emerald-300 dark:via-emerald-400 dark:to-emerald-500
+            bg-clip-text text-transparent drop-shadow-sm select-none"
+          >
+            {count.toLocaleString()}
+          </div>
+          <p className="mt-1 text-sm font-medium uppercase tracking-wide text-emerald-700/70 dark:text-emerald-300/70">
+            {name}
+          </p>
+
+          {type === "post" && (
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <div
+                className="rounded-lg p-3 ring-1 ring-inset
+                ring-emerald-400/30 dark:ring-emerald-700/40
+                bg-white/60 dark:bg-emerald-950/20
+                backdrop-blur-sm transition-colors"
+              >
+                <div className="text-[11px] font-semibold uppercase tracking-wide text-emerald-700/80 dark:text-emerald-300/80">
+                  Published
+                </div>
+                <div className="mt-0.5 text-xl font-bold text-emerald-700 dark:text-emerald-300">
+                  {(published_posts_count ?? 0).toLocaleString()}
+                </div>
+              </div>
+
+              <div
+                className="rounded-lg p-3 ring-1 ring-inset
+                ring-amber-400/30 dark:ring-amber-700/40
+                bg-white/60 dark:bg-amber-950/10
+                backdrop-blur-sm transition-colors"
+              >
+                <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-800/80 dark:text-amber-300/90">
+                  Drafts
+                </div>
+                <div className="mt-0.5 text-xl font-bold text-amber-800 dark:text-amber-300">
+                  {(draft_posts_count ?? 0).toLocaleString()}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-        <p className="mt-1 text-sm font-medium uppercase tracking-wide text-emerald-700/70 dark:text-emerald-300/70">
-          {name}
-        </p>
-      </div>
+      }
+
       {/* bottom accent */}
       <span className="absolute inset-x-4 bottom-3 h-px bg-gradient-to-r from-emerald-300/0 via-emerald-400/60 to-emerald-300/0 opacity-40 group-hover:opacity-70 transition" />
     </Link>

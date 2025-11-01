@@ -68,7 +68,7 @@ const ArticleContent = ({ blogPost }: { blogPost: Blog }) => {
                 key={index}
                 className="p-6 my-8 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700"
               >
-                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+                   <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
                   {section.title}
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">

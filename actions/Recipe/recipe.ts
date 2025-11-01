@@ -9,35 +9,35 @@ import Recipe, {
 } from "@/utils/types/recipe";
 
 
-
-const supabase = createClient()
-
-export const getRecipebySlug = async (slug: string) => {
+export const getRecipebySlug = async (slug: string, user_id?: string) => {
+  const supabase = createClient();
   const { data, error } = await supabase.rpc("get_full_recipe", {
     _slug: slug,
+    _user_id: user_id,
   });
+  console.log(user_id)
 
-  console.log("recipes error ", error)
+  console.log("recipes error ", error);
+  console.log(data)
   if (error) throw error;
 
   return data;
 };
 
-
 export const getRecipebySlugAdmin = async (slug: string) => {
+  const supabase = createClient();
 
   console.log("Fetching recipe for admin with slug: ", slug);
   const { data, error } = await supabase.rpc("get_full_recipe_admin", {
-    _slug: 'authentic-ethiopian-shiro-wat',
+    _slug: slug,
   });
 
   console.log("recipe data from admin ", data, " error ", error);
-  
+
   if (error) throw error;
 
   return data;
-}
-
+};
 
 export const insertRecipe = async (formData: {
   recipe: any;
@@ -45,6 +45,7 @@ export const insertRecipe = async (formData: {
   instructions: Instruction[];
   nutrition: Nutrition;
 }) => {
+  const supabase = createClient();
   const { data, error } = await supabase.rpc("insert_full_recipe", {
     _recipe: formData.recipe,
     _ingredients: formData.ingredients,
@@ -57,6 +58,7 @@ export const insertRecipe = async (formData: {
 };
 
 export const getRecipes = async () => {
+  const supabase = createClient();
   const { data, error } = await supabase.rpc("get_all_recipes");
 
   if (error) throw error;
@@ -64,6 +66,7 @@ export const getRecipes = async () => {
 };
 
 export const getFeaturedRecipes = async () => {
+    const supabase = createClient();
   const { data, error } = await supabase.rpc("get_featured_recipes");
 
   if (error) throw error;
@@ -71,6 +74,7 @@ export const getFeaturedRecipes = async () => {
 };
 
 export const getTrendingRecipes = async () => {
+    const supabase = createClient();
   const { data, error } = await supabase.rpc("get_trending_recipes");
 
   if (error) throw error;
@@ -78,25 +82,36 @@ export const getTrendingRecipes = async () => {
 };
 
 export const deleteRecipe = async (_slug: string) => {
+  const supabase = createClient();
   const { data, error } = await supabase.rpc("get_full_recipe", {
     _slug,
   });
 
   if (error) throw error;
 
+  // The RPC shape changed in different versions: sometimes the function
+  // returns { recipe: {...}, instructions: [...] } and sometimes it returns
+  // a flattened recipe object with keys like 'instruction' (singular).
+  // Normalize both shapes here so deletion works regardless of RPC shape.
+  const recipeObj = (data && (data.recipe ?? data)) || {};
+
+  const instructions: any[] =
+    (data && (data.instructions ?? data.instruction)) ||
+    recipeObj.instructions ||
+    [];
+
   const imagePaths = [
-    data.recipe.image?.path,
-    ...data.instructions
-      .map((ins: Instruction) => ins?.image?.path)
-      .filter((path: string | undefined) => path)
-  ];
+    recipeObj?.image?.path,
+    ...instructions.map((ins: Instruction | any) => ins?.image?.path),
+  ].filter(Boolean) as string[];
 
-
-  const { error: storageError } = await supabase.storage
-    .from(BUCKET)
-    .remove(imagePaths);
-
-  if (storageError) throw storageError;
+  // Remove images from storage only if there are paths to remove
+  if (imagePaths.length > 0) {
+    const { error: storageError } = await supabase.storage
+      .from(BUCKET)
+      .remove(imagePaths);
+    if (storageError) throw storageError;
+  }
 
   const { error: recipeError } = await supabase
     .from("recipe")
@@ -108,8 +123,9 @@ export const deleteRecipe = async (_slug: string) => {
 export const uploadRecipeImage = async (
   image_file: File,
   user_id: string,
-  recipe_id: string
+  recipe_id: string,
 ) => {
+  const supabase = createClient();
   try {
     const path = `recipe/${user_id}/${image_file.name}_${Date.now()}`;
     const { error: storageError } = await supabase.storage
@@ -138,13 +154,30 @@ export const uploadRecipeImage = async (
   }
 };
 
+export const getRecipeByAuthor = async (author_id: string) => {
+  const supabase = createClient();
+  const { data, error } = await supabase.rpc("get_recipe_by_author", {
+    _author_id: author_id,
+  });
 
-export const getRecipeByAuthor = async(author_id: string)=>{
-  const {data, error} = await supabase.rpc("get_recipe_by_author", {
-    _author_id: author_id
-  })
+  if (error) throw error;
+  return data;
+};
 
-  if(error) throw error;
-  return data
-}
-
+export const updateRecipe = async (formData: {
+  recipe: any;
+  ingredients: Ingredient[];
+  instructions: Instruction[];
+  nutrition: Nutrition;
+}) => {
+  const supabase = createClient();
+  const { data, error } = await supabase.rpc("update_full_recipe", {
+    _recipe: formData.recipe,
+    _ingredients: formData.ingredients,
+    _instructions: formData.instructions,
+    _nutrition: formData.nutrition,
+  });
+  console.log("Update recipe error: ", error);
+  if (error) throw error;
+  return data;
+};

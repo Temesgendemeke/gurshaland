@@ -13,19 +13,10 @@ import {
 } from "@/components/ui/form";
 import { useAuth } from "@/store/useAuth";
 import Image from "next/image";
-import { InstructionImage } from "@/utils/types/recipe";
+import { Instruction, InstructionImage } from "@/utils/types/recipe";
 import { deleteImage } from "@/actions/Recipe/image";
 import ImageBoxSkeleton from "./skeleton/ImageBoxSkeleton";
-
-type Instruction = {
-  id: string;
-  title: string;
-  description: string;
-  time: string;
-  tips: string;
-  step: number;
-  image?: InstructionImage;
-};
+import { Skeleton } from "./ui/skeleton";
 
 type InstructionsFieldProps = {
   form: any;
@@ -49,12 +40,17 @@ export default function InstructionsField({
 
   const handleImageChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    step: number
+    step: number,
   ) => {
     const files = e.target.files;
     const file = files && files[0];
     if (!file) return;
-    form.setValue(`instructions.${step - 1}.image`, { step, url: "", path: "", file });
+    form.setValue(`instructions.${step - 1}.image`, {
+      step,
+      url: "",
+      path: "",
+      file,
+    });
 
     // if (file && user) {
     //   try {
@@ -68,7 +64,7 @@ export default function InstructionsField({
 
   const handleInstructionDelete = async (
     e: React.MouseEvent,
-    index: number
+    index: number,
   ) => {
     removeInstruction(index);
     await handleImageDelete(e, index + 1);
@@ -124,18 +120,30 @@ export default function InstructionsField({
                 onClick={() =>
                   document.getElementById(`input-${index + 1}`)?.click()
                 }
-
               >
-                {JSON.stringify(watchInstructions[index] )}
                 {watchInstructions[index].image ? (
-                    <div className="flex flex-col items-center w-full">
-                      <Image
-                      src={watchInstructions[index].image?.file ? URL.createObjectURL(watchInstructions[index].image?.file) : watchInstructions[index].image?.url}
-                      width={800}
-                      height={400}
-                      alt="Recipe Preview"
-                      className="max-h-48 w-full rounded-lg mb-2 object-contain"
-                    />
+                  <div className="flex flex-col items-center w-full  ">
+                    <div className="w-60  sm:w-80 h-56 ">
+                      {watchInstructions[index].image?.url ? (
+                        <Image
+                          src={
+                            watchInstructions[index].image?.file
+                              ? (URL.createObjectURL(
+                                  watchInstructions[index].image?.file,
+                                ) ?? "")
+                              : (watchInstructions[index].image?.url ?? "")
+                          }
+                          width={800}
+                          height={400}
+                          alt="Recipe Preview"
+                          className="h-full w-full rounded-lg mb-2 object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full">
+                          <Skeleton className="w-full h-full rounded-lg animate-pulse " />
+                        </div>
+                      )}
+                    </div>
 
                     <Button
                       type="button"
@@ -148,8 +156,8 @@ export default function InstructionsField({
                       Remove
                     </Button>
                   </div>
-                  ):(
-                    <Button
+                ) : (
+                  <Button
                     type="button"
                     variant="outline"
                     className="mt-4 border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
@@ -157,10 +165,9 @@ export default function InstructionsField({
                   >
                     Choose File
                   </Button>
-                  )
-                }
-                {/* { 
-                  
+                )}
+                {/* {
+
                 } */}
               </div>
               <FormField
@@ -184,7 +191,7 @@ export default function InstructionsField({
                 control={form.control}
                 name={`instructions.${index}.title`}
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="col-span-2 md:col-span-1">
                     <FormLabel>Step Title</FormLabel>
                     <FormControl>
                       <Input
@@ -200,10 +207,10 @@ export default function InstructionsField({
                 control={form.control}
                 name={`instructions.${index}.time`}
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Time Required</FormLabel>
+                  <FormItem className="col-span-2 lg:col-span-1">
+                    <FormLabel>Time Required(minute)</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., 15 min" {...field} />
+                      <Input placeholder="e.g., 15n" {...field} type="number" />
                     </FormControl>
                   </FormItem>
                 )}
