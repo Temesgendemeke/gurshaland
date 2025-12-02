@@ -27,12 +27,12 @@ const aiFeatures = [
     badge: "Coming Soon",
   },
   {
-    id: "meal-planner",
+    id: "/meal-planner",
     title: "Smart Meal Planner",
     description: "Plan Ethiopian meals based on your preferences",
     icon: Utensils,
     color: "from-orange-500 to-red-600",
-    badge: "Coming Soon",
+    badge: "New",
   },
   {
     id: "nutrition-analyzer",

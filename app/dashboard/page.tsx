@@ -67,6 +67,9 @@ export default function Page() {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0 space-y-5">
       <div className="space-y-2.5">
+        {JSON.stringify(status.blogs_published_count)}
+        {JSON.stringify(status.blogs_draft_count)}
+        {JSON.stringify(status.blogs.length)}
         <div className="flex items-center gap-3 ml-5 mt-2">
           <h2 className="text-3xl md:text-4xl font-bold">Dashboard Overview</h2>
           <Separator orientation="vertical" className="h-8" />
@@ -82,7 +85,7 @@ export default function Page() {
           />
           <StatsCard
             name={"recipes"}
-            count={status.recipes.length}
+            count={status.recipes_published_count + status.recipes_draft_count}
             Icon={UtensilsCrossed}
             loading={loading}
             type="post"
@@ -91,7 +94,7 @@ export default function Page() {
           />
           <StatsCard
             name={"blogs"}
-            count={status.blogs.length}
+            count={status.blogs_published_count + status.blogs_draft_count}
             Icon={Send}
             loading={loading}
             type="post"

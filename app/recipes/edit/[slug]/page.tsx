@@ -7,7 +7,7 @@ import SubmitRecipeForm from "@/components/SubmitRecipe";
 async function EditRecipe({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const recipe = await getRecipebySlugAdmin(slug);
-  
+
   if (!recipe) {
     return (
       <>
@@ -39,6 +39,8 @@ async function EditRecipe({ params }: { params: Promise<{ slug: string }> }) {
           </p>
         </div>
         <div>
+          {JSON.stringify(recipe)}
+          <h1>from main edit</h1>
           <SubmitRecipeForm recipe={recipe} mode="update" />
         </div>
       </div>

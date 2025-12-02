@@ -31,6 +31,7 @@ import ActionButtons from "@/components/recipe/ActionButtons";
 import BackNavigation from "@/components/BackNavigation";
 import Link from "next/link";
 import PreviewWarning from "@/components/PreviewWarning";
+import YoutubeVideoSection from "@/components/recipe/YoutubeVideoSection";
 
 export default function RecipeDetailPage() {
   const params = useParams();
@@ -80,7 +81,7 @@ export default function RecipeDetailPage() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Badge className="bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300">
-                  {recipe.category}
+                  {recipe.category.name}
                 </Badge>
                 {recipe.tags.map((tag) => (
                   <Badge
@@ -164,12 +165,19 @@ export default function RecipeDetailPage() {
 
               {/* Cultural Note */}
               <RecipeCulturalNote culturalNote={recipe?.culturalNote} />
+
+              {/* youtube video section */}
+              <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
+                 <YoutubeVideoSection videoId={recipe.youtube_video_id} />
+              </Card>
+              
             </div>
 
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Nutrition */}
               <NutritionView nutrition={recipe?.nutrition} />
+
 
               <RecipeRating
                 user_id={user?.id ?? ""}

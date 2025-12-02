@@ -1,0 +1,137 @@
+"use client";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useFieldArray, useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormDescription,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Header } from "@/components/header";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import {
+  PlusIcon,
+  Store,
+  MapPin,
+  Phone,
+  Mail,
+  Globe,
+  UtensilsCrossed,
+  ImageIcon,
+  Save,
+  FileWarning,
+  MessageCircleWarningIcon,
+  CircleAlert,
+  X,
+  Trash,
+  Loader2
+} from "lucide-react";
+import ImageBox from "@/components/ImageBox";
+import PreviewSection from "@/components/restaurant/PreviewSection";
+import restaurantSchema, { GetRestaurentType, RestaurantFormType } from "@/schema/restaurent";
+import MenuInputSection from "@/components/restaurant/MenuInputSection";
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import RestaurantForm from "@/components/restaurant/RestaurantForm";
+import { toast } from "sonner";
+import generate_error from "@/utils/generate_error";
+import { useRouter } from "next/router";
+import { createRestaurant } from "@/actions/restaurant/crud";
+import { generateUniqueSlug } from "@/utils/slugify";
+
+type FormValues = z.infer<typeof restaurantSchema>;
+
+const AddRestaurantPage = () => {
+  const form = useForm<FormValues>({
+    resolver: zodResolver(restaurantSchema),
+    defaultValues: {
+      name: "",
+      address: "",
+      phone: "",
+      email: "",
+      website: "",
+      cuisine: "",
+      description: "",
+      image: {
+        url: "",
+        path: "",
+        file: "",
+      },      
+      google_map_url: "",
+      menu: [],
+      gallery: [{
+        url: "",
+        path: "",
+        file: "",
+      }],
+      reviews: [],
+    },
+  });
+  const router = useRouter()
+
+
+  const onSubmit = async (data: GetRestaurentType) => {
+    try {
+      const restaurantData = {
+        ...data,
+        slug: await generateUniqueSlug(data.name, 'restaurant')
+      }
+      const restaurant = await createRestaurant(restaurantData)
+      toast.success('Restaurant created successfully')
+      if (restaurant?.slug) {
+        router.push(`/restaurant/${restaurant?.slug}`)
+      }
+    } catch (error) {
+      toast.error(generate_error(error))
+    }
+  };
+
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
+      <Header />
+
+      <main className="container mx-auto px-4 py-8 md:py-12">
+        <div className="mb-10 text-center space-y-2">
+          <h1 className="text-4xl md:text-5xl font-extrabold ">
+            Add New Restaurant
+          </h1>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Share your culinary haven with the world. Fill in the details below to create your restaurant profile.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Column: Form */}
+          <div className="lg:col-span-7 space-y-6">
+            <RestaurantForm form={form} onSubmit={onSubmit} />
+          </div>
+
+          {/* Right Column: Preview */}
+          <div className="hidden lg:block lg:col-span-5 relative">
+            <div className="sticky top-24 space-y-6">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-px flex-1 bg-border" />
+                <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Live Preview</span>
+                <div className="h-px flex-1 bg-border" />
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border overflow-hidden  transform transition-all hover:scale-[1.01]">
+                <PreviewSection form={form} onSubmit={onSubmit} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default AddRestaurantPage;

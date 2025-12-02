@@ -1,7 +1,9 @@
+"use client"
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Card } from "./ui/card";
 import aiFeatures from "@/constants/aiFeatures";
+import { useRouter } from "next/navigation";
 
 function AIFeaturesGrid({
   features,
@@ -14,9 +16,13 @@ function AIFeaturesGrid({
   onSelect: (id: string) => void;
   onGenerateRecipe: () => void;
 }) {
+  const router = useRouter();
   const handleClick = (featureId: string) => {
     if (featureId === "recipe-generator") {
       onGenerateRecipe();
+    }
+    if (featureId === "/meal-planner") {
+      router.push("/meal-planner");
     }
   };
 

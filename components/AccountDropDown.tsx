@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 import {
+  BookAIcon,
   ForkKnifeIcon,
   Heart,
   LayoutDashboard,
@@ -50,6 +51,11 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
       route: "/my-recipes",
       page: "My Recipes",
       icon: ForkKnifeIcon,
+    },
+    {
+      route: "/meal-planner/my-meal-plans",
+      page: "Meal Planner",
+      icon: BookAIcon,
     },
     {
       route: "/dashboard",

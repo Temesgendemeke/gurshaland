@@ -12,7 +12,7 @@ interface BlogDetailStore{
     isLiked: boolean;
     isBookmarekd: boolean;
 
-    fetchBlog: (slug: string) => void;
+    fetchBlog: (slug: string, user_id?: string) => void;
     addComment: (comment: BlogComment) => void;
     deleteComment: (comment_id:string) => void;
     toggleLike: (user_id:string, blog_id:string) => void;
@@ -26,10 +26,11 @@ export const useBlogDetailStore = create<BlogDetailStore>((set, get) => ({
     isLiked: false,
     isBookmarekd: false,
 
-    fetchBlog: async (slug: string) => {
+    fetchBlog: async (slug, user_id) => {
         set({ loading: true });
         try {
-            const blog: Blog = await getBlogBySlug(slug);
+            const blog: Blog = await getBlogBySlug(slug, user_id);
+            console.log("from store blog",blog)
             set({ blog, loading: false });
         } catch (error) {
             set({ error: generate_error(error), loading: false });

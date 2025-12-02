@@ -21,4 +21,18 @@ const measurements = [
 ]
 
 
+export const heightMeasurements = [
+  { "code": "cm", "name": "centimeter" },
+  { "code": "m", "name": "meter" },
+  { "code": "in", "name": "inch" },
+  { "code": "ft", "name": "foot" }
+];
+
+
+export const weightMeasurements = [
+  { "code": "kg", "name": "kilogram" },
+  { "code": "lb", "name": "pound" }
+];
+
+
 export default measurements

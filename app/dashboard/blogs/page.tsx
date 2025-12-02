@@ -1,5 +1,6 @@
 "use client";
 import { getBlogByAuthor } from "@/actions/blog/blog";
+import CreateNewPostButton from "@/components/CreateNewPostButton";
 import { createPostColumns } from "@/components/dashboard/PostColumn";
 import { DataTable } from "@/components/data-table";
 import { useBlog } from "@/store/DashboardBlog";
@@ -16,12 +17,25 @@ const page = () => {
   const fetchBlogs = useBlog((store) => store.fetchBlogs);
   const loading = useBlog((store) => store.loading);
   const blogs = useBlog((store) => store.blogs);
+  const deleteBlogs = useBlog((store) => store.deleteBlog)
 
   useEffect(() => {
     if (user_id) {
       fetchBlogs(user_id);
     }
   }, [user_id]);
+
+
+  const handleDelete = async(rows: Post[]) =>{
+    try {
+      for (const row of rows){
+         await deleteBlogs(row.slug)
+         toast.success(`${row.title} Blog deleted successfully`)
+      }
+    } catch (error) {
+      toast.error(generate_error(error))
+    }
+  }
   return (
     <div className="mx-5 md:mx-10">
       <div className="mt-4 text-center md:text-left">
@@ -32,19 +46,12 @@ const page = () => {
         </p>
       </div>
 
-      <div className="flex justify-end">
-        <Link
-          href="/blog/create"
-          className="flex gap-1 p-2 rounded-sm btn-primary-modern"
-        >
-          <PlusCircle />
-          <span>create new blog</span>
-        </Link>
-      </div>
+      <CreateNewPostButton postType="Blog" />
       <DataTable<Post, any>
         columns={createPostColumns("/blog")}
         data={blogs}
         loading={loading}
+        onDeleteSelected={handleDelete}
       />
     </div>
   );

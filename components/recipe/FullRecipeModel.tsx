@@ -233,7 +233,7 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
                 <NutritionSection nutrition={recipe.nutrition}/>
                 
                 {/* Youtube video section */}
-                <YoutubeVideoSection videoId={recipe.youtubeVideoId}  videoQuery={recipe.youtube_search_query}/>
+                <YoutubeVideoSection videoId={recipe.youtube_video_id}  videoQuery={recipe.youtube_search_query}/>
               </div>
             </div>
           </div>

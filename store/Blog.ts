@@ -1,4 +1,4 @@
-import { deleteBlog, getBlogs, postBlog } from "@/actions/blog/blog";
+import { deleteBlog, getBlogs, postBlog, updateBlog } from "@/actions/blog/blog";
 import { deleteBlogComment, postBlogComment } from "@/actions/blog/comment";
 import { Blog, BlogComment } from "@/utils/types/blog"
 import {create} from "zustand"
@@ -18,6 +18,7 @@ interface BlogStore{
     fetchBlogs: () => void;
     addComment: (comment: BlogComment) => void;
     removeComment: (comment_id: string) => void;
+    updateBlog: (blog: Blog) => void;
 }
 
 
@@ -72,7 +73,20 @@ export const blogStore = create<BlogStore>((set, get) => ({
            set({ error:"An error occurred." });
         }
     },
-
+    updateBlog: async (blog: Blog) => {
+        try {
+            console.log("Store: Updating blog with data:", blog);
+            set({ loading: true });
+            const updatedBlog = await updateBlog(blog)
+            console.log("Store: Received updated blog:", updatedBlog);
+            set(state => ({ blogs: state.blogs ? state.blogs.map(b => b.id === blog.id ? updatedBlog : b) : null, loading: false}))
+            return updatedBlog
+        } catch (error) {
+          console.error("Store: Update error:", error);
+          set({ error:"An error occurred.", loading: false });
+          throw error;
+        }
+    },
     fetchBlogs: async () => {
         set({ loading: true });
         try {

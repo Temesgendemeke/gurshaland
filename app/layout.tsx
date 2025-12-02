@@ -6,7 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AIChatWidget } from "@/components/ai-chat-widget";
 import { Toaster } from "@/components/ui/sonner";
 import SyncAuth from "@/components/SyncAuth";
-
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,16 +29,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange={false}
         >
-          <SyncAuth>{children}</SyncAuth>
-
-          <AIChatWidget />
+          <Providers>{children}</Providers>
           <Toaster />
         </ThemeProvider>
       </body>

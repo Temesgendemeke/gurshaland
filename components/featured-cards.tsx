@@ -200,9 +200,9 @@ export function FeaturedCards() {
                     <p className="text-body mb-4">{post?.subtitle}</p>
 
                     <div className="flex flex-wrap gap-1 mb-4">
-                      {post.tags?.slice(0, 2).map((tag) => (
+                      {post.tags?.slice(0, 2).map((tag, index) => (
                         <Badge
-                          key={tag}
+                          key={`${tag}-${index}`}
                           variant="secondary"
                           className="text-xs"
                         >

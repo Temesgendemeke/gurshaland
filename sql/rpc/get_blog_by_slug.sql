@@ -1,7 +1,10 @@
-CREATE OR REPLACE FUNCTION get_blog_by_slug(blog_slug TEXT)
+CREATE OR REPLACE FUNCTION get_blog_by_slug(
+    blog_slug TEXT,
+    _user_id UUID)
 RETURNS JSONB 
 LANGUAGE plpgsql
 AS $$
+
 DECLARE
     new_blog JSONB;
     current_blog_id INTEGER;
@@ -10,7 +13,7 @@ BEGIN
     -- Get the current blog's ID and category first
     SELECT b.id, b.category INTO current_blog_id, current_category
     FROM blog b
-    WHERE b.slug = blog_slug AND b.status = 'published';
+    WHERE b.slug = blog_slug AND (b.status = 'published' OR (_user_id IS NOT NULL AND _user_id = b.author_id));
     
     -- If blog not found, return null
     IF current_blog_id IS NULL THEN
@@ -95,10 +98,11 @@ BEGIN
         )
     ) INTO new_blog
     FROM blog b
-    WHERE b.slug = blog_slug AND b.status = 'published';
+    WHERE b.slug = blog_slug AND (b.status = 'published' OR (_user_id IS NOT NULL AND _user_id = b.author_id));
 
     RETURN new_blog;
 END;
 $$;
+
 
 

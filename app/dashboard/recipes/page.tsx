@@ -1,4 +1,5 @@
 "use client";
+import CreateNewPostButton from "@/components/CreateNewPostButton";
 import { postColumn } from "@/components/dashboard/PostColumn";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
@@ -52,13 +53,8 @@ const DashBoardRecipe = () => {
       </div>
       {loading ?  <p>loading</p>: null}
 
-      <div className="flex justify-end">
-         <Button className="btn-primary-modern rounded-lg  " onClick={() => router.push('/recipes/create')}>
-          <Plus/>
-          <span>Add Recipe</span>
-      </Button>
-      </div>
-     
+      <CreateNewPostButton postType="Recipe" />
+    
       <DataTable<Post, any>
         columns={postColumn}
         data={recipes}

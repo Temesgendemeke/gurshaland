@@ -10,7 +10,6 @@ import HeroSection from "@/components/HeroSection";
 import generateImage from "@/utils/genAI";
 
 export default async function HomePage() {
- 
   return (
     <div className="modern-gradient-bg min-h-screen">
       <Header />

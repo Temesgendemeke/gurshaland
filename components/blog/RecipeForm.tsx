@@ -48,7 +48,7 @@ const RecipeForm = ({ form, index }: RecipeFormProps) => {
             e.preventDefault();
             form.setValue(recipe_name, {
               title: "",
-              ingredients: { amount: undefined, measurement: "", name: "" },
+              ingredients: [],
               instructions: [],
             });
           }}

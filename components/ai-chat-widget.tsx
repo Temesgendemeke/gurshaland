@@ -5,6 +5,28 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { MessageCircle, X, Send, Sparkles, ChefHat } from "lucide-react";
+import { getResponse } from "@/actions/ai/getResponse";
+import { useAssistant } from "@/hooks/useAssistant";
+import { useQuery } from "@tanstack/react-query";
+import set from "date-fns/esm/fp/set/index.js";
+
+const fetchResponse = async (prompt: String) => {
+  try {
+    const response = await fetch("/api/ai/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: prompt }),
+    });
+    console.log(response);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    return { error: "An error occurred while fetching response." };
+  }
+};
 
 export function AIChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,12 +39,18 @@ export function AIChatWidget() {
       timestamp: new Date(),
     },
   ]);
+
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
+  const { refetch, data, error, isLoading, isEnabled, isFetching } = useQuery({
+    queryKey: ["assistant", inputMessage],
+    queryFn: async () => await fetchResponse(inputMessage),
+    enabled: false,
+  });
+
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
-
     const userMessage = {
       id: messages.length + 1,
       type: "user",
@@ -34,36 +62,32 @@ export function AIChatWidget() {
     setInputMessage("");
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const aiResponse = {
+    // const res = await fetchResponse(inputMessage);
+    const { data } = await refetch();
+
+    if (!data || typeof data.text !== "string") {
+      const errorMessage =
+        (data && (data.error as string)) ||
+        "The assistant couldn't generate a response. Please try again.";
+      const errorMsg = {
         id: messages.length + 2,
         type: "ai",
-        content: getAIResponse(inputMessage),
+        content: errorMessage,
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, aiResponse]);
+      setMessages((prev) => [...prev, errorMsg]);
       setIsTyping(false);
-    }, 1500);
-  };
-
-  const getAIResponse = (message: string) => {
-    const lowerMessage = message.toLowerCase();
-
-    if (lowerMessage.includes("injera")) {
-      return "Injera is the foundation of Ethiopian cuisine! It's a fermented flatbread made from teff flour. The fermentation process takes 3-5 days and creates its signature spongy texture. Would you like the traditional recipe?";
-    } else if (lowerMessage.includes("berbere")) {
-      return "Berbere is Ethiopia's most important spice blend! It typically contains 15+ spices including dried chilies, fenugreek, coriander, and cardamom. Each family has their own secret recipe. I can help you make your own blend!";
-    } else if (lowerMessage.includes("doro wat")) {
-      return "Doro Wat is Ethiopia's national dish - a rich, spicy chicken stew! It's traditionally served during special occasions and takes about 2 hours to prepare. The key is slow-cooking with berbere spice and hard-boiled eggs.";
-    } else if (
-      lowerMessage.includes("vegetarian") ||
-      lowerMessage.includes("fasting")
-    ) {
-      return "Ethiopian cuisine has amazing vegetarian options! During fasting periods, dishes like Shiro Wat (chickpea stew), Gomen (collard greens), and Misir Wat (lentil stew) are popular. Would you like recipes for any of these?";
-    } else {
-      return "That's a great question about Ethiopian cuisine! I can help you with recipes, cooking techniques, ingredient substitutions, and cultural background of dishes. What specific aspect would you like to explore?";
+      return;
     }
+
+    const aiResponse = {
+      id: messages.length + 2,
+      type: "ai",
+      content: data.text,
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, aiResponse]);
+    setIsTyping(false);
   };
 
   if (!isOpen) {
@@ -78,7 +102,7 @@ export function AIChatWidget() {
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 w-96 h-96 modern-card shadow-2xl z-50 flex flex-col">
+    <Card className="fixed bottom-6 right-6 w-[500px] h-[700px] modern-card shadow-2xl z-50 flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
         <div className="flex items-center space-x-2">
@@ -91,6 +115,17 @@ export function AIChatWidget() {
             </h3>
             <p className="text-xs text-body-muted">Always here to help</p>
           </div>
+        </div>
+
+        <div>
+          error: {JSON.stringify(error)} <br />
+          loading: {JSON.stringify(isLoading)} <br />
+          enabled: {JSON.stringify(isEnabled)} <br />
+          fetching: {JSON.stringify(isFetching)} <br />
+          data: {JSON.stringify(data) === null
+            ? "null"
+            : JSON.stringify(data)}{" "}
+          <br />
         </div>
         <Button
           variant="ghost"
@@ -142,7 +177,7 @@ export function AIChatWidget() {
 
         <div
           key={`bottom-${messages.length}`}
-          ref={el => {
+          ref={(el) => {
             el?.scrollIntoView({ behavior: "smooth", block: "end" });
           }}
         />

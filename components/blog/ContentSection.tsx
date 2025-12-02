@@ -1,6 +1,11 @@
 "use client";
 import React from "react";
-import { useFieldArray } from "react-hook-form";
+import {
+  useFieldArray,
+  Controller,
+  UseFormProps,
+  UseFormReturn,
+} from "react-hook-form";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Collapsible,
@@ -22,11 +27,11 @@ import {
 import ImageBox from "../ImageBox";
 import TipsForm from "./TipsForm";
 import RecipeForm from "./RecipeForm";
-
+import deleteImageFromStorage, { deleteImageFromDb } from "@/actions/Image";
 
 interface ContentSectionProps {
   index: number;
-  form: any;
+  form: UseFormReturn<any>;
   onRemove: () => void;
   isOpen: boolean;
   onToggle: () => void;
@@ -45,9 +50,8 @@ export function ContentSection({
     remove: removeItem,
   } = useFieldArray({
     control: form.control,
-    name: `content.${index}.items`,
+    name: `contents.${index}.items` as any,
   });
-
 
   return (
     <Card className="bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
@@ -83,15 +87,22 @@ export function ContentSection({
           <CardContent className="space-y-4">
             <ImageBox
               form={form}
-              field={`content${index}.image.file`}
-              inputcls={`image-content-${index}.file`}
+              field={`contents.${index}.image` as any}
+              inputcls={`image-content-${index}`}
               label="Content"
+              deleteImage={async (path) => {
+                await deleteImageFromDb(
+                  "content_image",
+                  path,
+                  form.getValues(`contents.${index}.id`),
+                );
+              }}
             />
             <div className="grid grid-cols-1  gap-4">
               <div className="space-y-2">
                 <Label>Section Title</Label>
                 <Input
-                  {...form.register(`content.${index}.title`)}
+                  {...form.register(`contents.${index}.title`)}
                   placeholder="Section title"
                 />
               </div>
@@ -100,13 +111,13 @@ export function ContentSection({
             <div className="space-y-2">
               <Label>Content *</Label>
               <Textarea
-                {...form.register(`content.${index}.body`)}
+                {...form.register(`contents.${index}.body`)}
                 placeholder="Enter section content"
                 rows={4}
               />
-              {form.formState.errors.content?.[index]?.body && (
+              {(form.formState.errors as any).contents?.[index]?.body && (
                 <p className="text-sm text-red-500">
-                  {form.formState.errors.content[index].body.message}
+                  {(form.formState.errors as any).contents[index].body.message}
                 </p>
               )}
             </div>

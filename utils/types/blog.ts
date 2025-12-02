@@ -39,7 +39,7 @@ export interface Content{
 
 interface Tips{
     title: string;
-    items: string[];
+    items?: string[];
 }
 
 interface BlogContentRecipe{
@@ -62,7 +62,8 @@ interface ContentImage extends Image{
 }
 
 export interface Ingredient{
-    amount: string;
+    amount: number;
+    measurement?: string;
     name: string;
     content_id?: string;
 }

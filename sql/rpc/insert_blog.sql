@@ -23,12 +23,12 @@ BEGIN
    ) RETURNING id INTO blog_id;
 
    INSERT INTO content(
-     blog_id, label, content, title, instructions, items
+     blog_id, label, body, title, instructions, items
    )
-   SELECT 
+   SELECT
         blog_id,
         c ->> 'label',
-        c ->> 'content',
+        c ->> 'body',
         c ->> 'title',
         ARRAY(SELECT jsonb_array_elements_text(c -> 'instructions')),
         ARRAY(SELECT jsonb_array_elements_text(c -> 'items'))
@@ -36,8 +36,8 @@ BEGIN
 
    INSERT INTO blog_ingredient (
      content_id, amount, name
-   ) 
-   SELECT 
+   )
+   SELECT
        (i ->> 'content_id')::BIGINT,
        (i ->> 'amount')::INT,
        i ->> 'name'
@@ -63,12 +63,12 @@ BEGIN
             WHERE b_img.blog_id = b.id
             LIMIT 1
         ),
-        'content', (
+        'contents', (
             SELECT jsonb_agg(
                 jsonb_build_object(
                     'id', content.id,
                     'label', content.label,
-                    'content', content.content,
+                    'body', content.body,
                     'title', content.title,
                     'instructions', content.instructions,
                     'items', content.items,

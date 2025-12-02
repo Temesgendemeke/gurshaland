@@ -11,7 +11,7 @@ export const ingredientSchema = z.object({
   notes: z.string().optional(),
 });
 
-const imageSchema = z.object({
+export const imageSchema = z.object({
   path: z.string(),
   url: z.string(),
 });
@@ -150,31 +150,31 @@ const ContentIngredient = z.object({
 
 const RecipeSchema = z.object({
   title: z.string(),
-  ingredients: ContentIngredient,
+  ingredients: z.array(ContentIngredient).optional(),
   instructions: z.array(z.string()),
 });
 
 export const ContentSchema = z
   .array(
     z.object({
-      image: ImageSchema,
+      image: ImageSchema.nullish(),
       body: z.string().min(1, "Content is required"),
       title: z.string(),
       tips: TipsSchema.optional(),
-      ingredients: z.array(ContentIngredient).optional(),
       recipe: RecipeSchema.optional(),
     }),
   )
   .optional();
 
 export const blogSchema = z.object({
+  id: z.string().optional(),
   title: z.string().min(1, "Title is required"),
   subtitle: z.string().optional(),
   category: z.string().min(1, "Category is required"),
   tags: z.array(z.string()).optional(),
   status: z.enum(["draft", "published"]),
-  image: ImageSchema,
-  content: ContentSchema,
+  image: ImageSchema.optional(),
+  contents: ContentSchema,
 });
 
 // dashboard settings

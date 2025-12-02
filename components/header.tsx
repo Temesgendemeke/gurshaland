@@ -29,10 +29,14 @@ export function Header() {
       route: "/blog",
       page: "Blog",
     },
+    {
+      route: "/restaurant",
+      page: "Discover Restaurants",
+    }
   ];
 
   return (
-    <header className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 shadow-sm sticky top-0 z-50">
+    <header className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 shadow-sm sticky top-0 z-50 rounded-lg">
       <div className="mx-auto flex items-center justify-between px-6 py-4">
         <Logo />
 
