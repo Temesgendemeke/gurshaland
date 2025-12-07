@@ -68,3 +68,25 @@ export const deleteRestaurant = async (id: string): Promise<GetRestaurentType | 
 
     return data
 };
+
+
+export const getAllRestaurants = async (
+    page: number = 1,
+    limit: number = 10
+): Promise<{ data: GetRestaurentType[]; count: number } | null> => {
+    const supabase = createClient();
+
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+
+    const { data, error, count } = await supabase
+        .from("restaurant")
+        .select("*", { count: "exact" })
+        .range(from, to);
+
+    if (error) {
+        throw error;
+    }
+
+    return { data: data || [], count: count || 0 };
+};

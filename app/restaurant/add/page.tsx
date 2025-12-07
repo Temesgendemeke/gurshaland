@@ -30,25 +30,35 @@ import {
   CircleAlert,
   X,
   Trash,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import ImageBox from "@/components/ImageBox";
 import PreviewSection from "@/components/restaurant/PreviewSection";
-import restaurantSchema, { GetRestaurentType, RestaurantFormType } from "@/schema/restaurent";
+import restaurantSchema, {
+  GetRestaurentType,
+  RestaurantFormType,
+} from "@/schema/restaurent";
 import MenuInputSection from "@/components/restaurant/MenuInputSection";
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import RestaurantForm from "@/components/restaurant/RestaurantForm";
 import { toast } from "sonner";
 import generate_error from "@/utils/generate_error";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { createRestaurant } from "@/actions/restaurant/crud";
 import { generateUniqueSlug } from "@/utils/slugify";
 
 type FormValues = z.infer<typeof restaurantSchema>;
 
 const AddRestaurantPage = () => {
+  const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(restaurantSchema),
     defaultValues: {
@@ -57,42 +67,41 @@ const AddRestaurantPage = () => {
       phone: "",
       email: "",
       website: "",
-      cuisine: "",
+      cuisines: [],
       description: "",
       image: {
         url: "",
         path: "",
         file: "",
-      },      
+      },
       google_map_url: "",
       menu: [],
-      gallery: [{
-        url: "",
-        path: "",
-        file: "",
-      }],
+      gallery: [
+        {
+          url: "",
+          path: "",
+          file: "",
+        },
+      ],
       reviews: [],
     },
   });
-  const router = useRouter()
-
 
   const onSubmit = async (data: GetRestaurentType) => {
     try {
       const restaurantData = {
         ...data,
-        slug: await generateUniqueSlug(data.name, 'restaurant')
-      }
-      const restaurant = await createRestaurant(restaurantData)
-      toast.success('Restaurant created successfully')
+        slug: await generateUniqueSlug(data.name, "restaurant"),
+      };
+      const restaurant = await createRestaurant(restaurantData);
+      toast.success("Restaurant created successfully");
       if (restaurant?.slug) {
-        router.push(`/restaurant/${restaurant?.slug}`)
+        router.push(`/restaurant/${restaurant?.slug}`);
       }
     } catch (error) {
-      toast.error(generate_error(error))
+      toast.error(generate_error(error));
     }
   };
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
@@ -104,7 +113,8 @@ const AddRestaurantPage = () => {
             Add New Restaurant
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Share your culinary haven with the world. Fill in the details below to create your restaurant profile.
+            Share your culinary haven with the world. Fill in the details below
+            to create your restaurant profile.
           </p>
         </div>
 
@@ -119,7 +129,9 @@ const AddRestaurantPage = () => {
             <div className="sticky top-24 space-y-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="h-px flex-1 bg-border" />
-                <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Live Preview</span>
+                <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+                  Live Preview
+                </span>
                 <div className="h-px flex-1 bg-border" />
               </div>
 

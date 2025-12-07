@@ -30,7 +30,7 @@ const getMenuSchema = MenuSchema.extend({
 const RestaurantSchema = z.object({
   name: z.string().min(2).max(100),
   description: z.string().min(10).max(500),
-  cuisine: z.string().min(2).max(100),
+  cuisines: z.array(z.string().min(2).max(100)),
   address: z.string().min(5).max(200),
   phone: z.string().min(10).max(20),
   email: z.string().email().min(5).max(100),
@@ -41,6 +41,8 @@ const RestaurantSchema = z.object({
   author_id: z.string().uuid(),
   gallery: z.array(ImageSchema).optional(),
   reviews: z.array(ReviewSchema).optional(),
+  city: z.string().min(2).max(100),
+  country: z.string().min(2).max(100),
 });
 
 export const getRestaurentSchema = RestaurantSchema.extend({
@@ -61,7 +63,14 @@ export const getRestaurentSchema = RestaurantSchema.extend({
   }).optional(),
 });
 
+
+export const fetchRestaurantSchema = RestaurantSchema.extend({
+    rating: z.number().min(0).max(5).optional(),
+    slug: z.string()
+})
+
 export type RestaurantFormType = z.infer<typeof RestaurantSchema>;
 export type GetRestaurentType = z.infer<typeof getRestaurentSchema>;
+export type FetchRestaurantType = z.infer<typeof fetchRestaurantSchema>;
 
 export default RestaurantSchema;

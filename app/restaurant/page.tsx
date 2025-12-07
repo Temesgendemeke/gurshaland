@@ -8,7 +8,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { IceCream, LocateIcon, Map, MapPin, Search, StarIcon, StarsIcon } from "lucide-react";
+import {
+  IceCream,
+  LocateIcon,
+  Map,
+  MapPin,
+  Search,
+  StarIcon,
+  StarsIcon,
+} from "lucide-react";
 import {
   Card,
   CardContent,
@@ -17,10 +25,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import RestaurantCard from "@/components/restaurant/RestaurantCard";
 import { Restaurant } from "@/utils/types/restaurant";
 import { z } from "zod";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getAllRestaurants } from "@/actions/restaurant/crud";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import RecipeListSkeleton from "@/components/skeleton/RecipeList";
 
 const searchSchema = z.object({
   query: z.string().min(1, "Please enter a search term"),
@@ -34,135 +54,35 @@ const page = () => {
     },
   });
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pageParam = Number(searchParams.get("page")) || 1;
+  const limit = 10;
 
   const onSubmit = async (data) => {
     console.log(data);
   };
 
-  const restaurants: Restaurant[] = [
-    {
-      id: "r001",
-      slug: "saffron-and-spice",
-      name: "Saffron & Spice",
-      description:
-        "Modern Indian fare with bold flavors, craft cocktails, and a cozy urban vibe.",
-      location: "San Francisco, CA",
-      city: "San Francisco",
-      rating: 4.6,
-      image_url: "https://images.unsplash.com/photo-1543353071-873f17a7a5c0",
-    },
-    {
-      id: "r002",
-      slug: "trattoria-bella",
-      name: "Trattoria Bella",
-      description:
-        "Classic Italian trattoria serving handmade pasta, wood-fired pizzas, and fine wines.",
-      location: "New York, NY",
-      city: "New York",
-      rating: 4.7,
-      image_url: "https://images.unsplash.com/photo-1544025162-d76694265947",
-    },
-    {
-      id: "r003",
-      slug: "umami-house",
-      name: "Umami House",
-      description:
-        "Sleek Japanese dining with premium sushi, seasonal omakase, and sake pairings.",
-      location: "Seattle, WA",
-      city: "Seattle",
-      rating: 4.8,
-      image_url: "https://images.unsplash.com/photo-1553621042-f6e147245754",
-    },
-    {
-      id: "r004",
-      slug: "el-patio-verde",
-      name: "El Patio Verde",
-      description:
-        "Fresh, vibrant Mexican plates and street-style tacos in a garden patio setting.",
-      location: "Austin, TX",
-      city: "Austin",
-      rating: 4.5,
-      image_url: "https://images.unsplash.com/photo-1604908176997-431652c5e8bb",
-    },
-    {
-      id: "r005",
-      slug: "le-petit-marche",
-      name: "Le Petit Marché",
-      description:
-        "Charming French bistro offering classic dishes, pastries, and curated cheeses.",
-      location: "Chicago, IL",
-      city: "Chicago",
-      rating: 4.4,
-      image_url: "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
-    },
-    {
-      id: "r006",
-      slug: "kebab-kontempera",
-      name: "Kebab Kontemporā",
-      description:
-        "Contemporary Middle Eastern grill with aromatic kebabs and mezze platters.",
-      location: "Los Angeles, CA",
-      city: "Los Angeles",
-      rating: 4.3,
-      image_url: "https://images.unsplash.com/photo-1604908554231-6134d0dfc579",
-    },
-    {
-      id: "r007",
-      slug: "bambu-garden",
-      name: "Bambu Garden",
-      description:
-        "Light, herb-forward Vietnamese cuisine featuring pho, bun bowls, and fresh rolls.",
-      location: "Portland, OR",
-      city: "Portland",
-      rating: 4.5,
-      image_url: "https://images.unsplash.com/photo-1544025162-d76694265947",
-    },
-    {
-      id: "r008",
-      slug: "taste-of-kerala",
-      name: "Taste of Kerala",
-      description:
-        "Authentic Kerala specialties with rich spices, seafood curries, and dosas.",
-      location: "Houston, TX",
-      city: "Houston",
-      rating: 4.6,
-      image_url: "https://images.unsplash.com/photo-1565895405139-0a3b2f9b3cfe",
-    },
-    {
-      id: "r009",
-      slug: "the-green-fork",
-      name: "The Green Fork",
-      description:
-        "Creative plant-based menu with seasonal produce and nourishing bowls.",
-      location: "Denver, CO",
-      city: "Denver",
-      rating: 4.2,
-      image_url: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd",
-    },
-    {
-      id: "r010",
-      slug: "seaside-grill",
-      name: "Seaside Grill",
-      description:
-        "Coastal seafood spot known for fresh catches, tropical flavors, and ocean views.",
-      location: "Miami, FL",
-      city: "Miami",
-      rating: 4.3,
-      image_url: "https://images.unsplash.com/photo-1544025162-d76694265947",
-    },
-  ];
+  const { data: restaurantsResponse, isLoading } = useQuery({
+    queryKey: ["restaurants", pageParam],
+    queryFn: () => getAllRestaurants(pageParam, limit),
+    placeholderData: keepPreviousData,
+  });
+
+  const restaurants = restaurantsResponse?.data || [];
+  const totalCount = restaurantsResponse?.count || 0;
+  const totalPages = Math.ceil(totalCount / limit);
 
   return (
     <>
       <Header />
 
-      <div>
+      <div className="px-4 pt-2">
         <BackNavigation />
 
         {/* hero text */}
         <div>
           <div className="py-16 text-center">
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-600 via-sky-600 to-emerald-600 bg-clip-text text-transparent ">
               The Hottest Lounge Search Engine
             </h1>
 
@@ -182,71 +102,194 @@ const page = () => {
                           <Input
                             {...field}
                             placeholder="Search for a lounge..."
-                            className="pl-10 bg-background border-border/50 focus:border-primary/50 transition-all duration-300 hover:border-primary/30"
+                            className="pl-10  md: bg-background border-border/50 focus:border-primary/50 transition-all duration-300 hover:border-primary/30"
                           />
                         </div>
                       )}
                     />
                   </div>
 
-                  {/* <div className="md:w-64">
-                    <FormField
-                      control={form.control}
-                      name="location"
-                      render={({ field }) => (
-                        <div className="relative">
-                          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                          <Input
-                            {...field}
-                            placeholder="Location"
-                            className="pl-10 bg-background border-border/50 focus:border-primary/50 transition-all duration-300 hover:border-primary/30"
-                          />
-                        </div>
-                      )}
-                    />
-                  </div>
-
-                  <div className="md:w-32">
-                    <FormField
-                      control={form.control}
-                      name="rating"
-                      render={({ field }) => (
-                        <div className="relative">
-                          <StarIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                          <Input
-                            {...field}
-                            placeholder="Rating"
-                            type="number"
-                            min={0}
-                            max={5}
-                            className="pl-10 bg-background border-border/50 focus:border-primary/50 transition-all duration-300 hover:border-primary/30"
-                          />
-                        </div>
-                      )}
-                    />
-                  </div> */}
-
-                  <Button type="submit" className="md:w-auto px-6 w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-md transition-all hover:shadow-lg">
-                    <StarsIcon className="w-5 h-5"/>
+                  <Button
+                    type="submit"
+                    className="md:w-auto px-6 w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-md transition-all hover:shadow-lg"
+                  >
+                    <StarsIcon className="w-5 h-5" />
                     <span>Search</span>
                   </Button>
                 </form>
               </Form>
-
             </div>
 
+            {isLoading ? (
+              <div className="mt-10">
+                <RecipeListSkeleton />
+              </div>
+            ) : (
+              <div className="flex flex-col w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-5 mt-10">
+                  {restaurants?.map((restaurant, index) => (
+                    <RestaurantCard
+                      key={restaurant.id}
+                      restaurant={restaurant}
+                    />
+                  ))}
+                </div>
 
-            {JSON.stringify(form.watch("query"))}
+                {totalPages > 1 && (
+                  <div className="mt-10 mb-10 self-center">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if (pageParam > 1) {
+                                router.push(`?page=${pageParam - 1}`);
+                              }
+                            }}
+                            className={
+                              pageParam <= 1
+                                ? "pointer-events-none opacity-50"
+                                : ""
+                            }
+                          />
+                        </PaginationItem>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-5 mt-10">
+                        {(() => {
+                          const items = [];
+                          const maxVisiblePages = 5;
 
-              {restaurants.map((restaurant, index) => (
-                <RestaurantCard
-                  key={`resturant-list-${index + 1}`}
-                  restaurant={restaurant}
-                />
-              ))}
-            </div>
+                          if (totalPages <= maxVisiblePages) {
+                            for (let i = 1; i <= totalPages; i++) {
+                              items.push(
+                                <PaginationItem key={i}>
+                                  <PaginationLink
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      router.push(`?page=${i}`);
+                                    }}
+                                    isActive={pageParam === i}
+                                  >
+                                    {i}
+                                  </PaginationLink>
+                                </PaginationItem>
+                              );
+                            }
+                          } else {
+                            // Always show first page
+                            items.push(
+                              <PaginationItem key={1}>
+                                <PaginationLink
+                                  href="#"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    router.push(`?page=1`);
+                                  }}
+                                  isActive={pageParam === 1}
+                                >
+                                  1
+                                </PaginationLink>
+                              </PaginationItem>
+                            );
+
+                            // Show ellipsis if current page is far from start
+                            if (pageParam > 3) {
+                              items.push(
+                                <PaginationItem key="ellipsis-start">
+                                  <PaginationEllipsis />
+                                </PaginationItem>
+                              );
+                            }
+
+                            // Calculate start and end of dynamic window
+                            let startPage = Math.max(2, pageParam - 1);
+                            let endPage = Math.min(
+                              totalPages - 1,
+                              pageParam + 1
+                            );
+
+                            // Adjust if near start
+                            if (pageParam <= 3) {
+                              endPage = 4;
+                              startPage = 2;
+                            }
+
+                            // Adjust if near end
+                            if (pageParam >= totalPages - 2) {
+                              startPage = totalPages - 3;
+                              endPage = totalPages - 1;
+                            }
+
+                            for (let i = startPage; i <= endPage; i++) {
+                              items.push(
+                                <PaginationItem key={i}>
+                                  <PaginationLink
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      router.push(`?page=${i}`);
+                                    }}
+                                    isActive={pageParam === i}
+                                  >
+                                    {i}
+                                  </PaginationLink>
+                                </PaginationItem>
+                              );
+                            }
+
+                            // Show ellipsis if current page is far from end
+                            if (pageParam < totalPages - 2) {
+                              items.push(
+                                <PaginationItem key="ellipsis-end">
+                                  <PaginationEllipsis />
+                                </PaginationItem>
+                              );
+                            }
+
+                            // Always show last page
+                            items.push(
+                              <PaginationItem key={totalPages}>
+                                <PaginationLink
+                                  href="#"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    router.push(`?page=${totalPages}`);
+                                  }}
+                                  isActive={pageParam === totalPages}
+                                >
+                                  {totalPages}
+                                </PaginationLink>
+                              </PaginationItem>
+                            );
+                          }
+
+                          return items;
+                        })()}
+
+                        <PaginationItem>
+                          <PaginationNext
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if (pageParam < totalPages) {
+                                router.push(`?page=${pageParam + 1}`);
+                              }
+                            }}
+                            className={
+                              pageParam >= totalPages
+                                ? "pointer-events-none opacity-50"
+                                : ""
+                            }
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

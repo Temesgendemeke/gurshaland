@@ -1,6 +1,5 @@
 import { createClient } from "@/utils/supabase/client";
 
-const supabase = createClient();
 
 export const slugify = (text: string): string => {
   return text
@@ -12,6 +11,8 @@ export const slugify = (text: string): string => {
 };
 
 export const generateUniqueSlug = async (title: string, table: string) => {
+  const supabase = createClient();
+
   let base = slugify(title);
   let slug = base;
   let counter = 1;
@@ -39,6 +40,8 @@ export const generateUniqueSlug = async (title: string, table: string) => {
 };
 
 export const generateUniqueTitle = async (title: string) => {
+  const supabase = createClient();
+
   let uniqueTitle = title;
   let counter = 1;
 

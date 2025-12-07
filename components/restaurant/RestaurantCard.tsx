@@ -11,17 +11,30 @@ import {
 import Image from "next/image";
 import { MapPin, StarIcon, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { GetRestaurentType } from "@/schema/restaurent";
 
-const RestaurantCard = ({ restaurant }: { restaurant: Restaurant }) => {
+const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
   const router = useRouter();
   const [imageSrc, setImageSrc] = useState(
-    restaurant.image_url || "/placeholder.svg"
+    restaurant?.image?.url || "/placeholder.svg"
   );
+
+  const correctURl = (url: string) => {
+    if (url.includes("https://static.playfood.com/")) {
+      return url.replace(/\.com\/\//g, ".com/");
+    }
+
+    // if url exists but not working (basic null check)
+    if (!url) {
+      return "/placeholder.svg";
+    }
+    return url;
+  };
 
   return (
     <Card
       key={restaurant.id}
-      className="group relative overflow-hidden cursor-pointer border-border/50 bg-card hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 h-full flex flex-col"
+      className="group relative overflow-hidden cursor-pointer border-border/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 h-full flex flex-col backdrop-blur-sm bg-transparent"
       onClick={() => router.push(`/restaurant/${restaurant.slug}`)}
     >
       {/* Accent Border - Animated */}
@@ -30,7 +43,7 @@ const RestaurantCard = ({ restaurant }: { restaurant: Restaurant }) => {
       {/* Image Section */}
       <div className="relative w-full h-56 overflow-hidden">
         <Image
-          src={imageSrc || "/placeholder.svg"}
+          src={correctURl(imageSrc)}
           alt={restaurant.name}
           width={500}
           height={300}
@@ -70,7 +83,11 @@ const RestaurantCard = ({ restaurant }: { restaurant: Restaurant }) => {
         <div className="flex items-center gap-2 text-muted-foreground group-hover:text-foreground transition-colors duration-300">
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 group-hover:bg-primary/10 transition-colors duration-300">
             <MapPin className="w-4 h-4 text-primary/70" />
-            <span className="text-sm font-medium">{restaurant.city}</span>
+            <span className="text-sm font-medium">
+              {restaurant.city.length > 30
+                ? restaurant.city.slice(0, 30) + "..."
+                : restaurant.city}
+            </span>
           </div>
         </div>
       </CardContent>
