@@ -12,7 +12,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { MoreVertical, MoreVerticalIcon, Eye, PenBox, DeleteIcon, Trash } from "lucide-react";
+import {
+  MoreVertical,
+  MoreVerticalIcon,
+  Eye,
+  PenBox,
+  DeleteIcon,
+  Trash,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import generate_error from "@/utils/generate_error";
@@ -30,17 +37,17 @@ const StatusBadge = ({ status }: { status: string }) => {
     switch (status?.toLowerCase()) {
       case "published":
         return {
-          bg: "bg-emerald-100 dark:bg-emerald-900/30",
-          text: "text-emerald-700 dark:text-emerald-300",
-          border: "border-emerald-200 dark:border-emerald-700",
-          dot: "bg-emerald-500",
+          bg: "bg-success/10",
+          text: "text-success",
+          border: "border-success/20",
+          dot: "bg-success",
         };
       case "draft":
         return {
-          bg: "bg-amber-100 dark:bg-amber-900/30",
-          text: "text-amber-700 dark:text-amber-300",
-          border: "border-amber-200 dark:border-amber-700",
-          dot: "bg-amber-500",
+          bg: "bg-warning/10",
+          text: "text-warning",
+          border: "border-warning/20",
+          dot: "bg-warning",
         };
       default:
         return {
@@ -67,7 +74,7 @@ const StatusBadge = ({ status }: { status: string }) => {
 const columnHelper = createColumnHelper<Post>();
 
 export const createPostColumns = (
-  linkBasePath: "/recipes" | "/blog" = "/recipes"
+  linkBasePath: "/recipes" | "/blog" = "/recipes",
 ): ColumnDef<Post, any>[] => [
   // columnHelper.display({
   //   id: "action",
@@ -123,14 +130,14 @@ export const createPostColumns = (
       });
     },
   }),
-  columnHelper.accessor("view", {
+  columnHelper.accessor("view_count", {
     header: (info) => (
       <DefaultHeader info={info as any} name="Engagement Rate" />
     ),
     cell: (info) => {
       const views = Number(info.getValue()) || 0;
       const likes = Number((info.row.original as any).like) || 0;
-      const comments = Number((info.row.original as any).comments) || 0;
+      const comments = Number((info.row.original as any).comment_count) || 0;
 
       let engagementRate = 0;
       if (views > 0) {
@@ -140,11 +147,11 @@ export const createPostColumns = (
       const displayRate = Math.min(100, Math.round(engagementRate * 100) / 100);
 
       const getEngagementColor = (rate: number) => {
-        if (rate >= 15) return "bg-emerald-600"; // High engagement
-        if (rate >= 8) return "bg-emerald-500"; // Good engagement
-        if (rate >= 5) return "bg-amber-500"; // Moderate engagement
-        if (rate >= 2) return "bg-orange-500"; // Low engagement
-        return "bg-red-500";
+        if (rate >= 15) return "bg-primary"; // High engagement
+        if (rate >= 10) return "bg-success"; // Good engagement
+        if (rate >= 5) return "bg-warning"; // Moderate engagement
+        if (rate >= 2) return "bg-popular"; // Low engagement
+        return "bg-error";
       };
 
       return (
@@ -162,7 +169,7 @@ export const createPostColumns = (
             <div
               className={cn(
                 "h-full rounded-r transition-all duration-300",
-                getEngagementColor(displayRate)
+                getEngagementColor(displayRate),
               )}
               style={{ width: `${displayRate}%` }}
             />
@@ -196,13 +203,11 @@ export const createPostColumns = (
           console.error("Error deleting post:", err);
           toast.error("Failed to delete");
         }
-
-
       };
       const router = useRouter();
 
       return (
-        <DropdownMenu >
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant={"ghost"}>
               <MoreVerticalIcon />
@@ -215,15 +220,20 @@ export const createPostColumns = (
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Button onClick={()=> router.push(`${linkBasePath}/edit/${row.row.original.slug}`)} className="flex gap-1 justify-center" variant="ghost"
-                >
+              <Button
+                onClick={() =>
+                  router.push(`${linkBasePath}/edit/${row.row.original.slug}`)
+                }
+                className="flex gap-1 justify-center"
+                variant="ghost"
+              >
                 <PenBox />
                 <span>Edit</span>
               </Button>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Button onClick={handleDelete} variant="ghost" className="flex">
-                <Trash/>
+                <Trash />
                 <span>Delete</span>
               </Button>
               {/* <DeleteWarning post={linkBasePath} slug={row.row.original.slug!}/> */}

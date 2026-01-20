@@ -14,16 +14,16 @@ export default async function CategoriesPage() {
   console.log(categories);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+          <h1 className="text-5xl font-bold text-foreground mb-6">
             Recipe Categories
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Explore Ethiopian cuisine by category - from traditional breads to
             aromatic spices
           </p>
@@ -41,7 +41,7 @@ export default async function CategoriesPage() {
                   .toLowerCase()
                   .replace(/\s+/g, "-")}`}
               >
-                <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl hover:scale-105 transition-all duration-300 group bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-emerald-100 dark:border-emerald-800 h-full">
+                <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl hover:scale-105 transition-all duration-300 group bg-card/70 backdrop-blur-sm border-primary/20 h-full">
                   <div className="relative">
                     {/* Category Image */}
                     <Image
@@ -56,7 +56,7 @@ export default async function CategoriesPage() {
                     <div className="absolute top-4 left-4">
                       <div
                         className={`w-12 h-12 bg-gradient-to-r  ${
-                          category.color || "from-emerald-500 to-blue-500"
+                          category.color || "from-primary to-info"
                         } rounded-full flex items-center justify-center`}
                       >
                         <IconComponent className="w-6 h-6 text-white" />
@@ -70,10 +70,10 @@ export default async function CategoriesPage() {
                   </div>
 
                   <div className="p-6">
-                    <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    <h3 className="text-2xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
                       {category.name}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">
+                    <p className="text-muted-foreground mb-4">
                       {category.description}
                     </p>
 

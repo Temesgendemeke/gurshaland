@@ -38,8 +38,8 @@ const RecipeCard = ({ recipe }: RecipeCardProp) => {
           className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1"
           title="Average rating"
         >
-          <Star className="w-4 h-4 text-yellow-500 fill-current" />
-          <span className="text-sm font-medium text-gray-700">
+          <Star className="w-4 h-4 text-warning fill-current" />
+          <span className="text-sm font-medium text-foreground">
             {displayRating}
           </span>
         </div>
@@ -59,7 +59,7 @@ const RecipeCard = ({ recipe }: RecipeCardProp) => {
       </div>
 
       <div className="p-6">
-        <h3 className="heading-secondary break-words whitespace-normal max-w-full group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
+        <h3 className="heading-secondary break-words whitespace-normal max-w-full group-hover:text-primary transition-colors">
           {recipe.title}
         </h3>
         <p className="text-body mb-4 line-clamp-2">{recipe.description}</p>

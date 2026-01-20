@@ -2,21 +2,20 @@
 import { SignUpData } from "@/utils/types/account";
 import { createClient } from "@/utils/supabase/client";
 
-const supabase = createClient()
-
 export const signup = async (formData: SignUpData) => {
+  const supabase = createClient();
   try {
     console.log("Signup attempt with data:", {
       email: formData.email,
       username: formData.username,
       full_name: formData.full_name,
-      password_length: formData.password.length
+      password_length: formData.password.length,
     });
 
     // Debug: Check environment variables
     console.log("Environment check:", {
       hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-      hasSupabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      hasSupabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     });
 
     const { data, error } = await supabase.auth.signUp({
@@ -44,6 +43,7 @@ export const signup = async (formData: SignUpData) => {
 };
 
 export const login = async (email: string, password: string) => {
+  const supabase = createClient();
   console.log(email, password);
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -56,6 +56,7 @@ export const login = async (email: string, password: string) => {
 };
 
 export const logout = async () => {
+  const supabase = createClient();
   const { error } = await supabase.auth.signOut();
 
   if (error) throw error;
@@ -64,6 +65,7 @@ export const logout = async () => {
 };
 
 export const resetPassword = async (email: string) => {
+  const supabase = createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${process.env.NEXT_PUBLIC_URL}/reset-password`,
   });
@@ -71,6 +73,7 @@ export const resetPassword = async (email: string) => {
 };
 
 export const changePassword = async (new_password: string) => {
+  const supabase = createClient();
   const { error } = await supabase.auth.updateUser({
     password: new_password,
   });

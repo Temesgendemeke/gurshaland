@@ -25,7 +25,7 @@ export function FeaturedCards() {
   // const { featuredContent, getFeaturedContent } = useAppStore()
   const featuredRecipes = recipeStore((state) => state.featuredRecipes);
   const fetchFeaturedRecipes = recipeStore(
-    (state) => state.fetchFeaturedRecipes
+    (state) => state.fetchFeaturedRecipes,
   );
   const blogs = blogStore((state) => state.blogs);
   const fetchBlogs = blogStore((state) => state.fetchBlogs);
@@ -51,7 +51,7 @@ export function FeaturedCards() {
           <Button
             asChild
             variant="outline"
-            className="border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+            className="border-primary text-primary hover:bg-primary/5"
           >
             <Link href="/recipes">View All</Link>
           </Button>
@@ -75,12 +75,12 @@ export function FeaturedCards() {
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute top-4 left-4">
-                    <Badge className="bg-emerald-600 text-white">
+                    <Badge className="bg-primary text-primary-foreground">
                       Featured
                     </Badge>
                   </div>
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                    <Star className="w-4 h-4 text-warning fill-current" />
                     <span className="text-sm font-medium">
                       {recipe.average_rating ?? 0}
                     </span>
@@ -89,7 +89,7 @@ export function FeaturedCards() {
                     <div className="absolute bottom-4 left-4">
                       <Badge
                         variant="secondary"
-                        className="bg-orange-100 text-orange-700"
+                        className="bg-popular/10 text-popular"
                       >
                         <TrendingUp className="w-3 h-3 mr-1" />
                         Popular
@@ -99,7 +99,7 @@ export function FeaturedCards() {
                 </div>
 
                 <div className="p-6">
-                  <h3 className="text-xl font-bold heading-primary mb-2 cursor-pointer group-hover:text-emerald-600 transition-colors">
+                  <h3 className="text-xl font-bold heading-primary mb-2 cursor-pointer group-hover:text-primary transition-colors">
                     {recipe.title}
                   </h3>
                   <p className="text-body mb-4 line-clamp-2">
@@ -159,7 +159,7 @@ export function FeaturedCards() {
           <Button
             asChild
             variant="outline"
-            className="border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+            className="border-primary text-primary hover:bg-primary/5"
           >
             <Link href="/blog">Read More</Link>
           </Button>
@@ -181,7 +181,9 @@ export function FeaturedCards() {
                       className="w-full h-48 object-cover"
                     />
                     <div className="absolute top-4 left-4">
-                      <Badge className="bg-blue-600 text-white">Featured</Badge>
+                      <Badge className="bg-info text-info-foreground">
+                        Featured
+                      </Badge>
                     </div>
                     <div className="absolute top-4 right-4">
                       <Badge
@@ -194,7 +196,7 @@ export function FeaturedCards() {
                   </div>
 
                   <div className="p-6">
-                    <h3 className="text-xl font-bold heading-primary mb-2 group-hover:text-emerald-600 transition-colors">
+                    <h3 className="text-xl font-bold heading-primary mb-2 group-hover:text-primary transition-colors">
                       {post.title}
                     </h3>
                     <p className="text-body mb-4">{post?.subtitle}</p>

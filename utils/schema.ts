@@ -119,9 +119,13 @@ export const resetPasswordSchema = z.object({
 export const ImageSchema = z.object({
   file: z
     .any()
-    .refine((file) => file instanceof File || file == null, {
-      message: "Invalid file",
-    })
+    .refine(
+      (file) =>
+        (typeof File !== "undefined" && file instanceof File) || file == null,
+      {
+        message: "Invalid file",
+      },
+    )
     .nullable()
     .optional(),
   path: z.string().optional(),

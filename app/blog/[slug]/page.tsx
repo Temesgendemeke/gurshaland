@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -21,101 +21,18 @@ import ArticleContent from "@/components/ArticleContent";
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/actions/blog/blog";
 
-// const blogPost = {
-//   id: 1,
-//   title: "The Art of Making Perfect Injera at Home",
-//   subtitle: "Master Ethiopia's beloved flatbread with traditional techniques",
-//   author: "Chef Almaz Tadesse",
-//   date: "March 20, 2024",
-//   readTime: "8 min read",
-//   category: "Recipes",
-//   image: "/placeholder.svg?height=400&width=800",
-//   tags: ["Injera", "Traditional", "Baking", "Ethiopian"],
-//   content: [
-//     {
-//       type: "paragraph",
-//       text: "Injera is more than just bread in Ethiopian culture—it's the foundation of every meal, the plate from which you eat, and a symbol of community and sharing. This ancient fermented flatbread, made from the tiny grain teff, has sustained Ethiopian families for thousands of years.",
-//     },
-//     {
-//       type: "heading",
-//       text: "Understanding Teff: The Ancient Grain",
-//     },
-//     {
-//       type: "paragraph",
-//       text: "Teff (Eragrostis tef) is a tiny grain native to Ethiopia, packed with protein, fiber, and essential minerals. Its unique properties make it perfect for fermentation, creating injera's characteristic spongy texture and slightly sour taste.",
-//     },
-//     {
-//       type: "recipe",
-//       title: "Traditional Injera Recipe",
-//       ingredients: [
-//         "4 cups teff flour",
-//         "5 cups water (room temperature)",
-//         "1 tsp active dry yeast (optional)",
-//         "1 tsp salt",
-//       ],
-//       instructions: [
-//         "Mix teff flour with 3 cups of water in a large bowl",
-//         "Cover and let ferment for 3 days at room temperature",
-//         "Cook 1 cup of fermented batter with 1 cup water until thick",
-//         "Mix cooked starter back into fermented batter",
-//         "Cook on a non-stick pan or traditional mitad",
-//       ],
-//     },
-//     {
-//       type: "heading",
-//       text: "The Fermentation Process",
-//     },
-//     {
-//       type: "paragraph",
-//       text: "The key to perfect injera lies in the fermentation. The natural yeasts and bacteria in the teff flour create the bubbles that give injera its spongy texture. This process can take 3-5 days, depending on temperature and humidity.",
-//     },
-//     {
-//       type: "tips",
-//       title: "Pro Tips for Perfect Injera",
-//       items: [
-//         "Use filtered water for better fermentation",
-//         "Keep the batter at consistent room temperature",
-//         "The batter should smell pleasantly sour when ready",
-//         "Don't flip the injera—it cooks from steam underneath",
-//         "Store finished injera wrapped in clean cloth",
-//       ],
-//     },
-//   ],
-// };
-
-// const relatedPosts = [
-//   {
-//     title: "Berbere Spice Blend Guide",
-//     excerpt: "Learn to make Ethiopia's most important spice blend",
-//     image: "/placeholder.svg?height=150&width=200",
-//     slug: "berbere-spice-guide",
-//   },
-//   {
-//     title: "Ethiopian Coffee Ceremony",
-//     excerpt: "The sacred ritual of coffee in Ethiopian culture",
-//     image: "/placeholder.svg?height=150&width=200",
-//     slug: "coffee-ceremony",
-//   },
-//   {
-//     title: "Vegetarian Ethiopian Dishes",
-//     excerpt: "Plant-based recipes for fasting and everyday meals",
-//     image: "/placeholder.svg?height=150&width=200",
-//     slug: "vegetarian-dishes",
-//   },
-// ];
-
 const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
   let blogPost;
-  const {slug} = await params
+  const { slug } = await params;
   try {
-     blogPost = await getBlogBySlug(slug);
-  } catch(error) {
+    blogPost = await getBlogBySlug(slug);
+  } catch (error) {
     console.log(error);
     return notFound();
-  } 
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <div className="max-w-7xl mx-auto px-6 py-12 space-y-4">
@@ -138,19 +55,19 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
         <ArticleContent blogPost={blogPost} />
 
         {/* Engagement Section */}
-        <Card className="p-6 mb-12 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
+        <Card className="p-6 mb-12 bg-card/70 backdrop-blur-sm border-border/50">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6">
               <Button
                 variant="ghost"
-                className="text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+                className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <ThumbsUp className="w-5 h-5 mr-2" />
                 Like (24)
               </Button>
               <Button
                 variant="ghost"
-                className="text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+                className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Comment (8)
@@ -158,7 +75,7 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
             </div>
             <Button
               variant="ghost"
-              className="text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+              className="text-muted-foreground hover:text-primary transition-colors"
             >
               <Share2 className="w-5 h-5 mr-2" />
               Share
@@ -175,17 +92,17 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
           <div className="grid md:grid-cols-3 gap-6">
             {blogPost?.relatives_posts?.map((post: any, index: number) => (
               <Link key={index} href={`/blog/${post.slug}`}>
-                <Card className="overflow-hidden hover:shadow-lg dark:hover:shadow-xl transition-all duration-300 group bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
+                <Card className="overflow-hidden hover:shadow-lg dark:hover:shadow-xl transition-all duration-300 group bg-card/70 backdrop-blur-sm border-border/50">
                   <img
                     src={post.image?.url || "/placeholder.svg"}
                     alt={post?.title}
                     className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="p-4">
-                    <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    <h4 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                       {post?.title}
                     </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-muted-foreground">
                       {post?.subtitle}
                     </p>
                   </div>

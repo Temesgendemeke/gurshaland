@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Card } from "./ui/card";
@@ -34,14 +34,14 @@ function AIFeaturesGrid({
           <Card
             key={feature.id}
             className={`modern-card modern-card-hover cursor-pointer transition-all duration-300 ${
-              selected === feature.id ? "ring-2 ring-emerald-500 shadow-lg" : ""
+              selected === feature.id ? "ring-2 ring-primary shadow-lg" : ""
             }`}
             onClick={() => onSelect(feature.id)}
           >
             <div className="p-6">
               <div className="flex items-start justify-between mb-4">
                 <div
-                  className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center`}
+                  className={`w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center`}
                 >
                   <IconComponent className="w-6 h-6 text-white" />
                 </div>
@@ -60,12 +60,11 @@ function AIFeaturesGrid({
                 size="sm"
                 disabled={feature.badge == "Coming Soon"}
                 aria-disabled={feature.badge == "Coming Soon"}
-                className="mt-4 text-emerald-600  p-4 hover:text-white  hover:bg-emerald-500 "
+                className="mt-4 text-primary  p-4 hover:text-white  hover:bg-primary "
                 onClick={() => handleClick(feature.id)}
               >
                 Try Now →
               </Button>
-              
             </div>
           </Card>
         );

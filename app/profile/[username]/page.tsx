@@ -49,21 +49,23 @@ export default async function Page({
               <span className="text-lg font-bold text-primary">
                 {info.count}
               </span>
-              <span className="text-sm text-gray-500">{info.field}</span>
+              <span className="text-sm text-muted-foreground">
+                {info.field}
+              </span>
             </div>
           ))}
         </div>
         <Tabs defaultValue="recipes" className="w-full max-w-7xl ">
-          <TabsList className="flex items-center gap-6    rounded-xl p-2 ">
+          <TabsList className="flex items-center gap-6 rounded-xl p-2 bg-muted/30">
             <TabsTrigger
               value="recipes"
-              className="px-6 py-2 rounded-lg font-bold text-white bg-primary hover:bg-primary-dark transition-all duration-200 shadow-md data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-xl"
+              className="px-6 py-2 rounded-lg font-bold text-muted-foreground hover:text-primary transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg"
             >
               Recipes
             </TabsTrigger>
             <TabsTrigger
               value="blogs"
-              className="px-6 py-2 rounded-lg font-bold text-white bg-primary hover:bg-primary-dark transition-all duration-200 shadow-md data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-xl"
+              className="px-6 py-2 rounded-lg font-bold text-muted-foreground hover:text-primary transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg"
             >
               Blogs
             </TabsTrigger>
@@ -90,7 +92,7 @@ export default async function Page({
                   />
                 ))
               ) : (
-                <p className="text-center text-gray-500 col-span-3">
+                <p className="text-center text-muted-foreground col-span-3">
                   No recipes found.
                 </p>
               )}

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Search, Menu, Sparkles } from "lucide-react";
 import { useState } from "react";
 
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import { useAuth } from "@/store/useAuth";
 import AccountDropDown from "./AccountDropDown";
 import CreateAPost from "./CreateAPost";
@@ -32,12 +32,12 @@ export function Header() {
     {
       route: "/restaurant",
       page: "Discover Restaurants",
-    }
+    },
   ];
 
   return (
-    <header className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 shadow-sm sticky top-0 z-50 rounded-lg">
-      <div className="mx-auto flex items-center justify-between px-6 py-4">
+    <header className="bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-sm sticky top-0 z-50 rounded-lg">
+      <div className="mx-auto flex items-center justify-between px-6 py-3">
         <Logo />
 
         {/* Desktop Navigation */}
@@ -46,14 +46,14 @@ export function Header() {
             <Link
               key={index}
               href={navigation.route}
-              className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
+              className="text-muted-foreground hover:text-primary font-medium transition-colors"
             >
               {navigation.page}
             </Link>
           ))}
           <Link
             href="/ai-features"
-            className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium flex items-center space-x-1"
+            className="text-muted-foreground hover:text-primary font-medium flex items-center space-x-1 transition-colors"
           >
             <Sparkles className="w-4 h-4" />
             <span>AI Features</span>
@@ -63,16 +63,16 @@ export function Header() {
         {/* Search Bar */}
         <div className="hidden 2xl:flex items-center space-x-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
               placeholder="Search recipes..."
-              className="pl-10 w-64 border-slate-200 dark:border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-white dark:bg-slate-800"
+              className="pl-10 w-64 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background"
             />
           </div>
 
           <CreateAPost />
 
-          <ThemeToggle />
+          <ThemeSwitcher />
           <AccountDropDown user={user} />
         </div>
 
@@ -92,24 +92,24 @@ export function Header() {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-700/50 p-4 2xl:hidden">
+        <div className="bg-background/95 backdrop-blur-xl border-t border-border p-4 2xl:hidden">
           <div className="flex flex-col space-y-4">
             <Input
               placeholder="Search recipes..."
-              className="border-slate-200 dark:border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-white dark:bg-slate-800"
+              className="border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background"
             />
             {navigations.map((navigation, index) => (
               <Link
                 key={index}
                 href={navigation.route}
-                className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium"
+                className="text-muted-foreground hover:text-primary font-medium transition-colors"
               >
                 {navigation.page}
               </Link>
             ))}
             <Link
               href="/ai-features"
-              className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium flex items-center space-x-1"
+              className="text-muted-foreground hover:text-primary font-medium flex items-center space-x-1 transition-colors"
             >
               <Sparkles className="w-4 h-4" />
               <span>AI Features</span>

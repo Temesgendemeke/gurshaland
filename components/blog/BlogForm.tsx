@@ -296,14 +296,6 @@ export default function BlogForm({
 
   return (
     <div className="mx-auto p-6 space-y-8">
-      {JSON.stringify((form.formState.errors as any).contents)}
-      {JSON.stringify(form.watch("contents"))}
-      {JSON.stringify(form.watch("image.url"))}
-      {JSON.stringify(form.formState.errors)}
-      <h1>fflol</h1>
-
-      {JSON.stringify(form.watch("image"))}
-
       {mode === "create" ? (
         <div className="text-center space-y-2">
           <h1 className="font-bold tracking-tight text-5xl ">
@@ -326,7 +318,7 @@ export default function BlogForm({
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* Basic Information */}
-        <Card className="bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
+        <Card className="bg-card/70 backdrop-blur-sm border-primary/20">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
@@ -361,7 +353,7 @@ export default function BlogForm({
                   placeholder="Enter blog title"
                 />
                 {form.formState.errors.title && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-error">
                     {form.formState.errors.title.message}
                   </p>
                 )}
@@ -401,7 +393,7 @@ export default function BlogForm({
                   )}
                 />
                 {form.formState.errors.category && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-error">
                     {form.formState.errors.category.message}
                   </p>
                 )}
@@ -416,13 +408,13 @@ export default function BlogForm({
                   <Badge
                     key={index}
                     variant="secondary"
-                    className="flex items-center  text-[1rem] my-4 gap-1 bg-emerald-500 hover:bg-emerald-600 cursor-pointer"
+                    className="flex items-center text-[1rem] my-4 gap-1 bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
                   >
                     {tag}
                     <button
                       type="button"
                       onClick={() => removeTag(index)}
-                      className="ml-1 hover:text-red-500"
+                      className="ml-1 hover:text-error"
                     >
                       <Minus className="h-3 w-3" />
                     </button>
@@ -447,7 +439,7 @@ export default function BlogForm({
         </Card>
 
         {/* Content Sections */}
-        <Card className="bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
+        <Card className="bg-card/70 backdrop-blur-sm border-primary/20">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <List className="h-5 w-5" />
@@ -512,7 +504,6 @@ export default function BlogForm({
               </>
             )}
           </Button>
-          {JSON.stringify(form.formState.errors)}
         </div>
       </form>
     </div>

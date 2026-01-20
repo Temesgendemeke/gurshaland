@@ -1,4 +1,12 @@
-import { Bookmark, Heart, Share2 } from "lucide-react";
+import {
+  BookmarkIcon as Bookmark,
+  HeartIcon as Heart,
+  ShareIcon as ShareAlt,
+} from "@heroicons/react/24/outline";
+import {
+  BookmarkIcon as SolidBookmark,
+  HeartIcon as SolidHeart,
+} from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { RecipeLike } from "@/utils/types/recipe";
@@ -16,13 +24,13 @@ const ActionButtons = ({ recipe_id, user_id }: ActionButtonsProps) => {
   const likes = useRecipeDetailStore((state) => state.recipe?.likes);
   const setIsliked = useRecipeDetailStore((state) => state.setIsLiked);
   const router = useRouter();
-  const setIsBookmarked = useRecipeDetailStore((state) => state.setBookmarked)
-  const isBookmarked = useRecipeDetailStore((state) => state.isBookmarked)
-  const toggleBookmark = useRecipeDetailStore((state) => state.toggleBookmark)
+  const setIsBookmarked = useRecipeDetailStore((state) => state.setBookmarked);
+  const isBookmarked = useRecipeDetailStore((state) => state.isBookmarked);
+  const toggleBookmark = useRecipeDetailStore((state) => state.toggleBookmark);
 
   useEffect(() => {
-    setIsliked(user_id)
-    setIsBookmarked(user_id)
+    setIsliked(user_id);
+    setIsBookmarked(user_id);
   }, []);
 
   const handleLike = () => {
@@ -33,12 +41,12 @@ const ActionButtons = ({ recipe_id, user_id }: ActionButtonsProps) => {
     toggleLike(user_id, recipe_id);
   };
 
-  const handleBookmark = ()=>{
-     if (!recipe_id || !user_id) {
+  const handleBookmark = () => {
+    if (!recipe_id || !user_id) {
       return router.push("/login");
-     }
-     toggleBookmark(user_id, recipe_id)
-  }
+    }
+    toggleBookmark(user_id, recipe_id);
+  };
 
   return (
     <div className="flex flex-wrap gap-4 mb-6">
@@ -47,7 +55,11 @@ const ActionButtons = ({ recipe_id, user_id }: ActionButtonsProps) => {
         variant={isLiked ? "default" : "outline"}
         className="flex-1 sm:flex-none"
       >
-        <Heart className={`w-4 h-4 mr-2 ${isLiked ? "fill-current" : ""}`} />
+        {isLiked ? (
+          <SolidHeart className="w-4 h-4 mr-2" />
+        ) : (
+          <Heart className="w-4 h-4 mr-2" />
+        )}
         {isLiked ? "Liked" : "Like"} ({likes?.length})
       </Button>
       <Button
@@ -55,9 +67,11 @@ const ActionButtons = ({ recipe_id, user_id }: ActionButtonsProps) => {
         variant={isBookmarked ? "default" : "outline"}
         className="flex-1 sm:flex-none"
       >
-        <Bookmark
-          className={`w-4 h-4 mr-2 ${isBookmarked ? "fill-current" : ""}`}
-        />
+        {isBookmarked ? (
+          <SolidBookmark className="w-4 h-4 mr-2" />
+        ) : (
+          <Bookmark className="w-4 h-4 mr-2" />
+        )}
         {isBookmarked ? "Saved" : "Save"}
       </Button>
       {/* <Button variant={`outline` }>

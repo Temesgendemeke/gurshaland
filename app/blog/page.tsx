@@ -19,7 +19,6 @@ import categories from "@/constants/categories";
 import { blogStore } from "@/store/Blog";
 import BlogPageSkeleton from "@/components/skeleton/BlogPageSkeleton";
 
-
 export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -38,7 +37,7 @@ export default function BlogPage() {
       post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post?.subtitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post?.tags?.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase())
+        tag.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     const matchesCategory =
       selectedCategory === "all" || post.category === selectedCategory;
@@ -46,7 +45,7 @@ export default function BlogPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <div className="max-w-7xl mx-auto px-6 py-12">
@@ -61,7 +60,7 @@ export default function BlogPage() {
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 mb-12 border border-emerald-100 dark:border-emerald-800">
+        <div className="bg-card/70 backdrop-blur-sm rounded-2xl p-6 mb-12 border border-primary/20">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -69,14 +68,14 @@ export default function BlogPage() {
                 placeholder="Search articles..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-12 border-emerald-200 dark:border-emerald-700 bg-white dark:bg-gray-900"
+                className="pl-10 h-12 border-primary/20 bg-background"
               />
             </div>
             <Select
               value={selectedCategory}
               onValueChange={setSelectedCategory}
             >
-              <SelectTrigger className="w-full md:w-48 h-12 border-emerald-200 dark:border-emerald-700 bg-white dark:bg-gray-900">
+              <SelectTrigger className="w-full md:w-48 h-12 border-primary/20 bg-background">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
@@ -122,7 +121,7 @@ export default function BlogPage() {
           <Button
             variant="outline"
             size="lg"
-            className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-full px-8"
+            className="border-2 border-primary text-primary hover:bg-primary/5 rounded-full px-8"
           >
             Load More Articles
           </Button>

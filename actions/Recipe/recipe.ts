@@ -89,10 +89,6 @@ export const deleteRecipe = async (_slug: string) => {
 
   if (error) throw error;
 
-  // The RPC shape changed in different versions: sometimes the function
-  // returns { recipe: {...}, instructions: [...] } and sometimes it returns
-  // a flattened recipe object with keys like 'instruction' (singular).
-  // Normalize both shapes here so deletion works regardless of RPC shape.
   const recipeObj = (data && (data.recipe ?? data)) || {};
 
   const instructions: any[] =

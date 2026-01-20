@@ -6,13 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useEffect } from "react";
 import {
-  Clock,
-  Users,
-  ChefHat,
-  Star,
-  MessageCircle,
-  PenBoxIcon,
-} from "lucide-react";
+  ClockIcon as Clock,
+  UsersIcon as Group,
+  HomeModernIcon as Restaurant,
+  StarIcon as Star,
+  ChatBubbleLeftRightIcon as MessageRoundedDetail,
+  PencilSquareIcon as PenBoxIcon,
+} from "@heroicons/react/24/outline";
 import { PostComment } from "@/utils/types/recipe";
 import { useParams } from "next/navigation";
 import RecipeComment from "@/components/RecipeComment";
@@ -53,20 +53,24 @@ export default function RecipeDetailPage() {
   }, [slug, user]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-background">
       <Header />
       {loading || !recipe ? (
         <RecipeDetailSkeleton />
       ) : (
         <div className="w-full md:max-w-7xl mx-auto px-6 py-12 space-y-4">
           {/* Back Navigation */}
-          <BackNavigation pagename={"Recipes"}/>
+          <BackNavigation pagename={"Recipes"} />
           {/* Compare user id with recipe author id */}
 
-
           {/* Preview Mode Warning */}
-          <PreviewWarning slug={recipe.slug} postType="recipe" author_id={recipe?.author?.id || ""} user_id={user?.id || ""} status={recipe?.status || ""}/>
-          
+          <PreviewWarning
+            slug={recipe.slug}
+            postType="recipe"
+            author_id={recipe?.author_id || ""}
+            user_id={user?.id || ""}
+            status={recipe?.status || ""}
+          />
 
           {/* Recipe Header */}
           <div className="grid lg:grid-cols-2 gap-12 mb-12">
@@ -80,62 +84,58 @@ export default function RecipeDetailPage() {
 
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Badge className="bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300">
-                  {recipe.category.name}
+                <Badge className="bg-primary/10 text-primary border-primary/20">
+                  {recipe.category?.name}
                 </Badge>
                 {recipe.tags.map((tag) => (
                   <Badge
                     key={tag}
                     variant="secondary"
-                    className="dark:bg-gray-700 dark:text-gray-300"
+                    className="bg-secondary text-secondary-foreground border-transparent"
                   >
                     {tag}
                   </Badge>
                 ))}
               </div>
 
-              <h1 className="text-4xl break-words max-w-full font-bold text-gray-800 dark:text-gray-100 mb-4">
+              <h1 className="text-4xl break-words max-w-full font-bold text-foreground mb-4">
                 {recipe.title}
               </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+              <p className="text-lg text-muted-foreground mb-6">
                 {recipe.description}
               </p>
 
               {/* Recipe Meta */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div className="text-center p-4 bg-white/70 dark:bg-gray-800/70 rounded-xl border border-emerald-100 dark:border-emerald-800">
-                  <Clock className="w-6 h-6 text-emerald-600 dark:text-emerald-400 mx-auto mb-2" />
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-center p-4 bg-card/70 backdrop-blur-sm rounded-xl border border-border/50">
+                  <Clock className="w-6 h-6 text-primary mx-auto mb-2" />
+                  <div className="text-sm text-muted-foreground">
                     Total Time
                   </div>
-                  <div className="font-semibold text-gray-800 dark:text-gray-200">
+                  <div className="font-semibold text-foreground">
                     {recipe.preptime + recipe.cooktime || "unkown"}
                   </div>
                 </div>
-                <div className="text-center p-4 bg-white/70 dark:bg-gray-800/70 rounded-xl border border-emerald-100 dark:border-emerald-800">
-                  <Users className="w-6 h-6 text-yellow-600 dark:text-yellow-400 mx-auto mb-2" />
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    Servings
-                  </div>
-                  <div className="font-semibold text-gray-800 dark:text-gray-200">
+                <div className="text-center p-4 bg-card/70 backdrop-blur-sm rounded-xl border border-border/50">
+                  <Group className="w-6 h-6 text-warning mx-auto mb-2" />
+                  <div className="text-sm text-muted-foreground">Servings</div>
+                  <div className="font-semibold text-foreground">
                     {recipe.servings}
                   </div>
                 </div>
-                <div className="text-center p-4 bg-white/70 dark:bg-gray-800/70 rounded-xl border border-emerald-100 dark:border-emerald-800">
-                  <ChefHat className="w-6 h-6 text-red-600 dark:text-red-400 mx-auto mb-2" />
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-center p-4 bg-card/70 backdrop-blur-sm rounded-xl border border-border/50">
+                  <Restaurant className="w-6 h-6 text-popular mx-auto mb-2" />
+                  <div className="text-sm text-muted-foreground">
                     Difficulty
                   </div>
-                  <div className="font-semibold text-gray-800 dark:text-gray-200">
+                  <div className="font-semibold text-foreground">
                     {recipe.difficulty}
                   </div>
                 </div>
-                <div className="text-center p-4 bg-white/70 dark:bg-gray-800/70 rounded-xl border border-emerald-100 dark:border-emerald-800">
-                  <Star className="w-6 h-6 text-yellow-500 mx-auto mb-2 fill-current" />
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    Rating
-                  </div>
-                  <div className="font-semibold text-gray-800 dark:text-gray-200">
+                <div className="text-center p-4 bg-card/70 backdrop-blur-sm rounded-xl border border-border/50">
+                  <Star className="w-6 h-6 text-warning mx-auto mb-2" />
+                  <div className="text-sm text-muted-foreground">Rating</div>
+                  <div className="font-semibold text-foreground">
                     {recipe.average_rating
                       ? recipe.average_rating
                       : "Not rated yet"}
@@ -167,17 +167,15 @@ export default function RecipeDetailPage() {
               <RecipeCulturalNote culturalNote={recipe?.culturalNote} />
 
               {/* youtube video section */}
-              <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-                 <YoutubeVideoSection videoId={recipe.youtube_video_id} />
+              <Card className="p-6 bg-card/70 backdrop-blur-sm border-border/50">
+                <YoutubeVideoSection videoId={recipe.youtube_video_id} />
               </Card>
-              
             </div>
 
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Nutrition */}
               <NutritionView nutrition={recipe?.nutrition} />
-
 
               <RecipeRating
                 user_id={user?.id ?? ""}
@@ -188,9 +186,9 @@ export default function RecipeDetailPage() {
               />
 
               {/* Comments */}
-              <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
-                  <MessageCircle className="w-5 h-5 mr-2" />
+              <Card className="p-6 bg-card/70 backdrop-blur-sm border-border/50">
+                <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
+                  <MessageRoundedDetail className="w-5 h-5 mr-2" />
                   Comments ({recipe.comments.length})
                 </h3>
 

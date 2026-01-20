@@ -7,7 +7,7 @@ import {
   UtensilsCrossed,
   Star,
   ChefHat,
-  MapPinHouseIcon
+  MapPinHouseIcon,
 } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -16,18 +16,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { GetRestaurentType, RestaurantFormType } from "@/schema/restaurent";
 
-const PreviewSection = ({ form }: { form: UseFormReturn<RestaurantFormType | GetRestaurentType> }) => {
+const PreviewSection = ({
+  form,
+}: {
+  form: UseFormReturn<RestaurantFormType | GetRestaurentType>;
+}) => {
   const menuItems = form.watch("menu") || [];
   const coverImage = form.watch("image")?.url || "/placeholder.svg";
   const name = form.watch("name");
-  const cuisine = form.watch("cuisine");
+  const cuisine = form.watch("cuisines");
   const description = form.watch("description");
   const address = form.watch("address");
   const phone = form.watch("phone");
   const email = form.watch("email");
   const website = form.watch("website");
   const gallery = form.watch("gallery");
-
 
   return (
     <div className="flex flex-col h-full bg-background  text-card-foreground">
@@ -47,7 +50,10 @@ const PreviewSection = ({ form }: { form: UseFormReturn<RestaurantFormType | Get
           </div>
         )}
         <div className="absolute top-4 right-4">
-          <Badge variant="secondary" className="backdrop-blur-md bg-black/30 text-white border-none">
+          <Badge
+            variant="secondary"
+            className="backdrop-blur-md bg-black/30 text-white border-none"
+          >
             Preview
           </Badge>
         </div>
@@ -64,11 +70,11 @@ const PreviewSection = ({ form }: { form: UseFormReturn<RestaurantFormType | Get
               <div className="flex items-center gap-2 mt-1 text-muted-foreground">
                 <UtensilsCrossed className="h-3.5 w-3.5" />
                 <span className="text-sm font-medium">
-                  {cuisine || "Cuisine Type"}
+                  {cuisine?.join(", ") || "Cuisine Type"}
                 </span>
               </div>
             </div>
-            <div className="flex gap-0.5 text-amber-400">
+            <div className="flex gap-0.5 text-warning">
               {[1, 2, 3, 4, 5].map((i) => (
                 <Star key={i} className="h-4 w-4 fill-current" />
               ))}
@@ -80,9 +86,12 @@ const PreviewSection = ({ form }: { form: UseFormReturn<RestaurantFormType | Get
 
         {/* Description */}
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">About</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            About
+          </h3>
           <p className="text-sm leading-relaxed text-muted-foreground/90">
-            {description || "A brief description of your restaurant will appear here. Share your story, atmosphere, and what makes your food special."}
+            {description ||
+              "A brief description of your restaurant will appear here. Share your story, atmosphere, and what makes your food special."}
           </p>
         </div>
 
@@ -101,16 +110,24 @@ const PreviewSection = ({ form }: { form: UseFormReturn<RestaurantFormType | Get
             <span className="truncate">{email || "Email Address"}</span>
           </div>
           {website && (
-            <Link href={website || ""} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm">
+            <Link
+              href={website || ""}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-sm"
+            >
               <Globe className="h-4 w-4 text-primary shrink-0" />
-              <span className="truncate ">
-                {website}
-              </span>
+              <span className="truncate ">{website}</span>
             </Link>
           )}
 
           {form.watch("google_map_url") && (
-            <Link href={form.watch("google_map_url") || ""} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm">
+            <Link
+              href={form.watch("google_map_url") || ""}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-sm"
+            >
               <MapPinHouseIcon className="h-4 w-4 text-primary shrink-0" />
               <span className="truncate ">Google map</span>
             </Link>
@@ -133,7 +150,10 @@ const PreviewSection = ({ form }: { form: UseFormReturn<RestaurantFormType | Get
             {menuItems.length > 0 ? (
               <div className="space-y-3">
                 {menuItems.map((item: any, index: number) => (
-                  <div key={index} className="flex justify-between items-start group p-2 rounded-md hover:bg-secondary/40 transition-colors">
+                  <div
+                    key={index}
+                    className="flex justify-between items-start group p-2 rounded-md hover:bg-secondary/40 transition-colors"
+                  >
                     <div className="space-y-1">
                       <p className="text-sm font-medium leading-none group-hover:text-primary transition-colors">
                         {item.name || "Dish Name"}
@@ -143,7 +163,9 @@ const PreviewSection = ({ form }: { form: UseFormReturn<RestaurantFormType | Get
                       </p>
                     </div>
                     <div className="font-semibold text-sm whitespace-nowrap pl-4">
-                      {item.price.amount ? `${item.price.amount} ${item.price.currency}` : "-"}
+                      {item.price.amount
+                        ? `${item.price.amount} ${item.price.currency}`
+                        : "-"}
                     </div>
                   </div>
                 ))}
@@ -163,17 +185,20 @@ const PreviewSection = ({ form }: { form: UseFormReturn<RestaurantFormType | Get
                 Gallery
               </h3>
               <Badge variant="outline" className="text-xs font-normal">
-                {form.watch('gallery')?.length} Images
+                {form.watch("gallery")?.length} Images
               </Badge>
             </div>
             {/* <ScrollArea className="h-[180px] w-full pr-4"> */}
             <div className="columns-2 gap-3 space-y-3">
-              {form.watch('gallery')?.[0]?.image?.url ? (
-                form.watch('gallery')?.map((item: any, index: number) => (
-                  <div key={index} className="break-inside-avoid mb-3 overflow-hidden rounded-lg border border-border/50 bg-muted/30">
+              {form.watch("gallery")?.[0]?.url ? (
+                form.watch("gallery")?.map((item: any, index: number) => (
+                  <div
+                    key={index}
+                    className="break-inside-avoid mb-3 overflow-hidden rounded-lg border border-border/50 bg-muted/30"
+                  >
                     <div className="relative w-full">
                       <Image
-                        src={item?.image?.url ? item?.image?.url : '/placeholder.svg'}
+                        src={item?.url ? item?.url : "/placeholder.svg"}
                         width={200}
                         height={200}
                         alt={`Gallery ${index + 1}`}

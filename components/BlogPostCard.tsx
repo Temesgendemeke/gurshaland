@@ -8,7 +8,7 @@ import { Blog } from "@/utils/types/blog";
 export default function BlogPostCard({ post }: { post: Blog }) {
   return (
     <Link key={post.slug} href={`/blog/${post.slug}`}>
-      <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-emerald-100 dark:border-emerald-800 h-full">
+      <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group bg-card/70 backdrop-blur-sm border-primary/20 h-full">
         <div className="relative">
           <img
             src={post?.image?.url || "/placeholder.svg"}
@@ -22,19 +22,15 @@ export default function BlogPostCard({ post }: { post: Blog }) {
           </div>
         </div>
         <div className="p-6 flex flex-col h-full">
-          <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
+          <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
             {post.title}
           </h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-4 flex-grow line-clamp-3">
+          <p className="text-muted-foreground mb-4 flex-grow line-clamp-3">
             {post.subtitle}
           </p>
           <div className="flex flex-wrap gap-1 mb-4">
             {post.tags?.slice(0, 2).map((tag: string) => (
-              <Badge
-                key={tag}
-                variant="secondary"
-                className="text-xs dark:bg-gray-700 dark:text-gray-300"
-              >
+              <Badge key={tag} variant="secondary" className="text-xs">
                 {tag}
               </Badge>
             ))}

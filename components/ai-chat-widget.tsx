@@ -4,89 +4,41 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { MessageCircle, X, Send, Sparkles, ChefHat } from "lucide-react";
-import { getResponse } from "@/actions/ai/getResponse";
+import {
+  ChatBubbleLeftRightIcon as MessageRoundedDetail,
+  XMarkIcon as X,
+  PaperAirplaneIcon as Send,
+  BoltIcon as BoltCircle,
+  HomeModernIcon as Restaurant,
+  StopCircleIcon as StopCircle,
+  UserIcon as User,
+  CpuChipIcon as Chip,
+} from "@heroicons/react/24/outline";
 import { useAssistant } from "@/hooks/useAssistant";
 import { useQuery } from "@tanstack/react-query";
 import set from "date-fns/esm/fp/set/index.js";
-
-const fetchResponse = async (prompt: String) => {
-  try {
-    const response = await fetch("/api/ai/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ message: prompt }),
-    });
-    console.log(response);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-    return { error: "An error occurred while fetching response." };
-  }
-};
+import { useChat, useCompletion } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 
 export function AIChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      type: "ai",
-      content:
-        "Hello! I'm your Ethiopian cooking assistant. Ask me about recipes, ingredients, or cooking techniques!",
-      timestamp: new Date(),
-    },
-  ]);
+
+  const { messages, sendMessage, error, status } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/ai/chat",
+    }),
+  });
 
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { refetch, data, error, isLoading, isEnabled, isFetching } = useQuery({
-    queryKey: ["assistant", inputMessage],
-    queryFn: async () => await fetchResponse(inputMessage),
-    enabled: false,
-  });
-
-  const handleSendMessage = async () => {
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!inputMessage.trim()) return;
-    const userMessage = {
-      id: messages.length + 1,
-      type: "user",
-      content: inputMessage,
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setInputMessage("");
     setIsTyping(true);
-
-    // const res = await fetchResponse(inputMessage);
-    const { data } = await refetch();
-
-    if (!data || typeof data.text !== "string") {
-      const errorMessage =
-        (data && (data.error as string)) ||
-        "The assistant couldn't generate a response. Please try again.";
-      const errorMsg = {
-        id: messages.length + 2,
-        type: "ai",
-        content: errorMessage,
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMsg]);
-      setIsTyping(false);
-      return;
-    }
-
-    const aiResponse = {
-      id: messages.length + 2,
-      type: "ai",
-      content: data.text,
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, aiResponse]);
+    sendMessage({ text: inputMessage });
+    setInputMessage("");
     setIsTyping(false);
   };
 
@@ -96,18 +48,18 @@ export function AIChatWidget() {
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 w-14 h-14 rounded-full btn-primary-modern shadow-lg hover:shadow-xl z-50"
       >
-        <MessageCircle className="w-6 h-6" />
+        <MessageRoundedDetail className="w-6 h-6" />
       </Button>
     );
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 w-[500px] h-[700px] modern-card shadow-2xl z-50 flex flex-col">
+    <Card className="fixed bottom-6 right-6 w-[700px] h-[900px] modern-card shadow-2xl z-50 flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center">
-            <ChefHat className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+            <Restaurant className="w-4 h-4 text-primary-foreground" />
           </div>
           <div>
             <h3 className="font-semibold text-sm heading-primary">
@@ -117,16 +69,6 @@ export function AIChatWidget() {
           </div>
         </div>
 
-        <div>
-          error: {JSON.stringify(error)} <br />
-          loading: {JSON.stringify(isLoading)} <br />
-          enabled: {JSON.stringify(isEnabled)} <br />
-          fetching: {JSON.stringify(isFetching)} <br />
-          data: {JSON.stringify(data) === null
-            ? "null"
-            : JSON.stringify(data)}{" "}
-          <br />
-        </div>
         <Button
           variant="ghost"
           size="sm"
@@ -136,29 +78,44 @@ export function AIChatWidget() {
           <X className="w-4 h-4" />
         </Button>
       </div>
+
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
-        {messages.map((message) => (
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 relative">
+        {messages.map((message, index) => (
           <div
-            key={message.id}
-            className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
+            key={`message-${message.id}-${index} `}
+            className={`flex gap-2 ${
+              message.role === "user" ? "justify-end" : "justify-start"
+            }`}
           >
-            <div
-              className={`max-w-[80%] p-3 rounded-lg text-sm ${
-                message.type === "user"
-                  ? "bg-emerald-600 text-white"
-                  : "bg-slate-100 dark:bg-slate-800 text-body"
-              }`}
-            >
-              {message.type === "ai" && (
-                <div className="flex items-center space-x-1 mb-1">
-                  <Sparkles className="w-3 h-3 text-emerald-600" />
-                  <span className="text-xs font-medium text-emerald-600">
-                    AI Assistant
-                  </span>
+            <div className="space-y-2">
+              {message.role === "assistant" && (
+                <div className="flex items-center gap-2 order">
+                  <Chip className="modern-bckground-gradient text-white p-2 rounded-full w-10 h-10" />
+                  <p className="text-body text-xl capitalize">AI assistant</p>
                 </div>
               )}
-              {message.content}
+              <div className="order-1">
+                {message.parts.map((part, index) => {
+                  switch (part.type) {
+                    case "text":
+                      return (
+                        <p
+                          key={`${message.id}-${index}`}
+                          className={`bg-background dark:bg-background p-4  rounded-2xl ${
+                            message.role === "user"
+                              ? "modern-bckground-gradient"
+                              : "bg-background dark:bg-background border border-slate-200 dark:border-slate-800"
+                          }`}
+                        >
+                          {part.text}
+                        </p>
+                      );
+                    default:
+                      return null;
+                  }
+                })}
+              </div>
             </div>
           </div>
         ))}
@@ -175,6 +132,14 @@ export function AIChatWidget() {
           </div>
         )}
 
+        {error && (
+          <div className="flex justify-start">
+            <div className="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg">
+              <p className="text-red-500">{error.message}</p>
+            </div>
+          </div>
+        )}
+
         <div
           key={`bottom-${messages.length}`}
           ref={(el) => {
@@ -184,23 +149,28 @@ export function AIChatWidget() {
       </div>
       {/* Input */}
       <div className="p-4 border-t border-slate-200 dark:border-slate-700">
-        <div className="flex space-x-2">
+        <form className="flex space-x-2" onSubmit={handleSendMessage}>
           <Input
             placeholder="Ask about Ethiopian cooking..."
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
             className="flex-1 text-sm focus-modern"
           />
-          <Button
-            onClick={handleSendMessage}
-            disabled={!inputMessage.trim() || isTyping}
-            size="sm"
-            className="btn-primary-modern px-3"
-          >
-            <Send className="w-4 h-4" />
-          </Button>
-        </div>
+          {isLoading ? (
+            <Button onClick={stop}>
+              <StopCircle />
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              disabled={!inputMessage.trim() || isTyping}
+              size="sm"
+              className="btn-primary-modern px-3"
+            >
+              <Send className="w-4 h-4" />
+            </Button>
+          )}
+        </form>
       </div>
     </Card>
   );

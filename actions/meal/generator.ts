@@ -6,7 +6,14 @@ import { generateText } from "ai";
 
 export const generateMealPlan = async (data: mealPlannerType) => {
   try {
-    const prompt = `Create a meal plan for ${data.timeframe} for ${data.goal} with ${data.diet} diet. ${data?.calories ? `Calories: ${data.calories}` : ''} ${data?.meals_per_day ? `Meals per day: ${data.meals_per_day}` : ''} age: ${data?.age} gender: ${data?.gender} height: ${data?.height?.value}${data?.height?.unit} weight: ${data?.weight?.value}${data?.weight?.unit} activity level: ${data?.activity_level}  ${data?.prompt ? `Additional instructions: ${data.prompt}` : ''}
+    const prompt =
+      `Create a meal plan for ${data.timeframe} for ${data.goal} with ${data.diet} diet. ${
+        data?.calories ? `Calories: ${data.calories}` : ""
+      } ${
+        data?.meals_per_day ? `Meals per day: ${data.meals_per_day}` : ""
+      } age: ${data?.age} gender: ${data?.gender} height: ${data?.height?.value}${data?.height?.unit} weight: ${data?.weight?.value}${data?.weight?.unit} activity level: ${data?.activity_level}  ${
+        data?.prompt ? `Additional instructions: ${data.prompt}` : ""
+      }
     
 Return ONLY valid JSON (no markdown, no code blocks) based on this schema:
 {
@@ -44,24 +51,25 @@ constraints:
 - no extra text or explanation, only valid JSON
 - if timeframe is today generate for today
 `;
-  const { text } = await generateText({
-      model: google('gemini-2.5-flash', {
-        apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-      }),
+    const { text } = await generateText({
+      model: google("gemini-2.5-flash"),
       prompt,
     });
 
     console.log("AI Response:", text);
 
     let cleanedText = text.trim();
-    if (cleanedText.startsWith('```json')) {
-      cleanedText = cleanedText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
-    } else if (cleanedText.startsWith('```')) {
-      cleanedText = cleanedText.replace(/```\n?/g, '');
+    if (cleanedText.startsWith("```json")) {
+      cleanedText = cleanedText.replace(/```json\n?/g, "").replace(
+        /```\n?/g,
+        "",
+      );
+    } else if (cleanedText.startsWith("```")) {
+      cleanedText = cleanedText.replace(/```\n?/g, "");
     }
 
     const json_res = JSON.parse(cleanedText);
-  
+
     return {
       success: true,
       ...json_res,
@@ -70,7 +78,9 @@ constraints:
     console.error("Error generating meal plan:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to generate meal plan",
+      error: error instanceof Error
+        ? error.message
+        : "Failed to generate meal plan",
     };
   }
 };

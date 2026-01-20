@@ -54,17 +54,16 @@ import {
   Trophy,
   Ruler,
   User,
-  Watch
+  Watch,
 } from "lucide-react";
-import {
-  mealPlannerType,
-  mealPlannerSchema
-
-} from "@/schema/meal-planner";
+import { mealPlannerType, mealPlannerSchema } from "@/schema/meal-planner";
 import PreviewSection from "./PreviewSection";
 import { ScrollArea } from "../ui/scroll-area";
 import FullMealPlanModel from "./FullMealPlanModel";
-import { heightMeasurements, weightMeasurements } from "@/constants/measurements";
+import {
+  heightMeasurements,
+  weightMeasurements,
+} from "@/constants/measurements";
 
 export default function MealPlanner() {
   const [isLoading, setIsLoading] = useState(false);
@@ -87,11 +86,11 @@ export default function MealPlanner() {
       gender: undefined,
       height: {
         value: 0,
-        unit: 'm'
+        unit: "m",
       },
       weight: {
         value: 0,
-        unit: 'kg',
+        unit: "kg",
       },
       activity_level: undefined,
       shopping_list: [],
@@ -123,8 +122,6 @@ export default function MealPlanner() {
     }
   }, [plan]);
 
-
-
   const activityLevelOptions = [
     { value: "sedentary", label: "sedentary" },
     { value: "lightly_active", label: "lightly active" },
@@ -133,7 +130,8 @@ export default function MealPlanner() {
   ];
 
   return (
-    <div className="pt-10 z-0"
+    <div
+      className="pt-10 z-0"
       style={{
         backgroundImage: `
         linear-gradient(to right, #e5e7eb 1px, transparent 1px),
@@ -142,50 +140,55 @@ export default function MealPlanner() {
         backgroundSize: "40px 40px",
       }}
     >
-
-
-
       <div className="max-w-7xl mx-auto space-y-8 mb-10 p-2">
         {/* Header */}
         <div className="text-center space-y-4 mb-12 relative">
           {/* Background blur to make text pop against grid */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-40 bg-white/80 dark:bg-gray-950/80 blur-2xl -z-10 rounded-full" />
 
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/10 to-sky-500/10 border border-emerald-500/20 mb-4 backdrop-blur-sm shadow-sm">
-            <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-            <span className="text-sm font-medium text-emerald-700 dark:text-emerald-300">AI-Powered Nutrition</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-info/10 border border-primary/20 mb-4 backdrop-blur-sm shadow-sm">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-primary">
+              AI-Powered Nutrition
+            </span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-emerald-600 via-sky-600 to-emerald-600 bg-clip-text text-transparent drop-shadow-sm pb-1">
+          <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-primary via-info to-primary bg-clip-text text-transparent drop-shadow-sm pb-1">
             Meal Planner
           </h1>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto font-medium leading-relaxed">
-            Create personalized meal plans tailored to your goals, dietary preferences, and lifestyle
+            Create personalized meal plans tailored to your goals, dietary
+            preferences, and lifestyle
           </p>
         </div>
 
-        <div className={`grid-cols-1 md:grid-cols-2 gap-8 overflow-hidden ${plan?.timeframe ? 'grid' : 'block'}`}>
-
+        <div
+          className={`grid-cols-1 md:grid-cols-2 gap-8 overflow-hidden ${plan?.timeframe ? "grid" : "block"}`}
+        >
           {/* Main Form Card */}
           <Card className="relative overflow-hidden border-2 shadow-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl order-2 lg:order-none">
             {/* Decorative gradients */}
-            <div className="pointer-events-none absolute -top-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-sky-500/20 to-transparent blur-3xl" />
+            <div className="pointer-events-none absolute -top-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-info/20 to-transparent blur-3xl" />
 
             <CardHeader className="relative pb-8">
               <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-info">
                   <ChefHat className="h-6 w-6 text-white" />
                 </div>
                 Configure Your Plan
               </CardTitle>
               <CardDescription className="text-base">
-                Customize your meal plan with your preferences and let AI do the rest
+                Customize your meal plan with your preferences and let AI do the
+                rest
               </CardDescription>
             </CardHeader>
 
             <CardContent className="relative">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-8"
+                >
                   {/* Timeframe Selection */}
                   <FormField
                     control={form.control}
@@ -193,7 +196,7 @@ export default function MealPlanner() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-base font-semibold flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-emerald-600" />
+                          <Calendar className="h-4 w-4 text-primary" />
                           Planning Period
                         </FormLabel>
                         <FormControl>
@@ -202,17 +205,17 @@ export default function MealPlanner() {
                             onValueChange={field.onChange}
                             className="w-full"
                           >
-                            <TabsList className="grid grid-cols-2 w-full h-14 rounded-2xl bg-gradient-to-r from-emerald-50 to-sky-50 dark:from-gray-800 dark:to-gray-800 p-1.5 border-2 border-emerald-200/50 dark:border-emerald-800/50">
+                            <TabsList className="grid grid-cols-2 w-full h-14 rounded-2xl bg-gradient-to-r from-primary/5 to-info/5 dark:from-muted dark:to-muted p-1.5 border-2 border-primary/20">
                               <TabsTrigger
                                 value="today"
-                                className="rounded-xl data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700 data-[state=active]:shadow-lg data-[state=active]:text-emerald-600 dark:data-[state=active]:text-emerald-400 transition-all font-semibold text-base"
+                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-lg data-[state=active]:text-primary transition-all font-semibold text-base"
                               >
                                 <Clock className="h-4 w-4 mr-2" />
                                 Today
                               </TabsTrigger>
                               <TabsTrigger
                                 value="weekend"
-                                className="rounded-xl data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700 data-[state=active]:shadow-lg data-[state=active]:text-sky-600 dark:data-[state=active]:text-sky-400 transition-all font-semibold text-base"
+                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-lg data-[state=active]:text-info transition-all font-semibold text-base"
                               >
                                 <Calendar className="h-4 w-4 mr-2" />
                                 Weekend
@@ -234,31 +237,43 @@ export default function MealPlanner() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Target className="h-4 w-4 text-emerald-600" />
+                            <Target className="h-4 w-4 text-primary" />
                             Your Goal
                           </FormLabel>
-                          <Select value={field.value} onValueChange={field.onChange}>
+                          <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
                             <FormControl>
-                              <SelectTrigger className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+                              <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
                                 <SelectValue placeholder="Select your goal" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="fat_loss" className="cursor-pointer">
+                              <SelectItem
+                                value="fat_loss"
+                                className="cursor-pointer"
+                              >
                                 <div className="flex items-center gap-2">
-                                  <Flame className="h-4 w-4 text-orange-500" />
+                                  <Flame className="h-4 w-4 text-popular" />
                                   <span>Fat Loss</span>
                                 </div>
                               </SelectItem>
-                              <SelectItem value="muscle_gain" className="cursor-pointer">
+                              <SelectItem
+                                value="muscle_gain"
+                                className="cursor-pointer"
+                              >
                                 <div className="flex items-center gap-2">
-                                  <TrendingUp className="h-4 w-4 text-blue-500" />
+                                  <TrendingUp className="h-4 w-4 text-info" />
                                   <span>Muscle Gain</span>
                                 </div>
                               </SelectItem>
-                              <SelectItem value="maintenance" className="cursor-pointer">
+                              <SelectItem
+                                value="maintenance"
+                                className="cursor-pointer"
+                              >
                                 <div className="flex items-center gap-2">
-                                  <Heart className="h-4 w-4 text-pink-500" />
+                                  <Heart className="h-4 w-4 text-error" />
                                   <span>Maintenance</span>
                                 </div>
                               </SelectItem>
@@ -276,35 +291,50 @@ export default function MealPlanner() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Utensils className="h-4 w-4 text-emerald-600" />
+                            <Utensils className="h-4 w-4 text-primary" />
                             Diet Type
                           </FormLabel>
-                          <Select value={field.value} onValueChange={field.onChange}>
+                          <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
                             <FormControl>
-                              <SelectTrigger className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+                              <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
                                 <SelectValue placeholder="Select diet type" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="standard" className="cursor-pointer">
+                              <SelectItem
+                                value="standard"
+                                className="cursor-pointer"
+                              >
                                 <div className="flex items-center gap-2">
                                   <Utensils className="h-4 w-4 text-gray-500" />
                                   <span>Standard</span>
                                 </div>
                               </SelectItem>
-                              <SelectItem value="vegetarian" className="cursor-pointer">
+                              <SelectItem
+                                value="vegetarian"
+                                className="cursor-pointer"
+                              >
                                 <div className="flex items-center gap-2">
-                                  <Apple className="h-4 w-4 text-red-500" />
+                                  <Apple className="h-4 w-4 text-error" />
                                   <span>Vegetarian</span>
                                 </div>
                               </SelectItem>
-                              <SelectItem value="vegan" className="cursor-pointer">
+                              <SelectItem
+                                value="vegan"
+                                className="cursor-pointer"
+                              >
                                 <div className="flex items-center gap-2">
-                                  <Salad className="h-4 w-4 text-green-500" />
+                                  <Salad className="h-4 w-4 text-success" />
                                   <span>Vegan</span>
                                 </div>
                               </SelectItem>
-                              <SelectItem value="keto" className="cursor-pointer">
+                              <SelectItem
+                                value="keto"
+                                className="cursor-pointer"
+                              >
                                 <div className="flex items-center gap-2">
                                   <ChefHat className="h-4 w-4 text-purple-500" />
                                   <span>Keto</span>
@@ -324,7 +354,7 @@ export default function MealPlanner() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Utensils className="h-4 w-4 text-emerald-600" />
+                            <Utensils className="h-4 w-4 text-primary" />
                             Meals Per Day
                           </FormLabel>
                           <Select
@@ -332,13 +362,17 @@ export default function MealPlanner() {
                             onValueChange={(v) => field.onChange(parseInt(v))}
                           >
                             <FormControl>
-                              <SelectTrigger className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+                              <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
                                 <SelectValue placeholder="Select meals" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
                               {[2, 3, 4, 5, 6].map((n) => (
-                                <SelectItem key={n} value={String(n)} className="cursor-pointer">
+                                <SelectItem
+                                  key={n}
+                                  value={String(n)}
+                                  className="cursor-pointer"
+                                >
                                   {n} Meals
                                 </SelectItem>
                               ))}
@@ -350,7 +384,6 @@ export default function MealPlanner() {
                     />
                   </div>
 
-
                   <div className="grid lg:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
@@ -358,7 +391,7 @@ export default function MealPlanner() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Watch className="h-4 w-4 text-emerald-600" />
+                            <Watch className="h-4 w-4 text-primary" />
                             Age (Optional)
                           </FormLabel>
                           <FormControl>
@@ -366,10 +399,14 @@ export default function MealPlanner() {
                               type="number"
                               inputMode="numeric"
                               placeholder="e.g., 20 years"
-                              className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors text-base"
+                              className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors text-base"
                               value={field.value ?? ""}
                               onChange={(e) =>
-                                field.onChange(e.target.value ? parseInt(e.target.value) : undefined)
+                                field.onChange(
+                                  e.target.value
+                                    ? parseInt(e.target.value)
+                                    : undefined,
+                                )
                               }
                             />
                           </FormControl>
@@ -387,7 +424,7 @@ export default function MealPlanner() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <User className="h-4 w-4 text-emerald-600" />
+                            <User className="h-4 w-4 text-primary" />
                             Gender (Optional)
                           </FormLabel>
                           <FormControl>
@@ -395,14 +432,20 @@ export default function MealPlanner() {
                               value={field.value}
                               onValueChange={field.onChange}
                             >
-                              <SelectTrigger className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+                              <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
                                 <SelectValue placeholder="Select gender" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="male" className="cursor-pointer">
+                                <SelectItem
+                                  value="male"
+                                  className="cursor-pointer"
+                                >
                                   Male
                                 </SelectItem>
-                                <SelectItem value="female" className="cursor-pointer">
+                                <SelectItem
+                                  value="female"
+                                  className="cursor-pointer"
+                                >
                                   Female
                                 </SelectItem>
                               </SelectContent>
@@ -416,12 +459,10 @@ export default function MealPlanner() {
                       )}
                     />
 
-
-
                     {/* Height Input Group */}
                     <div className="space-y-2">
                       <FormLabel className="text-base font-semibold flex items-center gap-2">
-                        <Ruler className="h-4 w-4 text-emerald-600" />
+                        <Ruler className="h-4 w-4 text-primary" />
                         Height (Optional)
                       </FormLabel>
                       <div className="flex gap-2">
@@ -434,9 +475,11 @@ export default function MealPlanner() {
                                 <Input
                                   type="number"
                                   placeholder="Value"
-                                  className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors text-base"
+                                  className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors text-base"
                                   {...field}
-                                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                  onChange={(e) =>
+                                    field.onChange(e.target.valueAsNumber)
+                                  }
                                 />
                               </FormControl>
                               <FormMessage />
@@ -453,7 +496,7 @@ export default function MealPlanner() {
                                   value={field.value}
                                   onValueChange={field.onChange}
                                 >
-                                  <SelectTrigger className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+                                  <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
                                     <SelectValue placeholder="Unit" />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -478,7 +521,7 @@ export default function MealPlanner() {
                     {/* Weight Input Group */}
                     <div className="space-y-2">
                       <FormLabel className="text-base font-semibold flex items-center gap-2">
-                        <Weight className="h-4 w-4 text-emerald-600" />
+                        <Weight className="h-4 w-4 text-primary" />
                         Weight (Optional)
                       </FormLabel>
                       <div className="flex gap-2">
@@ -491,9 +534,11 @@ export default function MealPlanner() {
                                 <Input
                                   type="number"
                                   placeholder="Value"
-                                  className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors text-base"
+                                  className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors text-base"
                                   {...field}
-                                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                  onChange={(e) =>
+                                    field.onChange(e.target.valueAsNumber)
+                                  }
                                 />
                               </FormControl>
                               <FormMessage />
@@ -510,7 +555,7 @@ export default function MealPlanner() {
                                   value={field.value}
                                   onValueChange={field.onChange}
                                 >
-                                  <SelectTrigger className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+                                  <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
                                     <SelectValue placeholder="Unit" />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -531,13 +576,7 @@ export default function MealPlanner() {
                         Leave empty for AI to suggest
                       </FormDescription>
                     </div>
-
-
-
-
-
                   </div>
-
 
                   <div className="grid lg:grid-cols-2 gap-4">
                     <FormField
@@ -546,7 +585,7 @@ export default function MealPlanner() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Trophy className="h-4 w-4 text-emerald-600" />
+                            <Trophy className="h-4 w-4 text-primary" />
                             Activity Level (Optional)
                           </FormLabel>
                           <FormControl>
@@ -554,12 +593,15 @@ export default function MealPlanner() {
                               value={field.value}
                               onValueChange={field.onChange}
                             >
-                              <SelectTrigger className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+                              <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
                                 <SelectValue placeholder="Select activity level" />
                               </SelectTrigger>
                               <SelectContent>
                                 {activityLevelOptions.map((option) => (
-                                  <SelectItem key={option.value} value={option.value}>
+                                  <SelectItem
+                                    key={option.value}
+                                    value={option.value}
+                                  >
                                     {option.label}
                                   </SelectItem>
                                 ))}
@@ -574,7 +616,6 @@ export default function MealPlanner() {
                       )}
                     />
 
-
                     {/* Calories Input */}
                     <FormField
                       control={form.control}
@@ -582,7 +623,7 @@ export default function MealPlanner() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Zap className="h-4 w-4 text-emerald-600" />
+                            <Zap className="h-4 w-4 text-primary" />
                             Daily Calorie Target (Optional)
                           </FormLabel>
                           <FormControl>
@@ -592,7 +633,7 @@ export default function MealPlanner() {
                               min={800}
                               max={5000}
                               placeholder="e.g., 2000 calories"
-                              className="h-12 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors text-base"
+                              className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors text-base"
                               {...field}
                             />
                           </FormControl>
@@ -600,14 +641,10 @@ export default function MealPlanner() {
                             Leave empty for AI to suggest based on your goal
                           </FormDescription>
                           <FormMessage />
-
                         </FormItem>
                       )}
                     />
-
                   </div>
-
-
 
                   {/* AI Prompt */}
                   <FormField
@@ -616,20 +653,21 @@ export default function MealPlanner() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-base font-semibold flex items-center gap-2">
-                          <Sparkles className="h-4 w-4 text-emerald-600" />
+                          <Sparkles className="h-4 w-4 text-primary" />
                           Special Instructions for AI
                         </FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="e.g., High-protein vegetarian meals, quick breakfasts, avoid peanuts, prefer Mediterranean cuisine, budget-friendly options..."
-                            className="min-h-32 rounded-xl border-2 bg-white dark:bg-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors resize-none text-base"
+                            className="min-h-32 rounded-xl border-2 bg-background hover:border-primary transition-colors resize-none text-base"
                             {...field}
                             rows={4}
                           />
                         </FormControl>
                         <FormDescription className="text-xs flex items-start gap-1">
-                          <span className="text-amber-600 dark:text-amber-400">⚠️</span>
-                          This is not medical advice. Consult a healthcare professional for personalized nutrition guidance.
+                          <span className="text-warning">⚠️</span>
+                          This is not medical advice. Consult a healthcare
+                          professional for personalized nutrition guidance.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -642,7 +680,7 @@ export default function MealPlanner() {
                       type="submit"
                       disabled={isLoading}
                       size="lg"
-                      className="w-full h-14 text-lg font-bold rounded-xl bg-gradient-to-r from-emerald-600 to-sky-600 hover:from-emerald-700 hover:to-sky-700 shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
+                      className="w-full h-14 text-lg font-bold rounded-xl bg-gradient-to-r from-primary to-info hover:from-primary/90 hover:to-info/90 shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
                     >
                       {isLoading ? (
                         <>
@@ -676,23 +714,21 @@ export default function MealPlanner() {
 
         {/* Error Display */}
         {error && (
-          <Card className="border-2 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/20">
+          <Card className="border-2 border-error/20 bg-error/5">
             <CardContent className="pt-6">
               <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-red-100 dark:bg-red-900">
-                  <Flame className="h-5 w-5 text-red-600 dark:text-red-400" />
+                <div className="p-2 rounded-lg bg-error/10">
+                  <Flame className="h-5 w-5 text-error" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-red-900 dark:text-red-100">Error</h3>
-                  <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                  <h3 className="font-semibold text-error">Error</h3>
+                  <p className="text-sm text-error/80">{error}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
         )}
       </div>
-
-
-    </div >
+    </div>
   );
 }

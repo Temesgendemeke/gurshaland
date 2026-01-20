@@ -24,7 +24,6 @@ import {
 import { toast } from "sonner";
 import { createClient } from "@/utils/supabase/client";
 
-const supabase = createClient();
 import { useAuth } from "@/store/useAuth";
 import { recipeStore } from "@/store/Recipe";
 import RecipeListSkeleton from "@/components/skeleton/RecipeList";
@@ -34,6 +33,7 @@ import RecipeCard from "@/components/recipe/RecipeCard";
 import { useSearchParams } from "next/navigation";
 
 export default function RecipesPage() {
+  const supabase = createClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
@@ -97,7 +97,7 @@ export default function RecipesPage() {
   });
 
   return (
-    <div className="modern-gradient-bg min-h-screen">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <div className="max-w-9xl mx-auto px-6 py-12">
@@ -113,7 +113,7 @@ export default function RecipesPage() {
         </div>
 
         {/* Search and Filters */}
-        <div className="modern-card rounded-2xl p-6 mb-8 border border-emerald-100 dark:border-emerald-800">
+        <div className="modern-card rounded-2xl p-6 mb-8 border border-primary/20">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -129,7 +129,7 @@ export default function RecipesPage() {
               value={selectedCategory}
               onValueChange={setSelectedCategory}
             >
-              <SelectTrigger className="w-full md:w-48 h-12 border-emerald-200 dark:border-emerald-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+              <SelectTrigger className="w-full md:w-48 h-12 border-primary/20 bg-background text-foreground">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
@@ -145,7 +145,7 @@ export default function RecipesPage() {
               value={selectedDifficulty}
               onValueChange={setSelectedDifficulty}
             >
-              <SelectTrigger className="w-full md:w-48 h-12 border-emerald-200 dark:border-emerald-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+              <SelectTrigger className="w-full md:w-48 h-12 border-primary/20 bg-background text-foreground">
                 <SelectValue placeholder="Difficulty" />
               </SelectTrigger>
               <SelectContent>
@@ -187,7 +187,7 @@ export default function RecipesPage() {
           <Button
             variant="outline"
             size="lg"
-            className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 rounded-full px-8"
+            className="border-2 border-primary text-primary hover:bg-primary/5 rounded-full px-8"
           >
             Load More Recipes
           </Button>

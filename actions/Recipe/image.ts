@@ -1,10 +1,8 @@
 import { BUCKET } from "@/constants/image";
 import { createClient } from "@/utils/supabase/client";
 
-
-const supabase = createClient()
-
 export const uploadImage = async (file: File, userId: string) => {
+  const supabase = createClient();
   const filePath = `recipe/${userId}/${file.name}_${Date.now()}`;
   const { error } = await supabase.storage.from(BUCKET).upload(filePath, file, {
     cacheControl: "3600",
@@ -20,11 +18,8 @@ export const uploadImage = async (file: File, userId: string) => {
 };
 
 export const deleteImage = async (image_path: string) => {
+  const supabase = createClient();
   const { error } = await supabase.storage.from(BUCKET).remove([image_path]);
   console.log("from image", error);
   if (error) throw error;
 };
-
-
-
-

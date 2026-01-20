@@ -27,7 +27,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
 
     if (!recipes || recipes.length === 0) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="min-h-screen bg-background">
           <Header />
           <div className="max-w-7xl mx-auto px-6 py-12">
             <BackNavigation route={"/categories"} pagename={"Categories"} />
@@ -68,7 +68,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
             </div>
 
             <Select defaultValue="popular">
-              <SelectTrigger className="w-48 border-emerald-200 dark:border-emerald-700 bg-white dark:bg-gray-900">
+              <SelectTrigger className="w-48 border-border bg-background">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -85,7 +85,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
             {recipes.map((recipe: any) => (
               <Card
                 key={recipe.id}
-                className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-emerald-100 dark:border-emerald-800"
+                className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group bg-card/70 backdrop-blur-sm border-border/50"
               >
                 <div className="relative">
                   <img
@@ -115,7 +115,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
                 </div>
 
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                  <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
                     {recipe.title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300 mb-4">
@@ -146,7 +146,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
 
                   <Button
                     asChild
-                    className="w-full bg-gradient-to-r from-emerald-600 to-yellow-500 hover:from-emerald-700 hover:to-yellow-600 text-white rounded-full"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
                   >
                     <Link href={`/recipes/${recipe.slug}`}>View Recipe</Link>
                   </Button>
@@ -160,7 +160,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
             <Button
               variant="outline"
               size="lg"
-              className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-full px-8"
+              className="border-2 border-primary text-primary hover:bg-primary/5 rounded-full px-8"
             >
               Load More Recipes
             </Button>
@@ -173,7 +173,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
   } catch (error) {
     console.error("Error fetching category recipes:", error);
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="min-h-screen bg-background">
         <Header />
         <div className="max-w-7xl mx-auto px-6 py-12">
           <BackNavigation route={"/categories"} pagename={"Categories"} />

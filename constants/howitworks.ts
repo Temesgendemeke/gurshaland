@@ -1,27 +1,26 @@
-import {
-  Sparkles,
-  Zap,
-  Brain,
-} from "lucide-react";
+import { Brain, Sparkles, Zap } from "lucide-react";
 
 const howItWorks = [
   {
     icon: Brain,
-    bg: "from-emerald-500 to-green-600",
+    bg: "from-primary to-primary/80",
     title: "Learn",
-    desc: "Our AI analyzes thousands of traditional Ethiopian recipes, cooking methods, and ingredient combinations.",
+    desc:
+      "Our AI analyzes thousands of traditional Ethiopian recipes, cooking methods, and ingredient combinations.",
   },
   {
     icon: Zap,
-    bg: "from-blue-500 to-indigo-600",
+    bg: "from-info to-info/80",
     title: "Process",
-    desc: "Advanced algorithms understand your preferences, dietary needs, and available ingredients.",
+    desc:
+      "Advanced algorithms understand your preferences, dietary needs, and available ingredients.",
   },
   {
     icon: Sparkles,
-    bg: "from-purple-500 to-pink-600",
+    bg: "from-popular to-popular/80",
     title: "Create",
-    desc: "Generate personalized recipes, cooking tips, and meal plans tailored specifically for you.",
+    desc:
+      "Generate personalized recipes, cooking tips, and meal plans tailored specifically for you.",
   },
 ];
 

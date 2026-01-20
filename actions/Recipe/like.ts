@@ -1,19 +1,18 @@
 import { createClient } from "@/utils/supabase/client";
 
-
-const supabase = createClient()
-
 export const postOrDeleteLike = async (liked_by: string, recipe_id: string) => {
+    const supabase = createClient();
     const { error: deleteError, count } = await supabase
         .from("recipe_like")
-        .delete({ count: 'exact' }) 
+        .delete({ count: "exact" })
         .eq("liked_by", liked_by)
         .eq("recipe_id", recipe_id);
 
     if (deleteError) {
         console.log(deleteError);
-        
-        throw deleteError}
+
+        throw deleteError;
+    }
 
     if (count === 0) {
         const { error: insertError } = await supabase
@@ -22,7 +21,7 @@ export const postOrDeleteLike = async (liked_by: string, recipe_id: string) => {
 
         if (insertError) {
             console.log(insertError);
-            throw insertError
+            throw insertError;
         }
 
         return { liked: true };
@@ -30,4 +29,3 @@ export const postOrDeleteLike = async (liked_by: string, recipe_id: string) => {
 
     return { liked: false };
 };
-

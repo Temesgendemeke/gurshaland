@@ -20,7 +20,7 @@ const AuthorInfo = ({ author }: AuthorInfoProps) => {
   return (
     <Card
       onClick={() => router.push(`/profile/${author.username}`)}
-      className="p-4 cursor-pointer  bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800"
+      className="p-4 cursor-pointer bg-card/70 backdrop-blur-sm border-border/50"
     >
       <div className="flex items-center space-x-4">
         <img
@@ -29,13 +29,9 @@ const AuthorInfo = ({ author }: AuthorInfoProps) => {
           className="w-12 h-12 rounded-full"
         />
         <div>
-          <h3 className="font-semibold text-gray-800 dark:text-gray-200">
-            @{author?.username}
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            {author?.bio}
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-500">
+          <h3 className="font-semibold text-foreground">@{author?.username}</h3>
+          <p className="text-sm text-muted-foreground">{author?.bio}</p>
+          <p className="text-xs text-muted-foreground/80">
             {author?.recipes} recipes shared
           </p>
         </div>

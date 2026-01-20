@@ -2,22 +2,22 @@ const stats = [
   {
     value: "10K+",
     label: "Recipes Generated",
-    color: "text-emerald-600",
+    color: "text-primary",
   },
   {
     value: "5K+",
     label: "Photos Analyzed",
-    color: "text-blue-600",
+    color: "text-info",
   },
   {
     value: "15K+",
     label: "Cooking Sessions",
-    color: "text-purple-600",
+    color: "text-popular",
   },
   {
     value: "98%",
     label: "Accuracy Rate",
-    color: "text-orange-600",
+    color: "text-warning",
   },
 ];
 

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useRecipeDetailStore } from "@/store/Recipedetail";
 import { postComment } from "@/actions/Recipe/comment";
-import type { RecipeComment  } from "@/utils/types/recipe";
+import type { RecipeComment } from "@/utils/types/recipe";
 
 interface RecipeCommentProps {
   user_id: string | undefined;
@@ -19,7 +19,6 @@ const RecipeComment = ({ user_id, recipe_id }: RecipeCommentProps) => {
   const addComment = useRecipeDetailStore((store) => store.addComment);
 
   const handlePostComment = async () => {
-
     if (!user_id || !recipe_id) {
       return router.push("/login");
     }
@@ -43,13 +42,13 @@ const RecipeComment = ({ user_id, recipe_id }: RecipeCommentProps) => {
         placeholder="Share your experience with this recipe..."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className="mb-3 border-emerald-200 dark:border-emerald-700 bg-white dark:bg-gray-900"
+        className="mb-3 border-border bg-background"
       />
       <Button
         type="button"
         disabled={!comment}
         onClick={handlePostComment}
-        className="bg-gradient-to-r from-emerald-600 to-yellow-500 hover:from-emerald-700 hover:to-yellow-600 text-white"
+        className="bg-primary hover:bg-primary/90 text-primary-foreground"
       >
         Post Comment
       </Button>

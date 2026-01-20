@@ -23,7 +23,11 @@ const FloatingRecipeCard = ({ cls, image, text, rating }: Props) => {
         <div>
           <h4 className="font-semibold text-sm heading-primary">{text}</h4>
           <div className="flex items-center space-x-1">
-            <Star fill="#FFD700" color="#FFD700" size={18} />
+            <Star
+              fill="hsl(var(--warning))"
+              color="hsl(var(--warning))"
+              size={18}
+            />
             <span className="text-xs text-body-muted">{rating}</span>
           </div>
         </div>

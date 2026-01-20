@@ -5,7 +5,7 @@ export default async function RestaurantPage({
 }: {
   params: { slug: string };
 }) {
-  const { slug } = params;
+  const { slug } = await params;
   const restaurant = await getRestaurantBySlug(slug);
   return <div>{restaurant?.name}</div>;
 }

@@ -82,7 +82,7 @@ const page = () => {
         {/* hero text */}
         <div>
           <div className="py-16 text-center">
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-600 via-sky-600 to-emerald-600 bg-clip-text text-transparent ">
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight ">
               The Hottest Lounge Search Engine
             </h1>
 
@@ -174,7 +174,7 @@ const page = () => {
                                   >
                                     {i}
                                   </PaginationLink>
-                                </PaginationItem>
+                                </PaginationItem>,
                               );
                             }
                           } else {
@@ -191,7 +191,7 @@ const page = () => {
                                 >
                                   1
                                 </PaginationLink>
-                              </PaginationItem>
+                              </PaginationItem>,
                             );
 
                             // Show ellipsis if current page is far from start
@@ -199,7 +199,7 @@ const page = () => {
                               items.push(
                                 <PaginationItem key="ellipsis-start">
                                   <PaginationEllipsis />
-                                </PaginationItem>
+                                </PaginationItem>,
                               );
                             }
 
@@ -207,7 +207,7 @@ const page = () => {
                             let startPage = Math.max(2, pageParam - 1);
                             let endPage = Math.min(
                               totalPages - 1,
-                              pageParam + 1
+                              pageParam + 1,
                             );
 
                             // Adjust if near start
@@ -235,7 +235,7 @@ const page = () => {
                                   >
                                     {i}
                                   </PaginationLink>
-                                </PaginationItem>
+                                </PaginationItem>,
                               );
                             }
 
@@ -244,7 +244,7 @@ const page = () => {
                               items.push(
                                 <PaginationItem key="ellipsis-end">
                                   <PaginationEllipsis />
-                                </PaginationItem>
+                                </PaginationItem>,
                               );
                             }
 
@@ -261,7 +261,7 @@ const page = () => {
                                 >
                                   {totalPages}
                                 </PaginationLink>
-                              </PaginationItem>
+                              </PaginationItem>,
                             );
                           }
 

@@ -16,7 +16,7 @@ import { GetRestaurentType } from "@/schema/restaurent";
 const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
   const router = useRouter();
   const [imageSrc, setImageSrc] = useState(
-    restaurant?.image?.url || "/placeholder.svg"
+    restaurant?.image?.url || "/placeholder.svg",
   );
 
   const correctURl = (url: string) => {
@@ -56,8 +56,8 @@ const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
 
         {/* Rating Badge - Floating */}
         <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border border-white/20">
-          <StarIcon className="w-4 h-4 text-amber-500" fill="currentColor" />
-          <span className="text-sm font-bold text-gray-900 dark:text-white">
+          <StarIcon className="w-4 h-4 text-warning" fill="currentColor" />
+          <span className="text-sm font-bold text-foreground">
             {restaurant.rating}
           </span>
         </div>

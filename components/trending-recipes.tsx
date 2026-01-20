@@ -4,13 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import {
-  Star,
-  Users,
-  ChefHat,
-  Heart,
-  Zap,
-} from "lucide-react";
+import { Star, Users, ChefHat, Heart, Zap } from "lucide-react";
 import { recipeStore } from "@/store/Recipe";
 import { TrendingRecipe } from "@/utils/types/recipe";
 import Image from "next/image";
@@ -19,7 +13,7 @@ import RecipeListSkeleton from "./skeleton/RecipeList";
 export function TrendingRecipes() {
   const trendingRecipes = recipeStore((state) => state.trendingRecipes);
   const fetchTrendingRecipes = recipeStore(
-    (state) => state.fetchTrendingRecipes
+    (state) => state.fetchTrendingRecipes,
   );
   const loading = recipeStore((store) => store.loading) ?? true;
 
@@ -43,7 +37,7 @@ export function TrendingRecipes() {
         <Button
           asChild
           variant="outline"
-          className="border-orange-600 text-orange-600 hover:bg-orange-50"
+          className="border-popular text-popular hover:bg-popular/5"
         >
           <Link href="/recipes?sorted_by=trending">View All</Link>
         </Button>
@@ -67,13 +61,13 @@ export function TrendingRecipes() {
                   className="w-full h-40 object-cover"
                 />
                 <div className="absolute top-2 left-2">
-                  <Badge className="bg-orange-600 text-white flex items-center gap-1">
+                  <Badge className="bg-popular text-popular-foreground flex items-center gap-1">
                     <Zap className="w-3 h-3" />
                     Trending
                   </Badge>
                 </div>
                 <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center space-x-1">
-                  <Star className="w-3 h-3 text-yellow-500 fill-current" />
+                  <Star className="w-3 h-3 text-warning fill-current" />
                   <span className="text-xs font-medium">
                     {recipe.average_rating ?? 0}
                   </span>
@@ -84,7 +78,7 @@ export function TrendingRecipes() {
                   <div className="absolute bottom-2 left-2">
                     <Badge
                       variant="secondary"
-                      className="bg-green-100 text-green-700 text-xs"
+                      className="bg-success/10 text-success text-xs"
                     >
                       {recipe.recent_rating_count} ratings this week
                     </Badge>
@@ -94,7 +88,7 @@ export function TrendingRecipes() {
                   <div className="absolute bottom-2 right-2">
                     <Badge
                       variant="secondary"
-                      className="bg-blue-100 text-blue-700 text-xs"
+                      className="bg-info/10 text-info text-xs"
                     >
                       {recipe.recent_comment_count} comments
                     </Badge>
@@ -103,7 +97,7 @@ export function TrendingRecipes() {
               </div>
 
               <div className="p-4">
-                <h3 className="text-lg font-bold heading-primary mb-2 cursor-pointer group-hover:text-orange-600 transition-colors line-clamp-2">
+                <h3 className="text-lg font-bold heading-primary mb-2 cursor-pointer group-hover:text-popular transition-colors line-clamp-2">
                   {recipe.title}
                 </h3>
 
@@ -125,7 +119,7 @@ export function TrendingRecipes() {
                     <span>Score: {recipe.trending_score}</span>
                   </div>
                   <div className="flex items-center space-x-1">
-                    <Heart className="w-3 h-3 text-red-500" />
+                    <Heart className="w-3 h-3 text-error" />
                     <span>{recipe.recent_like_count}</span>
                   </div>
                 </div>

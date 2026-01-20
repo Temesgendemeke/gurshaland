@@ -81,7 +81,7 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
                 maxEngagementRatio > 0
                   ? Math.min(
                       100,
-                      Math.round((engagementRatio / maxEngagementRatio) * 100)
+                      Math.round((engagementRatio / maxEngagementRatio) * 100),
                     )
                   : 0;
 
@@ -91,7 +91,7 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
                   className={cn(
                     "group transition-colors hover:bg-muted/40",
                     i < 3 &&
-                      "bg-gradient-to-r from-emerald-50/60 dark:from-emerald-900/10"
+                      "bg-gradient-to-r from-primary/10 dark:from-primary/5",
                   )}
                 >
                   <TableCell className="text-center font-medium">
@@ -99,12 +99,12 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
                       className={cn(
                         "inline-flex h-6 w-6 items-center justify-center rounded-md text-xs",
                         i === 0
-                          ? "bg-emerald-600 text-white"
+                          ? "bg-primary text-primary-foreground"
                           : i === 1
-                          ? "bg-emerald-500/80 text-white"
-                          : i === 2
-                          ? "bg-emerald-400/70 text-white"
-                          : "bg-muted text-muted-foreground"
+                            ? "bg-primary/80 text-primary-foreground"
+                            : i === 2
+                              ? "bg-primary/60 text-primary-foreground"
+                              : "bg-muted text-muted-foreground",
                       )}
                     >
                       {i + 1}
@@ -140,9 +140,9 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
                       <div className="h-2 rounded bg-muted overflow-hidden">
                         <div
                           className={cn(
-                            "h-full rounded-r bg-emerald-500 transition-all",
-                            pct < 15 && "bg-emerald-300",
-                            pct > 70 && "bg-emerald-600"
+                            "h-full rounded-r bg-primary transition-all",
+                            pct < 15 && "bg-primary/40",
+                            pct > 70 && "bg-primary/80",
                           )}
                           style={{ width: `${isNaN(pct) ? "0%" : `${pct}%`}` }}
                           title={`Engagement: ${

@@ -69,7 +69,7 @@ export function DataTable<TData extends DataTableRow, TValue>({
   });
   const [rowSelection, setRowSelection] = React.useState({});
   const [isMobile, setIsMobile] = React.useState(false);
-  const [currentData, SetCurrent] = React.useState(data)
+  const [currentData, SetCurrent] = React.useState(data);
 
   // Update currentData when data prop changes
   React.useEffect(() => {
@@ -124,14 +124,13 @@ export function DataTable<TData extends DataTableRow, TValue>({
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
-    
+
     state: { sorting, pagination, rowSelection },
     getRowId: (row: any, index) => row.id ?? index.toString(),
   });
 
   const LINK_ICON_COLUMN_ID = "title";
   const selectedRows = table.getSelectedRowModel().rows.map((r) => r.original);
-
 
   const handleDelete = async (rows: TData[]) => {
     try {
@@ -215,7 +214,7 @@ export function DataTable<TData extends DataTableRow, TValue>({
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
-                              header.getContext()
+                              header.getContext(),
                             )}
                       </TableHead>
                     ))}
@@ -231,7 +230,7 @@ export function DataTable<TData extends DataTableRow, TValue>({
                       className="group transition-colors hover:bg-muted/40"
                       style={{
                         backgroundColor: row.getIsSelected()
-                          ? "rgb(16 185 129 / 0.1)"
+                          ? "hsl(var(--primary) / 0.1)"
                           : "transparent",
                       }}
                     >
@@ -253,7 +252,7 @@ export function DataTable<TData extends DataTableRow, TValue>({
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
-                              cell.getContext()
+                              cell.getContext(),
                             )}
                             {(cell.column.id === "title" ||
                               cell.column.id === "username") && (

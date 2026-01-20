@@ -10,24 +10,24 @@ import HeroImage from "./HeroImage";
 
 const HeroSection = () => {
   return (
-    <section className="relative py-20 px-6 overflow-hidden">
+    <section className="relative py-20 px-6 overflow-hidden bg-background">
       <div className="absolute inset-0 opacity-5 dark:opacity-10">
-        <div
+        {/* <div
           className="w-full h-full"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23000000' fillOpacity='0.1'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm0 0c0 11.046 8.954 20 20 20s20-8.954 20-20-8.954-20-20-20-20 8.954-20 20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
-        ></div>
+        ></div> */}
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="text-center lg:text-left">
-            <div className="inline-flex items-center space-x-2 modern-card rounded-full px-4 py-2 mb-6 border border-emerald-200 dark:border-emerald-700">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-              <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+            <div className="inline-flex items-center space-x-2 modern-card rounded-full px-4 py-2 mb-6 border border-primary/20">
+              <div className="w-2 h-2 bg-ethiopian-green rounded-full"></div>
+              <div className="w-2 h-2 bg-ethiopian-yellow rounded-full"></div>
+              <div className="w-2 h-2 bg-ethiopian-red rounded-full"></div>
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Authentic Ethiopian Cuisine
               </span>
@@ -59,7 +59,7 @@ const HeroSection = () => {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 font-semibold px-8 py-4 text-lg rounded-full"
+                className="border-2 border-primary text-primary hover:bg-primary/5 font-semibold px-8 py-4 text-lg rounded-full"
               >
                 <Link href="/recipes/create">
                   <Heart className="w-5 h-5 mr-2" />
@@ -71,19 +71,19 @@ const HeroSection = () => {
             {/* Stats */}
             <div className="grid grid-cols-2 gap-6 max-w-md mx-auto lg:mx-0">
               <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-emerald-600">500+</div>
+                <div className="text-3xl font-bold text-primary">500+</div>
                 <div className="text-body">Recipes</div>
               </div>
               <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-yellow-600">1,200+</div>
+                <div className="text-3xl font-bold text-warning">1,200+</div>
                 <div className="text-body">Community Members</div>
               </div>
               <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-red-600">50+</div>
+                <div className="text-3xl font-bold text-error">50+</div>
                 <div className="text-body">Cultural Stories</div>
               </div>
               <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-emerald-600">4.9</div>
+                <div className="text-3xl font-bold text-primary">4.9</div>
                 <div className="text-body">Average Rating</div>
               </div>
             </div>

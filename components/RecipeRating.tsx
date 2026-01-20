@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star } from "lucide-react";
+import { StarIcon as Star } from "@heroicons/react/24/outline";
+import { StarIcon as SolidStar } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Rating } from "@/utils/types/recipe";
@@ -36,8 +37,8 @@ const RecipeRating = ({ user_id, recipe_id, rating }: RecipeRatingProps) => {
   };
 
   return (
-    <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-      <h2 className="text-xl font-bold dark:bg-gray-800 dark:text-gray-100 mb-4 flex items-center">
+    <Card className="p-6 bg-card/70 backdrop-blur-sm border-border/50">
+      <h2 className="text-xl font-bold text-foreground mb-4 flex items-center">
         Rate this recipe
       </h2>
       <div ref={ratingRef} className="flex items-center space-x-2 mt-2">
@@ -53,16 +54,11 @@ const RecipeRating = ({ user_id, recipe_id, rating }: RecipeRatingProps) => {
             aria-label={`Rate ${star} star${star > 1 ? "s" : ""}`}
             type="button"
           >
-            <Star
-              className={`w-8 h-8 transition-colors ${
-                (hoverRating || userRating) >= star
-                  ? "text-yellow-400 fill-yellow-400"
-                  : "text-gray-300"
-              }`}
-              fill={
-                (hoverRating || userRating) >= star ? "currentColor" : "none"
-              }
-            />
+            {(hoverRating || userRating) >= star ? (
+              <SolidStar className="w-8 h-8 text-warning" />
+            ) : (
+              <Star className="w-8 h-8 text-muted-foreground/30" />
+            )}
           </motion.button>
         ))}
         <AnimatePresence>
@@ -71,7 +67,7 @@ const RecipeRating = ({ user_id, recipe_id, rating }: RecipeRatingProps) => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="ml-4 text-emerald-600 font-semibold"
+              className="ml-4 text-primary font-semibold"
             >
               Thank you for rating!
             </motion.span>

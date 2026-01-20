@@ -31,18 +31,16 @@ const NutritionView = ({ nutrition }: NutritionViewProps) => {
     },
   ];
   return (
-    <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+    <Card className="p-6 bg-card/70 backdrop-blur-sm border-border/50">
+      <h3 className="text-xl font-bold text-foreground mb-4">
         Nutrition (per serving)
       </h3>
 
       <div className="space-y-3">
         {nutritionList.map((n, index) => (
           <div className="flex justify-between" key={index}>
-            <span className="text-gray-600 dark:text-gray-400">{n.field}</span>
-            <span className="font-medium text-gray-800 dark:text-gray-200">
-              {n.calories}
-            </span>
+            <span className="text-muted-foreground">{n.field}</span>
+            <span className="font-medium text-foreground">{n.calories}</span>
           </div>
         ))}
       </div>
