@@ -11,24 +11,24 @@ interface Props {
 
 const FloatingRecipeCard = ({ cls, image, text, rating }: Props) => {
   return (
-    <div className={cls}>
+    <div
+      className={`${cls} bg-card/75 text-foreground border border-border/40 backdrop-blur-md`}
+    >
       <div className="flex items-center space-x-3">
         <Image
           width={100}
           height={100}
           src={image}
           alt="Injera"
-          className="w-12 h-12 rounded-full object-cover"
+          className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/20"
         />
         <div>
-          <h4 className="font-semibold text-sm heading-primary">{text}</h4>
+          <h4 className="font-medium text-[15px] leading-snug text-foreground/85">
+            {text}
+          </h4>
           <div className="flex items-center space-x-1">
-            <Star
-              fill="hsl(var(--warning))"
-              color="hsl(var(--warning))"
-              size={18}
-            />
-            <span className="text-xs text-body-muted">{rating}</span>
+            <Star className="text-popular" fill="currentColor" size={20} />
+            <span className="text-sm text-muted-foreground">{rating}</span>
           </div>
         </div>
       </div>

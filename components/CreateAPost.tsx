@@ -18,15 +18,12 @@ const CreateAPost = ({ align, cls }: CreateAPost) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="btn-primary-modern rounded-full">
-          <Plus className="w-4 h-4 mr-2" />
-          Create a Post
+        <Button className="btn-primary-modern rounded-full group">
+          <Plus className="w-4 h-4" />
+          <span> Create a Post</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align={align}
-        className={`bg-background ${cls}`}
-      >
+      <DropdownMenuContent align={align} className={`bg-background ${cls}`}>
         <DropdownMenuItem asChild>
           <Link href={"/recipes/create"}>Recipe</Link>
         </DropdownMenuItem>

@@ -31,7 +31,7 @@ export function FeaturedCards() {
   const fetchBlogs = blogStore((state) => state.fetchBlogs);
   const RecipeLoading = recipeStore((store) => store.loading) ?? true;
   const BlogLoading = blogStore((store) => store.loading) ?? true;
-  console.log(featuredRecipes);
+
   useEffect(() => {
     fetchFeaturedRecipes();
     fetchBlogs();
@@ -64,9 +64,9 @@ export function FeaturedCards() {
             {featuredRecipes?.map((recipe: FeaturedRecipe) => (
               <Card
                 key={recipe.id}
-                className="modern-card modern-card-hover group hover:scale-105 transition-transform duration-300"
+                className="modern-card overflow-hidden modern-card-hover group hover:scale-105 transition-transform duration-300 h-full flex flex-col"
               >
-                <div className="relative">
+                <div className="relative shrink-0">
                   <Image
                     width={100}
                     height={100}
@@ -79,9 +79,9 @@ export function FeaturedCards() {
                       Featured
                     </Badge>
                   </div>
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
+                  <div className="absolute top-4 right-4 bg-card/80 border border-border/40 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1 shadow-sm">
                     <Star className="w-4 h-4 text-warning fill-current" />
-                    <span className="text-sm font-medium">
+                    <span className="text-sm font-semibold text-foreground/90">
                       {recipe.average_rating ?? 0}
                     </span>
                   </div>
@@ -98,7 +98,7 @@ export function FeaturedCards() {
                   )}
                 </div>
 
-                <div className="p-6">
+                <div className="p-6 flex flex-col flex-1">
                   <h3 className="text-xl font-bold heading-primary mb-2 cursor-pointer group-hover:text-primary transition-colors">
                     {recipe.title}
                   </h3>
@@ -130,7 +130,7 @@ export function FeaturedCards() {
 
                   <Button
                     asChild
-                    className="w-full btn-primary-modern rounded-full"
+                    className="w-full btn-primary-modern rounded-full mt-auto"
                   >
                     <Link href={`/recipes/${recipe.slug}`}>View Recipe</Link>
                   </Button>
@@ -170,9 +170,13 @@ export function FeaturedCards() {
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {blogs?.map((post) => (
-              <Link key={post.id} href={`/blog/${post.slug}?from=/`}>
-                <Card className="modern-card modern-card-hover group hover:scale-105 transition-transform duration-300">
-                  <div className="relative">
+              <Link
+                key={post.id}
+                href={`/blog/${post.slug}?from=/`}
+                className="block h-full"
+              >
+                <Card className="modern-card modern-card-hover group hover:scale-105 transition-transform duration-300 overflow-hidden h-full flex flex-col">
+                  <div className="relative shrink-0">
                     <Image
                       width={100}
                       height={100}
@@ -183,18 +187,20 @@ export function FeaturedCards() {
                     <div className="absolute top-4 right-4">
                       <Badge
                         variant="secondary"
-                        className="bg-white/90 text-gray-700"
+                        className="bg-card/80 text-foreground border border-border/40 backdrop-blur-sm shadow-sm"
                       >
                         {post.category}
                       </Badge>
                     </div>
                   </div>
 
-                  <div className="p-6">
+                  <div className="p-6 flex flex-col flex-1">
                     <h3 className="text-xl font-bold heading-primary mb-2 group-hover:text-primary transition-colors">
                       {post.title}
                     </h3>
-                    <p className="text-body mb-4">{post?.subtitle}</p>
+                    <p className="text-body mb-4 line-clamp-2">
+                      {post?.subtitle}
+                    </p>
 
                     <div className="flex flex-wrap gap-1 mb-4">
                       {post.tags?.slice(0, 2).map((tag, index) => (
@@ -208,7 +214,7 @@ export function FeaturedCards() {
                       ))}
                     </div>
 
-                    <div className="flex items-center justify-between text-sm text-body-muted">
+                    <div className="flex items-center justify-between text-sm text-body-muted mt-auto">
                       <div className="flex items-center space-x-2">
                         <User className="w-4 h-4" />
                         <span>{post.author?.username ?? "noname"}</span>

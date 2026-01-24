@@ -14,8 +14,7 @@ const config: Config = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ["var(--font-statoshi)"],
-				satoshi: ["var(--font-statoshi)"],
+				sans: ["var(--font-instrument-sans)", "sans-serif"],
 				gosh: ["var(--font-gosh)"],
 			},
 			colors: {

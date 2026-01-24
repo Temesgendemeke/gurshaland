@@ -15,7 +15,42 @@ import generateImage from "@/utils/genAI";
 
 export default async function HomePage() {
   return (
-    <div className=" min-h-screen">
+    <div className="relative z-10">
+      <div className="grain-overlay">
+        <svg
+          className="grain-svg"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <filter id="grain">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.7"
+              numOctaves="3"
+              stitchTiles="stitch"
+              result="noise"
+            />
+            <feColorMatrix
+              in="noise"
+              type="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
+              result="mono"
+            />
+            <feComponentTransfer in="mono" result="grainAlpha">
+              <feFuncA type="gamma" amplitude="1" exponent="1.4" offset="0" />
+            </feComponentTransfer>
+            <feComposite in="SourceGraphic" in2="grainAlpha" operator="in" />
+          </filter>
+
+          <rect
+            className="grain-rect"
+            width="100%"
+            height="100%"
+            filter="url(#grain)"
+          />
+        </svg>
+      </div>
       <Header />
 
       {/* Hero Section */}
@@ -27,7 +62,6 @@ export default async function HomePage() {
           <FeaturedCards />
         </div>
       </section>
-
 
       {/* Features */}
       <section className="py-20 px-6">
@@ -57,7 +91,7 @@ export default async function HomePage() {
 
             <Card className="p-8 text-center hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group modern-card modern-card-hover">
               <div className="w-16 h-16 bg-gradient-to-br from-primary via-primary/80 to-primary/60  rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-                <Group className="w-8 h-8 text-white" />
+                <Group className="w-8 h-8 text-primary-foreground" />
               </div>
               <h3 className="text-2xl font-bold heading-primary mb-4">
                 Vibrant Community
@@ -70,7 +104,7 @@ export default async function HomePage() {
 
             <Card className="p-8 text-center hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group modern-card modern-card-hover">
               <div className="w-16 h-16 bg-gradient-to-br from-primary via-primary/80 to-primary/60 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-                <Award className="w-8 h-8 text-white" />
+                <Award className="w-8 h-8 text-primary-foreground" />
               </div>
               <h3 className="text-2xl font-bold heading-primary mb-4">
                 Cultural Heritage
@@ -85,9 +119,9 @@ export default async function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <Card className="p-10 text-center bg-gradient-to-r from-primary/10 to-popular/10 border-primary/20">
+      <Card className="p-10 text-center bg-gradient-to-r from-primary/10 to-popular/10 border-primary/20 text-foreground">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">
+          <h2 className="text-3xl font-bold text-foreground mb-4">
             Ready to Start Your Culinary Journey?
           </h2>
           <p className="text-xl mb-8 opacity-90">

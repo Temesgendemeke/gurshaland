@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { Star, Users, ChefHat, Heart, Zap } from "lucide-react";
+import { Star, Users, ChefHat, Heart, Zap, TrendingUp } from "lucide-react";
 import { recipeStore } from "@/store/Recipe";
 import { TrendingRecipe } from "@/utils/types/recipe";
 import Image from "next/image";
@@ -46,7 +46,7 @@ export function TrendingRecipes() {
       {loading ? (
         <RecipeListSkeleton />
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
           {trendingRecipes.map((recipe: TrendingRecipe) => (
             <Card
               key={recipe.id}
@@ -100,6 +100,8 @@ export function TrendingRecipes() {
                 <h3 className="text-lg font-bold heading-primary mb-2 cursor-pointer group-hover:text-popular transition-colors line-clamp-2">
                   {recipe.title}
                 </h3>
+
+                <p>{recipe.description}</p>
 
                 <div className="flex items-center justify-between text-sm text-body-muted mb-3">
                   <div className="flex items-center space-x-3">

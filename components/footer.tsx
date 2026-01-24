@@ -3,6 +3,7 @@ import {
   StarIcon as SolidStar,
   HeartIcon as SolidHeart,
 } from "@heroicons/react/24/solid";
+import Logo from "./Logo";
 
 export function Footer() {
   return (
@@ -10,13 +11,11 @@ export function Footer() {
       <div className="container mx-auto px-6 py-12">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <SolidStar className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <div className="text-xl font-bold text-foreground">
+            <div className="flex items-center space-x-2 mb-4">   
+              {/* <div className="text-xl font-bold text-foreground">
                 Gurshaland
-              </div>
+              </div> */}
+              <Logo/>
             </div>
             <p className="mb-4 leading-relaxed">
               Sharing the rich culinary heritage of Ethiopia, one recipe at a

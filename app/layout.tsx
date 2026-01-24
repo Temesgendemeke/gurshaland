@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import SyncAuth from "@/components/SyncAuth";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Providers } from "./providers";
-import { SatoshiFont, GoshFont } from "./fonts";
+import { InstrumentSansFont, GoshFont } from "./fonts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${SatoshiFont.variable} ${GoshFont.variable}`}>
+      <body className={`${InstrumentSansFont.variable} ${GoshFont.variable}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
