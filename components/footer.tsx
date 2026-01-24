@@ -6,17 +6,19 @@ import {
 
 export function Footer() {
   return (
-    <footer className="text-white">
-      <div className="max-w-9xl mx-auto px-6 py-12">
+    <footer className="bg-muted text-muted-foreground w-full">
+      <div className="container mx-auto px-6 py-12">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 ethiopian-primary rounded-full flex items-center justify-center">
-                <SolidStar className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                <SolidStar className="w-4 h-4 text-primary-foreground" />
               </div>
-              <div className="text-xl font-bold text-white">Gurshaland</div>
+              <div className="text-xl font-bold text-foreground">
+                Gurshaland
+              </div>
             </div>
-            <p className="text-slate-300 mb-4 leading-relaxed">
+            <p className="mb-4 leading-relaxed">
               Sharing the rich culinary heritage of Ethiopia, one recipe at a
               time.
             </p>
@@ -28,12 +30,12 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Recipes</h3>
-            <ul className="space-y-2 text-slate-300">
+            <h3 className="font-semibold mb-4 text-foreground">Recipes</h3>
+            <ul className="space-y-2">
               <li>
                 <Link
                   href="/categories/vegetarian"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Vegetarian
                 </Link>
@@ -41,7 +43,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/categories/meat"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Meat Dishes
                 </Link>
@@ -49,7 +51,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/categories/beverages"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Beverages
                 </Link>
@@ -57,7 +59,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/categories/desserts"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Desserts
                 </Link>
@@ -65,7 +67,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/categories/spices"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Spices & Sauces
                 </Link>
@@ -74,12 +76,12 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Culture</h3>
-            <ul className="space-y-2 text-slate-300">
+            <h3 className="font-semibold mb-4 text-foreground">Culture</h3>
+            <ul className="space-y-2">
               <li>
                 <Link
                   href="/culture/coffee-ceremony"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Coffee Ceremony
                 </Link>
@@ -87,7 +89,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/culture/dining-traditions"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Dining Traditions
                 </Link>
@@ -95,7 +97,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/culture/festivals"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Food Festivals
                 </Link>
@@ -103,7 +105,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/culture/history"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Culinary History
                 </Link>
@@ -112,12 +114,12 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Connect</h3>
-            <ul className="space-y-2 text-slate-300">
+            <h3 className="font-semibold mb-4 text-foreground">Connect</h3>
+            <ul className="space-y-2">
               <li>
                 <Link
                   href="/about"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   About Us
                 </Link>
@@ -125,7 +127,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Contact
                 </Link>
@@ -133,7 +135,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Blog
                 </Link>
@@ -141,7 +143,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/newsletter"
-                  className="hover:text-white font-medium transition-colors"
+                  className="hover:text-foreground font-medium transition-colors"
                 >
                   Newsletter
                 </Link>
@@ -152,7 +154,7 @@ export function Footer() {
 
         <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
           <p>
-            &copy; 2024 Gurshaland. Made with{" "}
+            &copy; {new Date().getFullYear()} Gurshaland. Made with{" "}
             <SolidHeart className="w-4 h-4 inline text-error" /> for Ethiopian
             cuisine.
           </p>

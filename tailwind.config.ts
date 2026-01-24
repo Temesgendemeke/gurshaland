@@ -13,6 +13,11 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: ["var(--font-statoshi)"],
+				satoshi: ["var(--font-statoshi)"],
+				gosh: ["var(--font-gosh)"],
+			},
 			colors: {
 				background: "hsl(var(--background))",
 				foreground: "hsl(var(--foreground))",

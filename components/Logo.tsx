@@ -5,7 +5,7 @@ import { CookingPot } from "lucide-react";
 const Logo = () => {
   return (
     <Link href="/" className="flex items-center space-x-2">
-      <div className="text-2xl font-bold modern-logo capitalize">
+      <div className="text-3xl font-bold modern-logo capitalize">
         Gurshaland
       </div>
     </Link>

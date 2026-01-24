@@ -36,7 +36,7 @@ export function Header() {
   ];
 
   return (
-    <header className="bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-sm sticky top-0 z-50 rounded-lg">
+    <header className="bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-sm sticky top-0 z-50 rounded-lg p-2">
       <div className="mx-auto flex items-center justify-between px-6 py-3">
         <Logo />
 

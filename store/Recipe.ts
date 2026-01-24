@@ -23,7 +23,7 @@ export const recipeStore = create<RecipeStore>((set, get) => ({
   recipes: null,
   featuredRecipes: null,
   trendingRecipes: null,
-  loading: false,
+  loading: true,
   fetchRecipes: async () => {
     set({ loading: true });
     try {

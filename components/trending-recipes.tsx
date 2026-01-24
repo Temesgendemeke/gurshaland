@@ -61,7 +61,7 @@ export function TrendingRecipes() {
                   className="w-full h-40 object-cover"
                 />
                 <div className="absolute top-2 left-2">
-                  <Badge className="bg-popular text-popular-foreground flex items-center gap-1">
+                  <Badge className="bg-popular  flex items-center gap-1">
                     <Zap className="w-3 h-3" />
                     Trending
                   </Badge>

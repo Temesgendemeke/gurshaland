@@ -28,12 +28,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Trending Section */}
-      {/* <section className="py-16 px-6 bg-card/50">
-        <div className="max-w-7xl mx-auto">
-          <TrendingSection />
-        </div>
-      </section> */}
 
       {/* Features */}
       <section className="py-20 px-6">

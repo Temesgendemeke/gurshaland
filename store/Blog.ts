@@ -27,7 +27,7 @@ interface BlogStore{
 
 export const blogStore = create<BlogStore>((set, get) => ({
     blogs: null,
-    loading: false,
+    loading: true,
     error: null,
 
     setBlogs: (blogs: Blog[]) => set({ blogs }),

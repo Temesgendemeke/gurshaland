@@ -180,11 +180,6 @@ export function FeaturedCards() {
                       alt={post.title}
                       className="w-full h-48 object-cover"
                     />
-                    <div className="absolute top-4 left-4">
-                      <Badge className="bg-info text-info-foreground">
-                        Featured
-                      </Badge>
-                    </div>
                     <div className="absolute top-4 right-4">
                       <Badge
                         variant="secondary"

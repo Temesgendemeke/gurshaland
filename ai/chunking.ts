@@ -1,15 +1,25 @@
 "use server";
 import { google } from "@ai-sdk/google";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-import { SupabaseClient } from "@supabase/supabase-js";
 import { embed } from "ai";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 function getSupabase() {
-    return new SupabaseClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-        process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY || "",
-    );
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+    // Try service role key first (admin), then anon key (public)
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY ||
+        process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY ||
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+        "";
+
+    if (!url || !key) {
+        throw new Error(
+            "Supabase URL and Key must be defined in environment variables",
+        );
+    }
+
+    return new SupabaseClient(url, key);
 }
 
 export async function chunkText(text: string) {

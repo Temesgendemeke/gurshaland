@@ -10,7 +10,7 @@ import HeroImage from "./HeroImage";
 
 const HeroSection = () => {
   return (
-    <section className="relative py-20 px-6 overflow-hidden bg-background">
+    <section className="relative py-20 px-6 overflow-hidden bg-background text-foreground">
       <div className="absolute inset-0 opacity-5 dark:opacity-10">
         {/* <div
           className="w-full h-full"
@@ -24,11 +24,11 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="text-center lg:text-left">
-            <div className="inline-flex items-center space-x-2 modern-card rounded-full px-4 py-2 mb-6 border border-primary/20">
+            <div className="inline-flex items-center space-x-2 modern-card rounded-full px-4 py-2 mb-6 border border-primary/20 text-foreground">
               <div className="w-2 h-2 bg-ethiopian-green rounded-full"></div>
               <div className="w-2 h-2 bg-ethiopian-yellow rounded-full"></div>
               <div className="w-2 h-2 bg-ethiopian-red rounded-full"></div>
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-sm font-medium">
                 Authentic Ethiopian Cuisine
               </span>
             </div>
@@ -36,10 +36,10 @@ const HeroSection = () => {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               <span className="gradient-text-primary">Taste</span>
               <br />
-              <span className="heading-primary">Ethiopia</span>
+              <span className="heading-primary font-gosh">Ethiopia</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-body mb-8 max-w-2xl mx-auto lg:mx-0 font-light">
+            <p className="text-xl md:text-xl text-body mb-8 max-w-2xl mx-auto lg:mx-0 font-light">
               Discover, share, and celebrate the rich culinary traditions of
               Ethiopia. From traditional injera to aromatic coffee ceremonies.
             </p>
