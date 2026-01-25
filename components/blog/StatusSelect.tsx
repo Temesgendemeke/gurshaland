@@ -1,13 +1,18 @@
 import React from "react";
 import { Controller, useFormContext, UseFormReturn } from "react-hook-form";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "../ui/select";
 import { ChefHat } from "lucide-react";
 
-
-const StatusSelect = ({form}:{form: UseFormReturn<any>}) => {
+const StatusSelect = ({ form }: { form: UseFormReturn<any> }) => {
   return (
-    <Card className="bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
+    <Card className="bg-card/70 border-border">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <ChefHat className="h-5 w-5" />
@@ -34,11 +39,12 @@ const StatusSelect = ({form}:{form: UseFormReturn<any>}) => {
             </Select>
           )}
         />
-        {form.formState.errors.status?.message && typeof form.formState.errors.status.message === "string" && (
-          <p className="text-sm text-red-500">
-            {form.formState.errors.status.message}
-          </p>
-        )}
+        {form.formState.errors.status?.message &&
+          typeof form.formState.errors.status.message === "string" && (
+            <p className="text-sm text-error">
+              {form.formState.errors.status.message}
+            </p>
+          )}
       </CardContent>
     </Card>
   );

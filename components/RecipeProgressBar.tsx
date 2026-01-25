@@ -30,7 +30,7 @@ export default function RecipeProgressBar({
     let accumulatedTime = 0;
     const totalDuration = generationSteps.reduce(
       (sum, step) => sum + step.duration,
-      0
+      0,
     );
 
     const interval = setInterval(() => {
@@ -40,7 +40,7 @@ export default function RecipeProgressBar({
         // Calculate progress based on time elapsed
         const stepProgress = Math.min(
           100,
-          (accumulatedTime / totalDuration) * 100
+          (accumulatedTime / totalDuration) * 100,
         );
         setProgress(stepProgress);
 
@@ -65,27 +65,24 @@ export default function RecipeProgressBar({
   return (
     <div className="w-full max-w-md mx-auto space-y-6 p-6">
       <div className="text-center space-y-4">
-        <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto">
-          <Sparkles className="w-8 h-8 text-white animate-pulse" />
+        <div className="w-16 h-16 bg-primary/15 ring-1 ring-primary/20 rounded-2xl flex items-center justify-center mx-auto">
+          <Sparkles className="w-8 h-8 text-primary animate-pulse" />
         </div>
-        <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+        <h3 className="text-xl font-semibold text-foreground">
           Creating Your Recipe
         </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-muted-foreground">
           Our AI chef is working hard to create the perfect recipe for you!
         </p>
       </div>
 
       {/* Progress Bar */}
       <div className="space-y-3">
-        <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex justify-between text-sm text-muted-foreground">
           <span>Progress</span>
           <span>{Math.round(progress)}%</span>
         </div>
-        <Progress
-          value={progress}
-          className="h-3 bg-gray-200 dark:bg-gray-700"
-        />
+        <Progress value={progress} className="h-3 bg-muted" />
       </div>
 
       {/* Steps */}
@@ -100,19 +97,19 @@ export default function RecipeProgressBar({
               key={step.id}
               className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 ${
                 isActive
-                  ? "bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800"
+                  ? "bg-primary/10 border border-primary/20"
                   : isCompleted
-                  ? "bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
-                  : "bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+                    ? "bg-success/10 border border-success/20"
+                    : "bg-card border border-border/60"
               }`}
             >
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
                   isActive
-                    ? "bg-emerald-500 text-white animate-pulse"
+                    ? "bg-primary text-primary-foreground animate-pulse"
                     : isCompleted
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400"
+                      ? "bg-success/15 text-success ring-1 ring-success/20"
+                      : "bg-muted text-muted-foreground"
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -120,10 +117,10 @@ export default function RecipeProgressBar({
               <span
                 className={`text-sm font-medium transition-all duration-300 ${
                   isActive
-                    ? "text-emerald-700 dark:text-emerald-300"
+                    ? "text-primary"
                     : isCompleted
-                    ? "text-green-700 dark:text-green-300"
-                    : "text-gray-500 dark:text-gray-400"
+                      ? "text-success"
+                      : "text-muted-foreground"
                 }`}
               >
                 {step.label}
@@ -131,13 +128,13 @@ export default function RecipeProgressBar({
               {isActive && (
                 <div className="ml-auto">
                   <div className="flex space-x-1">
-                    <div className="w-1 h-1 bg-emerald-500 rounded-full animate-bounce"></div>
+                    <div className="w-1 h-1 bg-primary rounded-full animate-bounce"></div>
                     <div
-                      className="w-1 h-1 bg-emerald-500 rounded-full animate-bounce"
+                      className="w-1 h-1 bg-primary rounded-full animate-bounce"
                       style={{ animationDelay: "0.1s" }}
                     ></div>
                     <div
-                      className="w-1 h-1 bg-emerald-500 rounded-full animate-bounce"
+                      className="w-1 h-1 bg-primary rounded-full animate-bounce"
                       style={{ animationDelay: "0.2s" }}
                     ></div>
                   </div>
@@ -150,7 +147,7 @@ export default function RecipeProgressBar({
 
       {/* Fun messages */}
       <div className="text-center">
-        <p className="text-xs text-gray-500 dark:text-gray-400 italic">
+        <p className="text-xs text-muted-foreground italic">
           {currentStep === 0 && "🧅 Chopping onions and gathering spices..."}
           {currentStep === 1 &&
             "🤖 Our AI chef is crafting the perfect recipe..."}

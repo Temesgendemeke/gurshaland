@@ -18,7 +18,7 @@ export default function AIRecipeGenerator() {
   const [error, setError] = useState<string | null>(null);
   const handleGenerate = async () => {
     setIsGenerating(true);
-    setError(null); 
+    setError(null);
 
     try {
       console.log("Starting recipe generation...");
@@ -51,7 +51,7 @@ export default function AIRecipeGenerator() {
           AI Recipe Generator
         </h2>
         <p className="text-body max-w-2xl mx-auto">
-          Tell our AI what ingredients you have and your preferences, and we'll
+          Tell our AI what ingredients you have and your preferences, and we’ll
           create a personalized Ethiopian recipe just for you!
         </p>
       </div>
@@ -103,7 +103,7 @@ export default function AIRecipeGenerator() {
           ) : generatedRecipe ? (
             <GeneratedRecipeCard recipe={generatedRecipe} />
           ) : error ? (
-            <div className="text-red-500">{error}</div>
+            <div className="text-error">{error}</div>
           ) : (
             <EmptyRecipePrompt />
           )}

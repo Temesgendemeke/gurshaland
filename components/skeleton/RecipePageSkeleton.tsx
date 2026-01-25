@@ -6,17 +6,13 @@ import { ArrowLeft } from "lucide-react";
 
 export default function RecipeDetailSkeleton() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-background">
       {/* Header Skeleton */}
       <Skeleton className="h-16 w-full mb-8" />
 
       <div className="w-full md:max-w-9xl mx-auto px-6 py-12">
         {/* Back Navigation Skeleton */}
-        <Button
-          variant="ghost"
-          className="mb-6 hover:bg-emerald-100 dark:hover:bg-emerald-900/50"
-          disabled
-        >
+        <Button variant="ghost" className="mb-6 hover:bg-muted" disabled>
           <ArrowLeft className="w-4 h-4 mr-2" />
           <Skeleton className="h-4 w-32 inline-block" />
         </Button>

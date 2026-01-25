@@ -52,7 +52,7 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
   }
 
   return (
-    <div className="rounded-xl border bg-card/50 backdrop- shadow-sm overflow-hidden">
+    <div className="rounded-xl border bg-card/50 shadow-sm overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4 border-b">
         <h3 className="text-base font-semibold tracking-tight">
           Top 10 {name} Posts
@@ -61,9 +61,9 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
           Updated {new Date().toLocaleDateString()}
         </span>
       </div>
-      <div className="max-h-[420px] overflow-auto">
+      <div className="max-h-105 overflow-auto">
         <Table className="text-sm">
-          <TableHeader className="sticky top-0 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/70 z-10">
+          <TableHeader className="sticky top-0 bg-card/95 backdrop-blur supports-backdrop-filter:bg-card/70 z-10">
             <TableRow className="hover:bg-transparent">
               <TableHead className="w-12 text-center">#</TableHead>
               <TableHead>Title</TableHead>
@@ -90,8 +90,7 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
                   key={post.id?.toString() ?? i}
                   className={cn(
                     "group transition-colors hover:bg-muted/40",
-                    i < 3 &&
-                      "bg-gradient-to-r from-primary/10 dark:from-primary/5",
+                    i < 3 && "bg-primary/5",
                   )}
                 >
                   <TableCell className="text-center font-medium">

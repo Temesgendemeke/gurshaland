@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Restaurant } from "@/utils/types/restaurant";
 import {
   Card,
   CardContent,
@@ -10,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import { MapPin, StarIcon, ArrowRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { GetRestaurentType } from "@/schema/restaurent";
 
 const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
@@ -34,11 +32,11 @@ const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
   return (
     <Card
       key={restaurant.id}
-      className="group relative overflow-hidden cursor-pointer border-border/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 h-full flex flex-col backdrop-blur-sm bg-transparent"
+      className="modern-card modern-card-hover group relative overflow-hidden cursor-pointer border border-border/50 bg-card/60 backdrop-blur-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 h-full flex flex-col"
       onClick={() => router.push(`/restaurant/${restaurant.slug}`)}
     >
       {/* Accent Border - Animated */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-primary via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       {/* Image Section */}
       <div className="relative w-full h-56 overflow-hidden">
@@ -52,10 +50,10 @@ const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
         />
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
 
         {/* Rating Badge - Floating */}
-        <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border border-white/20">
+        <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 text-foreground backdrop-blur-md shadow-lg border border-border/40">
           <StarIcon className="w-4 h-4 text-warning" fill="currentColor" />
           <span className="text-sm font-bold text-foreground">
             {restaurant.rating}
@@ -69,7 +67,7 @@ const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
       </div>
 
       {/* Content Section */}
-      <CardHeader className="pb-3 flex-grow">
+      <CardHeader className="pb-3 grow">
         <CardTitle className="text-xl font-bold line-clamp-1 group-hover:text-primary transition-colors duration-300">
           {restaurant.name}
         </CardTitle>
@@ -93,7 +91,7 @@ const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
       </CardContent>
 
       {/* Bottom Accent Line */}
-      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/50 group-hover:w-full transition-all duration-500 ease-out" />
+      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-primary to-primary/50 group-hover:w-full transition-all duration-500 ease-out" />
     </Card>
   );
 };

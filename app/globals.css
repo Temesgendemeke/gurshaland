@@ -98,11 +98,12 @@
     --sidebar-ring: 27 45% 38%;
 
     /* Semantic Colors */
-    --success: 142 70% 45%;
-    --warning: 45 93% 47%;
-    --error: 0 84% 60%;
-    --info: 221 83% 53%;
-    --popular: 25 95% 44%;
+    /* Mocha-friendly accents (muted, warm, consistent) */
+    --success: 140 32% 36%;
+    --warning: 35 70% 45%;
+    --error: 6 58% 50%;
+    --info: 210 35% 46%;
+    --popular: 25 60% 44%;
 
     /* Ethiopian Flag Colors */
     --ethiopian-green: 142 76% 36%;
@@ -153,11 +154,12 @@
     --sidebar-ring: 27 45% 55%;
 
     /* Semantic Colors Dark Mode */
-    --success: 142 70% 55%;
-    --warning: 45 93% 55%;
-    --error: 0 84% 70%;
-    --info: 221 83% 63%;
-    --popular: 25 95% 54%;
+    /* Mocha-friendly accents (muted, warm, consistent) */
+    --success: 140 36% 62%;
+    --warning: 35 75% 62%;
+    --error: 6 65% 66%;
+    --info: 210 45% 66%;
+    --popular: 25 70% 60%;
 
     /* Mocha Dark Gradients - Rich Coffee Depth */
     --gradient-from: 25 30% 10%;
@@ -314,7 +316,7 @@
   }
 
   .btn-secondary-modern {
-    @apply bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-200;
+    @apply bg-linear-to-r from-warning to-popular hover:from-warning/90 hover:to-popular/90 text-primary-foreground font-semibold shadow-lg shadow-warning/25 hover:shadow-xl hover:shadow-warning/30 transition-all duration-200;
   }
 
   /* Typography improvements */

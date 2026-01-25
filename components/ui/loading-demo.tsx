@@ -79,7 +79,7 @@ export function LoadingDemo() {
           </div>
 
           <div className="p-4 border rounded-lg">
-            <ShimmerSkeleton className="h-32 w-full bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg" />
+            <ShimmerSkeleton className="h-32 w-full bg-gradient-to-br from-primary/10 to-muted/40 rounded-lg" />
           </div>
         </div>
       </div>

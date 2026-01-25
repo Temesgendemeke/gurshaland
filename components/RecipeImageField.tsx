@@ -6,7 +6,7 @@ import React from "react";
 
 interface RecipeImageFieldProps {
   image?: File | string;
-  setImage: (string) => void;
+  setImage: (image: File | string | undefined) => void;
 }
 
 export default function RecipeImageField({
@@ -19,12 +19,10 @@ export default function RecipeImageField({
   };
 
   return (
-    <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
-        Recipe Image
-      </h2>
+    <Card className="p-6 bg-card/70 border-border">
+      <h2 className="text-2xl font-bold text-foreground mb-6">Recipe Image</h2>
       <div
-        className="border-2 border-dashed border-emerald-300 dark:border-emerald-700 rounded-lg p-8 text-center hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors cursor-pointer"
+        className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/60 transition-colors cursor-pointer"
         onClick={() => document.getElementById("recipe-image-input")?.click()}
       >
         {image ? (
@@ -40,7 +38,7 @@ export default function RecipeImageField({
               type="button"
               variant="ghost"
               size="sm"
-              className="text-red-500 hover:text-red-700"
+              className="text-error hover:text-error/80"
               onClick={(e) => {
                 e.stopPropagation();
                 setImage(undefined);
@@ -52,11 +50,11 @@ export default function RecipeImageField({
           </div>
         ) : (
           <>
-            <Upload className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400 mb-2">
+            <Upload className="w-12 h-12 text-primary mx-auto mb-4" />
+            <p className="text-muted-foreground mb-2">
               Click to upload or drag and drop
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-500">
+            <p className="text-sm text-muted-foreground/80">
               PNG, JPG up to 10MB
             </p>
           </>
@@ -75,7 +73,7 @@ export default function RecipeImageField({
           <Button
             type="button"
             variant="outline"
-            className="mt-4 border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
+            className="mt-4 border-primary/40 text-primary hover:bg-primary/10"
             onClick={handleImage}
           >
             Choose File

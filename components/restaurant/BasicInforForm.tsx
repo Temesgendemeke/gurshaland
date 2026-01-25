@@ -26,7 +26,7 @@ type FormValues = z.infer<typeof restaurantSchema>;
 
 const BasicInforForm = ({ form }: { form: any }) => {
   return (
-    <Card className="border-none shadow-lg bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
+    <Card className="border-none shadow-lg bg-card/80 backdrop-blur-sm">
       <CardHeader>
         <div className="flex items-center gap-2 text-primary mb-1">
           <Store className="h-5 w-5" />
@@ -41,7 +41,7 @@ const BasicInforForm = ({ form }: { form: any }) => {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          <div className="p-6 border-2 border-dashed rounded-xl bg-gray-50/50 dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ">
+          <div className="p-6 border-2 border-dashed border-border rounded-xl bg-muted/30 hover:bg-muted/40 transition-colors">
             <ImageBox<FormValues>
               form={form}
               field="image"

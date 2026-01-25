@@ -100,7 +100,7 @@ export default function RecipesPage() {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <div className="max-w-9xl mx-auto px-6 py-12">
+      <div className="mx-auto w-[calc(100%-1rem)] max-w-7xl px-6 py-12">
         {/* Page Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4">
@@ -116,12 +116,12 @@ export default function RecipesPage() {
         <div className="modern-card rounded-2xl p-6 mb-8 border border-primary/20">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <Input
                 placeholder="Search recipes, ingredients, or tags..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-12 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus-modern"
+                className="pl-10 h-12 bg-background text-foreground border-border/50 focus-modern"
               />
             </div>
 
@@ -166,7 +166,7 @@ export default function RecipesPage() {
 
         {/* Results Count */}
         <div className="mb-8">
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground">
             Showing {filteredRecipes.length} of {recipes.length} recipes
           </p>
         </div>

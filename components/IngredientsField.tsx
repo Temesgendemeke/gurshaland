@@ -34,17 +34,15 @@ export default function IngredientsField({
   removeIngredient,
 }: IngredientsFieldProps) {
   return (
-    <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
+    <Card className="p-6 bg-card/70 border-border">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-          Ingredients
-        </h2>
+        <h2 className="text-2xl font-bold text-foreground">Ingredients</h2>
         <Button
           onClick={() => appendIngredient({ item: "", amount: 0, notes: "" })}
           type="button"
           variant="outline"
           size="sm"
-          className="border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
+          className="border-primary/30 text-primary hover:bg-primary/10"
         >
           <Plus className="w-4 h-4 mr-2" />
           Add Ingredient
@@ -177,7 +175,7 @@ export default function IngredientsField({
                   variant="ghost"
                   size="sm"
                   type="button"
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  className="text-error hover:text-error/80 hover:bg-error/10"
                 >
                   <X className="w-4 h-4" />
                 </Button>

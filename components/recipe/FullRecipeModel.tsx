@@ -56,19 +56,37 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
   // }, [stepImages, recipe.instructions]);
 
   const handleSaveRecipe = async () => {
-        console.log("recipe ", recipe, "ingredients ", recipe.ingredients, " instructions ", recipe.instructions, " nutrition ", recipe.nutrition);
+    console.log(
+      "recipe ",
+      recipe,
+      "ingredients ",
+      recipe.ingredients,
+      " instructions ",
+      recipe.instructions,
+      " nutrition ",
+      recipe.nutrition,
+    );
     setIsSaving(true);
     if (!user) {
       toast.error("Please login to save recipe");
       return;
     }
     try {
-      console.log("recipe ", recipe, "ingredients ", recipe.ingredients, " instructions ", recipe.instructions, " nutrition ", recipe.nutrition);
-      
+      console.log(
+        "recipe ",
+        recipe,
+        "ingredients ",
+        recipe.ingredients,
+        " instructions ",
+        recipe.instructions,
+        " nutrition ",
+        recipe.nutrition,
+      );
+
       // Generate unique title to avoid duplicate key constraint violation
       const uniqueTitle = await generateUniqueTitle(recipe.title);
       recipe.title = uniqueTitle;
-      
+
       // Only upload if we actually have a File selected for the main image.
       const recipe_image = await uploadAIImageToStorage(
         recipe.image.url,
@@ -85,33 +103,29 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
         path: recipe_image?.path,
       };
 
-
-      console.log("recipe " , recipe);
-      console.log("author id ", recipe.author_id)
+      console.log("recipe ", recipe);
+      console.log("author id ", recipe.author_id);
 
       await Promise.all(
-        recipe.instructions.map(
-          async (instruction: any) => {
-            if (instruction?.image?.url) {
-
-                const uploaded = await uploadAIImageToStorage(
-                instruction.image.url,
-                instruction.title.replace(/\s+/g, "_"),
-                );
-              instruction.image = {
-                url: uploaded?.url,
-                path: uploaded?.path,
-              };
-            }
+        recipe.instructions.map(async (instruction: any) => {
+          if (instruction?.image?.url) {
+            const uploaded = await uploadAIImageToStorage(
+              instruction.image.url,
+              instruction.title.replace(/\s+/g, "_"),
+            );
+            instruction.image = {
+              url: uploaded?.url,
+              path: uploaded?.path,
+            };
           }
-        )
+        }),
       );
 
       // upload recipe and instructions images to supabase storage and get the urls
       // then save the recipe to supabase database
 
       await insertRecipe({
-        recipe: {...recipe, profile_id: user.id},
+        recipe: { ...recipe, profile_id: user.id },
         ingredients: recipe.ingredients,
         instructions: recipe.instructions,
         nutrition: recipe.nutrition,
@@ -125,63 +139,64 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
     setIsSaving(false);
   };
 
-
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <form>
         <DialogTrigger asChild>
-          <Button
-            variant="outline"
-            className="btn-primary-modern hover:text-white"
-          >
+          <Button variant="outline" className="btn-primary-modern">
             Open Dialog
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-7xl p-0 bg-white  dark:bg-slate-900 ">
+        <DialogContent className="max-w-7xl p-0 bg-background">
           <DialogTitle className="sr-only">{recipe.title}</DialogTitle>
 
-            
-            <div
-            className={`fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
-              isSaving ? "opacity-100 pointer-events-auto delay-0" : "opacity-0 pointer-events-none delay-1000"
+          <div
+            className={`fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm transition-opacity duration-300 ${
+              isSaving
+                ? "opacity-100 pointer-events-auto delay-0"
+                : "opacity-0 pointer-events-none delay-1000"
             }`}
-            >
+          >
             <div
               role="status"
               aria-live="polite"
-              className="flex items-center gap-3 px-10 py-6 rounded-lg shadow-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700"
+              className="flex items-center gap-3 px-10 py-6 rounded-lg shadow-md bg-card border border-border"
             >
               {isSaving ? (
-              <Loader2 className="h-7 w-7 animate-spin text-emerald-600" />
+                <Loader2 className="h-7 w-7 animate-spin text-primary" />
               ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7 text-emerald-600"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="m9 12 2 2 4-4"></path>
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-7 w-7 text-primary"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="m9 12 2 2 4-4"></path>
+                </svg>
               )}
-              <span className="text-lg text-slate-700 dark:text-slate-300">
-              {isSaving ? "Saving recipe..." : "Saved"}
+              <span className="text-lg text-foreground">
+                {isSaving ? "Saving recipe..." : "Saved"}
               </span>
             </div>
-            </div>
+          </div>
 
           {/*  */}
-          <div className={`flex justify-center items-center w-full bg-white dark:bg-slate-900 ${isSaving ?  "blur-lg pointer-events-none" : ""}`}>
-            <div className="dark:bg-slate-900 bg-white rounded-2xl  max-w-9xl w-full overflow-y-auto flex flex-col max-h-[80vh]">
+          <div
+            className={`flex justify-center items-center w-full bg-background ${
+              isSaving ? "blur-lg pointer-events-none" : ""
+            }`}
+          >
+            <div className="bg-background rounded-2xl max-w-9xl w-full overflow-y-auto flex flex-col max-h-[80vh]">
               {/* Modal Header */}
-              <div className="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 p-6 rounded-t-2xl">
+              <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border p-6 rounded-t-2xl">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <Badge className="bg-emerald-100 text-emerald-700">
+                    <Badge className="bg-primary/10 text-primary">
                       AI Generated
                     </Badge>
                     <h2 className="text-2xl font-bold heading-primary">
@@ -194,51 +209,52 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
                 </p>
               </div>
 
-
-          
-
-
               {/* Modal Content */}
               <div className="p-6 space-y-10 flex-1">
                 {/* Recipe Image */}
                 <div className="relative w-full h-96 mb-4">
-                  {recipe.image?.url ? <Image
-                    src={recipe.image?.url}
-                    alt={recipe.title}
-                    fill
-                    className="object-contain w-full h-full rounded-lg"
-                  />  : (
-                    <ImageBoxSkeleton/>
+                  {recipe.image?.url ? (
+                    <Image
+                      src={recipe.image?.url}
+                      alt={recipe.title}
+                      fill
+                      className="object-contain w-full h-full rounded-lg"
+                    />
+                  ) : (
+                    <ImageBoxSkeleton />
                   )}
                 </div>
 
                 {/* Recipe Stats */}
-                <RecipeStats stats={{
+                <RecipeStats
+                  stats={{
                     cooktime: recipe.cooktime,
                     servings: recipe.servings,
                     difficulty: recipe.difficulty,
-                  }
-                } />
-                
+                  }}
+                />
 
                 {/* Ingredients Section */}
-                <IngredientsSection ingredients={recipe.ingredients}/>
-
+                <IngredientsSection ingredients={recipe.ingredients} />
 
                 {/* Instructions Section */}
-                <InstructionsSection instructions={recipe.instructions}/>
-
+                <InstructionsSection instructions={recipe.instructions} />
 
                 {/* Nutrition Section */}
-                <NutritionSection nutrition={recipe.nutrition}/>
-                
+                <NutritionSection nutrition={recipe.nutrition} />
+
                 {/* Youtube video section */}
-                <YoutubeVideoSection videoId={recipe.youtube_video_id}  videoQuery={recipe.youtube_search_query}/>
+                <YoutubeVideoSection
+                  videoId={recipe.youtube_video_id}
+                  videoQuery={recipe.youtube_search_query}
+                />
               </div>
             </div>
           </div>
-          
-          <DialogFooter className={`pb-4 mr-5 ${isSaving ? "pointer-events-none blur-lg" : ""}`}>
+
+          <DialogFooter
+            className={`pb-4 mr-5 ${isSaving ? "pointer-events-none blur-lg" : ""}`}
+          >
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>

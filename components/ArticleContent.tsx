@@ -12,7 +12,7 @@ const ArticleContent = ({ blogPost }: { blogPost: Blog }) => {
             return (
               <p
                 key={index}
-                className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6"
+                className="text-muted-foreground leading-relaxed mb-6"
               >
                 {section.body}
               </p>
@@ -21,26 +21,23 @@ const ArticleContent = ({ blogPost }: { blogPost: Blog }) => {
             return (
               <h2
                 key={index}
-                className="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-8 mb-4"
+                className="text-2xl font-bold text-foreground mt-8 mb-4"
               >
                 {section.title}
               </h2>
             );
           case "recipe":
             return (
-              <Card
-                key={index}
-                className="p-6 my-8 bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700"
-              >
-                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+              <Card key={index} className="p-6 my-8 bg-card border-border">
+                <h3 className="text-xl font-bold text-foreground mb-4">
                   {section.title}
                 </h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                    <h4 className="font-semibold text-foreground mb-3">
                       Ingredients:
                     </h4>
-                    <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                    <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                       {section.ingredients?.map((ingredient, i) => (
                         <li key={i}>
                           {format_calories(parseInt(ingredient.amount))}{" "}
@@ -50,10 +47,10 @@ const ArticleContent = ({ blogPost }: { blogPost: Blog }) => {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                    <h4 className="font-semibold text-foreground mb-3">
                       Instructions:
                     </h4>
-                    <ol className="list-decimal list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                    <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
                       {section.instructions?.map((instruction, i) => (
                         <li key={i}>{instruction}</li>
                       ))}
@@ -64,14 +61,11 @@ const ArticleContent = ({ blogPost }: { blogPost: Blog }) => {
             );
           case "tips":
             return (
-              <Card
-                key={index}
-                className="p-6 my-8 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700"
-              >
-                   <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+              <Card key={index} className="p-6 my-8 bg-card border-border">
+                <h3 className="text-xl font-bold text-foreground mb-4">
                   {section.title}
                 </h3>
-                <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+                <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   {section.items?.map((tip, i) => (
                     <li key={i}>{tip}</li>
                   ))}

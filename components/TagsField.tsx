@@ -22,22 +22,20 @@ export default function TagsField({
   removeTag,
 }: TagsFieldProps) {
   return (
-    <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
-        Tags
-      </h2>
+    <Card className="p-6 bg-card/70 border-border">
+      <h2 className="text-2xl font-bold text-foreground mb-6">Tags</h2>
       <div className="flex flex-wrap gap-2 mb-4">
         {tags.map((tag) => (
           <Badge
             key={tag}
             variant="secondary"
-            className="flex items-center gap-2 dark:bg-gray-700 dark:text-gray-300"
+            className="flex items-center gap-2"
           >
             {tag}
             <button
               type="button"
               onClick={() => removeTag(tag)}
-              className="hover:text-red-500"
+              className="hover:text-error"
             >
               <X className="w-3 h-3" />
             </button>
@@ -50,13 +48,13 @@ export default function TagsField({
           value={newTag}
           onChange={(e) => setNewTag(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
-          className="border-emerald-200 dark:border-emerald-700 bg-white dark:bg-gray-900"
+          className="border-border bg-background"
         />
         <Button
           onClick={addTag}
           type="button"
           variant="outline"
-          className="border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
+          className="border-primary/40 text-primary hover:bg-primary/10"
         >
           Add
         </Button>

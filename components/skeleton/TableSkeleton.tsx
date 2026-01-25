@@ -20,7 +20,7 @@ const TableSkeleton = () => {
       <ShimmerSkeleton className="absolute inset-0 opacity-20 pointer-events-none" />
       {/* Header skeleton with shimmer */}
       <div className="flex items-center justify-between px-5 py-4 border-b">
-        <ShimmerSkeleton className="h-6 w-32 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+        <ShimmerSkeleton className="h-6 w-32 bg-muted rounded">
           <PulseSkeleton className="h-6 w-32 bg-transparent" />
         </ShimmerSkeleton>
         <PulseSkeleton className="h-4 w-24" delay={0.3} />

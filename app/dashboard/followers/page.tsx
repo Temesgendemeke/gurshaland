@@ -8,45 +8,62 @@ import { useAuth } from "@/store/useAuth";
 import { toast } from "sonner";
 import generate_error from "@/utils/generate_error";
 
-const page = () => {
-  const [followers, setFollowers] = useState([]);
-  const user_id = useAuth((store) => store.user?.id);
-  const [loading, setLoading] = useState<Boolean>(true);
+type FollowerRow = FollowerColumnType & { slug: string };
+
+export default function FollowersPage() {
+  const [followers, setFollowers] = useState<FollowerRow[]>([]);
+  const userId = useAuth((store) => store.user?.id);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     (async () => {
       try {
-        if (user_id) {
-          const data = await get_followers(user_id as string);
+        if (!userId) {
+          if (!cancelled) {
+            setFollowers([]);
+            setLoading(false);
+          }
+          return;
+        }
+
+        const data = await get_followers(userId);
+        if (!cancelled) {
+          setFollowers(
+            data.map((f: FollowerColumnType) => ({ ...f, slug: f.id })),
+          );
           setLoading(false);
-          setFollowers(data);
         }
       } catch (error) {
-        toast.error(generate_error(error));
+        if (!cancelled) {
+          setLoading(false);
+          toast.error(generate_error(error));
+        }
       }
     })();
-  }, [user_id]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
 
   return (
-    <div className="mx-5 md:mx-10">
-      <div className="mt-4 text-center md:text-left">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-          Your Followers
+    <div className="mx-auto w-full max-w-7xl space-y-6">
+      <div className="space-y-2">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+          Followers
         </h2>
-        <p className="mb-4 sm:mb-6 text-gray-600 max-w-full text-sm sm:text-base">
-          Here's a summary of everyone following you. See when they started, how
-          they interact, and connect with your community!
+        <p className="text-sm sm:text-base text-muted-foreground">
+          Track engagement and manage your community.
         </p>
       </div>
-      <div className="overflow-x-visible w-full px-2 sm:px-4 md:px-0">
-        <DataTable<FollowerColumnType, any>
-          columns={FollowerColumn}
-          data={followers}
-          loading={loading}
-        />
-      </div>
+
+      <DataTable<FollowerRow, any>
+        columns={FollowerColumn as any}
+        data={followers}
+        loading={loading}
+      />
     </div>
   );
-};
-
-export default page;
+}

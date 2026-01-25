@@ -16,7 +16,10 @@ export default function BlogPostCard({ post }: { post: Blog }) {
             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute top-4 left-4">
-            <Badge className="bg-white/90 text-gray-700 hover:bg-white">
+            <Badge
+              variant="secondary"
+              className="bg-background/80 text-foreground backdrop-blur border border-border/50"
+            >
               {post.category}
             </Badge>
           </div>
@@ -35,7 +38,7 @@ export default function BlogPostCard({ post }: { post: Blog }) {
               </Badge>
             ))}
           </div>
-          <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mt-auto">
+          <div className="flex items-center justify-between text-sm text-muted-foreground mt-auto">
             <div className="flex items-center space-x-2">
               <User className="w-4 h-4" />
               <span className="truncate">{post.author?.full_name}</span>
@@ -45,7 +48,7 @@ export default function BlogPostCard({ post }: { post: Blog }) {
               <span>{post.read_time} read</span>
             </div>
           </div>
-          <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+          <div className="text-xs text-muted-foreground mt-1">
             {format_date(post?.created_at as string)}
           </div>
         </div>

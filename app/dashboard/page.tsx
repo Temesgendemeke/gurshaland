@@ -1,33 +1,11 @@
 "use client";
 import { getStatus } from "@/actions/dashboard/stats";
-import { AppSidebar } from "@/components/app-sidebar";
-import { postColumn } from "@/components/dashboard/PostColumn";
 import { SimpleTable } from "@/components/dashboard/SimpleTable";
-import { DataTable } from "@/components/data-table";
-// import { DataTable } from "@/components/DataTable";
 import StatsCard from "@/components/StatsCard";
-import { ThemeToggle } from "@/components/theme-toggle";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
 import { useAuth } from "@/store/useAuth";
-import { Blog } from "@/utils/types/blog";
 import { Post } from "@/utils/types/Dashboard";
-import Recipe from "@/utils/types/recipe";
 import { Send, User2, UtensilsCrossed } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface Status {
@@ -50,32 +28,41 @@ export default function Page() {
     blogs_draft_count: 0,
     blogs_published_count: 0,
   });
-  const [loading, setLoading] = useState<Boolean>(true);
+  const [loading, setLoading] = useState(true);
   const user = useAuth((store) => store.user);
-  const router = useRouter();
 
   useEffect(() => {
+    let cancelled = false;
+
     (async () => {
-      if (user) {
-        const data = await getStatus(user.id as string);
-        setStatus(data);
-        setLoading(false);
-      }
+      if (!user?.id) return;
+      setLoading(true);
+      const data = await getStatus(user.id as string);
+      if (cancelled) return;
+      setStatus(data);
+      setLoading(false);
     })();
-  });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 pt-0 space-y-5">
-      <div className="space-y-2.5">
-        {JSON.stringify(status.blogs_published_count)}
-        {JSON.stringify(status.blogs_draft_count)}
-        {JSON.stringify(status.blogs.length)}
-        <div className="flex items-center gap-3 ml-5 mt-2">
-          <h2 className="text-3xl md:text-4xl font-bold">Dashboard Overview</h2>
-          <Separator orientation="vertical" className="h-8" />
-          <span className="text-muted-foreground text-lg">Welcome back!</span>
+    <div className="mx-auto w-full max-w-7xl space-y-6">
+      <div className="space-y-2">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+            Dashboard Overview
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
+            Welcome back! Here’s what’s happening.
+          </p>
         </div>
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3 mx-5">
+
+        <Separator className="opacity-60" />
+
+        <div className="grid gap-4 md:grid-cols-3">
           <StatsCard
             name={"followers"}
             count={status.followers_count}
@@ -103,13 +90,10 @@ export default function Page() {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-5">
-        <div className="flex-1">
-          <SimpleTable data={status.recipes} name="Recipe" loading={loading} />
-        </div>
-        <div className="flex-1">
-          <SimpleTable data={status.blogs} name="Blog" loading={loading} />
-        </div>
+
+      <div className="grid gap-6 xl:grid-cols-2">
+        <SimpleTable data={status.recipes} name="Recipe" loading={loading} />
+        <SimpleTable data={status.blogs} name="Blog" loading={loading} />
       </div>
     </div>
   );

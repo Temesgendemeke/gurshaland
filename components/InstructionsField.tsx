@@ -78,21 +78,19 @@ export default function InstructionsField({
   };
 
   return (
-    <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
+    <Card className="p-6 bg-card/70 border-border">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-          Instructions
-        </h2>
+        <h2 className="text-2xl font-bold text-foreground">Instructions</h2>
       </div>
 
       <div className="space-y-6">
         {instructionFields.map((field: any, index: number) => (
           <div
             key={field.id}
-            className="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+            className="border border-border/60 rounded-lg p-4"
           >
             <div className="flex items-center justify-between mb-4">
-              <span className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+              <span className="text-lg font-semibold text-foreground">
                 Step {index + 1}
               </span>
               <FormField
@@ -108,7 +106,7 @@ export default function InstructionsField({
                   variant="ghost"
                   size="sm"
                   type="button"
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  className="text-error hover:text-error/80 hover:bg-error/10"
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -116,7 +114,7 @@ export default function InstructionsField({
             </div>
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div
-                className="border-2 border-dashed border-emerald-300 dark:border-emerald-700 rounded-lg p-8 text-center hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors cursor-pointer"
+                className="border-2 border-dashed border-border/70 rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer"
                 onClick={() =>
                   document.getElementById(`input-${index + 1}`)?.click()
                 }
@@ -149,7 +147,7 @@ export default function InstructionsField({
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="text-red-500 hover:text-red-700"
+                      className="text-error hover:text-error/80 hover:bg-error/10"
                       onClick={(e) => handleImageDelete(e, index + 1)}
                     >
                       <X className="w-4 h-4 mr-1" />
@@ -160,7 +158,7 @@ export default function InstructionsField({
                   <Button
                     type="button"
                     variant="outline"
-                    className="mt-4 border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
+                    className="mt-4 border-primary/30 text-primary hover:bg-primary/10"
                     onClick={() => handleImage(`input-${index + 1}`)}
                   >
                     Choose File
@@ -265,7 +263,7 @@ export default function InstructionsField({
                 }
                 variant="outline"
                 size="sm"
-                className="border-emerald-300 my-5 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
+                className="my-5 border-primary/40 text-primary hover:bg-primary/10"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Step

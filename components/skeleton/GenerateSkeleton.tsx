@@ -10,7 +10,7 @@ export default function GenerateSkeleton() {
       </div>
 
       {/* Form Container */}
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+      <div className="bg-card rounded-2xl shadow-xl border border-border p-8">
         {/* Input Fields */}
         <div className="space-y-6">
           {/* Recipe Type */}
@@ -53,10 +53,10 @@ export default function GenerateSkeleton() {
       </div>
 
       {/* Result Section Placeholder */}
-      <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl border border-emerald-200 dark:border-emerald-800 p-8">
+      <div className="bg-muted/30 rounded-2xl border border-border p-8">
         <div className="text-center space-y-4">
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-800 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
               <Skeleton className="w-8 h-8 rounded-full" />
             </div>
           </div>

@@ -130,32 +130,23 @@ export default function MealPlanner() {
   ];
 
   return (
-    <div
-      className="pt-10 z-0"
-      style={{
-        backgroundImage: `
-        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)
-      `,
-        backgroundSize: "40px 40px",
-      }}
-    >
+    <div className="pt-10 z-0">
       <div className="max-w-7xl mx-auto space-y-8 mb-10 p-2">
         {/* Header */}
         <div className="text-center space-y-4 mb-12 relative">
           {/* Background blur to make text pop against grid */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-40 bg-white/80 dark:bg-gray-950/80 blur-2xl -z-10 rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-40 bg-background/70 blur-2xl -z-10 rounded-full" />
 
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-info/10 border border-primary/20 mb-4 backdrop-blur-sm shadow-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/25 ring-1 ring-primary/15 mb-4 backdrop-blur-sm shadow-sm shadow-primary/10">
             <Sparkles className="h-4 w-4 text-primary" />
             <span className="text-sm font-medium text-primary">
               AI-Powered Nutrition
             </span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-primary via-info to-primary bg-clip-text text-transparent drop-shadow-sm pb-1">
+          <h1 className="text-5xl md:text-7xl font-extrabold heading-primary pb-1">
             Meal Planner
           </h1>
-          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-medium leading-relaxed">
             Create personalized meal plans tailored to your goals, dietary
             preferences, and lifestyle
           </p>
@@ -165,15 +156,15 @@ export default function MealPlanner() {
           className={`grid-cols-1 md:grid-cols-2 gap-8 overflow-hidden ${plan?.timeframe ? "grid" : "block"}`}
         >
           {/* Main Form Card */}
-          <Card className="relative overflow-hidden border-2 shadow-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl order-2 lg:order-none">
+          <Card className="modern-card relative overflow-hidden border-2 border-border/50 shadow-2xl bg-card/70 backdrop-blur-xl order-2 lg:order-0">
             {/* Decorative gradients */}
-            <div className="pointer-events-none absolute -top-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-info/20 to-transparent blur-3xl" />
+            <div className="pointer-events-none absolute -top-40 -left-40 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-popular/10 blur-3xl" />
 
             <CardHeader className="relative pb-8">
               <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-info">
-                  <ChefHat className="h-6 w-6 text-white" />
+                <div className="p-2 rounded-xl bg-primary text-primary-foreground">
+                  <ChefHat className="h-6 w-6 text-primary-foreground" />
                 </div>
                 Configure Your Plan
               </CardTitle>
@@ -205,7 +196,7 @@ export default function MealPlanner() {
                             onValueChange={field.onChange}
                             className="w-full"
                           >
-                            <TabsList className="grid grid-cols-2 w-full h-14 rounded-2xl bg-gradient-to-r from-primary/5 to-info/5 dark:from-muted dark:to-muted p-1.5 border-2 border-primary/20">
+                            <TabsList className="grid grid-cols-2 w-full h-14 rounded-2xl bg-muted/60 p-1.5 border-2 border-border/50 ring-1 ring-primary/10">
                               <TabsTrigger
                                 value="today"
                                 className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-lg data-[state=active]:text-primary transition-all font-semibold text-base"
@@ -215,7 +206,7 @@ export default function MealPlanner() {
                               </TabsTrigger>
                               <TabsTrigger
                                 value="weekend"
-                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-lg data-[state=active]:text-info transition-all font-semibold text-base"
+                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-lg data-[state=active]:text-primary transition-all font-semibold text-base"
                               >
                                 <Calendar className="h-4 w-4 mr-2" />
                                 Weekend
@@ -264,7 +255,7 @@ export default function MealPlanner() {
                                 className="cursor-pointer"
                               >
                                 <div className="flex items-center gap-2">
-                                  <TrendingUp className="h-4 w-4 text-info" />
+                                  <TrendingUp className="h-4 w-4 text-primary" />
                                   <span>Muscle Gain</span>
                                 </div>
                               </SelectItem>
@@ -309,7 +300,7 @@ export default function MealPlanner() {
                                 className="cursor-pointer"
                               >
                                 <div className="flex items-center gap-2">
-                                  <Utensils className="h-4 w-4 text-gray-500" />
+                                  <Utensils className="h-4 w-4 text-muted-foreground" />
                                   <span>Standard</span>
                                 </div>
                               </SelectItem>
@@ -336,7 +327,7 @@ export default function MealPlanner() {
                                 className="cursor-pointer"
                               >
                                 <div className="flex items-center gap-2">
-                                  <ChefHat className="h-4 w-4 text-purple-500" />
+                                  <ChefHat className="h-4 w-4 text-primary" />
                                   <span>Keto</span>
                                 </div>
                               </SelectItem>
@@ -490,7 +481,7 @@ export default function MealPlanner() {
                           control={form.control}
                           name="height.unit"
                           render={({ field }) => (
-                            <FormItem className="w-[120px]">
+                            <FormItem className="w-30">
                               <FormControl>
                                 <Select
                                   value={field.value}
@@ -549,7 +540,7 @@ export default function MealPlanner() {
                           control={form.control}
                           name="weight.unit"
                           render={({ field }) => (
-                            <FormItem className="w-[120px]">
+                            <FormItem className="w-30">
                               <FormControl>
                                 <Select
                                   value={field.value}
@@ -664,10 +655,14 @@ export default function MealPlanner() {
                             rows={4}
                           />
                         </FormControl>
-                        <FormDescription className="text-xs flex items-start gap-1">
-                          <span className="text-warning">⚠️</span>
-                          This is not medical advice. Consult a healthcare
-                          professional for personalized nutrition guidance.
+                        <FormDescription className="text-xs">
+                          <span className="inline-flex items-start gap-2 uppercase rounded-lg font-semibold border border-warning/25 bg-warning/10 px-2.5 py-2 text-foreground/80 text-lg w-full my-4">
+                            <span className="text-warning">⚠️</span>
+                            <span>
+                              This is not medical advice. Consult a healthcare
+                              professional for personalized nutrition guidance.
+                            </span>
+                          </span>
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -675,12 +670,12 @@ export default function MealPlanner() {
                   />
 
                   {/* Generate Button */}
-                  <div className="pt-4">
+                  <div className="">
                     <Button
                       type="submit"
                       disabled={isLoading}
                       size="lg"
-                      className="w-full h-14 text-lg font-bold rounded-xl bg-gradient-to-r from-primary to-info hover:from-primary/90 hover:to-info/90 shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
+                      className="w-full h-14 text-lg font-bold rounded-xl btn-primary-modern hover:-translate-y-0.5 hover:shadow-primary/30"
                     >
                       {isLoading ? (
                         <>

@@ -54,7 +54,7 @@ export function ContentSection({
   });
 
   return (
-    <Card className="bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
+    <Card className="bg-card/70 border-border">
       <Collapsible open={isOpen} onOpenChange={onToggle}>
         <CollapsibleTrigger asChild>
           <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
@@ -75,7 +75,7 @@ export function ContentSection({
                 }}
                 variant="ghost"
                 size="sm"
-                className="text-red-500 hover:text-red-700"
+                className="text-error hover:text-error/80"
               >
                 <Minus className="h-4 w-4" />
               </Button>
@@ -116,7 +116,7 @@ export function ContentSection({
                 rows={4}
               />
               {(form.formState.errors as any).contents?.[index]?.body && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-error">
                   {(form.formState.errors as any).contents[index].body.message}
                 </p>
               )}

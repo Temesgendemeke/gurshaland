@@ -42,30 +42,30 @@ const DeleteAccount = ({ profile_id }: DeleteAccountProps) => {
     }
   };
   return (
-    <Card className="border border-rose-200 dark:border-rose-800 bg-background/80 shadow-lg rounded-2xl transition-all">
+    <Card className="border border-error/20 bg-card shadow-sm rounded-2xl">
       <CardHeader>
-        <CardTitle className="flex items-center gap-3 text-rose-700 dark:text-rose-500 text-xl font-bold">
-          <span className="inline-flex items-center justify-center bg-rose-100 dark:bg-rose-900 rounded-full p-2">
-            <Shield className="h-6 w-6 text-rose-600 dark:text-rose-400" />
+        <CardTitle className="flex items-center gap-3 text-error text-xl font-bold">
+          <span className="inline-flex items-center justify-center bg-error/10 rounded-full p-2">
+            <Shield className="h-6 w-6 text-error" />
           </span>
           Delete Account
         </CardTitle>
-        <CardDescription className="text-rose-700/80 dark:text-rose-300/80 font-medium">
+        <CardDescription className="text-muted-foreground font-medium">
           Permanently delete your account and all associated data.{" "}
-          <span className="font-semibold">This action cannot be undone.</span>
+          <span className="font-semibold text-foreground">
+            This action cannot be undone.
+          </span>
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
           <div className="max-w-md">
             <p className="text-sm text-muted-foreground leading-relaxed">
-              <span className="font-semibold text-rose-600 dark:text-rose-400">
-                Warning:
-              </span>{" "}
-              Once you delete your account,{" "}
-              <span className="font-medium">all your data</span> including
-              recipes, blogs, and profile information will be{" "}
-              <span className="underline decoration-rose-400 underline-offset-2">
+              <span className="font-semibold text-error">Warning:</span> Once
+              you delete your account,{" "}
+              <span className="font-medium text-foreground">all your data</span>{" "}
+              including recipes, blogs, and profile information will be{" "}
+              <span className="underline decoration-error underline-offset-2">
                 permanently removed
               </span>
               . Please be absolutely certain before proceeding.
@@ -75,20 +75,20 @@ const DeleteAccount = ({ profile_id }: DeleteAccountProps) => {
             <AlertDialogTrigger asChild>
               <Button
                 variant="destructive"
-                className="px-8 py-2 rounded-full font-semibold text-base shadow-md hover:scale-105 transition-transform focus:ring-2 focus:ring-rose-400 focus:ring-offset-2"
+                className="px-8 py-2 rounded-full font-semibold text-base shadow-sm"
               >
                 Delete Account
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent className="rounded-2xl border-rose-200 dark:border-rose-800 shadow-xl">
+            <AlertDialogContent className="rounded-2xl border border-error/20 shadow-xl">
               <AlertDialogHeader>
-                <AlertDialogTitle className="text-rose-700 dark:text-rose-400 text-lg font-bold flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-rose-600 dark:text-rose-400" />
+                <AlertDialogTitle className="text-error text-lg font-bold flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-error" />
                   Are you absolutely sure?
                 </AlertDialogTitle>
                 <AlertDialogDescription className="text-muted-foreground mt-2">
                   This action{" "}
-                  <span className="font-semibold text-rose-600">
+                  <span className="font-semibold text-error">
                     cannot be undone
                   </span>
                   . Your account and all data will be{" "}
@@ -102,7 +102,7 @@ const DeleteAccount = ({ profile_id }: DeleteAccountProps) => {
                   Cancel
                 </AlertDialogCancel>
                 <AlertDialogAction
-                  className="bg-rose-700 hover:bg-rose-800 text-white px-8 py-2 rounded-full font-semibold shadow transition focus:ring-2 focus:ring-rose-400 focus:ring-offset-2"
+                  className="bg-error hover:bg-error/90 text-white px-8 py-2 rounded-full font-semibold shadow transition focus:ring-2 focus:ring-error/30 focus:ring-offset-2"
                   onClick={handleDeleteAccount}
                 >
                   Yes, Delete My Account

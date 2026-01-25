@@ -22,7 +22,7 @@ const RecipeCard = ({ recipe }: RecipeCardProp) => {
   return (
     <Card
       key={recipe.id}
-      className="modern-card modern-card-hover overflow-hidden mb-10 group rounded-xl border border-black/5 dark:border-white/5 transition-shadow duration-300 hover:shadow-xl"
+      className="modern-card modern-card-hover overflow-hidden mb-10 group rounded-xl border border-border/60 transition-shadow duration-300 hover:shadow-xl"
     >
       <div className="relative">
         <img
@@ -32,10 +32,10 @@ const RecipeCard = ({ recipe }: RecipeCardProp) => {
           decoding="async"
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/30 to-transparent pointer-events-none" />
 
         <div
-          className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1"
+          className="absolute top-4 right-4 bg-background/80 border border-border/60 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1"
           title="Average rating"
         >
           <Star className="w-4 h-4 text-warning fill-current" />
@@ -49,7 +49,7 @@ const RecipeCard = ({ recipe }: RecipeCardProp) => {
             {recipe.tags?.slice(0, 3).map((tag: string) => (
               <Badge
                 key={tag}
-                className="text-xs bg-black/50 text-white hover:bg-black/60"
+                className="text-xs bg-background/60 border border-border/50 text-foreground hover:bg-background/70 backdrop-blur-sm"
               >
                 {tag}
               </Badge>

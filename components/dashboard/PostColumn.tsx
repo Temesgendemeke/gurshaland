@@ -31,6 +31,67 @@ import useRecipe from "@/store/DashboardRecipe";
 import DeleteWarning from "./DeleteWarning";
 import { useRouter } from "next/navigation";
 
+function PostActionsCell({
+  slug,
+  linkBasePath,
+}: {
+  slug?: string;
+  linkBasePath: "/recipes" | "/blog";
+}) {
+  const router = useRouter();
+  const deleteBlogFn = useBlog((store) => store.deleteBlog);
+  const deleteRecipeFn = useRecipe((store) => store.deleteRecipe);
+
+  if (!slug) return null;
+
+  const handleDelete = async () => {
+    try {
+      if (linkBasePath === "/blog") {
+        deleteBlogFn(slug);
+      } else {
+        deleteRecipeFn(slug);
+      }
+    } catch (err) {
+      console.error("Error deleting post:", err);
+      toast.error("Failed to delete");
+    }
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant={"ghost"}>
+          <MoreVerticalIcon />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        onCloseAutoFocus={(e) => e.preventDefault()}
+        className="bg-background z-50"
+      >
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Button
+            onClick={() => router.push(`${linkBasePath}/edit/${slug}`)}
+            className="flex gap-1 justify-center"
+            variant="ghost"
+          >
+            <PenBox />
+            <span>Edit</span>
+          </Button>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Button onClick={handleDelete} variant="ghost" className="flex">
+            <Trash />
+            <span>Delete</span>
+          </Button>
+          {/* <DeleteWarning post={linkBasePath} slug={slug}/> */}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 // Modern Status Badge Component
 const StatusBadge = ({ status }: { status: string }) => {
   const getStatusConfig = (status: string) => {
@@ -51,10 +112,10 @@ const StatusBadge = ({ status }: { status: string }) => {
         };
       default:
         return {
-          bg: "bg-gray-100 dark:bg-gray-800/50",
-          text: "text-gray-600 dark:text-gray-400",
-          border: "border-gray-200 dark:border-gray-700",
-          dot: "bg-gray-500",
+          bg: "bg-muted/50",
+          text: "text-muted-foreground",
+          border: "border-border",
+          dot: "bg-muted-foreground",
         };
     }
   };
@@ -188,58 +249,11 @@ export const createPostColumns = (
   columnHelper.display({
     id: "more",
     cell: (row) => {
-      // Call hooks at top-level of the render path (not inside event handlers)
-      const deleteBlogFn = useBlog((store) => store.deleteBlog);
-      const deleteRecipeFn = useRecipe((store) => store.deleteRecipe);
-
-      const handleDelete = async () => {
-        try {
-          if (linkBasePath === "/blog") {
-            deleteBlogFn(row.row.original.slug as string);
-          } else {
-            deleteRecipeFn(row.row.original.slug as string);
-          }
-        } catch (err) {
-          console.error("Error deleting post:", err);
-          toast.error("Failed to delete");
-        }
-      };
-      const router = useRouter();
-
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant={"ghost"}>
-              <MoreVerticalIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            onCloseAutoFocus={(e) => e.preventDefault()}
-            className="bg-background z-50"
-          >
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Button
-                onClick={() =>
-                  router.push(`${linkBasePath}/edit/${row.row.original.slug}`)
-                }
-                className="flex gap-1 justify-center"
-                variant="ghost"
-              >
-                <PenBox />
-                <span>Edit</span>
-              </Button>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Button onClick={handleDelete} variant="ghost" className="flex">
-                <Trash />
-                <span>Delete</span>
-              </Button>
-              {/* <DeleteWarning post={linkBasePath} slug={row.row.original.slug!}/> */}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <PostActionsCell
+          slug={row.row.original.slug}
+          linkBasePath={linkBasePath}
+        />
       );
     },
   }),

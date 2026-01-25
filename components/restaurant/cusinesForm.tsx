@@ -29,7 +29,7 @@ const CusinesForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
 
     form.setValue(
       "cuisines",
-      current.filter((_, i) => i !== index)
+      current.filter((_, i) => i !== index),
     );
   };
 
@@ -43,6 +43,7 @@ const CusinesForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
       </div>
       {cuisines.map((_, index) => (
         <FormField
+          key={index}
           control={form.control}
           name={`cuisines.${index}`}
           render={({ field }) => (

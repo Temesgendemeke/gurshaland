@@ -32,8 +32,8 @@ export default function BasicInfoFields({
   categories,
 }: BasicInfoFieldsProps) {
   return (
-    <Card className="p-6 bg-white/70 dark:bg-gray-800/70 border-emerald-100 dark:border-emerald-800">
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+    <Card className="p-6 bg-card/70 border-border">
+      <h2 className="text-2xl font-bold text-foreground mb-6">
         Basic Information
       </h2>
       <div className="grid md:grid-cols-2 gap-6">
@@ -61,7 +61,7 @@ export default function BasicInfoFields({
                   // When a category is selected, set both id and name on the field
                   onValueChange={(selectedName) => {
                     const selectedCat = categories.find(
-                      (cat) => cat.name === selectedName
+                      (cat) => cat.name === selectedName,
                     );
                     if (selectedCat) {
                       form.setValue("category", {
@@ -116,7 +116,7 @@ export default function BasicInfoFields({
               <FormControl>
                 <div className="relative flex items-center">
                   <Input {...field} type="number" className="pr-10" />
-                  <Clock className="w-4 h-4 text-gray-400 absolute right-3 pointer-events-none" />
+                  <Clock className="w-4 h-4 text-muted-foreground absolute right-3 pointer-events-none" />
                 </div>
               </FormControl>
               <FormMessage />
@@ -132,7 +132,7 @@ export default function BasicInfoFields({
               <FormControl>
                 <div className="relative flex items-center">
                   <Input {...field} className="pr-10" type="number" />
-                  <Clock className="w-4 h-4 text-gray-400 absolute right-3 pointer-events-none" />
+                  <Clock className="w-4 h-4 text-muted-foreground absolute right-3 pointer-events-none" />
                 </div>
               </FormControl>
               <FormMessage />
@@ -154,7 +154,7 @@ export default function BasicInfoFields({
                     className="pr-10"
                     min={1}
                   />
-                  <Users className="w-4 h-4 text-gray-400 absolute right-3 pointer-events-none" />
+                  <Users className="w-4 h-4 text-muted-foreground absolute right-3 pointer-events-none" />
                 </div>
               </FormControl>
               <FormMessage />

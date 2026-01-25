@@ -107,7 +107,7 @@ const AddRestaurantPage = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="container mx-auto px-4 py-8 md:py-12">
+      <main className="mx-auto w-[calc(100%-1rem)] max-w-7xl px-6 py-8 md:py-12">
         <div className="mb-10 text-center space-y-2">
           <h1 className="text-4xl md:text-5xl font-extrabold ">
             Add New Restaurant
