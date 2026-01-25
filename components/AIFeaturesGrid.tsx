@@ -40,10 +40,8 @@ function AIFeaturesGrid({
           >
             <div className="p-6">
               <div className="flex items-start justify-between mb-4">
-                <div
-                  className={`w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center`}
-                >
-                  <IconComponent className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center">
+                  <IconComponent className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <Badge variant="secondary" className="text-xs">
                   {feature.badge}
@@ -60,7 +58,7 @@ function AIFeaturesGrid({
                 size="sm"
                 disabled={feature.badge == "Coming Soon"}
                 aria-disabled={feature.badge == "Coming Soon"}
-                className="mt-4 text-primary  p-4 hover:text-white  hover:bg-primary "
+                className="mt-4 text-primary p-4 hover:text-primary-foreground hover:bg-primary"
                 onClick={() => handleClick(feature.id)}
               >
                 Try Now →

@@ -15,8 +15,8 @@ async function EditRecipe({ params }: { params: Promise<{ slug: string }> }) {
         <div className="mx-auto px-10 py-12">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Recipe Not Found</h1>
-            <p className="text-gray-600 dark:text-gray-300">
-              The recipe you're looking for doesn't exist.
+            <p className="text-muted-foreground">
+              The recipe you&apos;re looking for doesn&apos;t exist.
             </p>
           </div>
         </div>
@@ -34,7 +34,7 @@ async function EditRecipe({ params }: { params: Promise<{ slug: string }> }) {
           <h1 className="text-6xl font-bold mb-4">
             <span className="">Edit Your Recipe</span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
+          <p className="text-xl text-muted-foreground">
             Update and refine your Ethiopian culinary masterpiece below.
           </p>
         </div>

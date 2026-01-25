@@ -11,7 +11,7 @@ export default function RecipeListSkeleton() {
             <div className="absolute top-4 left-4">
               <Skeleton className="h-6 w-20 rounded-full" />
             </div>
-            <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
+            <div className="absolute top-4 right-4 bg-background/80 border border-border/60 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
               <Skeleton className="w-4 h-4 rounded-full" />
               <Skeleton className="h-4 w-8 rounded" />
             </div>

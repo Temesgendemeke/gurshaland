@@ -135,7 +135,7 @@ const AddRestaurantPage = () => {
                 <div className="h-px flex-1 bg-border" />
               </div>
 
-              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border overflow-hidden  transform transition-all hover:scale-[1.01]">
+              <div className="bg-card rounded-2xl shadow-xl border border-border overflow-hidden transform transition-all hover:scale-[1.01]">
                 <PreviewSection form={form} onSubmit={onSubmit} />
               </div>
             </div>

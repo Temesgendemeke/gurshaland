@@ -85,7 +85,7 @@ export function AIChatWidget() {
             <div className="space-y-2">
               {message.role === "assistant" && (
                 <div className="flex items-center gap-2 order">
-                  <Chip className="modern-bckground-gradient text-white p-2 rounded-full w-10 h-10" />
+                  <Chip className="modern-bckground-gradient text-primary-foreground p-2 rounded-full w-10 h-10" />
                   <p className="text-body text-xl capitalize">AI assistant</p>
                 </div>
               )}

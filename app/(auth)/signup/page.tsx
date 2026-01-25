@@ -2,7 +2,7 @@
 import { Header } from "@/components/header";
 import { signupFormSchema } from "@/utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +22,7 @@ import { toast } from "sonner";
 import { SignUpData } from "@/utils/types/account";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const form = useForm({
@@ -40,7 +40,7 @@ const page = () => {
     try {
       await signup(formData);
       toast.success(
-        "Account created successfully! Please check your email to verify your account."
+        "Account created successfully! Please check your email to verify your account.",
       );
       router.push("/login");
     } catch (error) {
@@ -48,13 +48,13 @@ const page = () => {
       toast.error(
         error instanceof Error
           ? error.message
-          : "An unexpected error occurred during sign up. Please try again or contact support if the issue persists."
+          : "An unexpected error occurred during sign up. Please try again or contact support if the issue persists.",
       );
     }
   };
 
   return (
-    <div className=" bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl h-screen w-screen">
+    <div className="bg-background/90 backdrop-blur-xl h-screen w-screen">
       <Header />
 
       <div className="flex m-10">
@@ -64,10 +64,10 @@ const page = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="w-2/3 space-y-6"
             >
-              <h1 className="text-4xl my-6 font-extrabold text-center text-emerald-700">
+              <h1 className="text-4xl my-6 font-extrabold text-center text-primary">
                 Welcome to Gurshaland
               </h1>
-              <p className="text-center text-gray-600 mb-4">
+              <p className="text-center text-muted-foreground mb-4">
                 Create your account to get started
               </p>
               <FormField
@@ -153,7 +153,7 @@ const page = () => {
                 Already have an account?{" "}
                 <Link
                   href="/login"
-                  className="text-emerald-700 hover:underline font-bold"
+                  className="text-primary hover:underline font-bold"
                 >
                   Log in
                 </Link>
@@ -170,4 +170,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

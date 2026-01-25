@@ -11,13 +11,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { forgotPasswordSchema } from "@/utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-const page = () => {
+const Page = () => {
   const form = useForm({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -33,7 +32,7 @@ const page = () => {
       return router.push("/login");
     } catch (error) {
       toast.error(
-        "Failed to send password reset email. Please try again or contact support if the issue persists."
+        "Failed to send password reset email. Please try again or contact support if the issue persists.",
       );
     }
   };
@@ -43,10 +42,8 @@ const page = () => {
       <Header />
 
       <div className="mt-20 w-full flex justify-center items-center flex-col">
-        <h1 className="text-emerald-600 text-4xl font-bold">
-          Forgout password?
-        </h1>
-        <p className="mb-4 text-gray-600">
+        <h1 className="text-primary text-4xl font-bold">Forgout password?</h1>
+        <p className="mb-4 text-muted-foreground">
           Enter your email address to receive a password reset link.
         </p>
         <Form {...form}>
@@ -85,4 +82,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

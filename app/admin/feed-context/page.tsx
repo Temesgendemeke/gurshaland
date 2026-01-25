@@ -235,14 +235,14 @@ const FeedContextPage = () => {
                               animate={{ opacity: 1, scale: 1 }}
                               className="text-center space-y-4 w-full"
                             >
-                              <div className="bg-emerald-500/20 p-4 rounded-full mx-auto w-fit">
-                                <CheckCircle2 className="w-8 h-8 text-emerald-500" />
+                              <div className="bg-success/10 border border-success/20 p-4 rounded-full mx-auto w-fit">
+                                <CheckCircle2 className="w-8 h-8 text-success" />
                               </div>
                               <div className="px-12">
                                 <p className="text-sm font-bold truncate max-w-xs mx-auto">
                                   {fileName}
                                 </p>
-                                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1">
+                                <p className="text-xs text-success font-medium mt-1">
                                   Ready for processing
                                 </p>
                               </div>

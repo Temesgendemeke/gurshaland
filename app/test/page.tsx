@@ -30,15 +30,15 @@ const Page = () => {
     e.preventDefault();
     if (!userInput.trim()) return;
     // @ts-ignore
-    
+
     await sendMessage({ text: userInput });
     setUserInput("");
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <Card className="w-full max-w-2xl h-[600px] flex flex-col shadow-xl">
-        <CardHeader className="border-b bg-white rounded-t-xl z-10">
+        <CardHeader className="border-b bg-card rounded-t-xl z-10">
           <CardTitle className="flex items-center gap-2 text-primary">
             <Bot className="w-6 h-6" />
             AI Assistant
@@ -99,7 +99,7 @@ const Page = () => {
           </ScrollArea>
         </CardContent>
 
-        <CardFooter className="p-4 border-t bg-white rounded-b-xl">
+        <CardFooter className="p-4 border-t bg-card rounded-b-xl">
           <form onSubmit={handleSubmit} className="flex w-full gap-2">
             <Input
               value={userInput}

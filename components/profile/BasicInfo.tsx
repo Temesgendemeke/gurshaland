@@ -6,22 +6,17 @@ import { useAuth } from "@/store/useAuth";
 import { Profile } from "@/utils/types/profile";
 import { useRouter } from "next/navigation";
 
-
-interface BasicInfoProps{
+interface BasicInfoProps {
   profile: Profile;
 }
 
-const BasicInfo = ({ profile }:BasicInfoProps) => {
+const BasicInfo = ({ profile }: BasicInfoProps) => {
   const user = useAuth((store) => store.user);
-  const router = useRouter()
+  const router = useRouter();
 
-
-  const handleFollow = (
-  )=>{
-    if(!user) return router.push('/login')
-
-      
-  }
+  const handleFollow = () => {
+    if (!user) return router.push("/login");
+  };
   return (
     <>
       <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-primary shadow-lg">
@@ -38,7 +33,7 @@ const BasicInfo = ({ profile }:BasicInfoProps) => {
         aria-disabled={user?.id == profile.id}
         disabled={user?.id === profile.id}
         onClick={handleFollow}
-        className="mt-2 px-6 py-2 rounded-full bg-primary text-white font-semibold hover:bg-primary-dark transition"
+        className="mt-2 px-6 py-2 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition"
       >
         Follow
       </Button>

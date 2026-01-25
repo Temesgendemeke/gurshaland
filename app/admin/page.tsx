@@ -36,7 +36,6 @@ const AdminDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const fetchContext = async () => {
-    setLoading(true);
     const { data, error } = await supabase
       .from("app_knowledge")
       .select("*")
@@ -52,6 +51,7 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchContext();
   }, []);
 

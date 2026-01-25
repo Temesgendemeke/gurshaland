@@ -102,7 +102,7 @@ const DeleteAccount = ({ profile_id }: DeleteAccountProps) => {
                   Cancel
                 </AlertDialogCancel>
                 <AlertDialogAction
-                  className="bg-error hover:bg-error/90 text-white px-8 py-2 rounded-full font-semibold shadow transition focus:ring-2 focus:ring-error/30 focus:ring-offset-2"
+                  className="bg-destructive hover:bg-destructive/90 text-destructive-foreground px-8 py-2 rounded-full font-semibold shadow transition focus:ring-2 focus:ring-destructive/30 focus:ring-offset-2"
                   onClick={handleDeleteAccount}
                 >
                   Yes, Delete My Account

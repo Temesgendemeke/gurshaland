@@ -35,7 +35,7 @@ const HeroSection = () => {
               <Button
                 asChild
                 size="lg"
-                className="btn-primary-modern font-semibold text-white px-8 py-4  rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
+                className="btn-primary-modern font-semibold text-primary-foreground px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
               >
                 <Link href="/recipes">
                   <Utensils className="w-5 h-5 mr-2" />

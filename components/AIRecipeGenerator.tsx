@@ -44,8 +44,8 @@ export default function AIRecipeGenerator() {
   return (
     <Card className="modern-card p-8">
       <div className="text-center mb-8">
-        <div className="from-primary to-primary/80 w-16 h-16 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-4 mx-auto">
-          <ChefHat className="w-8 h-8 text-white" />
+        <div className="w-16 h-16 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center mb-4 mx-auto">
+          <ChefHat className="w-8 h-8 text-primary-foreground" />
         </div>
         <h2 className="text-3xl font-bold heading-primary mb-4">
           AI Recipe Generator

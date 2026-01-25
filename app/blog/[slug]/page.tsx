@@ -84,8 +84,8 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
         </Card>
 
         {/* Related Posts */}
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-12">
-          <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-8">
+        <div className="border-t border-border pt-12">
+          <h3 className="text-2xl font-bold text-foreground mb-8">
             Related Articles
           </h3>
 

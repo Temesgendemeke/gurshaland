@@ -66,7 +66,7 @@ export function TrendingRecipes() {
                     Trending
                   </Badge>
                 </div>
-                <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center space-x-1">
+                <div className="absolute top-2 right-2 bg-background/80 border border-border/60 backdrop-blur-sm rounded-full px-2 py-1 flex items-center space-x-1">
                   <Star className="w-3 h-3 text-warning fill-current" />
                   <span className="text-xs font-medium">
                     {recipe.average_rating ?? 0}

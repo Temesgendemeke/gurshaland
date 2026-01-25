@@ -13,12 +13,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { resetPasswordSchema } from "@/utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { notFound, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-const page = () => {
+const Page = () => {
   const form = useForm({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -65,10 +65,8 @@ const page = () => {
     <div>
       <Header />
       <div className="mt-20 flex flex-col items-center">
-        <h1 className="text-4xl text-emerald-600 font-bold">
-          Reset your Password
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2 mb-6 max-w-xl">
+        <h1 className="text-4xl text-primary font-bold">Reset your Password</h1>
+        <p className="text-muted-foreground mt-2 mb-6 max-w-xl">
           Please enter your new password below. Make sure it is strong and
           secure.
         </p>
@@ -138,4 +136,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

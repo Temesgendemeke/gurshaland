@@ -52,7 +52,7 @@ const PreviewSection = ({
         <div className="absolute top-4 right-4">
           <Badge
             variant="secondary"
-            className="backdrop-blur-md bg-black/30 text-white border-none"
+            className="backdrop-blur-md bg-background/70 text-foreground border border-border/50"
           >
             Preview
           </Badge>

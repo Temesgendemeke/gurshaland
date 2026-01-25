@@ -1,7 +1,6 @@
 import React from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -52,18 +51,14 @@ export default async function CategoriesPage() {
                       width={500}
                       height={500}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                     <div className="absolute top-4 left-4">
-                      <div
-                        className={`w-12 h-12 bg-gradient-to-r  ${
-                          category.color || "from-primary to-info"
-                        } rounded-full flex items-center justify-center`}
-                      >
-                        <IconComponent className="w-6 h-6 text-white" />
+                      <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                        <IconComponent className="w-6 h-6 text-primary-foreground" />
                       </div>
                     </div>
                     <div className="absolute bottom-4 left-4 right-4">
-                      <Badge className="bg-white/90 text-gray-800 mb-2">
+                      <Badge className="bg-background/80 border border-border/60 text-foreground mb-2">
                         {category.featured?.length || 0} recipes
                       </Badge>
                     </div>
@@ -78,7 +73,7 @@ export default async function CategoriesPage() {
                     </p>
 
                     <div className="space-y-2">
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <p className="text-sm font-medium text-muted-foreground">
                         Featured recipes:
                       </p>
                       <div className="flex flex-wrap gap-1">
@@ -88,17 +83,14 @@ export default async function CategoriesPage() {
                             <Badge
                               key={index}
                               variant="secondary"
-                              className="text-xs dark:bg-gray-700 dark:text-gray-300"
+                              className="text-xs"
                             >
                               {recipe.title}
                             </Badge>
                           ))}
                         {(!category.featured ||
                           category.featured.length === 0) && (
-                          <Badge
-                            variant="secondary"
-                            className="text-xs dark:bg-gray-700 dark:text-gray-300"
-                          >
+                          <Badge variant="secondary" className="text-xs">
                             No recipes yet
                           </Badge>
                         )}

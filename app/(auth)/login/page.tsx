@@ -47,7 +47,7 @@ const Page = () => {
       toast.error(
         error instanceof Error
           ? error.message
-          : "An error occurred while logging in. Please check your credentials and try again."
+          : "An error occurred while logging in. Please check your credentials and try again.",
       );
     }
   };
@@ -63,10 +63,10 @@ const Page = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="w-full md:w-2/3 space-y-6 mx-auto"
             >
-              <h1 className="text-5xl md:text-5xl my-5 font-bold text-center text-emerald-600">
+              <h1 className="text-5xl md:text-5xl my-5 font-bold text-center text-primary">
                 Welcome back
               </h1>
-              <p className="text-center text-gray-500">Login with</p>
+              <p className="text-center text-muted-foreground">Login with</p>
               <FormField
                 control={form.control}
                 name="email"
@@ -120,11 +120,11 @@ const Page = () => {
               >
                 Login
               </Button>
-              <p className="text-center text-sm text-gray-500">
+              <p className="text-center text-sm text-muted-foreground">
                 New user?{" "}
                 <Link
                   href="/signup"
-                  className="text-emerald-600 hover:underline font-bold"
+                  className="text-primary hover:underline font-bold"
                 >
                   Create an account
                 </Link>

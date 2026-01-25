@@ -16,9 +16,7 @@ function HowItWorksSection({ steps }: { steps: typeof howItWorks }) {
       <div className="grid md:grid-cols-3 gap-8 mb-16">
         {steps.map((step) => (
           <Card key={step.title} className="modern-card p-8 text-center">
-            <div
-              className={`w-16 h-16 bg-gradient-to-br text-white from-primary to-primary/80 rounded-2xl flex items-center justify-center mb-6 mx-auto`}
-            >
+            <div className="w-16 h-16 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center mb-6 mx-auto">
               <step.icon />
             </div>
             <h3 className="text-xl font-bold heading-primary mb-4">

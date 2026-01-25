@@ -12,7 +12,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
-import NewsletterSignup from "@/components/NewsletterSignup";
 import BlogPostCard from "@/components/BlogPostCard";
 import FeaturedPost from "@/components/FeaturedPost";
 import categories from "@/constants/categories";
@@ -54,7 +53,7 @@ export default function BlogPage() {
           <h1 className="text-5xl font-bold mb-4">
             <span className="">Ethiopian Food Blog</span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Stories, recipes, and insights from the world of Ethiopian cuisine
           </p>
         </div>
@@ -63,7 +62,7 @@ export default function BlogPage() {
         <div className="bg-card/70 backdrop-blur-sm rounded-2xl p-6 mb-12 border border-primary/20">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <Input
                 placeholder="Search articles..."
                 value={searchTerm}
@@ -100,10 +99,10 @@ export default function BlogPage() {
         ) : (
           <>
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+              <h2 className="text-2xl font-bold text-foreground mb-6">
                 Latest Articles
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-8">
+              <p className="text-muted-foreground mb-8">
                 Showing {filteredPosts.length} of {regularPosts.length} articles
               </p>
             </div>
