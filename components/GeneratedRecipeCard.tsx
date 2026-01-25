@@ -24,9 +24,7 @@ export default function GeneratedRecipeCard({ recipe }: { recipe: any }) {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold heading-primary">{recipe.title}</h3>
-          <Badge className="bg-emerald-100 text-emerald-700">
-            AI Generated
-          </Badge>
+          <Badge className="bg-primary/10 text-primary">AI Generated</Badge>
         </div>
         <div>
           <Image
@@ -55,15 +53,15 @@ export default function GeneratedRecipeCard({ recipe }: { recipe: any }) {
             {recipe?.ingredients?.map(
               (
                 ingredient: { amount: number; unit: string; item: string },
-                idx: number
+                idx: number,
               ) => (
                 <li key={idx} className="flex items-center space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                  <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   <span>
                     {ingredient.amount} {ingredient.unit} {ingredient.item}
                   </span>
                 </li>
-              )
+              ),
             )}
             {recipe?.ingredients?.length > 4 && (
               <li className="text-body-muted text-xs">
@@ -73,7 +71,7 @@ export default function GeneratedRecipeCard({ recipe }: { recipe: any }) {
           </ul>
         </div>
         <div className="flex gap-2 pt-4">
-          <FullRecipeModel recipe={recipe}/>
+          <FullRecipeModel recipe={recipe} />
         </div>
       </div>
     </>

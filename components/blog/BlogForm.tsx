@@ -310,7 +310,7 @@ export default function BlogForm({
           <h1 className="text-6xl font-bold mb-4">
             <span className="">Edit Your Blog</span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
+          <p className="text-xl text-muted-foreground">
             Update and refine your Ethiopian culinary masterpiece below.
           </p>
         </div>

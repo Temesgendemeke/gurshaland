@@ -36,7 +36,7 @@ const TipsForm = ({ form, index }: TipsFormProps) => {
               size="icon"
               className="h-9 w-9 shrink-0"
             >
-              <Trash className="h-4 w-4 text-red-500" />
+              <Trash className="h-4 w-4 text-destructive" />
             </Button>
           </div>
 

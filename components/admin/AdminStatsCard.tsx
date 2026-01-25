@@ -45,7 +45,7 @@ export function AdminStatsCard({
               <span
                 className={cn(
                   "text-xs font-semibold",
-                  trend.isPositive ? "text-emerald-500" : "text-destructive",
+                  trend.isPositive ? "text-primary" : "text-destructive",
                 )}
               >
                 {trend.isPositive ? "+" : "-"}

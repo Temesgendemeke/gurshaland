@@ -8,11 +8,7 @@ export default function RecipeDetailSkeleton() {
   return (
     <div className="w-full md:max-w-9xl mx-auto px-6 py-12">
       {/* Back Navigation Skeleton */}
-      <Button
-        variant="ghost"
-        className="mb-6 hover:bg-emerald-100 dark:hover:bg-emerald-900/50"
-        disabled
-      >
+      <Button variant="ghost" className="mb-6 hover:bg-muted/50" disabled>
         <ArrowLeft className="w-4 h-4 mr-2" />
         <Skeleton className="h-4 w-32 inline-block" />
       </Button>

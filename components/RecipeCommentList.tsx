@@ -47,7 +47,7 @@ const RecipeCommentList = ({ comments, user_id }: RecipeCommentListProps) => {
               {/* <Button
                           variant="ghost"
                           size="sm"
-                          className="text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+                          className="text-muted-foreground hover:text-primary"
                         >
                           <ThumbsUp className="w-3 h-3 mr-1" />
                           {comment.likes}

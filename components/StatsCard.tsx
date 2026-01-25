@@ -79,8 +79,8 @@ const StatsCard = ({
             <div className="mt-3 grid grid-cols-2 gap-2">
               <div
                 className="rounded-lg p-3 ring-1 ring-inset
-                ring-emerald-400/30 dark:ring-emerald-700/40
-                bg-white/60 dark:bg-emerald-950/20
+                ring-primary/25 dark:ring-primary/30
+                bg-background/60 dark:bg-background/40
                 backdrop-blur-sm transition-colors"
               >
                 <div className="text-[11px] font-semibold uppercase tracking-wide text-primary/80 dark:text-primary/80">
@@ -93,8 +93,8 @@ const StatsCard = ({
 
               <div
                 className="rounded-lg p-3 ring-1 ring-inset
-                ring-amber-400/30 dark:ring-amber-700/40
-                bg-white/60 dark:bg-amber-950/10
+                ring-warning/25 dark:ring-warning/30
+                bg-background/60 dark:bg-background/40
                 backdrop-blur-sm transition-colors"
               >
                 <div className="text-[11px] font-semibold uppercase tracking-wide text-warning dark:text-warning/90">

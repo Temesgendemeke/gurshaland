@@ -13,7 +13,7 @@ export default function ImageGenerationTest() {
     try {
       console.log("🧪 Starting image generation test");
       const result = await generateRecipeImage(
-        "Ethiopian traditional cuisine, colorful food"
+        "Ethiopian traditional cuisine, colorful food",
       );
 
       if (result) {
@@ -25,7 +25,7 @@ export default function ImageGenerationTest() {
       }
     } catch (error) {
       setTestResult(
-        `❌ Error: ${error instanceof Error ? error.message : "Unknown error"}`
+        `❌ Error: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
       console.error("❌ Test error:", error);
     } finally {
@@ -34,17 +34,17 @@ export default function ImageGenerationTest() {
   };
 
   return (
-    <div className="p-4 border rounded-lg">
+    <div className="p-4 border border-border bg-card/50 rounded-lg">
       <h3 className="text-lg font-bold mb-4">Image Generation Test</h3>
       <button
         onClick={testImageGeneration}
         disabled={isLoading}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+        className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 disabled:opacity-50"
       >
         {isLoading ? "Testing..." : "Test Image Generation"}
       </button>
       {testResult && (
-        <div className="mt-4 p-3 bg-gray-100 rounded">
+        <div className="mt-4 p-3 bg-muted/30 border border-border/60 rounded">
           <pre className="text-sm">{testResult}</pre>
         </div>
       )}

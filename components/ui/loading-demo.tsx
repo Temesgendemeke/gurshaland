@@ -29,8 +29,8 @@ export function LoadingDemo() {
         <h3 className="text-lg font-semibold">Basic Skeletons</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <LoadingSkeleton className="h-20 w-full" />
-          <ShimmerSkeleton className="h-20 w-full bg-blue-100 dark:bg-blue-900/30" />
-          <PulseSkeleton className="h-20 w-full bg-green-100 dark:bg-green-900/30" />
+          <ShimmerSkeleton className="h-20 w-full bg-primary/10" />
+          <PulseSkeleton className="h-20 w-full bg-muted/40" />
         </div>
       </div>
 
