@@ -12,6 +12,8 @@ import {
 } from "@heroicons/react/24/outline";
 import HeroSection from "@/components/HeroSection";
 import generateImage from "@/utils/genAI";
+import WhyCard from "@/components/WhyCard";
+import why_gurshaland from "@/constants/homepage";
 
 export default async function HomePage() {
   return (
@@ -66,60 +68,30 @@ export default async function HomePage() {
       {/* Features */}
       <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold heading-primary mb-3">
+          <div className="mb-10">
+            <h2 className="text-5xl font-bold heading-primary mb-3">
               Why Choose Gurshaland?
             </h2>
-            <p className="text-lg text-body">
+            <p className="text-2xl text-body">
               Your gateway to authentic Ethiopian cuisine
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 text-center hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group modern-card modern-card-hover">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary via-primary/80 to-primary/60 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-                <BookOpen className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <h3 className="text-2xl font-bold heading-primary mb-4">
-                Authentic Recipes
-              </h3>
-              <p className="text-body leading-relaxed">
-                Traditional recipes passed down through generations, shared by
-                Ethiopian families and chefs worldwide.
-              </p>
-            </Card>
-
-            <Card className="p-8 text-center hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group modern-card modern-card-hover">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary via-primary/80 to-primary/60  rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-                <Group className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <h3 className="text-2xl font-bold heading-primary mb-4">
-                Vibrant Community
-              </h3>
-              <p className="text-body leading-relaxed">
-                Connect with fellow food lovers, share your creations, and learn
-                from experienced Ethiopian cooks.
-              </p>
-            </Card>
-
-            <Card className="p-8 text-center hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group modern-card modern-card-hover">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary via-primary/80 to-primary/60 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-                <Award className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <h3 className="text-2xl font-bold heading-primary mb-4">
-                Cultural Heritage
-              </h3>
-              <p className="text-body leading-relaxed">
-                Learn about the rich history and cultural significance behind
-                every dish and dining tradition.
-              </p>
-            </Card>
+            {why_gurshaland.map((item) => (
+              <WhyCard
+                key={item.title}
+                title={item.title}
+                description={item.description}
+                icon={<item.icon  className="w-8 h-8 text-primary-foreground" />}
+              />
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <Card className="p-10 text-center bg-gradient-to-r from-primary/10 to-popular/10 border-primary/20 text-foreground">
+      <Card className="p-10 text-center bg-linear-to-r from-primary/10 to-popular/10 border-primary/20 text-foreground">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-foreground mb-4">
             Ready to Start Your Culinary Journey?

@@ -1,55 +1,106 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { Clock, User } from "lucide-react";
+import { Clock, Calendar, ArrowRight, Hash } from "lucide-react";
 import { format_date } from "@/utils/formatdate";
 import { Blog } from "@/utils/types/blog";
+import { cn } from "@/lib/utils";
 
 export default function BlogPostCard({ post }: { post: Blog }) {
   return (
-    <Link key={post.slug} href={`/blog/${post.slug}`}>
-      <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group bg-card/70 backdrop-blur-sm border-primary/20 h-full">
-        <div className="relative">
-          <img
+    <Link href={`/blog/${post.slug}`} className="group h-full block">
+      <Card className="flex h-full flex-col overflow-hidden rounded-2xl border border-muted bg-card shadow-sm transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/5">
+        {/* Image Section */}
+        <div className="relative aspect-video w-full overflow-hidden">
+          <Image
             src={post?.image?.url || "/placeholder.svg"}
             alt={post.title}
-            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          <div className="absolute top-4 left-4">
-            <Badge
-              variant="secondary"
-              className="bg-background/80 text-foreground backdrop-blur border border-border/50"
-            >
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-70" />
+
+          {/* Category Badge */}
+          <div className="absolute left-3 top-3">
+            <Badge className="border-0 bg-background/90 text-foreground backdrop-blur-md font-medium hover:bg-background/95 shadow-sm">
               {post.category}
             </Badge>
           </div>
         </div>
-        <div className="p-6 flex flex-col h-full">
-          <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
+
+        {/* Content Section */}
+        <div className="flex flex-1 flex-col p-5">
+          {/* Date & Read Time */}
+          <div className="mb-3 flex items-center gap-3 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1.5">
+              <Calendar className="h-3.5 w-3.5" />
+              <span>{format_date(post?.created_at as string)}</span>
+            </div>
+            <div className="h-1 w-1 rounded-full bg-muted-foreground/30" />
+            <div className="flex items-center gap-1.5">
+              <Clock className="h-3.5 w-3.5" />
+              <span>{post.read_time}</span>
+            </div>
+          </div>
+
+          <h3 className="mb-2 line-clamp-2 text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
             {post.title}
           </h3>
-          <p className="text-muted-foreground mb-4 flex-grow line-clamp-3">
+
+          <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
             {post.subtitle}
           </p>
-          <div className="flex flex-wrap gap-1 mb-4">
-            {post.tags?.slice(0, 2).map((tag: string) => (
-              <Badge key={tag} variant="secondary" className="text-xs">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-          <div className="flex items-center justify-between text-sm text-muted-foreground mt-auto">
-            <div className="flex items-center space-x-2">
-              <User className="w-4 h-4" />
-              <span className="truncate">{post.author?.full_name}</span>
+
+          <div className="mt-auto">
+            {/* Tags */}
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {post.tags.slice(0, 2).map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center text-[10px] font-medium text-primary bg-primary/5 px-2 py-1 rounded-md"
+                  >
+                    <Hash className="w-2.5 h-2.5 mr-1 opacity-50" /> {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div className="flex items-center justify-between border-t border-border pt-4 mt-2">
+              {/* Author */}
+              <div className="flex items-center gap-3">
+                <div className="h-9 w-9 overflow-hidden rounded-full border border-border bg-muted shrink-0 relative">
+                  {post.author?.avatar ? (
+                    <Image
+                      src={post.author.avatar}
+                      alt={post.author.full_name}
+                      fill
+                      className="object-cover"
+                      sizes="36px"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-primary/10 text-xs font-bold text-primary">
+                      {post.author?.full_name?.[0]?.toUpperCase() || "A"}
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs font-semibold text-foreground line-clamp-1">
+                    {post.author?.full_name || "Anonymous"}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground">
+                    @{post.author?.username || "unknown"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Arrow */}
+              <div className="rounded-full bg-secondary/50 p-2 text-secondary-foreground transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:translate-x-1">
+                <ArrowRight className="h-4 w-4" />
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <Clock className="w-4 h-4" />
-              <span>{post.read_time} read</span>
-            </div>
-          </div>
-          <div className="text-xs text-muted-foreground mt-1">
-            {format_date(post?.created_at as string)}
           </div>
         </div>
       </Card>

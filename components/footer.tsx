@@ -7,7 +7,7 @@ import Logo from "./Logo";
 
 export function Footer() {
   return (
-    <footer className="bg-muted text-muted-foreground w-full">
+    <footer className="bg-muted text-muted-foreground w-full mx-auto">
       <div className="container mx-auto px-6 py-12">
         <div className="grid md:grid-cols-4 gap-8">
           <div>

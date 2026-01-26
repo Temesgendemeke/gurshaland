@@ -20,6 +20,8 @@ import { TrendingRecipes } from "./trending-recipes";
 import { blogStore } from "@/store/Blog";
 import Image from "next/image";
 import RecipeListSkeleton from "./skeleton/RecipeList";
+import RecipeCard from "./recipe/RecipeCard";
+import BlogPostCard from "./BlogPostCard";
 
 export function FeaturedCards() {
   // const { featuredContent, getFeaturedContent } = useAppStore()
@@ -61,82 +63,13 @@ export function FeaturedCards() {
           <RecipeListSkeleton />
         ) : (
           <div className="grid md:grid-cols-3 gap-6">
-            {featuredRecipes?.map((recipe: FeaturedRecipe) => (
-              <Card
-                key={recipe.id}
-                className="modern-card overflow-hidden modern-card-hover group hover:scale-105 transition-transform duration-300 h-full flex flex-col"
-              >
-                <div className="relative shrink-0">
-                  <Image
-                    width={100}
-                    height={100}
-                    src={recipe.image?.url || "/placeholder.svg"}
-                    alt={recipe.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-primary text-primary-foreground">
-                      Featured
-                    </Badge>
-                  </div>
-                  <div className="absolute top-4 right-4 bg-card/80 border border-border/40 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1 shadow-sm">
-                    <Star className="w-4 h-4 text-warning fill-current" />
-                    <span className="text-sm font-semibold text-foreground/90">
-                      {recipe.average_rating ?? 0}
-                    </span>
-                  </div>
-                  {(recipe.rating_count ?? 0) > 10 && (
-                    <div className="absolute bottom-4 left-4">
-                      <Badge
-                        variant="secondary"
-                        className="bg-popular/10 text-popular"
-                      >
-                        <TrendingUp className="w-3 h-3 mr-1" />
-                        Popular
-                      </Badge>
-                    </div>
-                  )}
-                </div>
-
-                <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-xl font-bold heading-primary mb-2 cursor-pointer group-hover:text-primary transition-colors">
-                    {recipe.title}
-                  </h3>
-                  <p className="text-body mb-4 line-clamp-2">
-                    {recipe.description}
-                  </p>
-
-                  <div className="flex items-center justify-between text-sm text-body-muted mb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-1">
-                        <ChefHat className="w-4 h-4" />
-                        <span>{recipe.difficulty}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Users className="w-4 h-4" />
-                        <span>{recipe.servings}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {(recipe.rating_count ?? 0) > 0 && (
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-sm text-body-muted">
-                        Rating: {recipe.average_rating ?? 0} (
-                        {recipe.rating_count} reviews)
-                      </div>
-                    </div>
-                  )}
-
-                  <Button
-                    asChild
-                    className="w-full btn-primary-modern rounded-full mt-auto"
-                  >
-                    <Link href={`/recipes/${recipe.slug}`}>View Recipe</Link>
-                  </Button>
-                </div>
-              </Card>
-            ))}
+            {featuredRecipes?.map((recipe: FeaturedRecipe) =>
+              featuredRecipes.length == 0 ? (
+                <p>No recipe found</p>
+              ) : (
+                <RecipeCard key={recipe.id} recipe={recipe} />
+              ),
+            )}
           </div>
         )}
       </section>
@@ -170,63 +103,7 @@ export function FeaturedCards() {
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {blogs?.map((post) => (
-              <Link
-                key={post.id}
-                href={`/blog/${post.slug}?from=/`}
-                className="block h-full"
-              >
-                <Card className="modern-card modern-card-hover group hover:scale-105 transition-transform duration-300 overflow-hidden h-full flex flex-col">
-                  <div className="relative shrink-0">
-                    <Image
-                      width={100}
-                      height={100}
-                      src={post.image?.url || "/placeholder.svg"}
-                      alt={post.title}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <Badge
-                        variant="secondary"
-                        className="bg-card/80 text-foreground border border-border/40 backdrop-blur-sm shadow-sm"
-                      >
-                        {post.category}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  <div className="p-6 flex flex-col flex-1">
-                    <h3 className="text-xl font-bold heading-primary mb-2 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h3>
-                    <p className="text-body mb-4 line-clamp-2">
-                      {post?.subtitle}
-                    </p>
-
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {post.tags?.slice(0, 2).map((tag, index) => (
-                        <Badge
-                          key={`${tag}-${index}`}
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between text-sm text-body-muted mt-auto">
-                      <div className="flex items-center space-x-2">
-                        <User className="w-4 h-4" />
-                        <span>{post.author?.username ?? "noname"}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Clock className="w-4 h-4" />
-                        <span>{post?.read_time} read</span>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </Link>
+              <BlogPostCard key={post.id} post={post} />
             ))}
           </div>
         )}
