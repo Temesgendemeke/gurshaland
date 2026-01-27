@@ -9,12 +9,17 @@ const InstructionsView = ({
   instructions: Instruction[];
 }) => {
   return (
-    <Card className="p-6 bg-card/70 backdrop-blur-sm border-border/50">
-      <h2 className="text-2xl font-bold text-foreground mb-6">Instructions</h2>
+    <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
+      <h2 className="heading-secondary text-2xl md:text-3xl border-b border-border pb-3">
+        Instructions
+      </h2>
       <div className="space-y-6">
         {instructions.map((instruction: Instruction) => (
-          <div key={instruction.step} className="flex space-x-4">
-            <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold shadow-sm">
+          <div key={instruction.step} className="flex gap-4">
+            <div
+              className="shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold shadow-sm"
+              aria-hidden="true"
+            >
               {instruction.step}
             </div>
 
@@ -31,21 +36,21 @@ const InstructionsView = ({
             )}
 
             <div className="flex-1">
-              <h2 className="font-semibold text-2xl text-foreground mb-2">
+              <h3 className="font-semibold text-xl text-foreground mb-1">
                 {instruction.title}
-              </h2>
-              <p className="text-muted-foreground mb-2">
+              </h3>
+              <p className="text-muted-foreground mb-1 leading-relaxed">
                 {instruction.description}
               </p>
-              <div
-                className={`flex items-center space-x-4 text-sm text-muted-foreground/80 ${instruction.time ? "" : "hidden"}`}
-              >
-                <span>⏱️ {instruction.time} min</span>
-              </div>
+              {instruction.time && (
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <span aria-label="Time">⏱️ {instruction.time} min</span>
+                </div>
+              )}
               {instruction.tips && (
-                <div className="mt-3 p-3 bg-primary/5 rounded-lg border-l-4 border-primary">
-                  <p className="text-sm text-foreground/90">
-                    <strong className="text-primary">Tip:</strong>{" "}
+                <div className="mt-3 p-3 bg-muted rounded-md border border-border">
+                  <p className="text-sm text-muted-foreground">
+                    <span className="font-medium text-foreground">Tip:</span>{" "}
                     {instruction.tips}
                   </p>
                 </div>

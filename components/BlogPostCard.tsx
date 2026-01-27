@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 export default function BlogPostCard({ post }: { post: Blog }) {
   return (
     <Link href={`/blog/${post.slug}`} className="group h-full block">
-      <Card className="flex h-full flex-col overflow-hidden rounded-2xl border border-muted bg-card shadow-sm transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/5">
+      <Card className="flex h-full flex-col overflow-hidden rounded-2xl border border-muted bg-card/70 shadow-sm transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/5">
         {/* Image Section */}
         <div className="relative aspect-video w-full overflow-hidden">
           <Image

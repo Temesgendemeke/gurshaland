@@ -53,24 +53,42 @@ const ActionButtons = ({ recipe_id, user_id }: ActionButtonsProps) => {
       <Button
         onClick={handleLike}
         variant={isLiked ? "default" : "outline"}
-        className="flex-1 sm:flex-none"
+        className={`group flex-1 sm:flex-none transition-none  ${isLiked ? "hover:bg-primary hover:text-primary-foreground" : "hover:bg-background hover:text-foreground"}`}
       >
         {isLiked ? (
-          <SolidHeart className="w-4 h-4 mr-2" />
+          <SolidHeart className="w-4 h-4 mr-2" aria-hidden="true" />
         ) : (
-          <Heart className="w-4 h-4 mr-2" />
+          <>
+            <Heart
+              className="w-4 h-4 mr-2 group-hover:hidden"
+              aria-hidden="true"
+            />
+            <SolidHeart
+              className="w-4 h-4 mr-2 hidden group-hover:inline"
+              aria-hidden="true"
+            />
+          </>
         )}
         {isLiked ? "Liked" : "Like"} ({likes?.length})
       </Button>
       <Button
         onClick={handleBookmark}
         variant={isBookmarked ? "default" : "outline"}
-        className="flex-1 sm:flex-none"
+        className={`group flex-1 sm:flex-none transition-none ${isBookmarked ? "hover:bg-primary hover:text-primary-foreground" : "hover:bg-background hover:text-foreground"}`}
       >
         {isBookmarked ? (
-          <SolidBookmark className="w-4 h-4 mr-2" />
+          <SolidBookmark className="w-4 h-4 mr-2" aria-hidden="true" />
         ) : (
-          <Bookmark className="w-4 h-4 mr-2" />
+          <>
+            <Bookmark
+              className="w-4 h-4 mr-2 group-hover:hidden"
+              aria-hidden="true"
+            />
+            <SolidBookmark
+              className="w-4 h-4 mr-2 hidden group-hover:inline"
+              aria-hidden="true"
+            />
+          </>
         )}
         {isBookmarked ? "Saved" : "Save"}
       </Button>

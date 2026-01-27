@@ -53,12 +53,12 @@ export default function RecipeDetailPage() {
   }, [slug, user]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen ">
       <Header />
       {loading || !recipe ? (
         <RecipeDetailSkeleton />
       ) : (
-        <div className="w-full md:max-w-7xl mx-auto px-6 py-12 space-y-4">
+        <div className="w-full max-w-7xl mx-auto px-6 py-12 space-y-6">
           {/* Back Navigation */}
           <BackNavigation pagename={"Recipes"} />
           {/* Compare user id with recipe author id */}
@@ -73,7 +73,7 @@ export default function RecipeDetailPage() {
           />
 
           {/* Recipe Header */}
-          <div className="grid lg:grid-cols-2 gap-12 mb-12">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 mb-10">
             <div>
               <img
                 src={recipe.image.url || "/placeholder.svg"}
@@ -83,7 +83,7 @@ export default function RecipeDetailPage() {
             </div>
 
             <div>
-              <div className="flex items-center space-x-2 mb-4">
+              <div className="flex items-center gap-2 mb-4">
                 <Badge className="bg-primary/10 text-primary border-primary/20">
                   {recipe.category?.name}
                 </Badge>
@@ -98,44 +98,58 @@ export default function RecipeDetailPage() {
                 ))}
               </div>
 
-              <h1 className="text-4xl break-words max-w-full font-bold text-foreground mb-4">
+              <h1 className="heading-primary text-4xl md:text-5xl wrap-break-word max-w-full mb-3 font-gosh">
                 {recipe.title}
               </h1>
-              <p className="text-lg text-muted-foreground mb-6">
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                 {recipe.description}
               </p>
 
               {/* Recipe Meta */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div className="text-center p-4 bg-card/70 backdrop-blur-sm rounded-xl border border-border/50">
-                  <Clock className="w-6 h-6 text-primary mx-auto mb-2" />
+                <div className="text-center p-5 bg-card rounded-lg border border-border">
+                  <Clock
+                    className="w-6 h-6 text-primary mx-auto mb-2"
+                    aria-hidden="true"
+                  />
                   <div className="text-sm text-muted-foreground">
                     Total Time
                   </div>
-                  <div className="font-semibold text-foreground">
-                    {recipe.preptime + recipe.cooktime || "unkown"}
+                  <div className="text-lg font-semibold text-foreground">
+                    {recipe.preptime && recipe.cooktime
+                      ? recipe.preptime + recipe.cooktime
+                      : "Unknown"}
                   </div>
                 </div>
-                <div className="text-center p-4 bg-card/70 backdrop-blur-sm rounded-xl border border-border/50">
-                  <Group className="w-6 h-6 text-warning mx-auto mb-2" />
+                <div className="text-center p-5 bg-card rounded-lg border border-border">
+                  <Group
+                    className="w-6 h-6 text-warning mx-auto mb-2"
+                    aria-hidden="true"
+                  />
                   <div className="text-sm text-muted-foreground">Servings</div>
-                  <div className="font-semibold text-foreground">
+                  <div className="text-lg font-semibold text-foreground">
                     {recipe.servings}
                   </div>
                 </div>
-                <div className="text-center p-4 bg-card/70 backdrop-blur-sm rounded-xl border border-border/50">
-                  <Restaurant className="w-6 h-6 text-popular mx-auto mb-2" />
+                <div className="text-center p-5 bg-card rounded-lg border border-border">
+                  <Restaurant
+                    className="w-6 h-6 text-popular mx-auto mb-2"
+                    aria-hidden="true"
+                  />
                   <div className="text-sm text-muted-foreground">
                     Difficulty
                   </div>
-                  <div className="font-semibold text-foreground">
+                  <div className="text-lg font-semibold text-foreground">
                     {recipe.difficulty}
                   </div>
                 </div>
-                <div className="text-center p-4 bg-card/70 backdrop-blur-sm rounded-xl border border-border/50">
-                  <Star className="w-6 h-6 text-warning mx-auto mb-2" />
+                <div className="text-center p-5 bg-card rounded-lg border border-border">
+                  <Star
+                    className="w-6 h-6 text-warning mx-auto mb-2"
+                    aria-hidden="true"
+                  />
                   <div className="text-sm text-muted-foreground">Rating</div>
-                  <div className="font-semibold text-foreground">
+                  <div className="text-lg font-semibold text-foreground">
                     {recipe.average_rating
                       ? recipe.average_rating
                       : "Not rated yet"}
@@ -157,18 +171,21 @@ export default function RecipeDetailPage() {
           {/* Recipe Content */}
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 space-y-8">
-              {/* Ingredients */}
-              <IngredientsView ingredients={recipe?.ingredients} />
-
               {/* Instructions */}
               <InstructionsView instructions={recipe?.instructions} />
+
+              {/* Ingredients */}
+              <IngredientsView ingredients={recipe?.ingredients} />
 
               {/* Cultural Note */}
               <RecipeCulturalNote culturalNote={recipe?.culturalNote} />
 
               {/* youtube video section */}
-              <Card className="p-6 bg-card/70 backdrop-blur-sm border-border/50">
-                <YoutubeVideoSection videoId={recipe.youtube_video_id} />
+              <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
+                <YoutubeVideoSection
+                  videoId={recipe.youtube_video_id}
+                  videoQuery={recipe.youtube_search_query}
+                />
               </Card>
             </div>
 
@@ -186,7 +203,7 @@ export default function RecipeDetailPage() {
               />
 
               {/* Comments */}
-              <Card className="p-6 bg-card/70 backdrop-blur-sm border-border/50">
+              <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
                 <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
                   <MessageRoundedDetail className="w-5 h-5 mr-2" />
                   Comments ({recipe.comments.length})
@@ -205,8 +222,6 @@ export default function RecipeDetailPage() {
           </div>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 }

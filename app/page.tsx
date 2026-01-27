@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { FeaturedCards } from "@/components/featured-cards";
 import { TrendingSection } from "@/components/trending-section";
 import Link from "next/link";
@@ -18,41 +17,6 @@ import why_gurshaland from "@/constants/homepage";
 export default async function HomePage() {
   return (
     <div className="relative z-10">
-      <div className="grain-overlay">
-        <svg
-          className="grain-svg"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <filter id="grain">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.7"
-              numOctaves="3"
-              stitchTiles="stitch"
-              result="noise"
-            />
-            <feColorMatrix
-              in="noise"
-              type="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
-              result="mono"
-            />
-            <feComponentTransfer in="mono" result="grainAlpha">
-              <feFuncA type="gamma" amplitude="1" exponent="1.4" offset="0" />
-            </feComponentTransfer>
-            <feComposite in="SourceGraphic" in2="grainAlpha" operator="in" />
-          </filter>
-
-          <rect
-            className="grain-rect"
-            width="100%"
-            height="100%"
-            filter="url(#grain)"
-          />
-        </svg>
-      </div>
       <Header />
 
       {/* Hero Section */}
@@ -83,7 +47,7 @@ export default async function HomePage() {
                 key={item.title}
                 title={item.title}
                 description={item.description}
-                icon={<item.icon  className="w-8 h-8 text-primary-foreground" />}
+                icon={<item.icon className="w-8 h-8 text-primary-foreground" />}
               />
             ))}
           </div>
@@ -120,7 +84,7 @@ export default async function HomePage() {
         </div>
       </Card>
 
-      <Footer />
+      {/* Footer is rendered globally in RootLayout */}
     </div>
   );
 }

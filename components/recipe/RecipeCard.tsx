@@ -36,7 +36,7 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
     <Link href={`/recipes/${recipe.slug}`} className="group block h-full">
       <Card
         key={recipe.id}
-        className="flex h-full flex-col overflow-hidden rounded-2xl border border-muted bg-card shadow-sm transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/5"
+        className="flex h-full flex-col overflow-hidden rounded-2xl border border-muted bg-card/70 shadow-sm transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/5"
       >
         {/* Image Container */}
         <div className="relative aspect-[4/3] w-full overflow-hidden">

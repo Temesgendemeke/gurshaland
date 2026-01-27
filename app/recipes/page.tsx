@@ -97,7 +97,7 @@ export default function RecipesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen ">
       <Header />
 
       <div className="mx-auto w-[calc(100%-1rem)] max-w-7xl px-6 py-12">
@@ -194,7 +194,6 @@ export default function RecipesPage() {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 }

@@ -10,7 +10,7 @@ interface WhyCardProps {
 
 const WhyCard = ({ title, description, icon }: WhyCardProps) => {
   return (
-    <Card className="p-8 text-left hover:shadow-sm">
+    <Card className="p-8 text-left hover:shadow-sm bg-card/70 hover:bg-card/70 transition-all duration-300">
       <div className="w-16 h-16 bg-linear-to-br from-primary via-primary/80 to-primary/60 rounded-2xl flex items-center justify-center mb-6 ">
         {icon}
       </div>

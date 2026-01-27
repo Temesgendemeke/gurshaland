@@ -1,0 +1,8 @@
+{
+  "rules": [
+    "Before generating or modifying any UI code, you MUST read and strictly follow README.UI.md instructions.",
+    "NO gradients, NO purple, NO rainbow palettes.",
+    "Use semantic Tailwind color tokens only (bg-surface, text-primary, border-border).",
+    "UI must look calm, professional, and non-AI-generated."
+  ]
+}

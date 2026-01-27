@@ -3,6 +3,7 @@ import React from "react";
 import { Card } from "./ui/card";
 import { useRouter } from "next/navigation";
 import { Profile } from "@/utils/types/profile";
+import Image from "next/image";
 
 interface AuthorInfoProps {
   author: {
@@ -20,18 +21,20 @@ const AuthorInfo = ({ author }: AuthorInfoProps) => {
   return (
     <Card
       onClick={() => router.push(`/profile/${author.username}`)}
-      className="p-4 cursor-pointer bg-card/70 backdrop-blur-sm border-border/50"
+      className="p-4 sm:p-5 cursor-pointer bg-card  rounded-lg"
     >
       <div className="flex items-center space-x-4">
-        <img
-          src={author?.avatar_url || "https://avatar.iran.liara.run/public/boy"}
-          alt={author?.full_name}
-          className="w-12 h-12 rounded-full"
+        <Image
+          src={author?.avatar_url || "/placeholder-user.jpg"}
+          alt={author?.full_name[0] || "Author Avatar"}
+          className="w-12 h-12 rounded-full object-cover ring-1 ring-border"
+          width={48}
+          height={48}
         />
         <div>
           <h3 className="font-semibold text-foreground">@{author?.username}</h3>
           <p className="text-sm text-muted-foreground">{author?.bio}</p>
-          <p className="text-xs text-muted-foreground/80">
+          <p className="text-sm text-muted-foreground/80">
             {author?.recipes} recipes shared
           </p>
         </div>
