@@ -16,18 +16,26 @@ import { Star, Users, ChefHat } from "lucide-react";
 import BackNavigation from "@/components/BackNavigation";
 import CategoryHeader from "@/components/CategoryHeader";
 import { getRecipesByCategory } from "@/actions/Recipe/category";
+import Recipe from "@/utils/types/recipe";
 
 type CategoryPageProps = {
   params: { category: string };
+  searchParams: { id: string };
 };
 
-const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
+const CategoryPage: React.FC<CategoryPageProps> = async ({
+  params,
+  searchParams,
+}) => {
+  const { id } = await searchParams;
+  const { category } = await params;
+  console.log(id);
   try {
-    const recipes = await getRecipesByCategory(params.category);
+    const recipes = await getRecipesByCategory(id);
 
     if (!recipes || recipes.length === 0) {
       return (
-        <div className="min-h-screen bg-background">
+        <div >
           <Header />
           <div className="max-w-7xl mx-auto px-6 py-12">
             <BackNavigation route={"/categories"} pagename={"Categories"} />
@@ -43,15 +51,14 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
               </Button>
             </div>
           </div>
-          <Footer />
         </div>
       );
     }
 
-    const currentCategory = recipes[0]?.category || params.category;
+    const currentCategory = recipes[0]?.category || category;
 
     return (
-      <div className="min-h-screen bg-background">
+      <div className="bg-background">
         <Header />
 
         <div className="max-w-7xl mx-auto px-6 py-12">
@@ -167,13 +174,12 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
           </div>
         </div>
 
-        <Footer />
       </div>
     );
   } catch (error) {
     console.error("Error fetching category recipes:", error);
     return (
-      <div className="min-h-screen bg-background">
+      <div className="">
         <Header />
         <div className="max-w-7xl mx-auto px-6 py-12">
           <BackNavigation route={"/categories"} pagename={"Categories"} />
@@ -189,7 +195,6 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
             </Button>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }

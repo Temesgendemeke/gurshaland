@@ -8,10 +8,10 @@ export const getCategories = async () => {
   return data || [];
 };
 
-export const getRecipesByCategory = async (category: string) => {
+export const getRecipesByCategory = async (category_id: string) => {
   const supabase = createClient();
   const { data, error } = await supabase.rpc("get_recipe_by_category", {
-    _category: category,
+    _category_id: category_id,
   });
 
   if (error) throw error;

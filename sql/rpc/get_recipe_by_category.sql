@@ -1,6 +1,7 @@
-CREATE OR REPLACE FUNCTION get_recipe_by_category(_category TEXT)
+CREATE OR REPLACE FUNCTION get_recipe_by_category(_category_id INT8)
 RETURNS jsonb
 LANGUAGE plpgsql
+SECURITY INVOKER
 AS $$
 BEGIN
     RETURN (
@@ -29,20 +30,23 @@ BEGIN
                     WHERE p.id = r.author_id
                 ),
                 'image', (
-                    SELECT row_to_json(img)
+                    SELECT jsonb_build_object(
+                        'id', img.id,
+                        'url', img.url
+                    )
                     FROM recipe_image img
                     WHERE img.recipe_id = r.id
+                    LIMIT 1
                 ),
                 'tags', r.tags,
                 'prepTime', r.preptime,
                 'totalTime', r.totaltime,
                 'status', r.status,
-                'slug', r.slug,
                 'author_id', r.author_id
             )
         ), '[]'::jsonb)
         FROM recipe r
-        WHERE r.category = _category
+        WHERE r.category_id = _category_id
         AND r.status = 'published'
     );
 END;

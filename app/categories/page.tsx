@@ -38,9 +38,9 @@ export default async function CategoriesPage() {
                 key={category.id}
                 href={`/categories/${category.name
                   .toLowerCase()
-                  .replace(/\s+/g, "-")}`}
+                  .replace(/\s+/g, "-")}?id=${category.id}`}
               >
-                <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl hover:scale-105 transition-all duration-300 group bg-card/70 backdrop-blur-sm border-primary/20 h-full">
+                <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl  group bg-card/70 backdrop-blur-sm border-primary/20 h-full">
                   <div className="relative">
                     {/* Category Image */}
                     <Image
@@ -51,10 +51,9 @@ export default async function CategoriesPage() {
                       width={500}
                       height={500}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                     <div className="absolute top-4 left-4">
                       <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-                        <IconComponent className="w-6 h-6 text-primary-foreground" />
+                        <IconComponent className="w-6 h-6  text-white" />
                       </div>
                     </div>
                     <div className="absolute bottom-4 left-4 right-4">
@@ -103,8 +102,6 @@ export default async function CategoriesPage() {
           })}
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }
