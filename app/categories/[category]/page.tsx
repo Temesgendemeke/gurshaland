@@ -35,10 +35,9 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 
     if (!recipes || recipes.length === 0) {
       return (
-        <div >
+        <div>
           <Header />
           <div className="max-w-7xl mx-auto px-6 py-12">
-            <BackNavigation route={"/categories"} pagename={"Categories"} />
             <div className="text-center py-12">
               <h1 className="text-2xl font-bold text-foreground mb-4">
                 No recipes found in this category

@@ -24,5 +24,6 @@ export const config = {
     '/blogs/edit/:path*',
     '/settings/:path*',
     '/admin/:path*',
+    "/meal-planner/:path*",
   ],
 }

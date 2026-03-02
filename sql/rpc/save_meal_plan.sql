@@ -3,6 +3,8 @@ CREATE OR REPLACE FUNCTION save_meal_plan(
 )
 RETURNS jsonb
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
 AS $$
 DECLARE
     _meal_plan_id BIGINT;
@@ -10,7 +12,21 @@ DECLARE
     _meal_record jsonb;
     _day_id BIGINT;
     _result jsonb;
+    _current_user_id UUID;
 BEGIN
+    -- Get current user ID
+    _current_user_id := auth.uid();
+
+    -- Ensure user is authenticated
+    IF _current_user_id IS NULL THEN
+        RAISE EXCEPTION 'Authentication required to save meal plans';
+    END IF;
+
+    -- Ensure the author_id matches the authenticated user (prevents spoofing)
+    IF (_meal_plan ->> 'author_id') IS NULL OR (_meal_plan ->> 'author_id')::UUID IS DISTINCT FROM _current_user_id THEN
+        RAISE EXCEPTION 'Unauthorized: author_id mismatch or missing';
+    END IF;
+
     -- Insert into meal_plan
     INSERT INTO meal_plan (
         name,

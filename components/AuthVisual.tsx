@@ -1,8 +1,10 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import gursh_image from "@/public/gursha.webp";
+import { Button } from "./ui/button";
+import BackNav from "./BackNav";
 
 const AuthVisual = () => {
   return (
@@ -13,7 +15,7 @@ const AuthVisual = () => {
           src={gursh_image}
           alt="Ethiopian Cuisine"
           fill
-          className="object-cover opacity-90 scale-110"
+          className="object-cover opacity-90 scale-110 saturate-50"
           priority
           sizes="50vw"
         />
@@ -48,29 +50,37 @@ const AuthVisual = () => {
       </div>
 
       {/* Top Bar */}
-      <div className="relative z-10 flex items-center justify-between w-full">
-        <Link
-          href="/"
-          className="flex items-center gap-2 px-4 py-2 rounded-md bg-white/10 hover:bg-white/20 border border-white/10 transition-colors duration-200 text-sm font-medium group text-white"
+      {/* <div className="relative z-10 flex items-center justify-between w-full">
+        <Button
+          onClick={() => router.back()}
+          className="flex items-center gap-2 px-4 py-2 rounded-md bg-white/10 hover:bg-primary/20 border border-white/10 transition-colors duration-200 text-sm font-medium group text-white"
         >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           Back to website
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </Link>
-      </div>
+        </Button>
+      </div> */}
+      <BackNav />
 
       {/* Bottom Content */}
       <div className="relative z-10 space-y-6  mb-12">
         <div className="h-1 w-12 bg-white-/80 rounded-full" />
-        <h2 className="text-5xl font-bold font-gosh tracking-tight leading-[1.1] text-foreground ">
+        <h2 className="text-5xl font-bold font-gosh tracking-tight leading-[1.1] text-white/70 ">
           Capturing Flavors, <br />
-          <span className="text-amber-500">Creating Memories</span>
+          <span className="text-primary">Creating Memories</span>
         </h2>
 
-        <p className="text-lg text-white/70 leading-relaxed font-normal max-w-sm">
+        <p className="text-lg text-white/60 leading-relaxed font-normal max-w-lg">
           Join our community of food lovers to explore authentic recipes,
           cultural stories, and vibrant flavors.
         </p>
       </div>
+
+      
+
+      {/* Shadow Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
     </div>
   );
 };

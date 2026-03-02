@@ -24,10 +24,10 @@ export default function AIFeaturesPage() {
   };
 
   return (
-    <div className="modern-gradient-bg min-h-screen">
+    <div className="">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-6 py-12 mt-6 md:mt-12">
         <PageHeader />
 
         <AIFeaturesGrid
@@ -43,8 +43,6 @@ export default function AIFeaturesPage() {
         <HowItWorksSection steps={howItWorks} />
         <CTACard />
       </main>
-
-      <Footer />
     </div>
   );
 }

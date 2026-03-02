@@ -130,7 +130,7 @@ export default function MealPlanner() {
   ];
 
   return (
-    <div className="pt-10 z-0">
+    <div className="pt-10 z-0 mt-6 md:mt-10">
       <div className="max-w-7xl mx-auto space-y-8 mb-10 p-2">
         {/* Header */}
         <div className="text-center space-y-4 mb-12 relative">
@@ -205,11 +205,11 @@ export default function MealPlanner() {
                                 Today
                               </TabsTrigger>
                               <TabsTrigger
-                                value="weekend"
+                                value="full-week"
                                 className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-lg data-[state=active]:text-primary transition-all font-semibold text-base"
                               >
                                 <Calendar className="h-4 w-4 mr-2" />
-                                Weekend
+                                Full Week
                               </TabsTrigger>
                             </TabsList>
                           </Tabs>

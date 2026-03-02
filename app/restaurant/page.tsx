@@ -58,15 +58,16 @@ const RestaurantsPage = () => {
   const totalPages = Math.ceil(totalCount / limit);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="">
       <Header />
 
-      <main className="mx-auto w-[calc(100%-1rem)] max-w-7xl px-4 sm:px-6 py-10">
+      <main className="mx-auto w-[calc(100%-1rem)] max-w-7xl px-4 sm:px-6 py-12 mt-6 md:mt-12">
         <div className="text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-foreground">
-            Discover the hottest lounges
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground font-gosh">
+            Discover the{" "}
+            <span className="gradient-text-primary">hottest</span> lounges
           </h1>
-          <p className="mt-3 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-3 text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto">
             Search, explore, and find your next favorite spot.
           </p>
         </div>
@@ -96,7 +97,7 @@ const RestaurantsPage = () => {
 
               <Button
                 type="submit"
-                className="h-12 md:w-auto px-6 w-full btn-primary-modern"
+                className="h-12 md:w-auto px-6 w-full btn-primary-modern "
               >
                 <StarsIcon className="w-5 h-5" />
                 <span>Search</span>
@@ -267,8 +268,6 @@ const RestaurantsPage = () => {
           </div>
         )}
       </main>
-
-      <Footer />
     </div>
   );
 };

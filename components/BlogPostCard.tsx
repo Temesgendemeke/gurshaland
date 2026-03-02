@@ -57,9 +57,9 @@ export default function BlogPostCard({ post }: { post: Blog }) {
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
-                {post.tags.slice(0, 2).map((tag) => (
+                {post.tags.slice(0, 2).map((tag, idx) => (
                   <span
-                    key={tag}
+                    key={`${post.slug}-tag-${idx}`}
                     className="inline-flex items-center text-[10px] font-medium text-primary bg-primary/5 px-2 py-1 rounded-md"
                   >
                     <Hash className="w-2.5 h-2.5 mr-1 opacity-50" /> {tag}

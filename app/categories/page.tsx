@@ -13,10 +13,10 @@ export default async function CategoriesPage() {
   console.log(categories);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="">
       <Header />
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-6 py-12 mt-6 md:mt-12">
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-foreground mb-6">
@@ -58,7 +58,7 @@ export default async function CategoriesPage() {
                     </div>
                     <div className="absolute bottom-4 left-4 right-4">
                       <Badge className="bg-background/80 border border-border/60 text-foreground mb-2">
-                        {category.featured?.length || 0} recipes
+                        {category.recipe_count || 0} recipes
                       </Badge>
                     </div>
                   </div>
@@ -71,7 +71,7 @@ export default async function CategoriesPage() {
                       {category.description}
                     </p>
 
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                       <p className="text-sm font-medium text-muted-foreground">
                         Featured recipes:
                       </p>
@@ -94,7 +94,7 @@ export default async function CategoriesPage() {
                           </Badge>
                         )}
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </Card>
               </Link>

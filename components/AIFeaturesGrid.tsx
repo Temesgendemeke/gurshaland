@@ -27,13 +27,13 @@ function AIFeaturesGrid({
   };
 
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 ">
       {features.map((feature) => {
         const IconComponent = feature.icon;
         return (
           <Card
             key={feature.id}
-            className={`modern-card modern-card-hover cursor-pointer transition-all duration-300 ${
+            className={`modern-card cursor-pointer transition-all duration-300 ${
               selected === feature.id ? "ring-2 ring-primary shadow-lg" : ""
             }`}
             onClick={() => onSelect(feature.id)}

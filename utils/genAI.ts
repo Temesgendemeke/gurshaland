@@ -24,12 +24,13 @@ export const AIgenerateImage = async (
     }
     console.log(`✅ GEMINI_API_KEY is configured`);
 
-    const new_prompt = `You are a professional photographer. Generate a high quality landscape aspect ratio image of the following prompt: ${prompt}`;
+    const new_prompt =
+      `You are a professional photographer. Generate a high quality landscape aspect ratio image of the following prompt: ${prompt}`;
     console.log(`📝 Formatted prompt: "${new_prompt}"`);
 
     console.log(`🚀 Calling Gemini API...`);
     const response = await genAI.models.generateContent({
-      model: "gemini-2.0-flash-preview-image-generation",
+      model: "gemini-2.0-flash-exp",
       contents: [new_prompt],
       config: {
         responseModalities: [Modality.TEXT, Modality.IMAGE],
@@ -55,7 +56,8 @@ export const AIgenerateImage = async (
           part.inlineData.mimeType,
         );
         // Convert base64 to data URL and upload to storage
-        const dataUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+        const dataUrl =
+          `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
         console.log(`✅ Generated data URL (length: ${dataUrl.length})`);
 
         // const uploaded = await uploadAIImageToStorage(
@@ -65,7 +67,9 @@ export const AIgenerateImage = async (
         // return uploaded;
         return {
           url: dataUrl,
-          path: `ai-generated-${Date.now()}.${part.inlineData.mimeType.split("/")[1] || "webp"}`,
+          path: `ai-generated-${Date.now()}.${
+            part.inlineData.mimeType.split("/")[1] || "webp"
+          }`,
         };
       }
     }
@@ -87,7 +91,7 @@ export const generateRecipeImage = async (
     // Try AI generation first with timeout
     const aiImagePromise = AIgenerateImage(prompt);
     const timeoutPromise = new Promise<null>((_, reject) =>
-      setTimeout(() => reject(new Error("Image generation timeout")), 15000),
+      setTimeout(() => reject(new Error("Image generation timeout")), 15000)
     );
 
     console.log(`🤖 Attempting AI image generation for: "${prompt}"`);
@@ -151,8 +155,9 @@ export const uploadAIImageToStorage = async (
       while (attempt < maxRetries) {
         try {
           resp = await fetchWithTimeout(imageData, 10000);
-          if (!resp.ok)
+          if (!resp.ok) {
             throw new Error(`Failed to fetch image: ${resp.status}`);
+          }
           break;
         } catch (err) {
           lastError = err;

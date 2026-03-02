@@ -20,6 +20,9 @@ BEGIN
                             'slug', r.slug
                         )
                     ) FROM recipe r WHERE r.id = c.recipe_id
+                ),
+                'recipe_count', (
+                    SELECT COUNT(*) FROM recipe r WHERE r.category_id = c.id
                 )
             )
         ) FROM category c

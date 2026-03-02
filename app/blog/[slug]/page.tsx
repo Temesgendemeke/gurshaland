@@ -32,10 +32,10 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="">
       <Header />
 
-      <div className="max-w-7xl mx-auto px-6 py-12 space-y-4">
+      <div className="max-w-7xl mx-auto py-12 space-y-4">
         {/* Back Navigation */}
         <BackNavigation route="/blog" pagename="Blogs" />
 
@@ -113,7 +113,6 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 };

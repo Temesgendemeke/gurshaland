@@ -17,7 +17,7 @@ export const generateMealPlan = async (data: mealPlannerType) => {
     
 Return ONLY valid JSON (no markdown, no code blocks) based on this schema:
 {
-  "timeframe": "today" | "weekend",
+  "timeframe": "today" | "full-week",
   "name": "string",
   "goal": "fat_loss" | "muscle_gain" | "maintenance",
   "diet": "standard" | "vegetarian" | "vegan" | "keto",
@@ -45,11 +45,11 @@ Return ONLY valid JSON (no markdown, no code blocks) based on this schema:
 }
 
 constraints:
-- if timeframe is weekend generate for the whole week from sunday to saturday [in order]
+- if timeframe is "full-week" generate for the whole week from sunday to saturday [in order]
 - Make sure to include Ethiopian/traditional foods where appropriate.
 - no markdown or code blocks in the response
 - no extra text or explanation, only valid JSON
-- if timeframe is today generate for today
+- if timeframe is "today" generate for today
 `;
     const { text } = await generateText({
       model: google("gemini-2.5-flash"),

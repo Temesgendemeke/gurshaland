@@ -8,7 +8,6 @@ const page = () => {
     <>
       <Header />
       <MealPlanner />
-      <Footer/>
     </>
   );
 };

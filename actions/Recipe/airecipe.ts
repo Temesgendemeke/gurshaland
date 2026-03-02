@@ -12,8 +12,9 @@ import { findYoutubeVideo } from "../youtube";
 function extractJSON(text: string): string {
   const start = text.indexOf("{");
   const end = text.lastIndexOf("}");
-  if (start === -1 || end === -1 || end < start)
+  if (start === -1 || end === -1 || end < start) {
     throw new Error("No JSON found in model response.");
+  }
   return text.slice(start, end + 1);
 }
 
@@ -61,7 +62,9 @@ Constraints:
   preptime (number), cooktime (number), difficulty (string), servings (number).
 - imagePrompt must be a short, descriptive phrase for image generation (no URLs, no base64).
  - category (string) must be ONE OF: ${allowedCategories.join(", ")}
- - Each ingredient.unit must be ONE OF: ${allowedUnits.join(", ")} or null. Use only these codes.
+ - Each ingredient.unit must be ONE OF: ${
+      allowedUnits.join(", ")
+    } or null. Use only these codes.
  - difficulty must be "Easy", "Medium", or "Hard".
 - Use numbers for preptime, cooktime, servings, and nutrition values.
 - Use "null" (not empty or 0) for optional fields if unknown.
@@ -102,7 +105,7 @@ Example shape:
     let response;
     try {
       response = await genAI.models.generateContent({
-        model: "gemini-2.0-flash",
+        model: "gemini-2.0-flash-exp",
         contents: [formattedPrompt],
       });
     } catch (apiError: any) {
