@@ -10,7 +10,7 @@ const InstructionsView = ({
 }) => {
   return (
     <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
-      <h2 className="heading-secondary text-2xl md:text-3xl border-b border-border pb-3">
+      <h2 className="heading-secondary text-2xl md:text-3xl border-b border-border pb-3 mb-4">
         Instructions
       </h2>
       <div className="space-y-6">

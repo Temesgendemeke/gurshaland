@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
 };
 
-// {`${inter.className}`}
+
 export default function RootLayout({
   children,
 }: {

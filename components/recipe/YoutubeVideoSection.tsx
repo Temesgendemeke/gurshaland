@@ -14,7 +14,7 @@ const YoutubeVideoSection = ({
 
   return (
     <div className="space-y-4 mt-4">
-      <h3 className="heading-secondary text-2xl md:text-3xl border-b border-border pb-3">
+      <h3 className="heading-secondary text-2xl md:text-2xl border-b border-border pb-3">
         Watch {videoQuery || "this recipe"} tutorial video
       </h3>
       <div className="relative w-full h-0 pb-[56.25%] mt-4">

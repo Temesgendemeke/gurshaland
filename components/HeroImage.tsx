@@ -48,11 +48,6 @@ const HeroImage = ({ cls }: { cls?: string }) => {
               </div>
             </div>
           </div>
-
-          {/* Decorative Elements */}
-          <div className="absolute -top-8 -right-8 w-16 h-16 bg-linear-to-br from-warning to-popular rounded-full opacity-20 animate-pulse"></div>
-          <div className="absolute -bottom-8 -left-8 w-12 h-12 bg-linear-to-br from-ethiopian-green to-primary rounded-full opacity-20 animate-pulse delay-1000"></div>
-          <div className="absolute top-1/4 -right-4 w-8 h-8 bg-linear-to-br from-primary to-popular rounded-full opacity-20 animate-pulse delay-500"></div>
         </div>
 
         {/* Background Decoration */}

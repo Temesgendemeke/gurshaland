@@ -86,7 +86,7 @@ export function AIChatWidget() {
               {message.role === "assistant" && (
                 <div className="flex items-center gap-2 order">
                   <Chip className="modern-bckground-gradient text-primary-foreground p-2 rounded-full w-10 h-10" />
-                  <p className="text-body text-xl capitalize">AI assistant</p>
+                  <p className="text-body font-bold capitalize">GurshaAI</p>
                 </div>
               )}
               <div className="order-1">
@@ -99,7 +99,7 @@ export function AIChatWidget() {
                           className={`p-4 rounded-2xl ${
                             message.role === "user"
                               ? "modern-bckground-gradient"
-                              : "bg-card border border-border/60"
+                              : "bg-card/70 border border-border/60"
                           }`}
                         >
                           {part.text}

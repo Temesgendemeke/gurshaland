@@ -115,7 +115,7 @@ export default function RecipeDetailPage() {
                   <div className="text-sm text-muted-foreground">
                     Total Time
                   </div>
-                  <div className="text-lg font-semibold text-foreground">
+                  <div className="text-base font-semibold text-foreground">
                     {recipe.preptime && recipe.cooktime
                       ? recipe.preptime + recipe.cooktime
                       : "Unknown"}
@@ -127,7 +127,7 @@ export default function RecipeDetailPage() {
                     aria-hidden="true"
                   />
                   <div className="text-sm text-muted-foreground">Servings</div>
-                  <div className="text-lg font-semibold text-foreground">
+                  <div className="text-base font-semibold text-foreground">
                     {recipe.servings}
                   </div>
                 </div>
@@ -139,7 +139,7 @@ export default function RecipeDetailPage() {
                   <div className="text-sm text-muted-foreground">
                     Difficulty
                   </div>
-                  <div className="text-lg font-semibold text-foreground">
+                  <div className="text-base font-semibold text-foreground">
                     {recipe.difficulty}
                   </div>
                 </div>
@@ -149,10 +149,10 @@ export default function RecipeDetailPage() {
                     aria-hidden="true"
                   />
                   <div className="text-sm text-muted-foreground">Rating</div>
-                  <div className="text-lg font-semibold text-foreground">
+                  <div className="text-base font-semibold text-foreground">
                     {recipe.average_rating
                       ? recipe.average_rating
-                      : "Not rated yet"}
+                      : "N/A"}
                   </div>
                 </div>
               </div>

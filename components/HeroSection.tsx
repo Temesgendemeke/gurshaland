@@ -26,7 +26,7 @@ const HeroSection = () => {
               <span className="heading-primary font-gosh">Ethiopia</span>
             </h1>
 
-            <p className="text-muted-foreground sm:text-lg md:text-xl text-body mb-8 max-w-2xl mx-auto lg:mx-0 font-light">
+            <p className="text-muted-foreground sm:text-lg md:text-xl text-body mb-8 max-w-xl mx-auto lg:mx-0 font-light">
               Discover, share, and celebrate the rich culinary traditions of
               Ethiopia. From traditional injera to aromatic coffee ceremonies.
             </p>

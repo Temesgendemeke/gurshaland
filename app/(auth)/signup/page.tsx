@@ -53,6 +53,11 @@ const Page = () => {
       );
     }
   };
+
+  const handleGoogleSignup = async () => {
+    try {
+    } catch (error) {}
+  };
   return (
     <div className="min-h-screen w-full grid lg:grid-cols-2">
       <div className="grain-overlay">
@@ -120,14 +125,14 @@ const Page = () => {
                 control={form.control}
                 name="username"
                 render={({ field }) => (
-                  <FormItem className="flex gap-2 flex-col">
+                  <FormItem className="flex gap-0.5 flex-col">
                     <FormLabel className="text-foreground text-lg font-semibold">
                       Username
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="eg. abebe"
-                        className="h-14 rounded-xl bg-background/50 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-14 rounded-xl bg-background/80 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
                         {...field}
                       />
                     </FormControl>
@@ -139,14 +144,14 @@ const Page = () => {
                 control={form.control}
                 name="full_name"
                 render={({ field }) => (
-                  <FormItem className="flex gap-2 flex-col">
+                  <FormItem className="flex gap-0.5 flex-col">
                     <FormLabel className="text-foreground text-lg font-semibold">
                       Full name
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="eg. aleme kebde"
-                        className="h-14 rounded-xl bg-background/50 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-14 rounded-xl bg-background/80 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
                         {...field}
                       />
                     </FormControl>
@@ -158,14 +163,14 @@ const Page = () => {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem className="flex gap-2 flex-col">
+                  <FormItem className="flex gap-0.5 flex-col">
                     <FormLabel className="text-foreground text-lg font-semibold">
                       Email
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="eg. abebebeso@test.com"
-                        className="h-14 rounded-xl bg-background/50 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-14 rounded-xl bg-background/80 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
                         {...field}
                       />
                     </FormControl>
@@ -177,7 +182,7 @@ const Page = () => {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem className="flex gap-2 flex-col">
+                  <FormItem className="flex gap-0.5 flex-col">
                     <FormLabel className="text-foreground text-lg font-semibold">
                       Password
                     </FormLabel>
@@ -185,7 +190,7 @@ const Page = () => {
                       <PasswordField
                         placeholder="Enter your password"
                         {...field}
-                        className="h-14 rounded-xl bg-background/50 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-14 rounded-xl bg-background/80 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
                       />
                     </FormControl>
                     <FormMessage className="text-sm font-medium pl-1" />
@@ -220,10 +225,11 @@ const Page = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid ">
             <Button
               variant="outline"
               className="h-14 rounded-xl border-2 border-muted bg-background/50 hover:bg-muted/50 transition-colors text-lg font-medium text-foreground"
+              onClick={handleGoogleSignup}
             >
               <svg className="mr-3 h-6 w-6" viewBox="0 0 24 24">
                 <path
@@ -244,16 +250,6 @@ const Page = () => {
                 />
               </svg>
               Google
-            </Button>
-            <Button
-              variant="outline"
-              className="h-14 rounded-xl border-2 border-muted bg-background/50 hover:bg-muted/50 transition-colors text-lg font-medium text-foreground"
-            >
-              <svg className="mr-3 h-6 w-6 fill-current" viewBox="0 0 24 24">
-                <path d="M17.5 12.6c0-2.5 2-3.7 2.2-3.7-.1-.3-1.4-4.8-4.8-4.8-1.3 0-2.4.7-3 .7-.7 0-1.8-.7-3-.7-3.6 0-5.7 4.1-5.7 8.3 0 3.3 1.2 7.1 5.3 7 1 0 1.5-.7 2.7-.7s1.6.7 2.8.7c2.6-.1 3.6-2.4 3.6-2.4-2.1-1-3.5-3.5-3.5-6.3zM12.8 4.2c1.1-1.3 1.8-3.2 1.6-5C12.8-.7 11.2.2 10.2 1.4c-1 1.2-1.9 3.2-1.7 5.1 1.6.1 3-1.1 4.3-2.3z" />
-              </svg>
-            
-              Apple
             </Button>
           </div>
         </div>

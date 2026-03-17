@@ -33,7 +33,7 @@ const AuthVisual = () => {
               <feTurbulence
                 type="fractalNoise"
                 baseFrequency="0.1"
-                numOctaves="3"
+                numOctaves="5"
                 stitchTiles="stitch"
               />
               <feColorMatrix
@@ -74,8 +74,6 @@ const AuthVisual = () => {
           cultural stories, and vibrant flavors.
         </p>
       </div>
-
-      
 
       {/* Shadow Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />

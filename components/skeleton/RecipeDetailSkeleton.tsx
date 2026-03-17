@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 
 export default function RecipeDetailSkeleton() {
   return (
-    <div className="w-full md:max-w-9xl mx-auto px-6 py-12">
+    <div className="w-full max-w-7xl mx-auto px-6 py-12 space-y-6">
       {/* Back Navigation Skeleton */}
       <Button variant="ghost" className="mb-6 hover:bg-muted/50" disabled>
         <ArrowLeft className="w-4 h-4 mr-2" />
