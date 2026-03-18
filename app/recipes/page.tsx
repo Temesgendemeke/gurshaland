@@ -31,8 +31,9 @@ import { format_date } from "@/utils/formatdate";
 import format_time from "@/utils/format_time";
 import RecipeCard from "@/components/recipe/RecipeCard";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function RecipesPage() {
+function RecipesPageContent() {
   const supabase = createClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -195,5 +196,13 @@ export default function RecipesPage() {
       </div>
 
     </div>
+  );
+}
+
+export default function RecipesPage() {
+  return (
+    <Suspense fallback={<RecipeListSkeleton />}>
+      <RecipesPageContent />
+    </Suspense>
   );
 }

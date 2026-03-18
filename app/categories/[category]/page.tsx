@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -62,7 +62,9 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 
         <div className="max-w-7xl mx-auto px-6 py-12">
           {/* Back Navigation */}
-          <BackNavigation route={"/categories"} pagename={"Categories"} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <BackNavigation route={"/categories"} pagename={"Categories"} />
+          </Suspense>
 
           {/* Category Header */}
           <CategoryHeader currentCategory={currentCategory} />
@@ -181,7 +183,9 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
       <div className="">
         <Header />
         <div className="max-w-7xl mx-auto px-6 py-12">
-          <BackNavigation route={"/categories"} pagename={"Categories"} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <BackNavigation route={"/categories"} pagename={"Categories"} />
+          </Suspense>
           <div className="text-center py-12">
             <h1 className="text-2xl font-bold text-foreground mb-4">
               Error loading recipes

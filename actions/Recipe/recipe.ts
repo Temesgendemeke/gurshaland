@@ -1,5 +1,6 @@
+"use server";
 import { BUCKET } from "@/constants/image";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 import Recipe, {
   Ingredient,
   Instruction,
@@ -10,7 +11,7 @@ import Recipe, {
 
 
 export const getRecipebySlug = async (slug: string, user_id?: string) => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.rpc("get_full_recipe", {
     _slug: slug,
     _user_id: user_id,
@@ -25,7 +26,7 @@ export const getRecipebySlug = async (slug: string, user_id?: string) => {
 };
 
 export const getRecipebySlugAdmin = async (slug: string) => {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   console.log("Fetching recipe for admin with slug: ", slug);
   const { data, error } = await supabase.rpc("get_full_recipe_admin", {
@@ -45,7 +46,7 @@ export const insertRecipe = async (formData: {
   instructions: Instruction[];
   nutrition: Nutrition;
 }) => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.rpc("insert_full_recipe", {
     _recipe: formData.recipe,
     _ingredients: formData.ingredients,
@@ -58,7 +59,7 @@ export const insertRecipe = async (formData: {
 };
 
 export const getRecipes = async () => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.rpc("get_all_recipes");
 
   if (error) throw error;
@@ -66,7 +67,7 @@ export const getRecipes = async () => {
 };
 
 export const getFeaturedRecipes = async () => {
-    const supabase = createClient();
+    const supabase = await createClient();
   const { data, error } = await supabase.rpc("get_featured_recipes");
 
   if (error) throw error;
@@ -74,7 +75,7 @@ export const getFeaturedRecipes = async () => {
 };
 
 export const getTrendingRecipes = async () => {
-    const supabase = createClient();
+    const supabase = await createClient();
   const { data, error } = await supabase.rpc("get_trending_recipes");
 
   if (error) throw error;
@@ -82,7 +83,7 @@ export const getTrendingRecipes = async () => {
 };
 
 export const deleteRecipe = async (_slug: string) => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.rpc("get_full_recipe", {
     _slug,
   });
@@ -121,7 +122,7 @@ export const uploadRecipeImage = async (
   user_id: string,
   recipe_id: string,
 ) => {
-  const supabase = createClient();
+  const supabase = await createClient();
   try {
     const path = `recipe/${user_id}/${image_file.name}_${Date.now()}`;
     const { error: storageError } = await supabase.storage
@@ -151,7 +152,7 @@ export const uploadRecipeImage = async (
 };
 
 export const getRecipeByAuthor = async (author_id: string) => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.rpc("get_recipe_by_author", {
     _author_id: author_id,
   });
@@ -166,7 +167,7 @@ export const updateRecipe = async (formData: {
   instructions: Instruction[];
   nutrition: Nutrition;
 }) => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.rpc("update_full_recipe", {
     _recipe: formData.recipe,
     _ingredients: formData.ingredients,

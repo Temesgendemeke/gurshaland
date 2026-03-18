@@ -12,6 +12,7 @@ import { Search, StarsIcon } from "lucide-react";
 import RestaurantCard from "@/components/restaurant/RestaurantCard";
 import { z } from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { getAllRestaurants } from "@/actions/restaurant/crud";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import {
@@ -31,7 +32,7 @@ const searchSchema = z.object({
 
 type SearchFormValues = z.infer<typeof searchSchema>;
 
-const RestaurantsPage = () => {
+const RestaurantsPageContent = () => {
   const form = useForm({
     resolver: zodResolver(searchSchema),
     defaultValues: {
@@ -272,4 +273,10 @@ const RestaurantsPage = () => {
   );
 };
 
-export default RestaurantsPage;
+export default function RestaurantsPage() {
+  return (
+    <Suspense fallback={<RecipeListSkeleton />}>
+      <RestaurantsPageContent />
+    </Suspense>
+  );
+}
