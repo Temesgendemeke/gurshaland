@@ -25,6 +25,7 @@ import Logo from "@/components/Logo";
 import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import AuthVisual from "@/components/AuthVisual";
+import { createClient } from "@/utils/supabase/client";
 
 export type LoginFormSchema = z.infer<typeof loginFormSchema>;
 
@@ -47,6 +48,25 @@ const Page = () => {
         icon: <Sparkles className="w-4 h-4 text-primary" />,
       });
       router.push("/");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "An error occurred. Please try again.",
+      );
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    const supabase = createClient();
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/api/auth/callback`,
+        },
+      });
     } catch (error) {
       console.log(error);
       toast.error(
@@ -101,7 +121,7 @@ const Page = () => {
       {/* Right Side - Form */}
       <div className="flex flex-col justify-center p-6 md:p-12 relative z-10">
         <div className="w-full  mx-auto space-y-8  p-8 md:p-10 rounded-3xl border border-border/20">
-          <div className="relative z-10 flex items-center justify-between w-full sm:hidden">
+          <div className="relative z-10 flex items-center justify-between w-full lg:hidden">
             <Link
               href="/"
               className="flex items-center gap-2 px-4 py-2 rounded-md bg-white/10 hover:bg-white/20 border border-white/10 transition-colors duration-200 text-sm font-medium group text-white"
@@ -132,7 +152,7 @@ const Page = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-2">
-                    <FormLabel className="text-foreground text-lg font-semibold">
+                    <FormLabel className="text-foreground text-lg font-semibold ">
                       Email Address
                     </FormLabel>
                     <FormControl>
@@ -207,6 +227,7 @@ const Page = () => {
             <Button
               variant="outline"
               className="h-14 rounded-xl border-2 border-muted bg-background/50 hover:bg-muted/50 transition-colors text-lg font-medium text-foreground"
+              onClick={handleGoogleSignIn}
             >
               <svg className="mr-3 h-6 w-6" viewBox="0 0 24 24">
                 <path
