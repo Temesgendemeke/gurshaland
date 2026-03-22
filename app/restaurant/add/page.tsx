@@ -69,20 +69,10 @@ const AddRestaurantPage = () => {
       website: "",
       cuisines: [],
       description: "",
-      image: {
-        url: "",
-        path: "",
-        file: "",
-      },
+      image: undefined,
       google_map_url: "",
       menu: [],
-      gallery: [
-        {
-          url: "",
-          path: "",
-          file: "",
-        },
-      ],
+      gallery: [],
       reviews: [],
     },
   });

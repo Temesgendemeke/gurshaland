@@ -37,7 +37,7 @@ export function Pattern({
     name: "cover-image.jpg",
     size: 2048000,
     type: "image/jpeg",
-    url: "https://picsum.photos/1000/800?grayscale&random=3",
+    url: "",
   };
 
   const [coverImage, setCoverImage] = useState<FileWithPreview | null>({
@@ -245,7 +245,7 @@ export function Pattern({
               </p>
             </div>
 
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" type="button">
               <ImageIcon />
               Browse Files
             </Button>

@@ -34,15 +34,15 @@ const RestaurantSchema = z.object({
   address: z.string().min(5).max(200),
   phone: z.string().min(10).max(20),
   email: z.string().email().min(5).max(100),
-  website: z.string().url().min(5).max(200).optional(),
+  website: z.union([z.string().url(), z.literal("")]).optional(),
   image: ImageSchema.optional(),
-  google_map_url: z.string().url().min(5).max(200).optional(),
+  google_map_url: z.union([z.string().url(), z.literal("")]).optional(),
   menu: z.array(MenuSchema).optional(),
-  author_id: z.string().uuid(),
+  author_id: z.string().uuid().optional(),
   gallery: z.array(ImageSchema).optional(),
   reviews: z.array(ReviewSchema).optional(),
-  city: z.string().min(2).max(100),
-  country: z.string().min(2).max(100),
+  city: z.string().min(2).max(100).optional(),
+  country: z.string().min(2).max(100).optional(),
 });
 
 export const getRestaurentSchema = RestaurantSchema.extend({
