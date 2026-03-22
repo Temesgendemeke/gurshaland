@@ -41,6 +41,7 @@ const PreviewSection = ({
             src={coverImage}
             alt="Restaurant Cover"
             fill
+            unoptimized
             className="object-cover transition-transform hover:scale-105 duration-700"
           />
         ) : (
@@ -201,6 +202,7 @@ const PreviewSection = ({
                         src={item?.url ? item?.url : "/placeholder.svg"}
                         width={200}
                         height={200}
+                        unoptimized
                         alt={`Gallery ${index + 1}`}
                         className="w-full h-auto object-cover transition-all hover:scale-105 duration-500"
                       />

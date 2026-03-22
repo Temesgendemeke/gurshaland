@@ -8,7 +8,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Search, StarsIcon } from "lucide-react";
+import { Search, StarsIcon, Plus } from "lucide-react";
+import Link from "next/link";
 import RestaurantCard from "@/components/restaurant/RestaurantCard";
 import { z } from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -65,12 +66,18 @@ const RestaurantsPageContent = () => {
       <main className="mx-auto w-[calc(100%-1rem)] max-w-7xl px-4 sm:px-6 py-12 mt-6 md:mt-12">
         <div className="text-center">
           <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground font-gosh">
-            Discover the{" "}
-            <span className="gradient-text-primary">hottest</span> lounges
+            Discover the <span className="gradient-text-primary">hottest</span>{" "}
+            lounges
           </h1>
-          <p className="mt-3 text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-3 text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
             Search, explore, and find your next favorite spot.
           </p>
+          <Button asChild className="rounded-full shadow-md font-bold px-8 py-6 text-base bg-foreground text-background hover:bg-foreground/90 transition-all hover:scale-105 active:scale-95">
+            <Link href="/restaurant/add">
+              <Plus className="w-5 h-5 mr-2" />
+              Add Restaurant
+            </Link>
+          </Button>
         </div>
 
         <div className="mt-8 max-w-4xl mx-auto">

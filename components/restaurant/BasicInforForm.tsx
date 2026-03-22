@@ -13,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import ImageBox from "@/components/ImageBox";
+import { Pattern as FileUpload } from "@/components/FileUpload";
 import { CircleAlert, Store } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,7 +26,7 @@ type FormValues = z.infer<typeof restaurantSchema>;
 
 const BasicInforForm = ({ form }: { form: any }) => {
   return (
-    <Card className="border-none shadow-lg bg-card/80 backdrop-blur-sm">
+    <Card className="border-none  bg-card/80 backdrop-blur-sm">
       <CardHeader>
         <div className="flex items-center gap-2 text-primary mb-1">
           <Store className="h-5 w-5" />
@@ -42,16 +42,28 @@ const BasicInforForm = ({ form }: { form: any }) => {
       <CardContent className="space-y-6">
         <div className="space-y-4">
           <div className="p-6 border-2 border-dashed border-border rounded-xl bg-muted/30 hover:bg-muted/40 transition-colors">
-            <ImageBox<FormValues>
-              form={form}
-              field="image"
-              inputcls="restaurant-image"
-              label="Cover Image"
-              deleteImage={async () => {}}
-              onFileSelected={async () => {}}
+            <h3 className="text-sm font-semibold mb-4 text-foreground/80">Cover Image</h3>
+            <FileUpload
+              maxSize={10 * 1024 * 1024} // 10MB
+              accept="image/*"
+              onImageChange={(file) => {
+                if (file) {
+                  form.setValue(
+                    "image",
+                    {
+                      url: URL.createObjectURL(file),
+                      file,
+                      path: "",
+                    },
+                    { shouldDirty: true }
+                  );
+                } else {
+                  form.setValue("image", undefined, { shouldDirty: true });
+                }
+              }}
             />
-            <p className="text-xs text-muted-foreground mt-2 flex items-center gap-2">
-              <CircleAlert /> <span>Recommended size: 1200x600px</span>
+            <p className="text-xs text-muted-foreground mt-4 flex items-center gap-2">
+              <CircleAlert className="w-4 h-4" /> <span>Recommended size: 1200x600px</span>
             </p>
           </div>
 

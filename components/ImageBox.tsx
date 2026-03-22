@@ -53,7 +53,6 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
     }
     form.setValue(field as any, undefined as any, {
       shouldDirty: true,
-      shouldValidate: true,
     });
   };
 
@@ -119,7 +118,6 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
                 } as any,
                 {
                   shouldDirty: true,
-                  shouldValidate: true,
                 },
               );
               if (onFileSelected) {
@@ -139,7 +137,6 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
                       } as any,
                       {
                         shouldDirty: true,
-                        shouldValidate: true,
                       },
                     );
                   }

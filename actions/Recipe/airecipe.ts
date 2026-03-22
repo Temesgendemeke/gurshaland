@@ -105,7 +105,7 @@ Example shape:
     let response;
     try {
       response = await genAI.models.generateContent({
-        model: "gemini-2.0-flash-exp",
+        model: "gemini-2.5-flash",
         contents: [formattedPrompt],
       });
     } catch (apiError: any) {

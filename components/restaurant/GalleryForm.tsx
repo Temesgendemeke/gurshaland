@@ -52,7 +52,7 @@ const GalleryForm = ({form}: {form: UseFormReturn<RestaurantFormType>}) => {
                     {galleryFields.map((gallery, index) => (
                       <div key={gallery.id} className="relative">
                         <ImageBox form={form} inputcls={`gallery-image-${index}`} field={`gallery.${index}` as any} label={`Gallery ${index + 1}`}  deleteImage={delelteImage}/>
-                        <Button type="button" onClick={() => removeGallery(index)} className="absolute top-6 right-6 z-10 " variant={'destructive'}>
+                        <Button type="button" onClick={() => removeGallery(index)} className="absolute top-6 right-6 z-10 " variant={'outline'}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>

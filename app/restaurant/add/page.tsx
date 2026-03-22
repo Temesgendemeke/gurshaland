@@ -118,7 +118,7 @@ const AddRestaurantPage = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Column: Form */}
           <div className="lg:col-span-7 space-y-6">
             <RestaurantForm form={form} onSubmit={onSubmit} />
@@ -135,8 +135,8 @@ const AddRestaurantPage = () => {
                 <div className="h-px flex-1 bg-border" />
               </div>
 
-              <div className="bg-card rounded-2xl shadow-xl border border-border overflow-hidden transform transition-all hover:scale-[1.01]">
-                <PreviewSection form={form} onSubmit={onSubmit} />
+              <div className="bg-card rounded-2xl  border border-border overflow-hidden">
+                <PreviewSection form={form} />
               </div>
             </div>
           </div>

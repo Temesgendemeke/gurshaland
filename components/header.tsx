@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { Search, Menu, Sparkles } from "lucide-react";
 import { useState } from "react";
 
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { useAuth } from "@/store/useAuth";
 import AccountDropDown from "./AccountDropDown";
 import CreateAPost from "./CreateAPost";
@@ -82,14 +81,11 @@ export function Header() {
           </div> */}
 
           <CreateAPost />
-
-          <ThemeSwitcher />
           <AccountDropDown user={user} />
         </div>
 
         {/* Mobile Menu */}
         <div className="2xl:hidden col-start-3 justify-self-end flex items-center gap-2">
-          <ThemeSwitcher />
           <Button
             variant="ghost"
             size="icon"
@@ -106,10 +102,6 @@ export function Header() {
       {isMenuOpen && (
         <div className="bg-background/95 backdrop-blur-xl border-t border-border p-4 2xl:hidden">
           <div className="flex flex-col space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Theme</span>
-              <ThemeSwitcher />
-            </div>
             <Input
               placeholder="Search recipes..."
               className="border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background"

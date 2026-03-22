@@ -52,7 +52,7 @@ const MenuForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
   };
 
   return (
-    <Card className="border-none shadow-lg bg-card/80 backdrop-blur-sm">
+    <Card className="border-none bg-card/80 backdrop-blur-sm">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <div className="flex items-center gap-2 text-primary mb-1">
