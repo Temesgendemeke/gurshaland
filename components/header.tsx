@@ -35,6 +35,7 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useAuth((state) => state.user);
   const pathname = usePathname();
+  
 
   const linkClass = (route: string) => {
     const isActive = pathname === route || pathname.startsWith(`${route}/`);

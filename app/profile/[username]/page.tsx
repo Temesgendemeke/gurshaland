@@ -29,7 +29,21 @@ export default async function Page({
   params: Promise<{ username: string }>;
 }) {
   const { username } = await params;
-  const profile: Profile = await getProfilebyUsername(username);
+  const profile = await getProfilebyUsername(username);
+
+  if (!profile) {
+    return (
+      <div>
+        <Header />
+        <div className="flex flex-col items-center mt-20 gap-2">
+          <p className="text-xl font-semibold">Profile not found</p>
+          <p className="text-muted-foreground">
+            No user with username &quot;{username}&quot; exists.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const info_list = [
     { field: "following", count: profile.following.length },

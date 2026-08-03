@@ -1,16 +1,15 @@
 import { BUCKET } from "@/constants/image";
+import { createClient as createServerClient } from "@/utils/supabase/server";
 import { createClient } from "@/utils/supabase/client";
 
 export const getProfilebyUsername = async (username: string) => {
-  const supabase = createClient();
+  const supabase = await createServerClient();
   const { data, error } = await supabase.rpc("get_profile_by_username", {
     _username: username,
   });
 
   if (error) throw error;
 
-  console.log(error);
-  console.log(data);
   return data;
 };
 

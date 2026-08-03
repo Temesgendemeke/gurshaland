@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +22,8 @@ import { User } from "@supabase/supabase-js";
 import { logout } from "@/actions/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/store/useAuth";
+import { createClient } from "@/utils/supabase/client";
 
 interface AccountDropDownProps {
   user: User | null;
@@ -29,6 +31,8 @@ interface AccountDropDownProps {
 
 const AccountDropDown = ({ user }: AccountDropDownProps) => {
   const router = useRouter();
+  const setUserName = useAuth((state) => state.setUserName);
+  const username = useAuth((state) => state.username);
 
   const handleLogout = async () => {
     try {
@@ -41,9 +45,22 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
     }
   };
 
-  const dropdownList = [
+  const fetchUsername = async()=>{
+    if(!user?.id) return;
+    const supabase  = await createClient();
+    const {data, error} = await supabase.from('profiles').select('*').eq('id', user?.id).maybeSingle();
+    if(data){
+      setUserName(data.username)
+    }
+  }
+
+  useEffect(() => {
+    fetchUsername();
+  }, [user?.id]);
+
+  const  dropdownList = [
     {
-      route: "/profile",
+      route: `/profile/${username}`,
       page: "Profile",
       icon: UserIcon,
     },

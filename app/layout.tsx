@@ -28,9 +28,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="light" suppressHydrationWarning>
       <body
         className={`${InstrumentSansFont.variable} ${GoshFont.variable} min-h-screen flex flex-col`}
+        suppressHydrationWarning
       >
         <div className="grain-overlay">
           <svg
