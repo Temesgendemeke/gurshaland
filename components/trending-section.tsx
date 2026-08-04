@@ -38,8 +38,8 @@ export function TrendingSection() {
       <section>
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-primary-foreground" />
+            <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-muted-foreground" />
             </div>
             <div>
               <h2 className="text-3xl font-bold heading-primary">
@@ -51,7 +51,7 @@ export function TrendingSection() {
           <Button
             asChild
             variant="outline"
-            className="border-primary/40 text-primary hover:bg-primary/10"
+            className="border-border text-muted-foreground hover:bg-muted"
           >
             <Link href="/recipes?filter=new">View All New</Link>
           </Button>
@@ -64,13 +64,13 @@ export function TrendingSection() {
             {newRecipes?.map((recipe) => (
               <Card
                 key={recipe.id}
-                className="modern-card modern-card-hover group"
+                className="bg-card border border-border shadow-sm group"
               >
                 <div className="relative">
                   <img
                     src={recipe.image?.url || "/placeholder.svg"}
                     alt={recipe.title}
-                    className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-32 object-cover"
                   />
                   <div className="absolute top-2 left-2">
                     <Badge className="bg-primary text-primary-foreground text-xs">
@@ -78,7 +78,7 @@ export function TrendingSection() {
                       New
                     </Badge>
                   </div>
-                  <div className="absolute top-2 right-2 bg-background/80 border border-border/60 backdrop-blur-sm rounded-full px-2 py-1 flex items-center space-x-1">
+                  <div className="absolute top-2 right-2 bg-background border border-border rounded-full px-2 py-1 flex items-center space-x-1">
                     <Star className="w-3 h-3 text-warning fill-current" />
                     <span className="text-xs font-medium">
                       {recipe.average_rating}

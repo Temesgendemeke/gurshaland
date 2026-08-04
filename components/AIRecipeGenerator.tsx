@@ -1,4 +1,4 @@
-import { ChefHat, Sparkles } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { Card } from "./ui/card";
 import { Textarea } from "./ui/textarea";
 import { useState } from "react";
@@ -42,15 +42,12 @@ export default function AIRecipeGenerator() {
   };
 
   return (
-    <Card className="modern-card p-8">
-      <div className="text-center mb-8">
-        <div className="w-16 h-16 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center mb-4 mx-auto">
-          <ChefHat className="w-8 h-8 text-primary-foreground" />
-        </div>
-        <h2 className="text-3xl font-bold heading-primary mb-4">
+    <Card className="bg-card p-8">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold heading-primary mb-3">
           AI Recipe Generator
         </h2>
-        <p className="text-body max-w-2xl mx-auto">
+        <p className="text-body max-w-2xl">
           Tell our AI what ingredients you have and your preferences, and we’ll
           create a personalized Ethiopian recipe just for you!
         </p>
@@ -86,7 +83,7 @@ export default function AIRecipeGenerator() {
           >
             {isGenerating ? (
               <>
-                <Sparkles className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Generating Recipe...
               </>
             ) : (
@@ -97,7 +94,7 @@ export default function AIRecipeGenerator() {
             )}
           </Button>
         </div>
-        <div className="modern-card p-6">
+        <div className="border border-border rounded-lg p-6">
           {isGenerating ? (
             <RecipeProgressBar isGenerating={isGenerating} />
           ) : generatedRecipe ? (

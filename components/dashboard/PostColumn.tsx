@@ -124,9 +124,9 @@ const StatusBadge = ({ status }: { status: string }) => {
 
   return (
     <div
-      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${config.bg} ${config.border} ${config.text} text-xs font-medium transition-all duration-200 hover:scale-105 hover:shadow-md cursor-default`}
+      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${config.bg} ${config.border} ${config.text} text-xs font-medium transition-colors cursor-default`}
     >
-      <div className={`w-2 h-2 rounded-full ${config.dot} animate-pulse`}></div>
+      <div className={`w-2 h-2 rounded-full ${config.dot}`}></div>
       <span className="capitalize font-semibold tracking-wide">{status}</span>
     </div>
   );

@@ -92,6 +92,7 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
         <Button
           variant="ghost"
           size="icon"
+          aria-label="Account menu"
           className="rounded-full hover:outline-none hover:border-none"
         >
           <UserIcon className="w-5 h-5" />

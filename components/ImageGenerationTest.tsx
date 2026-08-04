@@ -34,7 +34,7 @@ export default function ImageGenerationTest() {
   };
 
   return (
-    <div className="p-4 border border-border bg-card/50 rounded-lg">
+    <div className="p-4 border border-border bg-card rounded-lg">
       <h3 className="text-lg font-bold mb-4">Image Generation Test</h3>
       <button
         onClick={testImageGeneration}

@@ -1,7 +1,6 @@
 "use client";
 
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useEffect } from "react";
@@ -78,7 +77,7 @@ export default function RecipeDetailPage() {
               <img
                 src={recipe.image.url || "/placeholder.svg"}
                 alt={recipe.title}
-                className="w-full h-96 object-cover rounded-2xl shadow-lg"
+                className="w-full h-96 object-cover rounded-lg shadow-md"
               />
             </div>
 
@@ -109,7 +108,7 @@ export default function RecipeDetailPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div className="text-center p-5 bg-card rounded-lg border border-border">
                   <Clock
-                    className="w-6 h-6 text-primary mx-auto mb-2"
+                    className="w-6 h-6 text-muted-foreground mx-auto mb-2"
                     aria-hidden="true"
                   />
                   <div className="text-sm text-muted-foreground">
@@ -123,7 +122,7 @@ export default function RecipeDetailPage() {
                 </div>
                 <div className="text-center p-5 bg-card rounded-lg border border-border">
                   <Group
-                    className="w-6 h-6 text-warning mx-auto mb-2"
+                    className="w-6 h-6 text-muted-foreground mx-auto mb-2"
                     aria-hidden="true"
                   />
                   <div className="text-sm text-muted-foreground">Servings</div>
@@ -133,7 +132,7 @@ export default function RecipeDetailPage() {
                 </div>
                 <div className="text-center p-5 bg-card rounded-lg border border-border">
                   <Restaurant
-                    className="w-6 h-6 text-popular mx-auto mb-2"
+                    className="w-6 h-6 text-muted-foreground mx-auto mb-2"
                     aria-hidden="true"
                   />
                   <div className="text-sm text-muted-foreground">
@@ -145,7 +144,7 @@ export default function RecipeDetailPage() {
                 </div>
                 <div className="text-center p-5 bg-card rounded-lg border border-border">
                   <Star
-                    className="w-6 h-6 text-warning mx-auto mb-2"
+                    className="w-6 h-6 text-muted-foreground mx-auto mb-2"
                     aria-hidden="true"
                   />
                   <div className="text-sm text-muted-foreground">Rating</div>

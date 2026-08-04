@@ -208,9 +208,9 @@ const ChangeEmailPage = () => {
           </Form>
 
           {/* Additional Info */}
-          <div className="mt-6 rounded-lg border border-info/20 bg-info/10 p-4">
+          <div className="mt-6 rounded-lg border border-border bg-muted/30 p-4">
             <div className="flex items-start gap-3">
-              <div className="mt-1.5 h-2.5 w-2.5 rounded-full bg-info shrink-0" />
+              <div className="mt-1.5 h-2.5 w-2.5 rounded-full bg-muted-foreground shrink-0" />
               <div className="text-sm text-foreground">
                 <p className="font-medium mb-1">What happens next?</p>
                 <ul className="space-y-1 text-muted-foreground">

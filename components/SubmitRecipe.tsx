@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { formSchema } from "@/utils/schema";
 import Recipe, { RecipeImage } from "@/utils/types/recipe";
@@ -422,7 +420,7 @@ export default function SubmitRecipeForm({
             <Button
               type="submit"
               size="lg"
-              className="btn-primary-modern rounded-full"
+              className="btn-primary-modern"
               disabled={form.formState.isSubmitting}
               aria-disabled={form.formState.isSubmitting}
             >

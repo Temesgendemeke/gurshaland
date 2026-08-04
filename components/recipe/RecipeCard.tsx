@@ -36,7 +36,7 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
     <Link href={`/recipes/${recipe.slug}`} className="group block h-full">
       <Card
         key={recipe.id}
-        className="flex h-full flex-col overflow-hidden rounded-2xl border border-muted bg-card/70 shadow-sm transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/5"
+        className="flex h-full flex-col overflow-hidden border border-muted bg-card shadow-sm transition-shadow duration-200 hover:shadow-sm"
       >
         {/* Image Container */}
         <div className="relative aspect-[4/3] w-full overflow-hidden">
@@ -44,23 +44,21 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
             src={recipe.image?.url || "/placeholder.svg"}
             alt={recipe.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          {/* Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-70" />
 
           {/* Badge (Trending/Featured) */}
           {badge && (
             <div className="absolute left-3 top-3 z-20">
               <Badge
                 className={cn(
-                  "border-0 backdrop-blur-md shadow-sm font-bold uppercase tracking-wider text-[10px]",
+                  "border-0 shadow-sm font-bold uppercase tracking-wider text-[10px]",
                   badge.toLowerCase() === "trending"
                     ? "bg-popular text-white hover:bg-popular/90"
                     : badge.toLowerCase() === "featured"
                       ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                      : "bg-background/90 text-foreground hover:bg-background",
+                      : "bg-background text-foreground",
                 )}
               >
                 {icon ? (
@@ -81,10 +79,10 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
           )}
 
           {/* Rating Badge */}
-          <div className="absolute right-3 top-3 overflow-hidden rounded-full border border-white/20 bg-black/40 px-3 py-1.5 backdrop-blur-md transition-all duration-300 group-hover:bg-black/60">
+          <div className="absolute right-3 top-3 rounded-full border border-border bg-background px-3 py-1.5">
             <div className="flex items-center gap-1.5">
               <Star className="h-3.5 w-3.5 fill-warning text-warning" />
-              <span className="text-xs font-bold text-white">
+              <span className="text-xs font-bold text-foreground">
                 {displayRating}
               </span>
             </div>
@@ -92,7 +90,7 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
 
           {/* Time Badge (Bottom Left on Image) */}
           <div className="absolute bottom-3 left-3">
-            <Badge className="border-0 bg-background/80 text-foreground backdrop-blur-md hover:bg-background/90 font-medium">
+            <Badge className="border-0 bg-background text-foreground font-medium">
               <Clock className="mr-1 h-3 w-3 text-primary" />
               {displayTime}
             </Badge>
@@ -115,14 +113,7 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
             {recipe.difficulty && (
               <>
                 <div className="h-1 w-1 rounded-full bg-muted-foreground/30" />
-                <div
-                  className={cn(
-                    "flex items-center gap-1",
-                    recipe.difficulty === "Easy" && "text-success",
-                    recipe.difficulty === "Medium" && "text-warning",
-                    recipe.difficulty === "Hard" && "text-error",
-                  )}
-                >
+                <div className="flex items-center gap-1 text-muted-foreground">
                   <ChefHat className="h-3.5 w-3.5" />
                   <span>{recipe.difficulty}</span>
                 </div>
@@ -181,7 +172,7 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
                 </div>
               </div>
 
-              <div className="rounded-full bg-secondary/50 p-2 text-secondary-foreground transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:translate-x-1">
+              <div className="rounded-full border border-border bg-background p-2 text-muted-foreground transition-colors duration-200 group-hover:text-primary">
                 <ArrowRight className="h-4 w-4" />
               </div>
             </div>

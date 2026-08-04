@@ -188,12 +188,12 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
           {/*  */}
           <div
             className={`flex justify-center items-center w-full bg-background ${
-              isSaving ? "blur-lg pointer-events-none" : ""
+              isSaving ? "pointer-events-none" : ""
             }`}
           >
-            <div className="bg-background rounded-2xl max-w-9xl w-full overflow-y-auto flex flex-col max-h-[80vh]">
+            <div className="bg-background rounded-xl max-w-9xl w-full overflow-y-auto flex flex-col max-h-[80vh]">
               {/* Modal Header */}
-              <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border p-6 rounded-t-2xl">
+              <div className="sticky top-0 z-10 bg-background border-b border-border p-6 rounded-t-xl">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <Badge className="bg-primary/10 text-primary">
@@ -253,7 +253,7 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
           </div>
 
           <DialogFooter
-            className={`pb-4 mr-5 ${isSaving ? "pointer-events-none blur-lg" : ""}`}
+            className={`pb-4 mr-5 ${isSaving ? "pointer-events-none" : ""}`}
           >
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>

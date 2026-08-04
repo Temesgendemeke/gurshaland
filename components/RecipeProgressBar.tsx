@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChefHat, Sparkles, Brain, Image, CheckCircle } from "lucide-react";
+import { ChefHat, Brain, Image, CheckCircle } from "lucide-react";
 import { Progress } from "./ui/progress";
 
 interface RecipeProgressBarProps {
@@ -64,16 +64,10 @@ export default function RecipeProgressBar({
 
   return (
     <div className="w-full max-w-md mx-auto space-y-6 p-6">
-      <div className="text-center space-y-4">
-        <div className="w-16 h-16 bg-primary/15 ring-1 ring-primary/20 rounded-2xl flex items-center justify-center mx-auto">
-          <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-        </div>
-        <h3 className="text-xl font-semibold text-foreground">
-          Creating Your Recipe
+      <div>
+        <h3 className="text-lg font-semibold text-foreground">
+          Creating your recipe
         </h3>
-        <p className="text-sm text-muted-foreground">
-          Our AI chef is working hard to create the perfect recipe for you!
-        </p>
       </div>
 
       {/* Progress Bar */}
@@ -95,7 +89,7 @@ export default function RecipeProgressBar({
           return (
             <div
               key={step.id}
-              className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 ${
+              className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
                 isActive
                   ? "bg-primary/10 border border-primary/20"
                   : isCompleted
@@ -104,9 +98,9 @@ export default function RecipeProgressBar({
               }`}
             >
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                   isActive
-                    ? "bg-primary text-primary-foreground animate-pulse"
+                    ? "bg-primary text-primary-foreground"
                     : isCompleted
                       ? "bg-success/15 text-success ring-1 ring-success/20"
                       : "bg-muted text-muted-foreground"
@@ -115,7 +109,7 @@ export default function RecipeProgressBar({
                 <Icon className="w-4 h-4" />
               </div>
               <span
-                className={`text-sm font-medium transition-all duration-300 ${
+                className={`text-sm font-medium transition-colors ${
                   isActive
                     ? "text-primary"
                     : isCompleted
@@ -125,35 +119,9 @@ export default function RecipeProgressBar({
               >
                 {step.label}
               </span>
-              {isActive && (
-                <div className="ml-auto">
-                  <div className="flex space-x-1">
-                    <div className="w-1 h-1 bg-primary rounded-full animate-bounce"></div>
-                    <div
-                      className="w-1 h-1 bg-primary rounded-full animate-bounce"
-                      style={{ animationDelay: "0.1s" }}
-                    ></div>
-                    <div
-                      className="w-1 h-1 bg-primary rounded-full animate-bounce"
-                      style={{ animationDelay: "0.2s" }}
-                    ></div>
-                  </div>
-                </div>
-              )}
             </div>
           );
         })}
-      </div>
-
-      {/* Fun messages */}
-      <div className="text-center">
-        <p className="text-xs text-muted-foreground italic">
-          {currentStep === 0 && "🧅 Chopping onions and gathering spices..."}
-          {currentStep === 1 &&
-            "🤖 Our AI chef is crafting the perfect recipe..."}
-          {currentStep === 2 && "📸 Capturing the perfect food photo..."}
-          {currentStep === 3 && "✨ Adding the final touches..."}
-        </p>
       </div>
     </div>
   );

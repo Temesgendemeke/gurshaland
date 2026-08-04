@@ -62,111 +62,129 @@
 
 @layer base {
   :root {
-    /* Mocha Theme - Light Mode */
-    --background: 30 20% 97%;
-    --foreground: 25 25% 15%;
-    --card: 30 20% 98%;
-    --card-foreground: 25 25% 15%;
-    --popover: 30 20% 98%;
-    --popover-foreground: 25 25% 15%;
-    --primary: 27 45% 38%;
-    --primary-foreground: 30 30% 96%;
-    --secondary: 30 15% 92%;
-    --secondary-foreground: 25 25% 15%;
-    --muted: 30 15% 92%;
-    --muted-foreground: 25 10% 45%;
-    --accent: 30 25% 90%;
-    --accent-foreground: 25 25% 15%;
-    --destructive: 0 84.2% 60.2%;
+    /*
+      "Berbere & Injera" theme — replaces the generic
+      terracotta/cream "mocha" palette with tones pulled
+      from actual Ethiopian spice, coffee, and textile colors.
+      Fewer, more saturated, more deliberate.
+    */
+
+    /* Base: injera-tan background, near-black coffee text (not muddy brown-gray) */
+    --background: 36 24% 95%;
+    --foreground: 20 20% 12%;
+
+    --card: 36 20% 98%;
+    --card-foreground: 20 20% 12%;
+    --popover: 36 20% 98%;
+    --popover-foreground: 20 20% 12%;
+
+    /* Primary: berbere red — the actual spice color, not a generic terracotta */
+    --primary: 12 68% 42%;
+    --primary-foreground: 36 30% 97%;
+
+    /* Secondary: warm gold, tied to the flag, used as a real functional accent
+       (buttons/highlights) instead of sitting unused */
+    --secondary: 42 88% 50%;
+    --secondary-foreground: 20 30% 12%;
+
+    --muted: 34 14% 90%;
+    --muted-foreground: 25 10% 40%;
+
+    --accent: 34 20% 88%;
+    --accent-foreground: 20 20% 12%;
+
+    --destructive: 6 72% 46%;
     --destructive-foreground: 0 0% 98%;
-    --border: 25 15% 85%;
-    --input: 25 15% 85%;
-    --ring: 27 45% 38%;
-    --radius: 0.75rem;
 
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --border: 30 14% 82%;
+    --input: 30 14% 82%;
+    --ring: 12 68% 42%;
+    --radius: 0.625rem;
 
-    --sidebar-background: 30 20% 96%;
-    --sidebar-foreground: 25 25% 15%;
-    --sidebar-primary: 27 45% 38%;
-    --sidebar-primary-foreground: 30 30% 96%;
-    --sidebar-accent: 30 15% 92%;
-    --sidebar-accent-foreground: 25 25% 15%;
-    --sidebar-border: 25 15% 85%;
-    --sidebar-ring: 27 45% 38%;
+    --chart-1: 12 68% 42%;
+    --chart-2: 142 40% 34%;
+    --chart-3: 42 88% 50%;
+    --chart-4: 20 20% 22%;
+    --chart-5: 200 30% 40%;
 
-    /* Semantic Colors */
-    /* Mocha-friendly accents (muted, warm, consistent) */
-    --success: 140 32% 36%;
-    --warning: 35 70% 45%;
-    --error: 6 58% 50%;
-    --info: 210 35% 46%;
-    --popular: 25 60% 44%;
+    --sidebar-background: 36 22% 93%;
+    --sidebar-foreground: 20 20% 12%;
+    --sidebar-primary: 12 68% 42%;
+    --sidebar-primary-foreground: 36 30% 97%;
+    --sidebar-accent: 34 14% 90%;
+    --sidebar-accent-foreground: 20 20% 12%;
+    --sidebar-border: 30 14% 82%;
+    --sidebar-ring: 12 68% 42%;
 
-    /* Ethiopian Flag Colors */
-    --ethiopian-green: 142 76% 36%;
-    --ethiopian-yellow: 45 93% 47%;
-    --ethiopian-red: 0 84% 60%;
+    /* Semantic colors — muted so they don't fight the palette, but distinct from each other */
+    --success: 142 38% 32%;
+    --warning: 42 80% 42%;
+    --error: 6 68% 45%;
+    --info: 200 35% 40%;
+    --popular: 12 60% 40%;
 
-    /* Mocha Gradient - Light */
-    --gradient-from: 30 25% 97%;
-    --gradient-via: 30 20% 98%;
-    --gradient-to: 35 25% 95%;
+    /* Ethiopian flag colors — now actually used as functional accents,
+       not decorative unused tokens (see .flag-accent-* utilities below) */
+    --ethiopian-green: 142 60% 28%;
+    --ethiopian-yellow: 42 88% 50%;
+    --ethiopian-red: 12 68% 42%;
+
+    --gradient-from: 36 26% 95%;
+    --gradient-via: 34 20% 96%;
+    --gradient-to: 30 22% 93%;
   }
 
   .dark {
-    /* Mocha Theme - Dark Mode */
-    --background: 25 30% 10%;
-    --foreground: 30 20% 94%;
-    --card: 25 25% 14%;
-    --card-foreground: 30 20% 94%;
-    --popover: 25 25% 14%;
-    --popover-foreground: 30 20% 94%;
-    --primary: 27 45% 55%;
-    --primary-foreground: 25 30% 10%;
-    --secondary: 25 20% 18%;
-    --secondary-foreground: 30 20% 94%;
-    --muted: 25 20% 18%;
-    --muted-foreground: 30 10% 70%;
-    --accent: 25 20% 18%;
-    --accent-foreground: 30 20% 94%;
-    --destructive: 0 62.8% 30.6%;
+    --background: 20 24% 9%;
+    --foreground: 36 20% 92%;
+    --card: 20 20% 13%;
+    --card-foreground: 36 20% 92%;
+    --popover: 20 20% 13%;
+    --popover-foreground: 36 20% 92%;
+
+    --primary: 12 65% 54%;
+    --primary-foreground: 20 24% 9%;
+
+    --secondary: 42 80% 55%;
+    --secondary-foreground: 20 24% 9%;
+
+    --muted: 20 16% 18%;
+    --muted-foreground: 34 10% 68%;
+
+    --accent: 20 16% 18%;
+    --accent-foreground: 36 20% 92%;
+
+    --destructive: 6 60% 40%;
     --destructive-foreground: 0 0% 98%;
-    --border: 25 20% 20%;
-    --input: 25 20% 20%;
-    --ring: 27 45% 55%;
 
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --border: 20 16% 22%;
+    --input: 20 16% 22%;
+    --ring: 12 65% 54%;
 
-    --sidebar-background: 25 30% 7%;
-    --sidebar-foreground: 30 20% 94%;
-    --sidebar-primary: 27 45% 55%;
-    --sidebar-primary-foreground: 25 30% 10%;
-    --sidebar-accent: 25 20% 18%;
-    --sidebar-accent-foreground: 30 20% 94%;
-    --sidebar-border: 25 20% 20%;
-    --sidebar-ring: 27 45% 55%;
+    --chart-1: 12 65% 54%;
+    --chart-2: 142 40% 44%;
+    --chart-3: 42 80% 55%;
+    --chart-4: 36 20% 80%;
+    --chart-5: 200 35% 55%;
 
-    /* Semantic Colors Dark Mode */
-    /* Mocha-friendly accents (muted, warm, consistent) */
-    --success: 140 36% 62%;
-    --warning: 35 75% 62%;
-    --error: 6 65% 66%;
-    --info: 210 45% 66%;
-    --popular: 25 70% 60%;
+    --sidebar-background: 20 24% 7%;
+    --sidebar-foreground: 36 20% 92%;
+    --sidebar-primary: 12 65% 54%;
+    --sidebar-primary-foreground: 20 24% 9%;
+    --sidebar-accent: 20 16% 18%;
+    --sidebar-accent-foreground: 36 20% 92%;
+    --sidebar-border: 20 16% 22%;
+    --sidebar-ring: 12 65% 54%;
 
-    /* Mocha Dark Gradients - Rich Coffee Depth */
-    --gradient-from: 25 30% 10%;
-    --gradient-via: 25 25% 12%;
-    --gradient-to: 25 30% 8%;
+    --success: 142 36% 52%;
+    --warning: 42 75% 58%;
+    --error: 6 62% 58%;
+    --info: 200 40% 56%;
+    --popular: 12 55% 55%;
+
+    --gradient-from: 20 24% 9%;
+    --gradient-via: 20 20% 11%;
+    --gradient-to: 20 24% 7%;
   }
 }
 
@@ -177,7 +195,7 @@
   body {
     background-color: hsl(var(--background));
     background: linear-gradient(
-      135deg,
+      160deg,
       hsl(var(--gradient-from)),
       hsl(var(--gradient-via)),
       hsl(var(--gradient-to))
@@ -193,25 +211,43 @@
   }
 }
 
-/* Modern Mocha-inspired gradients */
 .modern-gradient-bg {
   background: linear-gradient(
-    135deg,
+    160deg,
     hsl(var(--gradient-from)) 0%,
     hsl(var(--gradient-via)) 50%,
     hsl(var(--gradient-to)) 100%
   );
 }
 
+/* Berbere red primary — now solid+saturated enough not to need a gradient
+   crutch to feel "designed" */
 .ethiopian-primary {
-  background: linear-gradient(
-    135deg,
-    hsl(var(--primary)) 0%,
-    hsl(var(--primary) / 0.8) 100%
-  );
+  background: hsl(var(--primary));
 }
 
-/* Shimmer animation for loading states */
+.ethiopian-secondary {
+  background: hsl(var(--secondary));
+}
+
+.ethiopian-accent {
+  background: hsl(var(--popular));
+}
+
+/* Flag-color accents — small, deliberate uses instead of a decorative
+   unused set of tokens. Use sparingly: e.g. a green checkmark on a
+   verified recipe, a gold star rating, a thin red underline on an
+   active nav item. */
+.flag-accent-green {
+  color: hsl(var(--ethiopian-green));
+}
+.flag-accent-gold {
+  color: hsl(var(--ethiopian-yellow));
+}
+.flag-accent-red {
+  color: hsl(var(--ethiopian-red));
+}
+
 @keyframes shimmer {
   0% {
     transform: translateX(-100%);
@@ -221,7 +257,6 @@
   }
 }
 
-/* Breathing animation for subtle movement */
 @keyframes breathe {
   0%,
   100% {
@@ -234,7 +269,6 @@
   }
 }
 
-/* Fade in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -246,7 +280,6 @@
   }
 }
 
-/* Staggered pulse animation */
 @keyframes staggeredPulse {
   0%,
   100% {
@@ -255,22 +288,6 @@
   50% {
     opacity: 0.5;
   }
-}
-
-.ethiopian-secondary {
-  background: linear-gradient(
-    135deg,
-    hsl(var(--warning)) 0%,
-    hsl(var(--warning) / 0.8) 100%
-  );
-}
-
-.ethiopian-accent {
-  background: linear-gradient(
-    135deg,
-    hsl(var(--popular)) 0%,
-    hsl(var(--popular) / 0.8) 100%
-  );
 }
 
 @layer utilities {
@@ -282,7 +299,6 @@
     @apply bg-background text-foreground;
   }
 
-  /* Modern text styles with better contrast */
   .text-primary-strong {
     @apply text-foreground font-semibold;
   }
@@ -295,16 +311,14 @@
     @apply text-muted-foreground;
   }
 
-  /* Modern card styles */
   .modern-card {
-    @apply bg-card/70 backdrop-blur-md border border-border/40 shadow-sm transition-all duration-200;
+    @apply bg-card border border-border/50 shadow-sm transition-colors;
   }
 
   .modern-card-hover {
-    @apply hover:shadow-md hover:border-border/50 hover:-translate-y-0.5;
+    @apply hover:border-border;
   }
 
-  /* Modern button styles */
   .btn-primary-modern {
     @apply bg-primary hover:opacity-90 text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:shadow-xl transition-all duration-200;
   }
@@ -317,11 +331,12 @@
     @apply text-primary font-semibold;
   }
 
+  /* Secondary button now uses the gold flag-color directly instead of a
+     warning/popular gradient blend that had no thematic reasoning */
   .btn-secondary-modern {
-    @apply bg-linear-to-r from-warning to-popular hover:from-warning/90 hover:to-popular/90 text-primary-foreground font-semibold shadow-lg shadow-warning/25 hover:shadow-xl hover:shadow-warning/30 transition-all duration-200;
+    @apply bg-secondary hover:opacity-90 text-secondary-foreground font-semibold shadow-lg shadow-secondary/25 hover:shadow-xl transition-all duration-200;
   }
 
-  /* Typography improvements */
   .heading-primary {
     @apply text-foreground font-bold tracking-tight;
   }
@@ -339,13 +354,11 @@
   }
 }
 
-/* Modern gradient text */
 .gradient-text-primary {
   background: linear-gradient(
-    135deg,
+    100deg,
     hsl(var(--primary)) 0%,
-    hsl(30 75% 55%) 50%,
-    /* Caramel highlight that relates to mocha */ hsl(var(--primary)) 100%
+    hsl(var(--secondary)) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -353,12 +366,10 @@
   font-weight: 700;
 }
 
-/* Improved focus states */
 .focus-modern {
   @apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200;
 }
 
-/* Modern shadows */
 .shadow-modern {
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
@@ -383,7 +394,6 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.2);
 }
 
-/* Specific transitions instead of global */
 .transition-standard {
   transition:
     background-color 0.2s ease,
@@ -396,7 +406,6 @@
   @apply bg-primary/20 text-foreground;
 }
 
-/* Modern scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -413,20 +422,27 @@
   @apply bg-muted-foreground/30;
 }
 
-/* Theme-aware grain overlay (mocha-tinted) */
+/*
+  Grain overlay — previously filled with --primary (berbere red) at 42%
+  opacity in multiply blend, which tints the ENTIRE page red/pink since
+  multiply darkens everything underneath toward the fill color. That was
+  the actual cause of the pink cast, not the background token. Switched
+  to a neutral foreground-based fill at much lower opacity so it reads
+  as subtle paper texture instead of a color wash.
+*/
 .grain-overlay {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.42;
+  opacity: 0.05;
   mix-blend-mode: multiply;
   backface-visibility: hidden;
   transform: translateZ(0);
 }
 
 .dark .grain-overlay {
-  opacity: 0.2;
+  opacity: 0.08;
   mix-blend-mode: overlay;
 }
 
@@ -436,45 +452,9 @@
 }
 
 .grain-rect {
-  fill: hsl(var(--primary));
+  fill: hsl(var(--foreground));
 }
 
 .dark .grain-rect {
   fill: hsl(var(--foreground));
-}
-
-:root {
-  --destructive-foreground: var(--color-red-800);
-  --success: var(--color-emerald-500);
-  --success-foreground: var(--color-emerald-900);
-  --info: var(--color-violet-500);
-  --info-foreground: var(--color-violet-900);
-  --warning: var(--color-yellow-500);
-  --warning-foreground: var(--color-yellow-900);
-  --invert: var(--color-zinc-900);
-  --invert-foreground: var(--color-zinc-50);
-}
-
-.dark {
-  --destructive-foreground: var(--color-red-600);
-  --success: var(--color-emerald-500);
-  --success-foreground: var(--color-emerald-600);
-  --info: var(--color-violet-500);
-  --info-foreground: var(--color-violet-600);
-  --warning: var(--color-yellow-500);
-  --warning-foreground: var(--color-yellow-600);
-  --invert: var(--color-zinc-700);
-  --invert-foreground: var(--color-zinc-50);
-}
-
-@theme inline {
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
-  --color-info: var(--info);
-  --color-info-foreground: var(--info-foreground);
-  --color-warning: var(--warning);
-  --color-warning-foreground: var(--warning-foreground);
-  --color-invert: var(--invert);
-  --color-invert-foreground: var(--invert-foreground);
 }

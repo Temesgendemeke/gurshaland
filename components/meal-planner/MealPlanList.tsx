@@ -29,7 +29,7 @@ const MealPlanList = () => {
     return (
         <div className="container mx-auto py-10 px-4">
             <div className="flex flex-col items-center mb-12 space-y-4">
-                <h1 className="text-3xl font-extrabold tracking-tight md:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                <h1 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl text-foreground">
                     My Meal Plans
                 </h1>
                 <p className="text-muted-foreground text-lg max-w-2xl text-center">
@@ -38,7 +38,7 @@ const MealPlanList = () => {
             </div>
 
             {!isLoading && plans?.length === 0 ? (
-                <div className="text-center py-20 bg-muted/30 rounded-3xl border border-dashed border-muted-foreground/25">
+                <div className="text-center py-20 bg-muted/30 rounded-lg border border-dashed border-muted-foreground/25">
                     <div className="bg-primary/10 p-4 rounded-full w-fit mx-auto mb-4">
                         <Utensils className="w-8 h-8 text-primary" />
                     </div>

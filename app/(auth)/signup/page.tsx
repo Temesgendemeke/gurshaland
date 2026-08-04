@@ -103,7 +103,7 @@ const Page = () => {
 
       {/* Right Side - Form */}
       <div className="flex flex-col justify-center p-6 md:p-12 relative z-10">
-        <div className="w-full mx-auto space-y-8 p-8 md:p-10 rounded-3xl border border-border/20">
+        <div className="w-full mx-auto space-y-8 p-8 md:p-10 rounded-lg border border-border/20">
           <div className="space-y-3">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground font-gosh">
               Create Account
@@ -132,7 +132,7 @@ const Page = () => {
                     <FormControl>
                       <Input
                         placeholder="eg. abebe"
-                        className="h-14 rounded-xl bg-background/80 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
                         {...field}
                       />
                     </FormControl>
@@ -151,7 +151,7 @@ const Page = () => {
                     <FormControl>
                       <Input
                         placeholder="eg. aleme kebde"
-                        className="h-14 rounded-xl bg-background/80 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
                         {...field}
                       />
                     </FormControl>
@@ -170,7 +170,7 @@ const Page = () => {
                     <FormControl>
                       <Input
                         placeholder="eg. abebebeso@test.com"
-                        className="h-14 rounded-xl bg-background/80 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
                         {...field}
                       />
                     </FormControl>
@@ -190,7 +190,7 @@ const Page = () => {
                       <PasswordField
                         placeholder="Enter your password"
                         {...field}
-                        className="h-14 rounded-xl bg-background/80 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
                       />
                     </FormControl>
                     <FormMessage className="text-sm font-medium pl-1" />
@@ -200,7 +200,7 @@ const Page = () => {
 
               <Button
                 type="submit"
-                className="w-full h-14 rounded-xl text-lg font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-200 shadow-lg shadow-primary/20 mt-2"
+                className="w-full h-14 rounded-xl text-lg font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 shadow-sm mt-2"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? (
@@ -228,7 +228,7 @@ const Page = () => {
           <div className="grid ">
             <Button
               variant="outline"
-              className="h-14 rounded-xl border-2 border-muted bg-background/50 hover:bg-muted/50 transition-colors text-lg font-medium text-foreground"
+              className="h-14 rounded-xl border-2 border-muted bg-background hover:bg-muted/50 transition-colors text-lg font-medium text-foreground"
               onClick={handleGoogleSignup}
             >
               <svg className="mr-3 h-6 w-6" viewBox="0 0 24 24">

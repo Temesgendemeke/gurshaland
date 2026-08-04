@@ -59,6 +59,7 @@ const MenuInputSection = ({
           <Button
             variant="ghost"
             size="icon"
+            aria-label={isExpanded ? "Collapse menu item" : "Expand menu item"}
             onClick={onToggle}
             className="h-8 w-8"
             type="button"
@@ -68,6 +69,7 @@ const MenuInputSection = ({
           <Button
             variant="ghost"
             size="icon"
+            aria-label="Remove menu item"
             onClick={onRemove}
             className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive shadow-none"
             type="button"
@@ -124,7 +126,7 @@ const MenuInputSection = ({
                       <SelectTrigger>
                         <SelectValue placeholder="Select a currency" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background backdrop-filter:blur(60%) p-0 max-h-[300px]">
+                      <SelectContent className="bg-background p-0 max-h-[300px]">
                         <div className="p-2 sticky top-0 bg-background z-10 border-b">
                           <Input
                             placeholder="Search currency..."
@@ -158,7 +160,6 @@ const MenuInputSection = ({
                               value={curr.cc}
                               className={` currency-item-${index}`}
                             >
-                              <span className="text-xl mr-2">{curr.emoji}</span>
                               <span>{curr.cc}</span>
                               <span className="ml-2 text-muted-foreground text-xs truncate ">
                                 {curr.name}

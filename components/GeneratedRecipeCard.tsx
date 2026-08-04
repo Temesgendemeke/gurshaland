@@ -24,7 +24,7 @@ export default function GeneratedRecipeCard({ recipe }: { recipe: any }) {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold heading-primary">{recipe.title}</h3>
-          <Badge className="bg-primary/10 text-primary">AI Generated</Badge>
+          <Badge className="bg-muted text-muted-foreground">AI Generated</Badge>
         </div>
         <div>
           <Image

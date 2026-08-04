@@ -296,7 +296,7 @@ export default function SettingsPage() {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-0 border-border bg-background"
+                    className="absolute -bottom-2 -right-2 h-8 w-8 p-0 border-border bg-background"
                   >
                     <Camera className="h-4 w-4 text-muted-foreground" />
                   </Button>

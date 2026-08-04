@@ -42,7 +42,7 @@ const GalleryForm = ({form}: {form: UseFormReturn<RestaurantFormType>}) => {
                       type="button"
                       variant={'outline'}
                       onClick={() => appendGallery({})}
-                      className="gap-2 shadow-md hover:shadow-lg transition-all"
+                      className="gap-2 shadow-sm"
                     >
                       <PlusIcon size={18} />
                       Add Item

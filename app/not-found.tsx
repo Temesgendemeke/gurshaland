@@ -8,7 +8,7 @@ const NotFound = () => {
   const router = useRouter();
   return (
     <div className=" flex flex-col items-center justify-center h-screen text-foreground">
-      <h1 className="text-5xl md:text-7xl font-bold text-destructive tracking-widest drop-shadow-lg">
+      <h1 className="text-5xl md:text-7xl font-bold text-destructive tracking-widest">
         404
       </h1>
       <p className="text-xl md:text-2xl text-muted-foreground mt-4">
@@ -16,7 +16,8 @@ const NotFound = () => {
       </p>
       <Button
         onClick={() => router.back()}
-        className="mt-8 px-8 py-3 bg-background text-foreground border border-border rounded-full font-bold shadow-lg transition-all duration-300 hover:bg-muted"
+        variant="outline"
+        className="mt-8 px-8 py-3 font-bold"
       >
         Go Back
       </Button>

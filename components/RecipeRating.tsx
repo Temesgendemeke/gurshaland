@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { StarIcon as Star } from "@heroicons/react/24/outline";
 import { StarIcon as SolidStar } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
@@ -37,20 +36,18 @@ const RecipeRating = ({ user_id, recipe_id, rating }: RecipeRatingProps) => {
   };
 
   return (
-    <Card className="p-6 bg-card/70 backdrop-blur-sm border-border/50">
+    <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
       <h2 className="text-xl font-bold text-foreground mb-4 flex items-center">
         Rate this recipe
       </h2>
       <div ref={ratingRef} className="flex items-center space-x-2 mt-2">
         {[1, 2, 3, 4, 5].map((star) => (
-          <motion.button
+          <button
             key={star}
-            whileHover={{ scale: 1.2, rotate: -10 }}
-            whileTap={{ scale: 0.9 }}
             onMouseEnter={() => setHoverRating(star)}
             onMouseLeave={() => setHoverRating(0)}
             onClick={() => handleRate(star)}
-            className="focus:outline-none"
+            className="p-1 rounded transition-transform duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
             aria-label={`Rate ${star} star${star > 1 ? "s" : ""}`}
             type="button"
           >
@@ -59,20 +56,13 @@ const RecipeRating = ({ user_id, recipe_id, rating }: RecipeRatingProps) => {
             ) : (
               <Star className="w-8 h-8 text-muted-foreground/30" />
             )}
-          </motion.button>
+          </button>
         ))}
-        <AnimatePresence>
-          {ratingSubmitted && (
-            <motion.span
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="ml-4 text-primary font-semibold"
-            >
-              Thank you for rating!
-            </motion.span>
-          )}
-        </AnimatePresence>
+        {ratingSubmitted && (
+          <span className="ml-4 text-primary font-semibold">
+            Thank you for rating!
+          </span>
+        )}
       </div>
     </Card>
   );

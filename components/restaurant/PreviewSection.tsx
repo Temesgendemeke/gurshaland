@@ -42,7 +42,7 @@ const PreviewSection = ({
             alt="Restaurant Cover"
             fill
             unoptimized
-            className="object-cover transition-transform hover:scale-105 duration-700"
+            className="object-cover"
           />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground bg-secondary/30">
@@ -53,7 +53,7 @@ const PreviewSection = ({
         <div className="absolute top-4 right-4">
           <Badge
             variant="secondary"
-            className="backdrop-blur-md bg-background/70 text-foreground border border-border/50"
+            className="bg-background text-foreground border border-border/50"
           >
             Preview
           </Badge>
@@ -204,7 +204,7 @@ const PreviewSection = ({
                         height={200}
                         unoptimized
                         alt={`Gallery ${index + 1}`}
-                        className="w-full h-auto object-cover transition-all hover:scale-105 duration-500"
+                        className="w-full h-auto object-cover"
                       />
                     </div>
                   </div>

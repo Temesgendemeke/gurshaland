@@ -10,21 +10,20 @@ import { cn } from "@/lib/utils";
 export default function BlogPostCard({ post }: { post: Blog }) {
   return (
     <Link href={`/blog/${post.slug}`} className="group h-full block">
-      <Card className="flex h-full flex-col overflow-hidden rounded-2xl border border-muted bg-card/70 shadow-sm transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/5">
+      <Card className="flex h-full flex-col overflow-hidden border border-muted bg-card shadow-sm hover:shadow-sm transition-colors">
         {/* Image Section */}
         <div className="relative aspect-video w-full overflow-hidden">
           <Image
             src={post?.image?.url || "/placeholder.svg"}
             alt={post.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-70" />
 
           {/* Category Badge */}
           <div className="absolute left-3 top-3">
-            <Badge className="border-0 bg-background/90 text-foreground backdrop-blur-md font-medium hover:bg-background/95 shadow-sm">
+            <Badge className="border-0 bg-background text-foreground font-medium hover:bg-muted shadow-sm">
               {post.category}
             </Badge>
           </div>
@@ -60,7 +59,7 @@ export default function BlogPostCard({ post }: { post: Blog }) {
                 {post.tags.slice(0, 2).map((tag, idx) => (
                   <span
                     key={`${post.slug}-tag-${idx}`}
-                    className="inline-flex items-center text-[10px] font-medium text-primary bg-primary/5 px-2 py-1 rounded-md"
+                    className="inline-flex items-center text-[10px] font-medium text-muted-foreground bg-muted px-2 py-1 rounded-md"
                   >
                     <Hash className="w-2.5 h-2.5 mr-1 opacity-50" /> {tag}
                   </span>
@@ -81,7 +80,7 @@ export default function BlogPostCard({ post }: { post: Blog }) {
                       sizes="36px"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-primary/10 text-xs font-bold text-primary">
+                    <div className="flex h-full w-full items-center justify-center bg-muted text-xs font-bold text-muted-foreground">
                       {post.author?.full_name?.[0]?.toUpperCase() || "A"}
                     </div>
                   )}
@@ -97,7 +96,7 @@ export default function BlogPostCard({ post }: { post: Blog }) {
               </div>
 
               {/* Arrow */}
-              <div className="rounded-full bg-secondary/50 p-2 text-secondary-foreground transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:translate-x-1">
+              <div className="rounded-full border border-border bg-background p-2 text-muted-foreground transition-colors duration-200 group-hover:text-primary">
                 <ArrowRight className="h-4 w-4" />
               </div>
             </div>

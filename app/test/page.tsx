@@ -37,7 +37,7 @@ const Page = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
-      <Card className="w-full max-w-2xl h-[600px] flex flex-col shadow-xl">
+      <Card className="w-full max-w-2xl h-[600px] flex flex-col shadow-sm">
         <CardHeader className="border-b bg-card rounded-t-xl z-10">
           <CardTitle className="flex items-center gap-2 text-primary">
             <Bot className="w-6 h-6" />
@@ -73,7 +73,7 @@ const Page = () => {
                         case "text":
                           return (
                             <div key={part.id} className="flex-1">
-                              <div className="bg-muted/50 rounded-lg p-4 text-sm leading-relaxed whitespace-pre-wrap">
+                              <div className="bg-muted rounded-lg p-4 text-sm leading-relaxed whitespace-pre-wrap">
                                 <ReactMarkdown>{part.text}</ReactMarkdown>
                               </div>
                             </div>

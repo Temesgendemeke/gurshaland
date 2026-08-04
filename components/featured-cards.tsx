@@ -61,16 +61,14 @@ export function FeaturedCards() {
 
         {RecipeLoading ? (
           <RecipeListSkeleton />
-        ) : (
+        ) : featuredRecipes?.length ? (
           <div className="grid md:grid-cols-3 gap-6">
-            {featuredRecipes?.map((recipe: FeaturedRecipe) =>
-              featuredRecipes.length == 0 ? (
-                <p>No recipe found</p>
-              ) : (
-                <RecipeCard key={recipe.id} recipe={recipe} />
-              ),
-            )}
+            {featuredRecipes.map((recipe: FeaturedRecipe) => (
+              <RecipeCard key={recipe.id} recipe={recipe} />
+            ))}
           </div>
+        ) : (
+          <p className="text-body">No featured recipes yet.</p>
         )}
       </section>
 

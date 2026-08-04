@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -93,15 +92,15 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
             {recipes.map((recipe: any) => (
               <Card
                 key={recipe.id}
-                className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group bg-card/70 backdrop-blur-sm border-border/50"
+                className="overflow-hidden group bg-card border border-border"
               >
                 <div className="relative">
                   <img
                     src={recipe.image?.url || "/placeholder.svg"}
                     alt={recipe.title}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-48 object-cover"
                   />
-                  <div className="absolute top-4 right-4 bg-background/80 border border-border/60 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
+                  <div className="absolute top-4 right-4 bg-background border border-border rounded-full px-3 py-1 flex items-center space-x-1">
                     <Star className="w-4 h-4 text-warning fill-warning" />
                     <span className="text-sm font-medium text-foreground">
                       {recipe.rating || 0}
@@ -113,7 +112,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
                         <Badge
                           key={index}
                           variant="secondary"
-                          className="text-xs bg-background/70 border border-border/50 text-foreground hover:bg-muted"
+                          className="text-xs bg-background border border-border text-foreground hover:bg-muted"
                         >
                           {tag}
                         </Badge>
@@ -154,7 +153,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 
                   <Button
                     asChild
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
+                    className="w-full btn-primary-modern"
                   >
                     <Link href={`/recipes/${recipe.slug}`}>View Recipe</Link>
                   </Button>
@@ -168,7 +167,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
             <Button
               variant="outline"
               size="lg"
-              className="border-2 border-primary text-primary hover:bg-primary/5 rounded-full px-8"
+              className="px-8 text-primary"
             >
               Load More Recipes
             </Button>

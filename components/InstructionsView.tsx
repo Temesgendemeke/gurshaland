@@ -1,6 +1,7 @@
 import React from "react";
 import { Card } from "./ui/card";
 import Image from "next/image";
+import { Clock } from "lucide-react";
 import { Instruction } from "@/utils/types/recipe";
 
 const InstructionsView = ({
@@ -43,8 +44,9 @@ const InstructionsView = ({
                 {instruction.description}
               </p>
               {instruction.time && (
-                <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <span aria-label="Time">⏱️ {instruction.time} min</span>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Clock className="w-4 h-4" aria-hidden="true" />
+                  <span>{instruction.time} min</span>
                 </div>
               )}
               {instruction.tips && (

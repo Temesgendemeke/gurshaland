@@ -70,7 +70,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarContent className="p-4 bg-background/70">
+      <SidebarContent className="p-4 bg-background">
         <SidebarGroup>
           <SidebarGroupLabel>
             <Logo />
@@ -88,7 +88,7 @@ export function AppSidebar() {
                         active
                           ? "bg-muted/70 border-l-4 border-l-primary text-foreground shadow-sm"
                           : "hover:bg-muted/40 hover:border-l-4 hover:border-l-border"
-                      } p-4 transition-all duration-200 relative rounded-lg mx-2`}
+                      } p-4 transition-colors relative rounded-lg mx-2`}
                     >
                       <Link
                         href={item.url}
@@ -108,7 +108,7 @@ export function AppSidebar() {
                           {item.title}
                         </span>
                         {active && (
-                          <div className="absolute right-2 w-2 h-2 bg-primary rounded-full animate-pulse" />
+                          <div className="absolute right-2 w-2 h-2 bg-primary rounded-full" />
                         )}
                       </Link>
                     </SidebarMenuButton>
@@ -120,7 +120,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="bg-background/70 border-t border-border/40">
+      <SidebarFooter className="bg-background border-t border-border/40">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>

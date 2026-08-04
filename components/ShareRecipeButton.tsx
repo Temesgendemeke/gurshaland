@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const ShareRecipeButton = () => {
   return (
-    <Button asChild className="btn-primary-modern rounded-full">
+    <Button asChild className="btn-primary-modern">
       <Link href="/recipes/create">
         <Plus className="w-4 h-4 mr-2" />
         Share Recipe

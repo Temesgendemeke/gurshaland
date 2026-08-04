@@ -21,13 +21,13 @@ export default function FeaturedPost({
         <h2 className="text-2xl font-bold text-foreground">Featured Article</h2>
       </div>
       <Link href={`/blog/${post.slug}`}>
-        <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group bg-card/70 backdrop-blur-sm border-primary/20">
+        <Card className="overflow-hidden group bg-card border border-border">
           <div className="grid md:grid-cols-2 gap-0">
             <div className="relative">
               <img
                 src={post.image.url || "/placeholder.svg"}
                 alt={post.title}
-                className="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-64 md:h-full object-cover"
               />
               <div className="absolute top-4 left-4">
                 <Badge className="bg-primary text-primary-foreground">
@@ -36,7 +36,7 @@ export default function FeaturedPost({
               </div>
             </div>
             <div className="p-8 flex flex-col justify-center">
-              <Badge className="w-fit mb-4 bg-primary/10 text-primary">
+              <Badge className="w-fit mb-4 bg-muted text-muted-foreground">
                 {post.category}
               </Badge>
               <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors">

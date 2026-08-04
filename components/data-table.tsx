@@ -178,7 +178,7 @@ export function DataTable<TData extends DataTableRow, TValue>({
       </div>
 
       {/* Responsive Table Container */}
-      <div className="rounded-xl border bg-card/50 backdrop-blur shadow-sm overflow-hidden">
+      <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
         {/* Mobile Scroll Indicator */}
         {isMobile && (
           <div className="p-3 text-center text-xs text-muted-foreground bg-muted/20 border-b">
@@ -195,7 +195,7 @@ export function DataTable<TData extends DataTableRow, TValue>({
                 isMobile ? "min-w-[600px]" : "min-w-[800px]"
               }`}
             >
-              <TableHeader className="sticky top-0 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/70 z-10">
+              <TableHeader className="sticky top-0 bg-card z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow
                     key={headerGroup.id}
@@ -204,7 +204,7 @@ export function DataTable<TData extends DataTableRow, TValue>({
                     {headerGroup.headers.map((header) => (
                       <TableHead
                         key={header.id}
-                        className="truncate cursor-pointer align-middle font-medium bg-card/95 backdrop-blur-sm"
+                        className="truncate cursor-pointer align-middle font-medium"
                         style={{
                           padding: isMobile ? "12px 8px" : "16px",
                           fontSize: isMobile ? "11px" : "14px",
@@ -221,7 +221,7 @@ export function DataTable<TData extends DataTableRow, TValue>({
                   </TableRow>
                 ))}
               </TableHeader>
-              <TableBody className="bg-card/50">
+              <TableBody className="bg-card">
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
                     <TableRow

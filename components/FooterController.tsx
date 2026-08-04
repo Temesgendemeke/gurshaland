@@ -2,19 +2,14 @@
 import { usePathname } from "next/navigation";
 import { Footer } from "@/components/footer";
 
-// const HIDE_ON: string[] = [
-//   "/login",
-//   "/signin",
-//   "/register",
-//   "/signup",
-//   "/dashboard",
-//   "/categories/",
-// ];
+const HIDDEN_PREFIXES = ["/dashboard", "/admin"];
 
 export default function FooterController() {
   const pathname = usePathname() || "";
 
-  if (pathname !== "/") return null;
+  if (HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+    return null;
+  }
 
   return <Footer />;
 }

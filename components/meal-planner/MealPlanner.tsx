@@ -134,16 +134,13 @@ export default function MealPlanner() {
       <div className="max-w-7xl mx-auto space-y-8 mb-10 p-2">
         {/* Header */}
         <div className="text-center space-y-4 mb-12 relative">
-          {/* Background blur to make text pop against grid */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-40 bg-background/70 blur-2xl -z-10 rounded-full" />
-
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/25 ring-1 ring-primary/15 mb-4 backdrop-blur-sm shadow-sm shadow-primary/10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-border mb-4">
             <Sparkles className="h-4 w-4 text-primary" />
             <span className="text-sm font-medium text-primary">
               AI-Powered Nutrition
             </span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold heading-primary pb-1">
+          <h1 className="text-4xl md:text-5xl font-bold heading-primary pb-1">
             Meal Planner
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-medium leading-relaxed">
@@ -156,11 +153,7 @@ export default function MealPlanner() {
           className={`grid-cols-1 md:grid-cols-2 gap-8 overflow-hidden ${plan?.timeframe ? "grid" : "block"}`}
         >
           {/* Main Form Card */}
-          <Card className="modern-card relative overflow-hidden border-2 border-border/50 shadow-2xl bg-card/70 backdrop-blur-xl order-2 lg:order-0">
-            {/* Decorative gradients */}
-            <div className="pointer-events-none absolute -top-40 -left-40 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-popular/10 blur-3xl" />
-
+          <Card className="bg-card border border-border/40 shadow-sm relative overflow-hidden order-2 lg:order-0">
             <CardHeader className="relative pb-8">
               <CardTitle className="text-3xl font-bold flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-primary text-primary-foreground">
@@ -196,17 +189,17 @@ export default function MealPlanner() {
                             onValueChange={field.onChange}
                             className="w-full"
                           >
-                            <TabsList className="grid grid-cols-2 w-full h-14 rounded-2xl bg-muted/60 p-1.5 border-2 border-border/50 ring-1 ring-primary/10">
+                            <TabsList className="grid grid-cols-2 w-full h-14 rounded-lg bg-muted p-1.5 border border-border">
                               <TabsTrigger
                                 value="today"
-                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-lg data-[state=active]:text-primary transition-all font-semibold text-base"
+                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all font-semibold text-base"
                               >
                                 <Clock className="h-4 w-4 mr-2" />
                                 Today
                               </TabsTrigger>
                               <TabsTrigger
                                 value="full-week"
-                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-lg data-[state=active]:text-primary transition-all font-semibold text-base"
+                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all font-semibold text-base"
                               >
                                 <Calendar className="h-4 w-4 mr-2" />
                                 Full Week
@@ -246,7 +239,7 @@ export default function MealPlanner() {
                                 className="cursor-pointer"
                               >
                                 <div className="flex items-center gap-2">
-                                  <Flame className="h-4 w-4 text-popular" />
+                                  <Flame className="h-4 w-4 text-muted-foreground" />
                                   <span>Fat Loss</span>
                                 </div>
                               </SelectItem>
@@ -255,7 +248,7 @@ export default function MealPlanner() {
                                 className="cursor-pointer"
                               >
                                 <div className="flex items-center gap-2">
-                                  <TrendingUp className="h-4 w-4 text-primary" />
+                                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
                                   <span>Muscle Gain</span>
                                 </div>
                               </SelectItem>
@@ -264,7 +257,7 @@ export default function MealPlanner() {
                                 className="cursor-pointer"
                               >
                                 <div className="flex items-center gap-2">
-                                  <Heart className="h-4 w-4 text-error" />
+                                  <Heart className="h-4 w-4 text-muted-foreground" />
                                   <span>Maintenance</span>
                                 </div>
                               </SelectItem>
@@ -309,7 +302,7 @@ export default function MealPlanner() {
                                 className="cursor-pointer"
                               >
                                 <div className="flex items-center gap-2">
-                                  <Apple className="h-4 w-4 text-error" />
+                                  <Apple className="h-4 w-4 text-muted-foreground" />
                                   <span>Vegetarian</span>
                                 </div>
                               </SelectItem>
@@ -318,7 +311,7 @@ export default function MealPlanner() {
                                 className="cursor-pointer"
                               >
                                 <div className="flex items-center gap-2">
-                                  <Salad className="h-4 w-4 text-success" />
+                                  <Salad className="h-4 w-4 text-muted-foreground" />
                                   <span>Vegan</span>
                                 </div>
                               </SelectItem>
@@ -327,7 +320,7 @@ export default function MealPlanner() {
                                 className="cursor-pointer"
                               >
                                 <div className="flex items-center gap-2">
-                                  <ChefHat className="h-4 w-4 text-primary" />
+                                  <ChefHat className="h-4 w-4 text-muted-foreground" />
                                   <span>Keto</span>
                                 </div>
                               </SelectItem>
@@ -656,8 +649,7 @@ export default function MealPlanner() {
                           />
                         </FormControl>
                         <FormDescription className="text-xs">
-                          <span className="inline-flex items-start gap-2 uppercase rounded-lg font-semibold border border-warning/25 bg-warning/10 px-2.5 py-2 text-foreground/80 text-lg w-full my-4">
-                            <span className="text-warning">⚠️</span>
+                          <span className="inline-flex items-start gap-2 rounded-lg border border-border bg-muted px-3 py-2 text-muted-foreground w-full my-4">
                             <span>
                               This is not medical advice. Consult a healthcare
                               professional for personalized nutrition guidance.
@@ -675,7 +667,7 @@ export default function MealPlanner() {
                       type="submit"
                       disabled={isLoading}
                       size="lg"
-                      className="w-full h-14 text-lg font-bold rounded-xl btn-primary-modern hover:-translate-y-0.5 hover:shadow-primary/30"
+                      className="w-full h-14 text-lg font-bold rounded-xl btn-primary-modern"
                     >
                       {isLoading ? (
                         <>
@@ -699,10 +691,7 @@ export default function MealPlanner() {
           {plan && (
             <div ref={previewRef} className="scroll-mt-20">
               <PreviewSection plan={plan} />
-              <div className="relative">
-                <div className="absolute -top-20 left-0 w-full h-40 bg-background blur-2xl pointer-events-none"></div>
-                <FullMealPlanModel plan={plan} />
-              </div>
+              <FullMealPlanModel plan={plan} />
             </div>
           )}
         </div>

@@ -1,6 +1,5 @@
 import React from "react";
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -47,7 +46,7 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
           <img
             src={blogPost?.image?.url || "/placeholder.svg"}
             alt={blogPost?.title || "Blog featured image"}
-            className="w-full h-96 object-cover rounded-2xl shadow-lg"
+            className="w-full h-96 object-cover rounded-lg shadow-md"
           />
         </div>
 
@@ -55,7 +54,7 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
         <ArticleContent blogPost={blogPost} />
 
         {/* Engagement Section */}
-        <Card className="p-6 mb-12 bg-card/70 backdrop-blur-sm border-border/50">
+        <Card className="p-6 mb-12 bg-card border border-border">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6">
               <Button
@@ -92,11 +91,11 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
           <div className="grid md:grid-cols-3 gap-6">
             {blogPost?.relatives_posts?.map((post: any, index: number) => (
               <Link key={index} href={`/blog/${post.slug}`}>
-                <Card className="overflow-hidden hover:shadow-lg dark:hover:shadow-xl transition-all duration-300 group bg-card/70 backdrop-blur-sm border-border/50">
+                <Card className="overflow-hidden group bg-card border border-border">
                   <img
                     src={post.image?.url || "/placeholder.svg"}
                     alt={post?.title}
-                    className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-32 object-cover"
                   />
                   <div className="p-4">
                     <h4 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">

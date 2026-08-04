@@ -43,6 +43,7 @@ const TipItems = ({
             onClick={() => removeItem(itemIndex)}
             variant={"ghost"}
             size="icon"
+            aria-label="Remove tip item"
             className="h-8 w-8 shrink-0"
           >
             <X className="h-4 w-4" />

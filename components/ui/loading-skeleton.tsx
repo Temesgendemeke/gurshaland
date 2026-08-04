@@ -68,9 +68,6 @@ export function StatsCardSkeleton({ className }: StatsCardSkeletonProps) {
       {/* Animated shimmer effect */}
       <ShimmerSkeleton className="absolute inset-0" />
 
-      {/* decorative gradient bar */}
-      <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-
       {/* icon skeleton */}
       <PulseSkeleton className="absolute right-4 top-4 h-9 w-9 rounded-lg bg-muted" />
 
@@ -81,9 +78,6 @@ export function StatsCardSkeleton({ className }: StatsCardSkeletonProps) {
         {/* name skeleton */}
         <PulseSkeleton className="mt-1 h-4 w-20 bg-muted rounded" delay={0.2} />
       </div>
-
-      {/* bottom accent */}
-      <span className="absolute inset-x-4 bottom-3 h-px bg-gradient-to-r from-primary/0 via-primary/35 to-primary/0 opacity-40" />
     </div>
   );
 }

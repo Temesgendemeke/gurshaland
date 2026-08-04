@@ -1,17 +1,12 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import FooterController from "@/components/FooterController";
 import { AIChatWidget } from "@/components/ai-chat-widget";
 import { Toaster } from "@/components/ui/sonner";
-import SyncAuth from "@/components/SyncAuth";
-import { QueryClientProvider } from "@tanstack/react-query";
 import { Providers } from "./providers";
-import { InstrumentSansFont, GoshFont } from "./fonts";
-
-const inter = Inter({ subsets: ["latin"] });
+import { SatoshiFont, GoshFont } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Gurshaland - Ethiopian Recipe Sharing",
@@ -30,10 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="light" suppressHydrationWarning>
       <body
-        className={`${InstrumentSansFont.variable} ${GoshFont.variable} min-h-screen flex flex-col`}
+        className={`${SatoshiFont.variable} ${GoshFont.variable} min-h-screen flex flex-col`}
         suppressHydrationWarning
       >
-        <div className="grain-overlay">
+        {/* <div className="grain-overlay">
           <svg
             className="grain-svg"
             xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +62,7 @@ export default function RootLayout({
               filter="url(#grain)"
             />
           </svg>
-        </div>
+        </div> */}
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

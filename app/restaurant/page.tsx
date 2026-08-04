@@ -1,6 +1,5 @@
 "use client";
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Input } from "@/components/ui/input";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -66,13 +65,13 @@ const RestaurantsPageContent = () => {
       <main className="mx-auto w-[calc(100%-1rem)] max-w-7xl px-4 sm:px-6 py-12 mt-6 md:mt-12">
         <div className="text-center">
           <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground font-gosh">
-            Discover the <span className="gradient-text-primary">hottest</span>{" "}
+            Discover the <span className="text-primary">hottest</span>{" "}
             lounges
           </h1>
           <p className="mt-3 text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
             Search, explore, and find your next favorite spot.
           </p>
-          <Button asChild className="rounded-full shadow-md font-bold px-8 py-6 text-base bg-foreground text-background hover:bg-foreground/90 transition-all hover:scale-105 active:scale-95">
+          <Button asChild className="btn-primary-modern px-8 py-6 text-base">
             <Link href="/restaurant/add">
               <Plus className="w-5 h-5 mr-2" />
               Add Restaurant
@@ -84,7 +83,7 @@ const RestaurantsPageContent = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="modern-card bg-card/70 backdrop-blur-sm flex flex-col md:flex-row gap-3 p-4 sm:p-5 rounded-2xl border border-border/50 shadow-sm"
+              className="modern-card flex flex-col md:flex-row gap-3 p-4 sm:p-5 rounded-lg border border-border/50 shadow-sm"
             >
               <div className="flex-1">
                 <FormField
@@ -96,7 +95,7 @@ const RestaurantsPageContent = () => {
                       <Input
                         {...field}
                         placeholder="Search for a lounge..."
-                        className="pl-10 h-12 bg-background/60 text-foreground border-border/50 focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary/50 transition-colors"
+                        className="pl-10 h-12 bg-background text-foreground border-border/50 focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary/50 transition-colors"
                       />
                     </div>
                   )}
@@ -130,7 +129,7 @@ const RestaurantsPageContent = () => {
 
             {totalPages > 1 && (
               <div className="mt-10 mb-2 flex justify-center">
-                <div className="modern-card bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl px-3 py-2">
+                <div className="modern-card border border-border/50 rounded-lg px-3 py-2">
                   <Pagination>
                     <PaginationContent>
                       <PaginationItem>

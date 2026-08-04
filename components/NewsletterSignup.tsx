@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 function NewsletterSignup() {
   return (
     <div className="mt-20">
-      <Card className="p-12 text-center bg-gradient-to-r from-primary/10 to-popular/10 border-primary/20">
+      <Card className="p-12 text-center bg-card border border-border">
         <h2 className="text-3xl font-bold text-foreground mb-4">
           Stay Updated
         </h2>
@@ -16,7 +16,7 @@ function NewsletterSignup() {
         <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
           <Input
             placeholder="Enter your email"
-            className="flex-1 border-primary/20 bg-background"
+            className="flex-1 border-border bg-background"
           />
           <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
             Subscribe

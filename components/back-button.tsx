@@ -13,10 +13,10 @@ export function BackButton({ href, className }: BackButtonProps) {
       <Button
         variant="outline"
         size="icon"
-        className="h-10 w-10 rounded-full bg-black/20 backdrop-blur-md border-white/20 hover:bg-primary/40 text-white transition-all shadow-sm hover:text-white"
+        className="h-10 w-10 rounded-full bg-background border-border text-foreground hover:bg-background"
         asChild
       >
-        <Link href={href}>
+        <Link href={href} aria-label="Go back">
           <ChevronLeft className="w-5 h-5 -ml-0.5" />
         </Link>
       </Button>

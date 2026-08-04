@@ -318,7 +318,7 @@ export default function BlogForm({
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* Basic Information */}
-        <Card className="bg-card/70 backdrop-blur-sm border-primary/20">
+        <Card className="bg-card border border-border">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
@@ -439,7 +439,7 @@ export default function BlogForm({
         </Card>
 
         {/* Content Sections */}
-        <Card className="bg-card/70 backdrop-blur-sm border-primary/20">
+        <Card className="bg-card border border-border">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <List className="h-5 w-5" />

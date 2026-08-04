@@ -10,7 +10,7 @@ export default function GenerateSkeleton() {
       </div>
 
       {/* Form Container */}
-      <div className="bg-card rounded-2xl shadow-xl border border-border p-8">
+      <div className="bg-card rounded-lg shadow-sm border border-border p-8">
         {/* Input Fields */}
         <div className="space-y-6">
           {/* Recipe Type */}
@@ -53,7 +53,7 @@ export default function GenerateSkeleton() {
       </div>
 
       {/* Result Section Placeholder */}
-      <div className="bg-muted/30 rounded-2xl border border-border p-8">
+      <div className="bg-muted/30 rounded-lg border border-border p-8">
         <div className="text-center space-y-4">
           <div className="flex justify-center">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">

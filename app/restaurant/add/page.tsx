@@ -125,7 +125,7 @@ const AddRestaurantPage = () => {
                 <div className="h-px flex-1 bg-border" />
               </div>
 
-              <div className="bg-card rounded-2xl  border border-border overflow-hidden">
+              <div className="bg-card rounded-lg border border-border overflow-hidden">
                 <PreviewSection form={form} />
               </div>
             </div>

@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -59,7 +58,7 @@ export default function BlogPage() {
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-card/70 backdrop-blur-sm rounded-2xl p-6 mb-12 border border-primary/20">
+        <div className="bg-card border border-border rounded-lg p-6 mb-12">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -67,14 +66,14 @@ export default function BlogPage() {
                 placeholder="Search articles..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-12 border-primary/20 bg-background"
+                className="pl-10 h-12 border-border bg-background"
               />
             </div>
             <Select
               value={selectedCategory}
               onValueChange={setSelectedCategory}
             >
-              <SelectTrigger className="w-full md:w-48 h-12 border-primary/20 bg-background">
+              <SelectTrigger className="w-full md:w-48 h-12 border-border bg-background">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
@@ -120,14 +119,11 @@ export default function BlogPage() {
           <Button
             variant="outline"
             size="lg"
-            className="border-2 border-primary text-primary hover:bg-primary/5 rounded-full px-8"
+            className="px-8 text-primary"
           >
             Load More Articles
           </Button>
         </div>
-
-        {/* Newsletter Signup */}
-        {/* <NewsletterSignup /> */}
       </div>
     </div>
   );

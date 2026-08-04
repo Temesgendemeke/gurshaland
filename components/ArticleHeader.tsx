@@ -19,7 +19,7 @@ interface ArticleHeaderProps {
 const ArticleHeader = ({ blogPost }: ArticleHeaderProps) => {
   return (
     <div className="mb-8">
-      <Badge className="mb-4 bg-primary/10 text-primary">
+      <Badge className="mb-4 bg-muted text-muted-foreground">
         {blogPost?.category}
       </Badge>
       <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
@@ -58,7 +58,7 @@ const ArticleHeader = ({ blogPost }: ArticleHeaderProps) => {
         <Button
           variant="outline"
           size="sm"
-          className="border-primary/40 text-primary hover:bg-primary/10"
+          className="border-border text-muted-foreground hover:bg-muted"
         >
           <Share2 className="w-4 h-4 mr-2" />
           Share
@@ -66,7 +66,7 @@ const ArticleHeader = ({ blogPost }: ArticleHeaderProps) => {
         <Button
           variant="outline"
           size="sm"
-          className="border-primary/40 text-primary hover:bg-primary/10"
+          className="border-border text-muted-foreground hover:bg-muted"
         >
           <Heart className="w-4 h-4 mr-2" />
           Save
@@ -74,7 +74,7 @@ const ArticleHeader = ({ blogPost }: ArticleHeaderProps) => {
         <Button
           variant="outline"
           size="sm"
-          className="border-primary/40 text-primary hover:bg-primary/10"
+          className="border-border text-muted-foreground hover:bg-muted"
         >
           <MessageCircle className="w-4 h-4 mr-2" />
           Comment

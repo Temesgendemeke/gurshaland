@@ -6,7 +6,6 @@ import { z } from "zod";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Upload, FileText, X, AlertCircle, CheckCircle2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -109,7 +108,7 @@ const FeedContextPage = () => {
   };
 
   return (
-    <div className="w-full mx-auto space-y-8 animate-in fade-in duration-500">
+    <div className="w-full mx-auto space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Feed AI Content</h1>
         <p className="text-muted-foreground mt-1">
@@ -119,7 +118,7 @@ const FeedContextPage = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <Card className="border-none shadow-lg bg-card/50 backdrop-blur">
+          <Card className="border bg-card shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="w-5 h-5 text-primary" />
@@ -138,7 +137,7 @@ const FeedContextPage = () => {
                     <FormControl>
                       <Textarea
                         placeholder="e.g. Traditional Ethiopian coffee ceremonies involve several stages..."
-                        className="min-h-[250px] resize-y p-4 border-muted focus-visible:ring-primary/30 transition-shadow bg-background/50"
+                        className="min-h-[250px] resize-y p-4 border-muted focus-visible:ring-primary/30 transition-shadow bg-background"
                         {...field}
                       />
                     </FormControl>
@@ -149,7 +148,7 @@ const FeedContextPage = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-lg bg-card/50 backdrop-blur">
+          <Card className="border bg-card shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Upload className="w-5 h-5 text-primary" />
@@ -182,83 +181,70 @@ const FeedContextPage = () => {
                           }
                         }}
                         className={cn(
-                          "relative group flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-12 transition-all duration-200 bg-background/30",
+                          "relative group flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-12 transition-colors bg-background",
                           isDragging
-                            ? "border-primary bg-primary/5 scale-[1.01]"
+                            ? "border-primary bg-primary/5"
                             : "border-muted-foreground/20 hover:border-primary/50",
                           fileName && "border-primary bg-primary/5",
                         )}
                       >
-                        <AnimatePresence mode="wait">
-                          {!fileName ? (
-                            <motion.div
-                              key="upload-prompt"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              className="text-center space-y-4"
+                        {!fileName ? (
+                          <div className="text-center space-y-4">
+                            <div className="bg-muted p-4 rounded-full mx-auto w-fit group-hover:bg-primary/10 transition-colors">
+                              <Upload className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-semibold">
+                                Drag and drop or click to browse
+                              </p>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                Supporting PDF files up to 10MB
+                              </p>
+                            </div>
+                            <Input
+                              type="file"
+                              accept=".pdf"
+                              className="hidden"
+                              id="pdf-upload"
+                              onChange={(e) => handleFileChange(e, onChange)}
+                              {...field}
+                            />
+                            <Button
+                              type="button"
+                              variant="secondary"
+                              size="sm"
+                              onClick={() =>
+                                document.getElementById("pdf-upload")?.click()
+                              }
                             >
-                              <div className="bg-muted p-4 rounded-full mx-auto w-fit group-hover:bg-primary/10 transition-colors">
-                                <Upload className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
-                              </div>
-                              <div>
-                                <p className="text-sm font-semibold">
-                                  Drag and drop or click to browse
-                                </p>
-                                <p className="text-xs text-muted-foreground mt-1">
-                                  Supporting PDF files up to 10MB
-                                </p>
-                              </div>
-                              <Input
-                                type="file"
-                                accept=".pdf"
-                                className="hidden"
-                                id="pdf-upload"
-                                onChange={(e) => handleFileChange(e, onChange)}
-                                {...field}
-                              />
-                              <Button
-                                type="button"
-                                variant="secondary"
-                                size="sm"
-                                onClick={() =>
-                                  document.getElementById("pdf-upload")?.click()
-                                }
-                              >
-                                Select PDF
-                              </Button>
-                            </motion.div>
-                          ) : (
-                            <motion.div
-                              key="file-selected"
-                              initial={{ opacity: 0, scale: 0.95 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              className="text-center space-y-4 w-full"
+                              Select PDF
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="text-center space-y-4 w-full">
+                            <div className="bg-success/10 border border-success/20 p-4 rounded-full mx-auto w-fit">
+                              <CheckCircle2 className="w-8 h-8 text-success" />
+                            </div>
+                            <div className="px-12">
+                              <p className="text-sm font-bold truncate max-w-xs mx-auto">
+                                {fileName}
+                              </p>
+                              <p className="text-xs text-success font-medium mt-1">
+                                Ready for processing
+                              </p>
+                            </div>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                              onClick={() => removeFile(onChange)}
                             >
-                              <div className="bg-success/10 border border-success/20 p-4 rounded-full mx-auto w-fit">
-                                <CheckCircle2 className="w-8 h-8 text-success" />
-                              </div>
-                              <div className="px-12">
-                                <p className="text-sm font-bold truncate max-w-xs mx-auto">
-                                  {fileName}
-                                </p>
-                                <p className="text-xs text-success font-medium mt-1">
-                                  Ready for processing
-                                </p>
-                              </div>
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                                onClick={() => removeFile(onChange)}
-                              >
-                                <X className="w-4 h-4 mr-2" />
-                                Remove and choose another
-                              </Button>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                              <X className="w-4 h-4 mr-2" />
+                              Remove and choose another
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -276,7 +262,7 @@ const FeedContextPage = () => {
             <Button
               type="submit"
               size="lg"
-              className="px-8 font-bold shadow-lg shadow-primary/20 transition-all hover:shadow-primary/30 active:scale-95"
+              className="px-8 font-bold transition-colors"
               disabled={loading}
             >
               {loading ? (

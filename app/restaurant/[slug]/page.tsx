@@ -42,7 +42,7 @@ export default async function RestaurantPage({
 
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto w-full px-4 md:px-8 mt-6 md:mt-8">
-        <div className="relative h-[25vh] md:h-[40vh] w-full overflow-hidden rounded-2xl shadow-modern">
+        <div className="relative h-[25vh] md:h-[40vh] w-full overflow-hidden rounded-lg shadow-modern">
           {(restaurant as any).image?.url ? (
           <>
             <FallbackImage
@@ -57,7 +57,7 @@ export default async function RestaurantPage({
             <div className="absolute inset-0 z-10 bg-linear-to-t from-black/50 via-black/20 to-transparent pointer-events-none"></div>
           </>
         ) : (
-          <div className="absolute inset-0 z-0 modern-gradient-bg opacity-30"></div>
+          <div className="absolute inset-0 z-0 bg-muted"></div>
         )}
 
         {/* Back Button */}
@@ -145,7 +145,7 @@ export default async function RestaurantPage({
                   <Badge
                     key={idx}
                     variant="outline"
-                    className="px-4 py-1.5 text-sm bg-background/50 text-secondary-strong shadow-sm backdrop-blur-sm rounded-xl"
+                    className="px-4 py-1.5 text-sm bg-card text-secondary-strong shadow-sm rounded-xl"
                   >
                     {cuisine}
                   </Badge>
@@ -165,13 +165,13 @@ export default async function RestaurantPage({
                   {(restaurant as any).gallery.map((img: any, idx: number) => (
                     <div
                       key={idx}
-                      className="relative aspect-square rounded-2xl overflow-hidden shadow-modern modern-card-hover cursor-pointer group"
+                      className="relative aspect-square rounded-lg overflow-hidden shadow-modern modern-card-hover cursor-pointer group"
                     >
                       <FallbackImage
                         src={img.url}
                         alt={`Gallery view ${idx + 1}`}
                         fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        className="object-cover"
                         unoptimized
                       />
                     </div>
@@ -192,7 +192,7 @@ export default async function RestaurantPage({
                 {restaurant.menu.map((item: any, idx: number) => (
                   <Card
                     key={idx}
-                    className="shadow-modern border-border/40 modern-card-hover rounded-2xl group overflow-hidden bg-card/50 backdrop-blur-sm"
+                    className="shadow-modern border-border/40 modern-card-hover rounded-lg group overflow-hidden"
                   >
                     <CardContent className="p-5 flex flex-col justify-between h-full">
                       <div>
@@ -223,7 +223,7 @@ export default async function RestaurantPage({
 
         {/* Right Column: Info Card */}
         <div className="space-y-6">
-          <Card className="rounded-2xl sticky top-24 shadow-modern border-border/50 bg-card/50 backdrop-blur-md">
+          <Card className="rounded-lg sticky top-24 shadow-modern border-border/50">
             <CardContent className="p-6">
               <h3 className="heading-secondary text-xl mb-4 text-primary-strong">
                 Info & Contact

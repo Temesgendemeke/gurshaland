@@ -16,7 +16,7 @@ export default function RecipeDetailSkeleton() {
       {/* Recipe Header Skeleton */}
       <div className="grid lg:grid-cols-2 gap-12 mb-12">
         <div>
-          <Skeleton className="w-full h-96 rounded-2xl shadow-lg" />
+          <Skeleton className="w-full h-96 rounded-lg" />
         </div>
         <div>
           <div className="flex items-center space-x-2 mb-4">
@@ -36,9 +36,9 @@ export default function RecipeDetailSkeleton() {
             ))}
           </div>
           <div className="flex flex-wrap gap-4 mb-6">
-            <Skeleton className="h-10 w-24 rounded-full" />
-            <Skeleton className="h-10 w-24 rounded-full" />
-            <Skeleton className="h-10 w-24 rounded-full" />
+            <Skeleton className="h-10 w-24 rounded-md" />
+            <Skeleton className="h-10 w-24 rounded-md" />
+            <Skeleton className="h-10 w-24 rounded-md" />
           </div>
           <Card className="p-4">
             <div className="flex items-center space-x-4">
@@ -105,7 +105,7 @@ export default function RecipeDetailSkeleton() {
           {/* Rating Skeleton */}
           <Card className="p-6">
             <Skeleton className="h-6 w-40 mb-4 rounded" />
-            <Skeleton className="h-10 w-32 rounded-full" />
+            <Skeleton className="h-10 w-32 rounded-md" />
           </Card>
           {/* Comments Skeleton */}
           <Card className="p-6">

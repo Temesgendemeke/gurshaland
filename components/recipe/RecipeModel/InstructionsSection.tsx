@@ -34,7 +34,7 @@ const InstructionsSection = ({
                     <ImageBoxSkeleton />
                   )}
                   {instruction?.isLoading && (
-                    <div className="absolute inset-0 bg-background/70 backdrop-blur-sm flex items-center justify-center rounded-lg">
+                    <div className="absolute inset-0 bg-background/70 flex items-center justify-center rounded-lg">
                       <div className="flex flex-col items-center gap-2">
                         <Loader2 className="w-6 h-6 animate-spin text-primary" />
                         <span className="text-sm text-muted-foreground">

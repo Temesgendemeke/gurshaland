@@ -23,7 +23,6 @@ import Image from "next/image";
 import gursh_image from "@/public/gursha.webp";
 import Logo from "@/components/Logo";
 import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
-import { motion } from "framer-motion";
 import AuthVisual from "@/components/AuthVisual";
 import { createClient } from "@/utils/supabase/client";
 
@@ -120,13 +119,13 @@ const Page = () => {
 
       {/* Right Side - Form */}
       <div className="flex flex-col justify-center p-6 md:p-12 relative z-10">
-        <div className="w-full  mx-auto space-y-8  p-8 md:p-10 rounded-3xl border border-border/20">
+        <div className="w-full  mx-auto space-y-8  p-8 md:p-10 rounded-lg border border-border/20">
           <div className="relative z-10 flex items-center justify-between w-full lg:hidden">
             <Link
               href="/"
-              className="flex items-center gap-2 px-4 py-2 rounded-md bg-white/10 hover:bg-white/20 border border-white/10 transition-colors duration-200 text-sm font-medium group text-white"
+              className="flex items-center gap-2 px-4 py-2 rounded-md bg-muted hover:bg-muted/70 border border-border transition-colors duration-200 text-sm font-medium text-foreground"
             >
-              <ArrowLeft className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowLeft className="w-4 h-4" />
               Back
             </Link>
           </div>
@@ -158,7 +157,7 @@ const Page = () => {
                     <FormControl>
                       <Input
                         placeholder="name@example.com"
-                        className="h-14 rounded-xl bg-background/80 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
                         {...field}
                       />
                     </FormControl>
@@ -187,7 +186,7 @@ const Page = () => {
                       <PasswordField
                         placeholder="Enter your password"
                         {...field}
-                        className="h-14 rounded-xl bg-background/80 border-2 border-muted focus:border-primary focus:ring-0 transition-all duration-200 text-lg px-4 placeholder:text-muted-foreground/50 "
+                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50 "
                       />
                     </FormControl>
                     <FormMessage className="text-sm font-medium pl-1" />
@@ -197,7 +196,7 @@ const Page = () => {
 
               <Button
                 type="submit"
-                className="w-full h-14 rounded-xl text-lg font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-200 shadow-lg shadow-primary/20 mt-2"
+                className="w-full h-14 rounded-xl text-lg font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 shadow-sm mt-2"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? (
@@ -226,7 +225,7 @@ const Page = () => {
           <div className="grid">
             <Button
               variant="outline"
-              className="h-14 rounded-xl border-2 border-muted bg-background/50 hover:bg-muted/50 transition-colors text-lg font-medium text-foreground"
+              className="h-14 rounded-xl border-2 border-muted bg-background hover:bg-muted/50 transition-colors text-lg font-medium text-foreground"
               onClick={handleGoogleSignIn}
             >
               <svg className="mr-3 h-6 w-6" viewBox="0 0 24 24">

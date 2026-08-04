@@ -52,7 +52,7 @@ const RestaurantForm = ({ form, onSubmit, mode = "create" }: RestaurentFormProps
           <Button
             type="submit"
             size="lg"
-            className="w-full h-14 text-lg font-semibold hover:-translate-y-1 transition-all rounded-xl btn-primary-modern"
+            className="w-full h-14 text-lg font-semibold rounded-xl btn-primary-modern"
           >
             {form.formState.isSubmitting ? (
               <>

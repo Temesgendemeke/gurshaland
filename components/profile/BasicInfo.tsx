@@ -19,7 +19,7 @@ const BasicInfo = ({ profile }: BasicInfoProps) => {
   };
   return (
     <>
-      <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-primary shadow-lg">
+      <div className="relative w-32 h-32 rounded-full overflow-hidden border border-border shadow-sm">
         <img
           src={`${profile.avatar_url || avatar.src}`}
           alt={`${profile.username} avatar`}
@@ -33,7 +33,7 @@ const BasicInfo = ({ profile }: BasicInfoProps) => {
         aria-disabled={user?.id == profile.id}
         disabled={user?.id === profile.id}
         onClick={handleFollow}
-        className="mt-2 px-6 py-2 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition"
+        className="mt-2 px-6 py-2 btn-primary-modern"
       >
         Follow
       </Button>

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -114,7 +113,7 @@ function RecipesPageContent() {
         </div>
 
         {/* Search and Filters */}
-        <div className="modern-card rounded-2xl p-6 mb-8 border border-primary/20">
+        <div className="modern-card rounded-lg p-6 mb-8 border border-border">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -130,7 +129,7 @@ function RecipesPageContent() {
               value={selectedCategory}
               onValueChange={setSelectedCategory}
             >
-              <SelectTrigger className="w-full md:w-48 h-12 border-primary/20 bg-background text-foreground">
+              <SelectTrigger className="w-full md:w-48 h-12 border-border bg-background text-foreground">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
@@ -146,7 +145,7 @@ function RecipesPageContent() {
               value={selectedDifficulty}
               onValueChange={setSelectedDifficulty}
             >
-              <SelectTrigger className="w-full md:w-48 h-12 border-primary/20 bg-background text-foreground">
+              <SelectTrigger className="w-full md:w-48 h-12 border-border bg-background text-foreground">
                 <SelectValue placeholder="Difficulty" />
               </SelectTrigger>
               <SelectContent>
@@ -188,7 +187,7 @@ function RecipesPageContent() {
           <Button
             variant="outline"
             size="lg"
-            className="border-2 border-primary text-primary hover:bg-primary/5 rounded-full px-8"
+            className="px-8 text-primary"
           >
             Load More Recipes
           </Button>

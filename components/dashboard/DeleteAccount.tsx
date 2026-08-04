@@ -42,7 +42,7 @@ const DeleteAccount = ({ profile_id }: DeleteAccountProps) => {
     }
   };
   return (
-    <Card className="border border-error/20 bg-card shadow-sm rounded-2xl">
+    <Card className="border border-error/20 bg-card shadow-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-3 text-error text-xl font-bold">
           <span className="inline-flex items-center justify-center bg-error/10 rounded-full p-2">
@@ -75,12 +75,12 @@ const DeleteAccount = ({ profile_id }: DeleteAccountProps) => {
             <AlertDialogTrigger asChild>
               <Button
                 variant="destructive"
-                className="px-8 py-2 rounded-full font-semibold text-base shadow-sm"
+                className="px-8 py-2 font-semibold text-base"
               >
                 Delete Account
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent className="rounded-2xl border border-error/20 shadow-xl">
+            <AlertDialogContent className="border border-error/20 shadow-sm">
               <AlertDialogHeader>
                 <AlertDialogTitle className="text-error text-lg font-bold flex items-center gap-2">
                   <Shield className="h-5 w-5 text-error" />
@@ -98,11 +98,11 @@ const DeleteAccount = ({ profile_id }: DeleteAccountProps) => {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter className="flex flex-row gap-3 mt-4">
-                <AlertDialogCancel className="rounded-full px-6 py-2 border border-muted-foreground/20 hover:bg-muted-foreground/10 transition">
+                <AlertDialogCancel className="px-6 py-2">
                   Cancel
                 </AlertDialogCancel>
                 <AlertDialogAction
-                  className="bg-destructive hover:bg-destructive/90 text-destructive-foreground px-8 py-2 rounded-full font-semibold shadow transition focus:ring-2 focus:ring-destructive/30 focus:ring-offset-2"
+                  className="bg-destructive hover:bg-destructive/90 text-destructive-foreground px-8 py-2 font-semibold focus:ring-2 focus:ring-destructive/30 focus:ring-offset-2"
                   onClick={handleDeleteAccount}
                 >
                   Yes, Delete My Account

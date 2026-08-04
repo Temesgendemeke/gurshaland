@@ -71,7 +71,7 @@ const EditRestaurantForm = ({
             <div className="h-px flex-1 bg-border" />
           </div>
 
-          <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-xl border border-border overflow-hidden transform transition-all hover:scale-[1.01]">
+          <div className="rounded-lg shadow-sm border border-border overflow-hidden">
             <PreviewSection form={form} onSubmit={onSubmit} />
           </div>
         </div>

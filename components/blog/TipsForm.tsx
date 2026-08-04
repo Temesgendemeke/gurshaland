@@ -16,7 +16,7 @@ const TipsForm = ({ form, index }: TipsFormProps) => {
   const tips_name = `content.${index}.tips`;
 
   return (
-    <div className="space-y-4 p-4 border rounded-lg bg-background/50">
+    <div className="space-y-4 p-4 border rounded-lg bg-background">
       <Label className="flex items-center gap-2 font-semibold text-base">
         <NotebookPen className="h-5 w-5" />
         Tips Section
@@ -34,6 +34,7 @@ const TipsForm = ({ form, index }: TipsFormProps) => {
               onClick={() => form.setValue(tips_name, undefined)}
               variant={"ghost"}
               size="icon"
+              aria-label="Clear tip"
               className="h-9 w-9 shrink-0"
             >
               <Trash className="h-4 w-4 text-destructive" />

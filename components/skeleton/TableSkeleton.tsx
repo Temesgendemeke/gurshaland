@@ -15,7 +15,7 @@ import {
 
 const TableSkeleton = () => {
   return (
-    <div className="relative rounded-xl border bg-card/50 backdrop-blur shadow-sm overflow-hidden">
+    <div className="relative rounded-xl border bg-card shadow-sm overflow-hidden">
       {/* Subtle shimmer overlay */}
       <ShimmerSkeleton className="absolute inset-0 opacity-20 pointer-events-none" />
       {/* Header skeleton with shimmer */}
@@ -29,7 +29,7 @@ const TableSkeleton = () => {
       {/* Table skeleton */}
       <div className="max-h-[420px] overflow-auto">
         <Table className="text-sm">
-          <TableHeader className="sticky top-0 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/70 z-10">
+          <TableHeader className="sticky top-0 bg-card z-10">
             <TableRow className="hover:bg-transparent">
               <TableHead className="w-12 text-center">#</TableHead>
               <TableHead>Title</TableHead>
@@ -41,7 +41,7 @@ const TableSkeleton = () => {
             {Array.from({ length: 8 }).map((_, i) => (
               <TableRow
                 key={i}
-                className="group transition-all duration-300 hover:bg-muted/20"
+                className="group transition-colors hover:bg-muted/20"
               >
                 <TableCell className="text-center">
                   <PulseSkeleton

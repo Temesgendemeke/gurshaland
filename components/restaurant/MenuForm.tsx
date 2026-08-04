@@ -52,7 +52,7 @@ const MenuForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
   };
 
   return (
-    <Card className="border-none bg-card/80 backdrop-blur-sm">
+    <Card className="bg-card">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <div className="flex items-center gap-2 text-primary mb-1">
@@ -70,7 +70,7 @@ const MenuForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
           type="button"
           variant={"outline"}
           onClick={addMenuField}
-          className="gap-2 shadow-md hover:shadow-lg transition-all"
+          className="gap-2 shadow-sm"
         >
           <PlusIcon size={18} />
           Add Item

@@ -11,7 +11,7 @@ const CategoryHeader = ({
 }) => {
   return (
     <div className="text-center mb-12">
-      <div className="inline-block p-4 rounded-2xl bg-card/70 backdrop-blur-sm border border-border/60 mb-6">
+      <div className="inline-block p-4 rounded-lg bg-card border border-border mb-6">
         <h1 className="text-4xl font-bold text-foreground">
           {currentCategory.name}
         </h1>

@@ -38,7 +38,7 @@ const MealPlanView = ({ id }: { id: string }) => {
 
   return (
     <div className="mx-auto w-[calc(100%-1rem)] max-w-7xl py-8 px-4 space-y-6 md:space-y-8">
-      <div className="backdrop-blur-sm border-transparent bg-transparent  p-5 md:p-6 space-y-5">
+      <div className="bg-background border border-border p-5 md:p-6 space-y-5">
         {/* Header / Navigation */}
         <div className="grid gap-2 sm:grid-cols-[1fr_auto] sm:items-start">
           <div className="flex items-start gap-4 min-w-0">
@@ -46,7 +46,8 @@ const MealPlanView = ({ id }: { id: string }) => {
               variant="ghost"
               size="icon"
               asChild
-              className="rounded-full hover:bg-muted"
+              aria-label="Back to my meal plans"
+              className="rounded-lg hover:bg-muted"
             >
               <Link href="/meal-planner/my-meal-plans">
                 <ChevronLeft className="w-6 h-6" />
@@ -82,7 +83,7 @@ const MealPlanView = ({ id }: { id: string }) => {
           {plan.diet && (
             <Badge
               variant="outline"
-              className="px-3 py-1.5 text-xs text-muted-foreground sm:text-sm font-medium border border-success/20"
+              className="px-3 py-1.5 text-xs text-muted-foreground sm:text-sm font-medium border border-border"
             >
               {plan.diet}
             </Badge>
@@ -90,7 +91,7 @@ const MealPlanView = ({ id }: { id: string }) => {
           {plan.calories && (
             <Badge
               variant="outline"
-              className="px-3 py-1.5 text-xs text-muted-foreground sm:text-sm font-medium border border-info/20"
+              className="px-3 py-1.5 text-xs text-muted-foreground sm:text-sm font-medium border border-border"
             >
               {plan.calories} kcal/day
             </Badge>
@@ -129,12 +130,12 @@ const MealPlanView = ({ id }: { id: string }) => {
             <Card
               key={day.id}
               id={`day-${index + 1}`}
-              className="modern-card  overflow-hidden border border-border/50 shadow-sm bg-card/60 backdrop-blur-sm scroll-mt-28"
+              className="bg-card overflow-hidden border border-border/50 shadow-sm scroll-mt-28"
             >
               <CardHeader className="bg-muted/30 border-b pb-4">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg sm:text-xl font-bold flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-bold text-base shadow-lg shadow-primary/20">
+                    <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-bold text-base">
                       {index + 1}
                     </div>
                     <span className="capitalize">{day.day}</span>
@@ -180,17 +181,17 @@ const MealPlanView = ({ id }: { id: string }) => {
                       {(meal.protein || meal.carbs || meal.fat) && (
                         <div className="flex flex-wrap gap-2 text-xs pt-1">
                           {meal.protein && (
-                            <span className="px-2 py-1 rounded-md bg-info/10 text-info border border-info/20 font-medium leading-none">
+                            <span className="px-2 py-1 rounded-md bg-muted text-muted-foreground border border-border font-medium leading-none">
                               Protein: {meal.protein}g
                             </span>
                           )}
                           {meal.carbs && (
-                            <span className="px-2 py-1 rounded-md bg-warning/10 text-warning border border-warning/20 font-medium leading-none">
+                            <span className="px-2 py-1 rounded-md bg-muted text-muted-foreground border border-border font-medium leading-none">
                               Carbs: {meal.carbs}g
                             </span>
                           )}
                           {meal.fat && (
-                            <span className="px-2 py-1 rounded-md bg-error/10 text-error border border-error/20 font-medium leading-none">
+                            <span className="px-2 py-1 rounded-md bg-muted text-muted-foreground border border-border font-medium leading-none">
                               Fat: {meal.fat}g
                             </span>
                           )}
@@ -211,7 +212,7 @@ const MealPlanView = ({ id }: { id: string }) => {
         <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-24 self-start">
           {/* Jump to Day */}
           {plan.days && plan.days.length > 1 && (
-            <Card className="modern-card border border-border/50 bg-card/70">
+            <Card className="bg-card border border-border/50">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-semibold">
                   Jump to day
@@ -225,7 +226,7 @@ const MealPlanView = ({ id }: { id: string }) => {
                       asChild
                       variant="outline"
                       size="sm"
-                      className="justify-start bg-background/40 hover:bg-muted text-xs"
+                      className="justify-start bg-card hover:bg-muted text-xs"
                     >
                       <a href={`#day-${idx + 1}`}>
                         <span className="font-mono text-xs text-muted-foreground mr-2">
@@ -242,7 +243,7 @@ const MealPlanView = ({ id }: { id: string }) => {
 
           {/* Shopping List */}
           {plan.shopping_list && plan.shopping_list.length > 0 && (
-            <Card className="modern-card border-2 shadow-md bg-card/70">
+            <Card className="bg-card border border-border/40 shadow-sm">
               <CardHeader className="pb-3 bg-success/5 border-b border-border/40">
                 <CardTitle className="flex items-center gap-2 text-foreground">
                   <div className="p-2 rounded-lg bg-success/10 border border-success/20 text-success">
@@ -268,10 +269,10 @@ const MealPlanView = ({ id }: { id: string }) => {
 
           {/* Pro Tips */}
           {plan.pro_tips && plan.pro_tips.length > 0 && (
-            <Card className="modern-card border-2 shadow-md bg-card/70 border-border/50">
+            <Card className="bg-card border border-border/50 shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-foreground">
-                  <Sparkles className="w-5 h-5 text-warning" />
+                  <Sparkles className="w-5 h-5 text-muted-foreground" />
                   Pro Tips
                 </CardTitle>
               </CardHeader>
@@ -281,7 +282,7 @@ const MealPlanView = ({ id }: { id: string }) => {
                     key={i}
                     className="flex gap-3 bg-muted/30 p-3 rounded-lg border border-border/50"
                   >
-                    <NotebookPen className="w-4 h-4 text-warning shrink-0 mt-1" />
+                    <NotebookPen className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
                     <div className="text-sm leading-relaxed text-muted-foreground [&_p]:m-0 [&_p]:leading-relaxed [&_strong]:text-foreground">
                       <ReactMarkdown>{tip}</ReactMarkdown>
                     </div>

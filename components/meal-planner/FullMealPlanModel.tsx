@@ -73,13 +73,13 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
       <DialogTrigger asChild>
         <Button
           variant="default"
-          className="relative z-10 flex w-full h-14 md:h-16 items-center justify-center btn-primary-modern text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+          className="relative z-10 flex w-full h-14 md:h-16 items-center justify-center btn-primary-modern text-lg font-semibold shadow-sm"
         >
           <BookOpen className="mr-3 h-5 w-5" />
           <span>View Full Plan</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full max-w-[100vw] sm:max-w-[95vw] lg:max-w-7xl h-screen sm:h-[90vh] p-0 gap-0 backdrop-blur-lg border-none sm:border sm:border-border/40 shadow-2xl overflow-hidden flex flex-col sm:rounded-2xl ">
+      <DialogContent className="w-full max-w-[100vw] sm:max-w-[95vw] lg:max-w-7xl h-screen sm:h-[90vh] p-0 gap-0 bg-background border-none sm:border sm:border-border/40 shadow-sm overflow-hidden flex flex-col sm:rounded-lg ">
         {/* Grain Texture Overlay from Layout */}
         <div className="grain-overlay">
           <svg
@@ -117,7 +117,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
           </svg>
         </div>
         {/* Header Section - More Spacious */}
-        <div className="flex-none px-6 py-6 md:px-10 md:py-8 border-b border-border/40  backdrop-blur-xl z-20">
+        <div className="flex-none px-6 py-6 md:px-10 md:py-8 border-b border-border/40 bg-background z-20">
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
             <div className="space-y-3">
               <div className="flex items-center">
@@ -125,7 +125,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                   {plan?.name}
                 </DialogTitle>
                 <div
-                  className={`hidden sm:flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold tracking-wide uppercase transition-all duration-300 ease-in-out`}
+                  className={`hidden sm:flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold tracking-wide uppercase`}
                 >
                   {plan.timeframe === "today" ? "Daily" : "Full Week"}
                 </div>
@@ -154,7 +154,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                 </span>
               </div>
               {plan.calories && (
-                <div className="flex items-center px-4 py-2 rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+                <div className="flex items-center px-4 py-2 rounded-xl bg-primary text-primary-foreground shadow-sm">
                   <Sparkles className="w-4 h-4 mr-2" />
                   <span className="font-bold">
                     {plan.calories}{" "}
@@ -181,7 +181,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                   <div key={day.day} className="space-y-6">
                     {/* Day Header */}
                     <div className="flex items-center gap-4 pb-4 border-b-2 border-border/60">
-                      <div className="h-12 w-12 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-xl shadow-lg shadow-primary/20">
+                      <div className="h-12 w-12 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-xl">
                         {dayIdx + 1}
                       </div>
                       <div>
@@ -237,7 +237,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                             {(meal.protein || meal.carbs || meal.fat) && (
                               <div className="flex flex-wrap gap-4 pt-2">
                                 {typeof meal.protein === "number" && (
-                                  <div className="flex items-baseline gap-1.5 text-sm px-3 py-1.5 rounded-lg border border-success text-success">
+                                  <div className="flex items-baseline gap-1.5 text-sm px-3 py-1.5 rounded-lg border border-border text-muted-foreground">
                                     <span className="font-bold">
                                       {meal.protein}g
                                     </span>
@@ -247,7 +247,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                                   </div>
                                 )}
                                 {typeof meal.carbs === "number" && (
-                                  <div className="flex items-baseline gap-1.5 text-sm px-3 py-1.5 rounded-lg border border-warning text-warning">
+                                  <div className="flex items-baseline gap-1.5 text-sm px-3 py-1.5 rounded-lg border border-border text-muted-foreground">
                                     <span className="font-bold">
                                       {meal.carbs}g
                                     </span>
@@ -257,7 +257,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                                   </div>
                                 )}
                                 {typeof meal.fat === "number" && (
-                                  <div className="flex items-baseline gap-1.5 text-sm  px-3 py-1.5 rounded-lg border border-popular text-popular">
+                                  <div className="flex items-baseline gap-1.5 text-sm  px-3 py-1.5 rounded-lg border border-border text-muted-foreground">
                                     <span className="font-bold">
                                       {meal.fat}g
                                     </span>
@@ -297,7 +297,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                       {plan?.shopping_list.map((item, idx) => (
                         <li
                           key={idx}
-                          className="flex items-start gap-4 p-3 rounded-xl bg-background/30 border border-border/40   transition-shadow cursor-default"
+                          className="flex items-start gap-4 p-3 rounded-xl bg-card border border-border/40   cursor-default"
                         >
                           <CheckCheckIcon className="w-5 h-5 text-primary" />
                           <span className="text-base text-foreground/90 leading-snug font-medium">
@@ -319,7 +319,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
         </div>
 
         {/* Footer Actions */}
-        <div className="flex-none p-6 border-t border-border/40 bg-background/30 backdrop-blur-xl z-20 relative">
+        <div className="flex-none p-6 border-t border-border/40 bg-background z-20 relative">
           <DialogFooter className="flex-col-reverse sm:flex-row gap-4 sm:gap-3 w-full sm:justify-between items-center">
             <DialogClose asChild>
               <Button
@@ -340,7 +340,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
               </Button>
               <Button
                 type="submit"
-                className="w-full sm:w-auto h-12 px-8 text-base font-bold btn-primary-modern shadow-lg  rounded-xl"
+                className="w-full sm:w-auto h-12 px-8 text-base font-bold btn-primary-modern rounded-xl"
                 onClick={handleSave}
               >
                 <SaveIcon className="h-5 w-5 mr-2" />

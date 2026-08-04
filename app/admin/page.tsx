@@ -11,7 +11,6 @@ import {
   Clock,
   Plus,
 } from "lucide-react";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -104,7 +103,7 @@ const AdminDashboard = () => {
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main Content: Knowledge Base List */}
-        <Card className="lg:col-span-2 overflow-hidden border-none shadow-md bg-card/50 backdrop-blur">
+        <Card className="lg:col-span-2 overflow-hidden border bg-card shadow-sm">
           <CardHeader className="pb-3 border-b bg-muted/30">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
@@ -130,12 +129,9 @@ const AdminDashboard = () => {
                   <p>Loading context...</p>
                 </div>
               ) : filteredContext.length > 0 ? (
-                filteredContext.map((item, index) => (
-                  <motion.div
+                filteredContext.map((item) => (
+                  <div
                     key={item.id}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
                     className="group p-4 hover:bg-muted/50 transition-colors flex items-start gap-4"
                   >
                     <div className="mt-1 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
@@ -163,11 +159,12 @@ const AdminDashboard = () => {
                     <Button
                       variant="ghost"
                       size="icon"
+                      aria-label="More options"
                       className="opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <MoreVertical className="w-4 h-4" />
                     </Button>
-                  </motion.div>
+                  </div>
                 ))
               ) : (
                 <div className="p-12 text-center text-muted-foreground">
@@ -189,7 +186,7 @@ const AdminDashboard = () => {
 
         {/* Right Sidebar: Quick Actions/Guidance */}
         <div className="space-y-6">
-          <Card className="border-primary/20 bg-primary/5">
+          <Card className="border-border bg-card">
             <CardHeader>
               <CardTitle className="text-lg">Quick Tip</CardTitle>
             </CardHeader>
@@ -230,7 +227,7 @@ const AdminDashboard = () => {
                   Current Model
                 </p>
                 <div className="flex items-center gap-2 font-semibold">
-                  <div className="w-2 h-2 rounded-full bg-primary" />
+                  <div className="w-2 h-2 rounded-full bg-muted-foreground" />
                   Gemini 1.5 Pro
                 </div>
               </div>

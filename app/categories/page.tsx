@@ -1,6 +1,5 @@
 import React from "react";
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -40,13 +39,13 @@ export default async function CategoriesPage() {
                   .toLowerCase()
                   .replace(/\s+/g, "-")}?id=${category.id}`}
               >
-                <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl  group bg-card/70 backdrop-blur-sm border-primary/20 h-full">
+                <Card className="overflow-hidden group bg-card border border-border h-full">
                   <div className="relative">
                     {/* Category Image */}
                     <Image
                       src={category.image || "/placeholder.svg"}
                       alt={category.name}
-                      className="w-full h-48 object-cover  transition-transform duration-300"
+                      className="w-full h-48 object-cover"
                       loading="lazy"
                       width={500}
                       height={500}
@@ -57,7 +56,7 @@ export default async function CategoriesPage() {
                       </div>
                     </div>
                     <div className="absolute bottom-4 left-4 right-4">
-                      <Badge className="bg-background/80 border border-border/60 text-foreground mb-2">
+                      <Badge className="bg-background border border-border text-foreground mb-2">
                         {category.recipe_count || 0} recipes
                       </Badge>
                     </div>

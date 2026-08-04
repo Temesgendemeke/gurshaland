@@ -73,13 +73,13 @@ export default async function Page({
           <TabsList className="flex items-center gap-6 rounded-xl p-2 bg-muted/30">
             <TabsTrigger
               value="recipes"
-              className="px-6 py-2 rounded-lg font-bold text-muted-foreground hover:text-primary transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg"
+              className="px-6 py-2 rounded-lg font-bold text-muted-foreground hover:text-primary transition-colors data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               Recipes
             </TabsTrigger>
             <TabsTrigger
               value="blogs"
-              className="px-6 py-2 rounded-lg font-bold text-muted-foreground hover:text-primary transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg"
+              className="px-6 py-2 rounded-lg font-bold text-muted-foreground hover:text-primary transition-colors data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               Blogs
             </TabsTrigger>

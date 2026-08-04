@@ -57,7 +57,7 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
   };
 
   return (
-    <Card className="p-6 bg-card/70 border-border">
+    <Card className="p-6 bg-card border-border">
       <h2 className="text-2xl font-bold text-foreground mb-6">{label} Image</h2>
 
       {/*{JSON.stringify(oldPath)}*/}

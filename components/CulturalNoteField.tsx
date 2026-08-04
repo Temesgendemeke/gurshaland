@@ -11,7 +11,7 @@ import { Textarea } from "./ui/textarea";
 
 export default function CulturalNoteField({ form }) {
   return (
-    <Card className="p-6 bg-card/70 border-border">
+    <Card className="p-6 bg-card border-border">
       <h2 className="text-2xl font-bold text-foreground mb-6">
         Cultural Significance (Optional)
       </h2>

@@ -23,7 +23,7 @@ const ContactLocationForm = ({
   form: UseFormReturn<RestaurantFormType>;
 }) => {
   return (
-    <Card className="border-none  bg-card/80 backdrop-blur-sm">
+    <Card className="bg-card">
       <CardHeader>
         <div className="flex items-center gap-2 text-primary mb-1">
           <MapPin className="h-5 w-5" />

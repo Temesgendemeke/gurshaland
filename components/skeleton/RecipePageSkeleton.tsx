@@ -20,7 +20,7 @@ export default function RecipeDetailSkeleton() {
         {/* Recipe Header Skeleton */}
         <div className="grid lg:grid-cols-2 gap-12 mb-12">
           <div>
-            <Skeleton className="w-full h-96 rounded-2xl shadow-lg" />
+            <Skeleton className="w-full h-96 rounded-lg" />
           </div>
           <div>
             <div className="flex items-center space-x-2 mb-4">

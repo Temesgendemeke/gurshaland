@@ -52,7 +52,7 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
   }
 
   return (
-    <div className="rounded-xl border bg-card/50 shadow-sm overflow-hidden">
+    <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4 border-b">
         <h3 className="text-base font-semibold tracking-tight">
           Top 10 {name} Posts
@@ -63,7 +63,7 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
       </div>
       <div className="max-h-105 overflow-auto">
         <Table className="text-sm">
-          <TableHeader className="sticky top-0 bg-card/95 backdrop-blur supports-backdrop-filter:bg-card/70 z-10">
+          <TableHeader className="sticky top-0 bg-card z-10">
             <TableRow className="hover:bg-transparent">
               <TableHead className="w-12 text-center">#</TableHead>
               <TableHead>Title</TableHead>
@@ -99,11 +99,7 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
                         "inline-flex h-6 w-6 items-center justify-center rounded-md text-xs",
                         i === 0
                           ? "bg-primary text-primary-foreground"
-                          : i === 1
-                            ? "bg-primary/80 text-primary-foreground"
-                            : i === 2
-                              ? "bg-primary/60 text-primary-foreground"
-                              : "bg-muted text-muted-foreground",
+                          : "bg-muted text-muted-foreground",
                       )}
                     >
                       {i + 1}
@@ -132,7 +128,7 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
                         <span className="text-[10px] font-medium text-muted-foreground">
                           {isNaN(pct) ? "0%" : `${pct}%`}
                         </span>
-                        <span className="text-[8px] text-muted-foreground/70">
+                        <span className="text-[10px] text-muted-foreground/70">
                           {engagementRatio.toFixed(2)}
                         </span>
                       </div>

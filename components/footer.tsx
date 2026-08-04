@@ -11,21 +11,17 @@ export function Footer() {
       <div className="container mx-auto px-6 py-12">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center space-x-2 mb-4">
+            <div className="flex items-center space-x-2">
               {/* <div className="text-xl font-bold text-foreground">
                 Gurshaland
               </div> */}
               <Logo />
             </div>
-            <p className="mb-4 leading-relaxed">
+            <p className="leading-relaxed text-xs max-w-[250px] ">
               Sharing the rich culinary heritage of Ethiopia, one recipe at a
               time.
             </p>
-            <div className="flex space-x-4">
-              <div className="w-2 h-2 bg-ethiopian-green rounded-full"></div>
-              <div className="w-2 h-2 bg-ethiopian-yellow rounded-full"></div>
-              <div className="w-2 h-2 bg-ethiopian-red rounded-full"></div>
-            </div>
+            
           </div>
 
           <div>
@@ -154,7 +150,7 @@ export function Footer() {
         <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
           <p>
             &copy; {new Date().getFullYear()} Gurshaland. Made with{" "}
-            <SolidHeart className="w-4 h-4 inline text-error" /> for Ethiopian
+            <SolidHeart className="w-4 h-4 inline text-primary" /> for Ethiopian
             cuisine.
           </p>
         </div>

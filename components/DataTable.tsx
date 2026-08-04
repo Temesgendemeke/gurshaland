@@ -75,7 +75,7 @@ export function DataTable({ name, data }: DataTableProps) {
           </Select>
         </div>
       </div>
-      <Table className="shadow-lg w-full">
+      <Table className="shadow-sm w-full">
         <TableCaption>A list of your recent {name}.</TableCaption>
         <TableHeader>
           <TableRow>

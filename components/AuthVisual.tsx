@@ -19,8 +19,6 @@ const AuthVisual = () => {
           priority
           sizes="50vw"
         />
-        {/* Professional dark scrim for text readability - Neutral, no tint */}
-        <div className="absolute inset-0 bg-black/40" />
         {/* Subtle grain overlay for texture (section-scoped) */}
         <div className="absolute inset-0 pointer-events-none opacity-10">
           <svg
@@ -63,7 +61,6 @@ const AuthVisual = () => {
 
       {/* Bottom Content */}
       <div className="relative z-10 space-y-6  mb-12">
-        <div className="h-1 w-12 bg-white-/80 rounded-full" />
         <h2 className="text-5xl font-bold font-gosh tracking-tight leading-[1.1] text-white/70 ">
           Capturing Flavors, <br />
           <span className="text-primary">Creating Memories</span>
@@ -76,8 +73,6 @@ const AuthVisual = () => {
       </div>
 
       {/* Shadow Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
     </div>
   );

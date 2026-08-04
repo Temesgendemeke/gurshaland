@@ -40,7 +40,8 @@ export function AIChatWidget() {
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full btn-primary-modern shadow-lg hover:shadow-xl z-50"
+        aria-label="Open AI chat assistant"
+        className="fixed bottom-6 right-6 w-14 h-14 rounded-full btn-primary-modern z-50"
       >
         <MessageRoundedDetail className="w-6 h-6" />
       </Button>
@@ -48,7 +49,7 @@ export function AIChatWidget() {
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 w-[700px] h-[900px] modern-card shadow-2xl z-50 flex flex-col">
+    <Card className="fixed bottom-6 right-6 w-[calc(100vw-2rem)] max-w-md sm:w-[400px] h-[70vh] max-h-[900px] modern-card shadow-lg z-50 flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-border/60">
         <div className="flex items-center space-x-2">
@@ -67,6 +68,7 @@ export function AIChatWidget() {
           variant="ghost"
           size="sm"
           onClick={() => setIsOpen(false)}
+          aria-label="Close chat"
           className="w-8 h-8 p-0"
         >
           <X className="w-4 h-4" />
