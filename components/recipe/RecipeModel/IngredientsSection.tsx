@@ -1,21 +1,32 @@
-import React from "react";
-import { Ingredient } from "@/utils/types/recipe";
+import { Check } from "lucide-react";
 
-const IngredientsSection = ({ ingredients }: { ingredients: Ingredient[] }) => {
+const IngredientsSection = ({ ingredients }: { ingredients: any[] }) => {
   return (
-    <div className="space-y-4 mt-4">
-      <h3 className="text-xl font-semibold text-body border-b border-border pb-3">
+    <div className="space-y-4">
+      <h3 className="heading-secondary text-xl md:text-2xl border-b border-border pb-3">
         Ingredients
       </h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="space-y-2">
         {ingredients?.map((ingredient, idx: number) => (
           <div
             key={idx}
-            className="flex items-center gap-3 p-3 bg-muted/30 border border-border/60 rounded-lg"
+            className="flex items-start gap-3 rounded-lg border border-border/60 bg-card px-3.5 py-2.5"
           >
-            <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0"></div>
-            <span className="text-sm text-body leading-relaxed">
-              {ingredient.amount} {ingredient.unit} {ingredient.item}
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Check className="h-3 w-3" />
+            </span>
+            <span className="text-sm leading-relaxed text-muted-foreground">
+              {ingredient.amount ? (
+                <span className="font-semibold text-foreground">
+                  {ingredient.amount}
+                </span>
+              ) : null}{" "}
+              {ingredient.unit ? (
+                <span className="font-medium text-foreground">
+                  {ingredient.unit}
+                </span>
+              ) : null}{" "}
+              {ingredient.item}
             </span>
           </div>
         ))}

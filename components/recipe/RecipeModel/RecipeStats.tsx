@@ -1,29 +1,53 @@
-import React from "react";
-import { Clock, Users } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { CookingPot, Gauge, Timer, Users } from "lucide-react";
 
 interface Stats {
-  cooktime: string;
-  servings: number;
-  difficulty: string;
+  prepTime?: number;
+  cooktime?: number;
+  servings?: number;
+  difficulty?: string;
 }
 
 const RecipeStats = ({ stats }: { stats: Stats }) => {
+  const items = [
+    {
+      icon: Timer,
+      label: "Prep",
+      value: stats.prepTime !== undefined ? `${stats.prepTime}m` : null,
+    },
+    {
+      icon: CookingPot,
+      label: "Cook",
+      value: stats.cooktime !== undefined ? `${stats.cooktime}m` : null,
+    },
+    {
+      icon: Users,
+      label: "Servings",
+      value: stats.servings !== undefined ? stats.servings : null,
+    },
+    {
+      icon: Gauge,
+      label: "Difficulty",
+      value: stats.difficulty || null,
+    },
+  ];
+
   return (
-    <div className="flex sm:flex-row sm:items-center text-sm text-body-muted bg-muted/30 border border-border/60 py-4 rounded-xl">
-      <div className="flex items-center gap-2 min-w-[120px] justify-center">
-        <Clock className="w-5 h-5" />
-        <span className="font-medium">{stats.cooktime}min</span>
-      </div>
-      <div className="flex items-center gap-2 min-w-[120px] justify-center">
-        <Users className="w-5 h-5" />
-        <span className="font-medium">{stats.servings} servings</span>
-      </div>
-      <div className="flex items-center gap-2 min-w-[120px] justify-center">
-        <Badge variant="secondary" className="text-sm px-3 py-1">
-          {stats.difficulty}
-        </Badge>
-      </div>
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {items.map((item) => {
+        const Icon = item.icon;
+        return (
+          <div
+            key={item.label}
+            className="flex flex-col items-center gap-1 rounded-xl border border-border/60 bg-card px-3 py-4 text-center"
+          >
+            <Icon className="h-5 w-5 text-primary" />
+            <p className="text-lg font-bold text-foreground">
+              {item.value ?? "—"}
+            </p>
+            <p className="text-xs text-muted-foreground">{item.label}</p>
+          </div>
+        );
+      })}
     </div>
   );
 };

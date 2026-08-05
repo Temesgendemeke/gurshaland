@@ -18,7 +18,7 @@ const generateImage = async (title: string) => {
   if (!photo) {
     throw new Error("No Pexels photos found");
   }
-  return photo.src.original;
+  return photo.src.large;
 }
 
 export default generateImage

@@ -9,6 +9,7 @@ import AIRecipeGenerator from "@/components/AIRecipeGenerator";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetTitle,
 } from "@/components/ui/sheet";
 
@@ -210,11 +211,14 @@ function AIFeaturesGrid({
       <Sheet open={generatorOpen} onOpenChange={setGeneratorOpen}>
       <SheetContent
         side="right"
-        className="w-full overflow-y-auto sm:max-w-7xl"
+        className="w-full overflow-y-auto sm:max-w-4xl"
       >
         <SheetTitle className="sr-only">
           Generate a Recipe with AI
         </SheetTitle>
+        <SheetDescription className="sr-only">
+          Describe your ingredients to generate a personalized Ethiopian recipe.
+        </SheetDescription>
         <div className="mt-4">
           <AIRecipeGenerator />
         </div>

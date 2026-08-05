@@ -5,6 +5,8 @@ import { useState, useTransition, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { generateMealPlan } from "@/actions/meal/generator";
+import { getCredits } from "@/actions/credits";
+import { useAuth } from "@/store/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -55,6 +57,7 @@ import {
   Ruler,
   User,
   Watch,
+  Coins,
 } from "lucide-react";
 import { mealPlannerType, mealPlannerSchema } from "@/schema/meal-planner";
 import PreviewSection from "./PreviewSection";
@@ -65,11 +68,29 @@ import {
   weightMeasurements,
 } from "@/constants/measurements";
 
+const MEAL_PLAN_CREDIT_COST = 10;
+
 export default function MealPlanner() {
+  const user = useAuth((store) => store.user);
   const [isLoading, setIsLoading] = useState(false);
   const [plan, setPlan] = useState<mealPlannerType | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [credits, setCredits] = useState<number | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+
+  const loadCredits = async () => {
+    const balance = await getCredits();
+    setCredits(balance);
+  };
+
+  useEffect(() => {
+    if (user) loadCredits();
+    else setCredits(null);
+  }, [user]);
+
+  const needsLogin = !user;
+  const outOfCredits =
+    !!user && credits !== null && credits < MEAL_PLAN_CREDIT_COST;
 
   const form = useForm<mealPlannerType>({
     resolver: zodResolver(mealPlannerSchema),
@@ -109,6 +130,7 @@ export default function MealPlanner() {
     }
     setPlan(res);
     setIsLoading(false);
+    await loadCredits();
   };
 
   useEffect(() => {
@@ -139,6 +161,14 @@ export default function MealPlanner() {
             <span className="text-sm font-medium text-primary">
               AI-Powered Nutrition
             </span>
+          </div>
+          <div className="mb-4 flex items-center justify-center gap-1.5 rounded-full border border-border bg-muted px-3 py-1.5 text-sm text-muted-foreground">
+            <Coins className="h-4 w-4 text-primary" />
+            {user
+              ? credits === null
+                ? "— credits"
+                : `${credits} credits`
+              : "Log in required"}
           </div>
           <h1 className="text-4xl md:text-5xl font-bold heading-primary pb-1">
             Meal Planner
@@ -663,9 +693,32 @@ export default function MealPlanner() {
 
                   {/* Generate Button */}
                   <div className="">
+                    {needsLogin ? (
+                      <p className="rounded-lg border border-border bg-muted px-3 py-2.5 text-sm text-muted-foreground">
+                        <a
+                          href="/login"
+                          className="font-medium text-primary underline"
+                        >
+                          Log in
+                        </a>{" "}
+                        to generate meal plans. New users get 100 free credits.
+                      </p>
+                    ) : outOfCredits ? (
+                      <p className="rounded-lg border border-border bg-muted px-3 py-2.5 text-sm text-muted-foreground">
+                        You&apos;re out of credits. Each meal plan generation
+                        costs {MEAL_PLAN_CREDIT_COST} credits.{" "}
+                        <a
+                          href="/credits"
+                          className="font-medium text-primary underline"
+                        >
+                          Buy more credits
+                        </a>
+                        .
+                      </p>
+                    ) : null}
                     <Button
                       type="submit"
-                      disabled={isLoading}
+                      disabled={isLoading || needsLogin || outOfCredits}
                       size="lg"
                       className="w-full h-14 text-lg font-bold rounded-xl btn-primary-modern"
                     >
@@ -681,6 +734,11 @@ export default function MealPlanner() {
                         </>
                       )}
                     </Button>
+                    {!needsLogin && !outOfCredits && (
+                      <p className="mt-2 text-center text-xs text-muted-foreground">
+                        Costs {MEAL_PLAN_CREDIT_COST} credits per generation.
+                      </p>
+                    )}
                   </div>
                 </form>
               </Form>

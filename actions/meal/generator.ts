@@ -3,9 +3,18 @@
 import { mealPlannerType } from "@/schema/meal-planner";
 import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
+import { spendCredits } from "../credits";
 
 export const generateMealPlan = async (data: mealPlannerType) => {
   try {
+    // Charge 10 credits for each AI meal plan generation
+    const creditResult = await spendCredits(10);
+    if (!creditResult.success) {
+      return {
+        success: false,
+        error: creditResult.error || "Not enough credits.",
+      };
+    }
     const prompt =
       `Create a meal plan for ${data.timeframe} for ${data.goal} with ${data.diet} diet. ${
         data?.calories ? `Calories: ${data.calories}` : ""

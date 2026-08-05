@@ -6,6 +6,7 @@ import AIRecipeGenerator from "./AIRecipeGenerator";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetTitle,
 } from "./ui/sheet";
 import { Button } from "./ui/button";
@@ -41,6 +42,9 @@ export default function HeroAiGenerator() {
           className="w-full sm:max-w-4xl overflow-y-auto "
         >
           <SheetTitle className="sr-only">Generate a Recipe with AI</SheetTitle>
+          <SheetDescription className="sr-only">
+            Describe your ingredients to generate a personalized Ethiopian recipe.
+          </SheetDescription>
           <div className="mt-4">
             <AIRecipeGenerator />
           </div>

@@ -1,63 +1,57 @@
-import ImageBoxSkeleton from "@/components/skeleton/ImageBoxSkeleton";
-import { AIRecipeInstruction } from "@/utils/types/recipe";
-import { Loader2 } from "lucide-react";
-import Image from "next/image";
-import React from "react";
+import { Clock, Lightbulb } from "lucide-react";
+import RecipeImage from "./RecipeImage";
 
-const InstructionsSection = ({
-  instructions,
-}: {
-  instructions: AIRecipeInstruction[];
-}) => {
+const InstructionsSection = ({ instructions }: { instructions: any[] }) => {
   return (
-    <div className="space-y-4 mt-4">
-      <h3 className="text-xl font-semibold text-body border-b border-border pb-3">
-        Instructions
+    <div className="space-y-4">
+      <h3 className="heading-secondary text-xl md:text-2xl border-b border-border pb-3 flex items-baseline justify-between">
+        <span>Instructions</span>
+        <span className="text-sm font-normal text-muted-foreground">
+          {instructions?.length ?? 0} steps
+        </span>
       </h3>
-      <div className="flex flex-col gap-6">
-        {instructions?.map((instruction, idx: number) => {
-          return (
-            <div key={idx} className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-10 h-10 bg-primary/10 text-primary rounded-full flex items-center justify-center text-lg font-bold">
-                {idx + 1}
+      <div className="space-y-5">
+        {instructions?.map((instruction, idx: number) => (
+          <div
+            key={idx}
+            className="overflow-hidden rounded-xl border border-border/60 bg-card"
+          >
+            <div className="flex flex-col sm:flex-row">
+              <div className="relative h-44 w-full shrink-0 sm:h-40 sm:w-52 md:w-64">
+                <RecipeImage
+                  src={instruction?.image?.url}
+                  alt={instruction.title || `Step ${idx + 1}`}
+                  sizes="(max-width: 640px) 100vw, 256px"
+                />
+                <div className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-sm font-bold text-foreground backdrop-blur">
+                  Step {idx + 1}
+                </div>
               </div>
-              <div className="flex-1 pt-2 flex gap-5 items-start">
-                <div className="relative w-96   h-96 mb-4  rounded-lg">
-                  {instruction?.image?.url ? (
-                    <Image
-                      src={instruction?.image?.url}
-                      alt={instruction.title}
-                      fill
-                      className="object-cover w-full h-full rounded-lg"
-                    />
-                  ) : (
-                    <ImageBoxSkeleton />
-                  )}
-                  {instruction?.isLoading && (
-                    <div className="absolute inset-0 bg-background/70 flex items-center justify-center rounded-lg">
-                      <div className="flex flex-col items-center gap-2">
-                        <Loader2 className="w-6 h-6 animate-spin text-primary" />
-                        <span className="text-sm text-muted-foreground">
-                          Generating image...
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <p className="text-body leading-relaxed md:text-2xl font-bold">
+              <div className="flex-1 p-4 sm:p-5">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <h4 className="text-base font-semibold text-foreground">
                     {instruction.title}
-                  </p>
-                  <p className="text-body-muted text-sm max-w-xl">
-                    {instruction.description}
-                  </p>
-                  <p className="text-body-muted text-sm">{instruction.tips}</p>
+                  </h4>
+                  {instruction.time ? (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+                      <Clock className="h-3.5 w-3.5" />
+                      {instruction.time} min
+                    </span>
+                  ) : null}
                 </div>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {instruction.description}
+                </p>
+                {instruction.tips ? (
+                  <p className="mt-3 flex items-start gap-2 rounded-lg bg-amber-500/10 px-3 py-2 text-xs leading-relaxed text-amber-700 dark:text-amber-400">
+                    <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                    <span>{instruction.tips}</span>
+                  </p>
+                ) : null}
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </div>
   );

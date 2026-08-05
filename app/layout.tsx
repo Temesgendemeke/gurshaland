@@ -13,8 +13,10 @@ export const metadata: Metadata = {
   description:
     "Discover and share authentic Ethiopian recipes and culinary traditions",
   icons: {
-    icon: "/gurshaland.png",
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

@@ -115,6 +115,22 @@ export const generateRecipeImage = async (
   return null;
 };
 
+// Stock photo only (no AI cost) — used for step/instruction images so the
+// AI image budget stays capped at the single hero image.
+export const generateStockImage = async (
+  prompt: string,
+): Promise<{ url: string; path: string } | null> => {
+  try {
+    const stockUrl = await generateImage(prompt);
+    if (stockUrl) {
+      return { url: stockUrl, path: "" };
+    }
+  } catch (error) {
+    console.error("Error fetching stock photo:", error);
+  }
+  return null;
+};
+
 // Add this function for production use
 export const uploadAIImageToStorage = async (
   imageData: string,

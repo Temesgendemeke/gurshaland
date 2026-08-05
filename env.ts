@@ -8,6 +8,10 @@ const env = createEnv({
         GOOGLE_GENERATIVE_AI_API_KEY: z.string().min(1),
         SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
         YOUTUBE_API_KEY: z.string().min(1),
+        POLAR_ACCESS_TOKEN: z.string().optional(),
+        POLAR_WEBHOOK_SECRET: z.string().optional(),
+        POLAR_PRODUCT_ID: z.string().optional(),
+        POLAR_SERVER: z.enum(["production", "sandbox"]).optional(),
     },
     client: {
         NEXT_PUBLIC_SUPABASE_URL: z.string().url(),

@@ -3,26 +3,24 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Users, Loader2 } from "lucide-react";
-import Image from "next/image";
-import { insertRecipe, uploadRecipeImage } from "@/actions/Recipe/recipe";
+import { Eye, Loader2, Save, Sparkles, X } from "lucide-react";
+import { insertRecipe } from "@/actions/Recipe/recipe";
 import { toast } from "sonner";
 import { useAuth } from "@/store/useAuth";
-import { useLazyImageGeneration } from "@/hooks/useLazyImageGeneration";
-import { useState, useEffect } from "react";
-import { uploadInstructionImage } from "@/actions/Recipe/instruction";
+import { useState } from "react";
 import NutritionSection from "./RecipeModel/NutritionSection";
 import InstructionsSection from "./RecipeModel/InstructionsSection";
 import IngredientsSection from "./RecipeModel/IngredientsSection";
 import RecipeStats from "./RecipeModel/RecipeStats";
 import YoutubeVideoSection from "./YoutubeVideoSection";
-import ImageBoxSkeleton from "../skeleton/ImageBoxSkeleton";
+import RecipeImage from "./RecipeModel/RecipeImage";
 import { generateUniqueSlug, generateUniqueTitle } from "@/utils/slugify";
 import { uploadAIImageToStorage } from "@/utils/genAI";
 
@@ -31,68 +29,22 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // const { stepImages, generateImageForStep, isGenerating } =
-  //   useLazyImageGeneration({
-  //     instructions: recipe.instructions || [],
-  //   });
-
-  // useEffect(() => {
-  //   if (recipe.instructions && recipe.instructions.length > 0) {
-  //     Promise.all(
-  //       recipe.instructions.map((_: any, idx: number) => generateImageForStep(idx))
-  //     ).catch((e) => console.error("Error generating step images:", e));
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [recipe.instructions]);
-
-  // useEffect(() => {
-  //   if (recipe.instructions && recipe.instructions.length > 0) {
-  //     recipe.instructions.forEach((_: any, idx: number) => {
-  //       if (stepImages[idx]) {
-  //         recipe.instructions[idx].image = stepImages[idx];
-  //       }
-  //     });
-  //   }
-  // }, [stepImages, recipe.instructions]);
+  const isStoredImage = (img?: { url?: string; path?: string }) =>
+    !!img?.url && !String(img.url).startsWith("data:") && !!img.path;
 
   const handleSaveRecipe = async () => {
-    console.log(
-      "recipe ",
-      recipe,
-      "ingredients ",
-      recipe.ingredients,
-      " instructions ",
-      recipe.instructions,
-      " nutrition ",
-      recipe.nutrition,
-    );
     setIsSaving(true);
     if (!user) {
       toast.error("Please login to save recipe");
+      setIsSaving(false);
       return;
     }
     try {
-      console.log(
-        "recipe ",
-        recipe,
-        "ingredients ",
-        recipe.ingredients,
-        " instructions ",
-        recipe.instructions,
-        " nutrition ",
-        recipe.nutrition,
-      );
-
       // Generate unique title to avoid duplicate key constraint violation
       const uniqueTitle = await generateUniqueTitle(recipe.title);
       recipe.title = uniqueTitle;
 
-      // Only upload if we actually have a File selected for the main image.
-      const isStoredImage = (img?: { url?: string; path?: string }) =>
-        !!img?.url &&
-        !String(img.url).startsWith("data:") &&
-        !!img.path;
-
+      // Upload main image only if it isn't already stored in Supabase
       let recipe_image = recipe.image;
       if (recipe.image?.url && !isStoredImage(recipe.image)) {
         const uploaded = await uploadAIImageToStorage(
@@ -102,7 +54,6 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
         recipe_image = uploaded || recipe.image;
       }
 
-      // set additional recipe fields
       recipe.author_id = user.id;
       recipe.rating = 0;
       recipe.status = "draft";
@@ -111,9 +62,6 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
         url: recipe_image?.url,
         path: recipe_image?.path,
       };
-
-      console.log("recipe ", recipe);
-      console.log("author id ", recipe.author_id);
 
       await Promise.all(
         recipe.instructions.map(async (instruction: any) => {
@@ -130,9 +78,6 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
         }),
       );
 
-      // upload recipe and instructions images to supabase storage and get the urls
-      // then save the recipe to supabase database
-
       await insertRecipe({
         recipe: { ...recipe, profile_id: user.id },
         ingredients: recipe.ingredients,
@@ -148,131 +93,156 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
     setIsSaving(false);
   };
 
+  const categoryName =
+    typeof recipe.category === "string"
+      ? recipe.category
+      : recipe.category?.name;
+
+  const galleryImages = [
+    ...(recipe.image?.url ? [recipe.image] : []),
+    ...(recipe.instructions?.map((i: any) => i?.image).filter((i: any) => i?.url) ?? []),
+  ];
+
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <form>
-        <DialogTrigger asChild>
-          <Button variant="outline" className="bg-primary text-primary-foreground ">
-            Open Dialog
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="max-w-7xl p-0 bg-background">
-          <DialogTitle className="sr-only">{recipe.title}</DialogTitle>
+      <DialogTrigger asChild>
+        <Button variant="outline" className="btn-primary-modern">
+          <Eye className="mr-2 h-4 w-4" />
+          View Recipe
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-5xl overflow-hidden bg-background p-0">
+        <DialogTitle className="sr-only">{recipe.title}</DialogTitle>
+        <DialogDescription className="sr-only">
+          {recipe.description || recipe.title}
+        </DialogDescription>
+        <DialogClose className="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur transition-colors hover:bg-black/60">
+          <X className="h-5 w-5" />
+        </DialogClose>
 
-          <div
-            className={`fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm transition-opacity duration-300 ${
-              isSaving
-                ? "opacity-100 pointer-events-auto delay-0"
-                : "opacity-0 pointer-events-none delay-1000"
-            }`}
-          >
+        <div className="relative flex max-h-[85vh] flex-col">
+          {/* Hero */}
+          <div className="relative h-56 w-full shrink-0 sm:h-64 md:h-72">
+            <RecipeImage
+              src={recipe.image?.url}
+              alt={recipe.title}
+              priority
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge className="bg-primary text-white">
+                  <Sparkles className="mr-1 h-3 w-3" />
+                  AI Generated
+                </Badge>
+                {categoryName && (
+                  <Badge
+                    variant="outline"
+                    className="border-white/40 bg-black/30 text-white"
+                  >
+                    {categoryName}
+                  </Badge>
+                )}
+              </div>
+              <h2 className="heading-primary mt-3 text-2xl font-bold text-white sm:text-3xl">
+                {recipe.title}
+              </h2>
+              <p className="mt-2 line-clamp-3 max-w-2xl text-sm text-white/85">
+                {recipe.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Saving overlay */}
+          {isSaving && (
             <div
               role="status"
               aria-live="polite"
-              className="flex items-center gap-3 px-10 py-6 rounded-lg shadow-md bg-card border border-border"
+              className="absolute inset-0 z-30 flex items-center justify-center bg-background/70 backdrop-blur-sm"
             >
-              {isSaving ? (
-                <Loader2 className="h-7 w-7 animate-spin text-primary" />
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-7 w-7 text-primary"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="m9 12 2 2 4-4"></path>
-                </svg>
-              )}
-              <span className="text-lg text-foreground">
-                {isSaving ? "Saving recipe..." : "Saved"}
-              </span>
+              <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-4 shadow-lg">
+                <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                <span className="text-sm font-medium text-foreground">
+                  Saving recipe...
+                </span>
+              </div>
             </div>
-          </div>
+          )}
 
-          {/*  */}
-          <div
-            className={`flex justify-center items-center w-full bg-background ${
-              isSaving ? "pointer-events-none" : ""
-            }`}
-          >
-            <div className="bg-background rounded-xl max-w-9xl w-full overflow-y-auto flex flex-col max-h-[80vh]">
-              {/* Modal Header */}
-              <div className="sticky top-0 z-10 bg-background border-b border-border p-6 rounded-t-xl">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <Badge className="bg-primary/10 text-primary">
-                      AI Generated
-                    </Badge>
-                    <h2 className="text-2xl font-bold heading-primary">
-                      {recipe.title}
-                    </h2>
+          {/* Scrollable body */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="p-5 sm:p-7">
+              <RecipeStats
+                stats={{
+                  prepTime: recipe.preptime,
+                  cooktime: recipe.cooktime,
+                  servings: recipe.servings,
+                  difficulty: recipe.difficulty,
+                }}
+              />
+
+              {galleryImages.length > 1 && (
+                <div className="mt-6">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Gallery
+                  </p>
+                  <div className="flex gap-3 overflow-x-auto pb-2">
+                    {galleryImages.map((img, idx) => (
+                      <div
+                        key={idx}
+                        className="relative h-20 w-28 shrink-0 overflow-hidden rounded-lg"
+                      >
+                        <RecipeImage
+                          src={img.url}
+                          alt={`${recipe.title} gallery ${idx + 1}`}
+                          sizes="112px"
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <p className="text-body text-sm mt-3 max-w-4xl">
-                  {recipe.description}
-                </p>
-              </div>
+              )}
 
-              {/* Modal Content */}
-              <div className="p-6 space-y-10 flex-1">
-                {/* Recipe Image */}
-                <div className="relative w-full h-96 mb-4">
-                  {recipe.image?.url ? (
-                    <Image
-                      src={recipe.image?.url}
-                      alt={recipe.title}
-                      fill
-                      className="object-contain w-full h-full rounded-lg"
-                    />
-                  ) : (
-                    <ImageBoxSkeleton />
-                  )}
+              <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[340px_1fr]">
+                <div className="space-y-8">
+                  <IngredientsSection ingredients={recipe.ingredients} />
+                  <NutritionSection nutrition={recipe.nutrition} />
                 </div>
-
-                {/* Recipe Stats */}
-                <RecipeStats
-                  stats={{
-                    cooktime: recipe.cooktime,
-                    servings: recipe.servings,
-                    difficulty: recipe.difficulty,
-                  }}
-                />
-
-                {/* Ingredients Section */}
-                <IngredientsSection ingredients={recipe.ingredients} />
-
-                {/* Instructions Section */}
-                <InstructionsSection instructions={recipe.instructions} />
-
-                {/* Nutrition Section */}
-                <NutritionSection nutrition={recipe.nutrition} />
-
-                {/* Youtube video section */}
-                <YoutubeVideoSection
-                  videoId={recipe.youtube_video_id}
-                  videoQuery={recipe.youtube_search_query}
-                />
+                <div className="space-y-8">
+                  <InstructionsSection instructions={recipe.instructions} />
+                  <YoutubeVideoSection
+                    videoId={recipe.youtube_video_id}
+                    videoQuery={recipe.youtube_search_query}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          <DialogFooter
-            className={`pb-4 mr-5 ${isSaving ? "pointer-events-none" : ""}`}
-          >
+          {/* Footer */}
+          <DialogFooter className="shrink-0 border-t border-border bg-background px-5 py-4 sm:px-7">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" disabled={isSaving}>
+                Close
+              </Button>
             </DialogClose>
-            <Button type="submit" onClick={handleSaveRecipe}>
-              Save changes
+            <Button onClick={handleSaveRecipe} disabled={isSaving}>
+              {isSaving ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="mr-2 h-4 w-4" />
+                  Save Recipe
+                </>
+              )}
             </Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </div>
+      </DialogContent>
     </Dialog>
   );
 };

@@ -3,11 +3,12 @@ import { GoogleGenAI } from "@google/genai";
 import { parseMarkdownJSON } from "@/utils/parseJSON";
 import generateImage from "@/utils/getImage";
 import AIgenerateImage from "@/utils/genAI";
-import { generateRecipeImage } from "@/utils/genAI";
+import { generateRecipeImage, generateStockImage } from "@/utils/genAI";
 import Recipe from "@/utils/types/recipe";
 import categories from "@/constants/categories";
 import measurements from "@/constants/measurements";
 import { findYoutubeVideo } from "../youtube";
+import { spendCredits } from "../credits";
 
 function extractJSON(text: string): string {
   const start = text.indexOf("{");
@@ -23,6 +24,15 @@ export async function generateAIRecipe(
   preferences: string,
 ) {
   try {
+    // Charge 1 credit for each AI recipe generation
+    const creditResult = await spendCredits(1);
+    if (!creditResult.success) {
+      return {
+        success: false,
+        error: creditResult.error || "Not enough credits.",
+      };
+    }
+
     // Check if API key is available FIRST
     if (!process.env.GEMINI_API_KEY) {
       throw new Error("GEMINI_API_KEY environment variable is not set");
@@ -174,6 +184,14 @@ Example shape:
       difficulty: normalizeDifficulty(recipeData.difficulty),
     };
 
+    if (Array.isArray(recipeData.ingredients)) {
+      recipeData.ingredients = recipeData.ingredients.map((ing: any) => ({
+        ...ing,
+        amount: ing.amount ?? null,
+        unit: ing.unit === "null" ? null : (ing.unit ?? null),
+      }));
+    }
+
     console.log("recipe data", recipeData);
 
     let youtube_video_id: string | null = null;
@@ -212,19 +230,24 @@ Example shape:
 
       if (Array.isArray(recipeData?.instructions)) {
         recipeData.instructions = await Promise.all(
-          recipeData.instructions.map(async (instruction, index) => {
-            console.log("Generating image for instruction:", instruction);
-            console.log("instruction.imagePrompt", instruction.imagePrompt);
-            const ins_image = await generateRecipeImage(
-              instruction?.imagePrompt,
-            );
-            const image = {
-              url: ins_image?.url,
-              path: ins_image?.path,
-              instruction_id: "",
-            };
-            return { ...instruction, image };
-          }),
+          recipeData.instructions.map(
+            async (
+              instruction: { imagePrompt?: string },
+              index: number,
+            ) => {
+              console.log("Generating image for instruction:", instruction);
+              console.log("instruction.imagePrompt", instruction.imagePrompt);
+              const ins_image = await generateStockImage(
+                instruction?.imagePrompt ?? "",
+              );
+              const image = {
+                url: ins_image?.url,
+                path: ins_image?.path,
+                instruction_id: "",
+              };
+              return { ...instruction, image };
+            },
+          ),
         );
       }
 

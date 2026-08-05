@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { generateRecipeImage } from '@/utils/genAI';
+import { generateStockImage } from '@/utils/genAI';
 
 interface ImageState {
   url: string;
@@ -101,7 +101,7 @@ export const useLazyImageGeneration = ({
     }));
 
     try {
-      const generatedImage = await generateRecipeImage(instruction.imagePrompt);
+      const generatedImage = await generateStockImage(instruction.imagePrompt);
       
       if (generatedImage) {
         const newImageState: ImageState = {
