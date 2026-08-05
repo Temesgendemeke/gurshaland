@@ -16,10 +16,10 @@ const NAV_LINKS = [
     route: "/recipes",
     page: "Recipes",
   },
-  {
-    route: "/categories",
-    page: "Categories",
-  },
+  // {
+  //   route: "/categories",
+  //   page: "Categories",
+  // },
   {
     route: "/blog",
     page: "Blog",

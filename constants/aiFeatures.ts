@@ -44,13 +44,13 @@ const aiFeatures = [
     icon: Heart,
     badge: "Coming Soon",
   },
-  {
-    id: "recipe-translator",
-    title: "Recipe Translator",
-    description: "Translate recipes between Amharic and English",
-    icon: BookOpen,
-    badge: "Coming Soon",
-  },
+  // {
+  //   id: "recipe-translator",
+  //   title: "Recipe Translator",
+  //   description: "Translate recipes between Amharic and English",
+  //   icon: BookOpen,
+  //   badge: "Coming Soon",
+  // },
 ];
-
+ 
 export default aiFeatures;

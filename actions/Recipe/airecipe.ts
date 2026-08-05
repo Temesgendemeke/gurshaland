@@ -176,9 +176,16 @@ Example shape:
 
     console.log("recipe data", recipeData);
 
-    const youtube_video_id = await findYoutubeVideo(
-      recipeData.youtube_search_query!,
-    );
+    let youtube_video_id: string | null = null;
+    try {
+      if (recipeData.youtube_search_query) {
+        youtube_video_id = await findYoutubeVideo(
+          recipeData.youtube_search_query,
+        );
+      }
+    } catch (error) {
+      console.warn("YouTube search failed:", error);
+    }
 
     if (youtube_video_id) {
       recipeData.youtube_video_id = youtube_video_id;

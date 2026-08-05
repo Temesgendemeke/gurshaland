@@ -113,7 +113,7 @@ function RecipesPageContent() {
         </div>
 
         {/* Search and Filters */}
-        <div className="modern-card rounded-lg p-6 mb-8 border border-border">
+        <div className="modern-card rounded-lg p-2 mb-8 border border-border">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -157,7 +157,7 @@ function RecipesPageContent() {
               </SelectContent>
             </Select>
 
-            <Button className="btn-primary-modern h-12 px-6">
+            <Button className="btn-primary h-12 px-6">
               <Filter className="w-4 h-4 mr-2" />
               Filter
             </Button>

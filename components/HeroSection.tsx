@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Heart, Utensils } from "lucide-react";
-import HeroImage from "./HeroImage";
+import HeroAiGenerator from "./HeroAiGenerator";
 
 const HeroSection = () => {
   return (
@@ -45,8 +45,8 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Right Content - Hero Food Image */}
-          <HeroImage />
+          {/* Right Content - Hero Food Image with AI overlay */}
+          <HeroAiGenerator />
         </div>
       </div>
     </section>

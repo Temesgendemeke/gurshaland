@@ -58,7 +58,7 @@ export default function BlogPage() {
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-card border border-border rounded-lg p-6 mb-12">
+        <div className="bg-card border border-border rounded-lg p-2 mb-12 mx-auto max-w-2xl">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />

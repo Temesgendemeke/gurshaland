@@ -1,6 +1,6 @@
 # 🥘 Gurshaland
 
-![Home page screenshot](./public/screenshot.png)
+<!-- ![Home page screenshot](./public/screenshot.png) -->
 
 **Gurshaland** is a modern web platform for discovering, sharing, and preserving authentic Ethiopian recipes and culinary traditions. Built with Next.js, Supabase, and shadcn/ui, Gurshaland empowers the community to contribute family recipes, explore diverse dishes, and celebrate Ethiopia’s rich food heritage.
 

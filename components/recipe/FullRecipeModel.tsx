@@ -88,10 +88,19 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
       recipe.title = uniqueTitle;
 
       // Only upload if we actually have a File selected for the main image.
-      const recipe_image = await uploadAIImageToStorage(
-        recipe.image.url,
-        recipe.title.replace(/\s+/g, "_"),
-      );
+      const isStoredImage = (img?: { url?: string; path?: string }) =>
+        !!img?.url &&
+        !String(img.url).startsWith("data:") &&
+        !!img.path;
+
+      let recipe_image = recipe.image;
+      if (recipe.image?.url && !isStoredImage(recipe.image)) {
+        const uploaded = await uploadAIImageToStorage(
+          recipe.image.url,
+          recipe.title.replace(/\s+/g, "_"),
+        );
+        recipe_image = uploaded || recipe.image;
+      }
 
       // set additional recipe fields
       recipe.author_id = user.id;
@@ -108,7 +117,7 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
 
       await Promise.all(
         recipe.instructions.map(async (instruction: any) => {
-          if (instruction?.image?.url) {
+          if (instruction?.image?.url && !isStoredImage(instruction.image)) {
             const uploaded = await uploadAIImageToStorage(
               instruction.image.url,
               instruction.title.replace(/\s+/g, "_"),
@@ -143,7 +152,7 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <form>
         <DialogTrigger asChild>
-          <Button variant="outline" className="btn-primary-modern">
+          <Button variant="outline" className="bg-primary text-primary-foreground ">
             Open Dialog
           </Button>
         </DialogTrigger>

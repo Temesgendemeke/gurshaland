@@ -30,7 +30,7 @@ export const AIgenerateImage = async (
 
     console.log(`🚀 Calling Gemini API...`);
     const response = await genAI.models.generateContent({
-      model: "gemini-2.0-flash-exp",
+      model: "gemini-2.5-flash-image",
       contents: [new_prompt],
       config: {
         responseModalities: [Modality.TEXT, Modality.IMAGE],
@@ -60,17 +60,13 @@ export const AIgenerateImage = async (
           `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
         console.log(`✅ Generated data URL (length: ${dataUrl.length})`);
 
-        // const uploaded = await uploadAIImageToStorage(
-        //   dataUrl,
-        //   `ai-generated-${Date.now()}.${part.inlineData.mimeType.split('/')[1] || 'webp'}`
-        // );
-        // return uploaded;
-        return {
-          url: dataUrl,
-          path: `ai-generated-${Date.now()}.${
+        const uploaded = await uploadAIImageToStorage(
+          dataUrl,
+          `ai-generated-${Date.now()}.${
             part.inlineData.mimeType.split("/")[1] || "webp"
           }`,
-        };
+        );
+        return uploaded;
       }
     }
 
@@ -85,15 +81,15 @@ export const AIgenerateImage = async (
 export const generateRecipeImage = async (
   prompt: string,
 ): Promise<{ url: string; path: string } | null> => {
+  console.log(`🖼️ generateRecipeImage called with prompt: "${prompt}"`);
+
+  // Try AI generation first with timeout
+  const aiImagePromise = AIgenerateImage(prompt);
+  const timeoutPromise = new Promise<null>((_, reject) =>
+    setTimeout(() => reject(new Error("Image generation timeout")), 35000)
+  );
+
   try {
-    console.log(`🖼️ generateRecipeImage called with prompt: "${prompt}"`);
-
-    // Try AI generation first with timeout
-    const aiImagePromise = AIgenerateImage(prompt);
-    const timeoutPromise = new Promise<null>((_, reject) =>
-      setTimeout(() => reject(new Error("Image generation timeout")), 15000)
-    );
-
     console.log(`🤖 Attempting AI image generation for: "${prompt}"`);
     const aiImage = await Promise.race([aiImagePromise, timeoutPromise]);
     if (aiImage?.url) {
@@ -101,12 +97,22 @@ export const generateRecipeImage = async (
       return aiImage;
     }
     console.log(`❌ AI image generation failed for: "${prompt}"`);
-    return null;
   } catch (error) {
-    console.error("Error generating recipe image:", error);
-
-    return null;
+    console.warn(`⚠️ AI image generation error, trying stock photo: "${prompt}"`, error);
   }
+
+  // Fallback: fetch a stock photo so previews still work (AI quota may be exhausted)
+  try {
+    const stockUrl = await generateImage(prompt);
+    if (stockUrl) {
+      console.log(`✅ Stock photo fallback used for: "${prompt}"`);
+      return { url: stockUrl, path: "" };
+    }
+  } catch (error) {
+    console.error("Error fetching stock photo:", error);
+  }
+
+  return null;
 };
 
 // Add this function for production use

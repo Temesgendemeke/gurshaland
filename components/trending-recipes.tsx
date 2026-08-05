@@ -6,6 +6,7 @@ import { recipeStore } from "@/store/Recipe";
 import { TrendingRecipe } from "@/utils/types/recipe";
 import RecipeListSkeleton from "./skeleton/RecipeList";
 import RecipeCard from "./recipe/RecipeCard";
+import SectionText from "./SectionText";
 
 export function TrendingRecipes() {
   const trendingRecipes = recipeStore((state) => state.trendingRecipes);
@@ -23,8 +24,14 @@ export function TrendingRecipes() {
   }
 
   return (
-    <section className="space-y-8">
-      <div className="flex items-center justify-between">
+    <section className="space-y-8 mt-4">
+      <SectionText
+        header="Trending Recipes"
+        description="Recipes that are hot this week"
+        seeMoreLink="/recipes?sorted_by=trending"
+      />
+
+      {/* <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold heading-primary mb-2">
             Trending Recipes
@@ -38,7 +45,7 @@ export function TrendingRecipes() {
         >
           <Link href="/recipes?sorted_by=trending">View All</Link>
         </Button>
-      </div>
+      </div> */}
 
       {loading ? (
         <RecipeListSkeleton />

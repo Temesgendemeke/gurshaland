@@ -1,9 +1,11 @@
 export default function PageHeader() {
   return (
-    <div className="text-center mb-16">
-      <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground mb-4">
-        AI Features
-      </p>
+    <div className="text-center mb-16 ">
+      <div className="flex  justify-center">
+        <p className="text-sm bg-primary  text-primary-foreground w-40 font-medium uppercase tracking-widest mb-4">
+          AI Features
+        </p>
+      </div>
       <h1 className="text-4xl md:text-5xl font-bold heading-primary mb-6">
         AI-Powered Cooking Experience
       </h1>

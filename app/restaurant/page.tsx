@@ -83,7 +83,7 @@ const RestaurantsPageContent = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="modern-card flex flex-col md:flex-row gap-3 p-4 sm:p-5 rounded-lg border border-border/50 shadow-sm"
+              className="modern-card flex flex-col md:flex-row gap-3 p-4 sm:p-2 rounded-lg border border-border/50 shadow-sm"
             >
               <div className="flex-1">
                 <FormField

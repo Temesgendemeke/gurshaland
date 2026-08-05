@@ -22,6 +22,7 @@ import Image from "next/image";
 import RecipeListSkeleton from "./skeleton/RecipeList";
 import RecipeCard from "./recipe/RecipeCard";
 import BlogPostCard from "./BlogPostCard";
+import SectionText from "./SectionText";
 
 export function FeaturedCards() {
   // const { featuredContent, getFeaturedContent } = useAppStore()
@@ -40,10 +41,15 @@ export function FeaturedCards() {
   }, [fetchFeaturedRecipes, fetchBlogs]);
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-10">
       {/* Featured Recipes */}
       <section>
-        <div className="flex items-center justify-between mb-8">
+        <SectionText
+          header="Featured Recipes"
+          description="Top-rated recipes with high engagement"
+          seeMoreLink="/recipes"
+        />
+        {/* <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-3xl font-bold heading-primary mb-2">
               Featured Recipes
@@ -57,7 +63,7 @@ export function FeaturedCards() {
           >
             <Link href="/recipes">View All</Link>
           </Button>
-        </div>
+        </div> */}
 
         {RecipeLoading ? (
           <RecipeListSkeleton />
@@ -77,30 +83,17 @@ export function FeaturedCards() {
 
       {/* Featured Blog Posts */}
       <section>
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-3xl font-bold heading-primary mb-2">
-              Latest from Our Blog
-            </h2>
-            <p className="text-body">
-              Tips, techniques, and insights from Ethiopian cooking experts
-            </p>
-          </div>
-
-          <Button
-            asChild
-            variant="outline"
-            className="border-primary text-primary hover:bg-primary/5"
-          >
-            <Link href="/blog">Read More</Link>
-          </Button>
-        </div>
+        <SectionText
+          header="Latest from Our Blog"
+          description="Tips, techniques, and insights from Ethiopian cooking experts"
+          seeMoreLink="/blog"
+        />
 
         {BlogLoading ? (
           <RecipeListSkeleton />
         ) : (
-          <div className="grid md:grid-cols-2 gap-6">
-            {blogs?.map((post) => (
+          <div className="grid md:grid-cols-3 gap-6">
+            {blogs?.slice(0, 3)?.map((post) => (
               <BlogPostCard key={post.id} post={post} />
             ))}
           </div>

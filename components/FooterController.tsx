@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import { Footer } from "@/components/footer";
 
-const HIDDEN_PREFIXES = ["/dashboard", "/admin"];
+const HIDDEN_PREFIXES = ["/dashboard", "/admin", "/restaurant/add"];
 
 export default function FooterController() {
   const pathname = usePathname() || "";

@@ -96,9 +96,9 @@ export default function BlogPostCard({ post }: { post: Blog }) {
               </div>
 
               {/* Arrow */}
-              <div className="rounded-full border border-border bg-background p-2 text-muted-foreground transition-colors duration-200 group-hover:text-primary">
+              {/* <div className="rounded-full border border-border bg-background p-2 text-muted-foreground transition-colors duration-200 group-hover:text-primary">
                 <ArrowRight className="h-4 w-4" />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

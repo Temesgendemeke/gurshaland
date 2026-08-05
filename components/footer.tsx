@@ -1,8 +1,5 @@
 import Link from "next/link";
-import {
-  StarIcon as SolidStar,
-  HeartIcon as SolidHeart,
-} from "@heroicons/react/24/solid";
+import { HeartIcon as SolidHeart } from "@heroicons/react/24/solid";
 import Logo from "./Logo";
 
 export function Footer() {
@@ -10,18 +7,12 @@ export function Footer() {
     <footer className="bg-muted text-muted-foreground w-full mx-auto ">
       <div className="container mx-auto px-6 py-12">
         <div className="grid md:grid-cols-4 gap-8">
-          <div>
-            <div className="flex items-center space-x-2">
-              {/* <div className="text-xl font-bold text-foreground">
-                Gurshaland
-              </div> */}
-              <Logo />
-            </div>
-            <p className="leading-relaxed text-xs max-w-[250px] ">
+          <div className="space-y-4">
+            <Logo />
+            <p className="leading-relaxed text-sm max-w-[250px]">
               Sharing the rich culinary heritage of Ethiopia, one recipe at a
               time.
             </p>
-            
           </div>
 
           <div>
@@ -147,7 +138,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
+        <div className="border-t border-border mt-10 pt-8 text-center text-muted-foreground">
           <p>
             &copy; {new Date().getFullYear()} Gurshaland. Made with{" "}
             <SolidHeart className="w-4 h-4 inline text-primary" /> for Ethiopian

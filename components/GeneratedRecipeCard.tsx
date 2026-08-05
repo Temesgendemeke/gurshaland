@@ -22,8 +22,10 @@ export default function GeneratedRecipeCard({ recipe }: { recipe: any }) {
   return (
     <>
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xl font-bold heading-primary">{recipe.title}</h3>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h3 className="text-lg sm:text-xl font-bold heading-primary">
+            {recipe.title}
+          </h3>
           <Badge className="bg-muted text-muted-foreground">AI Generated</Badge>
         </div>
         <div>
@@ -32,11 +34,11 @@ export default function GeneratedRecipeCard({ recipe }: { recipe: any }) {
             height={300}
             src={recipe.image?.url ?? "/placeholder.jpg"}
             alt={recipe.title}
-            className="object-cover w-full h-48 rounded-lg"
+            className="object-cover w-full h-44 sm:h-52 rounded-lg"
           />
         </div>
-        <p className="text-body text-sm">{recipe.description}</p>
-        <div className="flex items-center space-x-4 text-sm text-body-muted">
+        <p className="text-sm text-body">{recipe.description}</p>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-body-muted">
           <div className="flex items-center space-x-1">
             <Clock className="w-4 h-4" />
             <span>{recipe.cooktime}</span>
@@ -70,7 +72,7 @@ export default function GeneratedRecipeCard({ recipe }: { recipe: any }) {
             )}
           </ul>
         </div>
-        <div className="flex gap-2 pt-4">
+        <div className="flex flex-wrap gap-2 pt-4">
           <FullRecipeModel recipe={recipe} />
         </div>
       </div>
