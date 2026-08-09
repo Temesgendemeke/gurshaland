@@ -19,7 +19,7 @@ import { Post } from "@/utils/types/Dashboard";
 
 interface Blog{
     blogs: Post[];
-    loading: Boolean;
+    loading: boolean;
     error: string | null;
     fetchBlogs: (author_id: string) => void;
     deleteBlog: (slug: string) => void;

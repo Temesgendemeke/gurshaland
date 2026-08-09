@@ -1,16 +1,26 @@
 "use client";
 
 import React, { useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Save, ArrowLeft } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft, Loader2, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { changePasswordSchema } from "@/utils/schema";
 import { z } from "zod";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
+import { toast } from "sonner";
+import generate_error from "@/utils/generate_error";
+import EyeButton from "@/components/EyeButton";
 
 export default function Page() {
   const router = useRouter();
@@ -19,6 +29,7 @@ export default function Page() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof changePasswordSchema>>({
     resolver: zodResolver(changePasswordSchema),
@@ -29,8 +40,28 @@ export default function Page() {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof changePasswordSchema>) => {
-    void data;
+  const onSubmit = async (data: z.infer<typeof changePasswordSchema>) => {
+    setLoading(true);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.updateUser({
+        password: data.new_password,
+      });
+
+      if (error) throw error;
+
+      toast.success("Password Updated", {
+        description: "Your password has been changed successfully.",
+      });
+      form.reset();
+      router.push("/dashboard/settings");
+    } catch (error) {
+      toast.error("Update Failed", {
+        description: generate_error(error),
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleGoBack = () => {
@@ -62,100 +93,90 @@ export default function Page() {
       <div className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Password Fields Grid */}
             <div className="space-y-6">
               {/* Current Password */}
-              <div className="space-y-3">
-                <Label
-                  htmlFor="currentPassword"
-                  className="text-sm font-medium text-foreground"
-                >
-                  Current Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="currentPassword"
-                    type={showCurrentPassword ? "text" : "password"}
-                    placeholder="Enter your current password"
-                    className="h-12 pr-12 text-base"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-md hover:bg-muted"
-                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                  >
-                    {showCurrentPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
-                    )}
-                  </Button>
-                </div>
-              </div>
+              <FormField
+                control={form.control}
+                name="current_password"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel className="text-sm font-medium text-foreground">
+                      Current Password
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type={showCurrentPassword ? "text" : "password"}
+                          placeholder="Enter your current password"
+                          className="h-12 pr-12 text-base"
+                          {...field}
+                        />
+                        <EyeButton
+                          showPassword={showCurrentPassword}
+                          setShowPassword={setShowCurrentPassword}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {/* New Password */}
-              <div className="space-y-3">
-                <Label
-                  htmlFor="newPassword"
-                  className="text-sm font-medium text-foreground"
-                >
-                  New Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="newPassword"
-                    type={showNewPassword ? "text" : "password"}
-                    placeholder="Enter your new password"
-                    className="h-12 pr-12 text-base"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-md hover:bg-muted"
-                    onClick={() => setShowNewPassword(!showNewPassword)}
-                  >
-                    {showNewPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
-                    )}
-                  </Button>
-                </div>
-              </div>
+              <FormField
+                control={form.control}
+                name="new_password"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel className="text-sm font-medium text-foreground">
+                      New Password
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type={showNewPassword ? "text" : "password"}
+                          placeholder="Enter your new password"
+                          className="h-12 pr-12 text-base"
+                          {...field}
+                        />
+                        <EyeButton
+                          showPassword={showNewPassword}
+                          setShowPassword={setShowNewPassword}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {/* Confirm Password */}
-              <div className="space-y-3">
-                <Label
-                  htmlFor="confirmPassword"
-                  className="text-sm font-medium text-foreground"
-                >
-                  Confirm New Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm your new password"
-                    className="h-12 pr-12 text-base"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-md hover:bg-muted"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
-                    )}
-                  </Button>
-                </div>
-              </div>
+              <FormField
+                control={form.control}
+                name="confirm_password"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel className="text-sm font-medium text-foreground">
+                      Confirm New Password
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type={showConfirmPassword ? "text" : "password"}
+                          placeholder="Confirm your new password"
+                          className="h-12 pr-12 text-base"
+                          {...field}
+                        />
+                        <EyeButton
+                          showPassword={showConfirmPassword}
+                          setShowPassword={setShowConfirmPassword}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
 
             {/* Submit Button */}
@@ -163,9 +184,19 @@ export default function Page() {
               <Button
                 type="submit"
                 className="w-full h-12 btn-primary-modern text-base font-semibold"
+                disabled={loading}
               >
-                <Save className="h-5 w-5 mr-2" />
-                Update Password
+                {loading ? (
+                  <>
+                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-5 w-5 mr-2" />
+                    Update Password
+                  </>
+                )}
               </Button>
             </div>
           </form>

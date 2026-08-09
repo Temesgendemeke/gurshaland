@@ -7,7 +7,7 @@ import { create } from "zustand";
 
 interface RecipeStore{
      recipes: Post[];
-     loading: Boolean;
+     loading: boolean;
      error: string | null;
      fetchRecipes: (profile_id: string)=> void;
      deleteRecipe: (reicpe_id: string) => void;

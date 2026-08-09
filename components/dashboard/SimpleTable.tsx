@@ -15,7 +15,7 @@ import TableSkeleton from "../skeleton/TableSkeleton";
 interface SimpleTableProps {
   data: Post[];
   name: string;
-  loading: Boolean;
+  loading: boolean;
 }
 
 export function SimpleTable({ data, name, loading }: SimpleTableProps) {
@@ -61,7 +61,7 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
           Updated {new Date().toLocaleDateString()}
         </span>
       </div>
-      <div className="max-h-105 overflow-auto">
+      <div className="max-h-[26.25rem] overflow-auto">
         <Table className="text-sm">
           <TableHeader className="sticky top-0 bg-card z-10">
             <TableRow className="hover:bg-transparent">

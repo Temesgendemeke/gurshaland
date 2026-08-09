@@ -1,9 +1,6 @@
 "use client";
 import { FollowerColumnType } from "@/utils/types/Dashboard";
-import { Profile } from "@/utils/types/profile";
-import { Follower } from "@/utils/types/recipe";
 import { createColumnHelper } from "@tanstack/react-table";
-import React from "react";
 import { DefaultHeader } from "./DefaultHeader";
 import {
   DropdownMenu,

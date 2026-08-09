@@ -36,13 +36,10 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Inbox,
 } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
-import { useRouter } from "next/navigation";
 import TableSkeleton from "./skeleton/TableSkeleton";
-import { toast } from "sonner";
-import { deleteRecipe } from "@/actions/Recipe/recipe";
-import Recipe from "@/utils/types/recipe";
 
 interface DataTableRow {
   id?: string;
@@ -53,7 +50,7 @@ interface DataTableProps<TData extends DataTableRow, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   onDeleteSelected?: (rows: TData[]) => void;
-  loading: Boolean;
+  loading: boolean;
 }
 
 export function DataTable<TData extends DataTableRow, TValue>({
@@ -69,12 +66,6 @@ export function DataTable<TData extends DataTableRow, TValue>({
   });
   const [rowSelection, setRowSelection] = React.useState({});
   const [isMobile, setIsMobile] = React.useState(false);
-  const [currentData, SetCurrent] = React.useState(data);
-
-  // Update currentData when data prop changes
-  React.useEffect(() => {
-    SetCurrent(data);
-  }, [data]);
 
   // Responsive breakpoint detection
   React.useEffect(() => {
@@ -129,18 +120,11 @@ export function DataTable<TData extends DataTableRow, TValue>({
     getRowId: (row: any, index) => row.id ?? index.toString(),
   });
 
-  const LINK_ICON_COLUMN_ID = "title";
   const selectedRows = table.getSelectedRowModel().rows.map((r) => r.original);
 
-  const handleDelete = async (rows: TData[]) => {
-    try {
-      toast.success(`Successfully deleted ${rows.length} recipe(s)`);
-      if (onDeleteSelected) onDeleteSelected(rows);
-      setRowSelection({});
-    } catch (error) {
-      toast.error("Failed to delete recipe");
-      console.error(error);
-    }
+  const handleDelete = (rows: TData[]) => {
+    if (onDeleteSelected) onDeleteSelected(rows);
+    setRowSelection({});
   };
 
   if (loading)
@@ -269,7 +253,10 @@ export function DataTable<TData extends DataTableRow, TValue>({
                       colSpan={columns.length + 1}
                       className="h-24 text-center"
                     >
-                      No results.
+                      <div className="flex flex-col items-center justify-center gap-2 py-6 text-muted-foreground">
+                        <Inbox className="h-8 w-8 opacity-60" />
+                        <span>No results.</span>
+                      </div>
                     </TableCell>
                   </TableRow>
                 )}
@@ -305,6 +292,10 @@ function DataTablePagination<TData>({
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  const pageCount = table.getPageCount();
+
+  if (pageCount === 0) return null;
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 sm:px-2">

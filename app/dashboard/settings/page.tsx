@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -11,35 +11,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  User,
-  Bell,
-  Shield,
-  Palette,
-  Globe,
-  CreditCard,
-  Settings as SettingsIcon,
-  Camera,
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  Save,
-  RefreshCw,
-  Link as LinkIcon,
-  Pen,
-} from "lucide-react";
+import { User, Camera, Mail, Lock, Pen } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SettingProfileSchema } from "@/schema/SettingsProfile";
@@ -56,28 +31,24 @@ import {
   getSettingProfile,
   updateProfile,
   upsertProfilePicure,
+  deleteProfilePicture,
 } from "@/actions/profile/profile";
 import { useAuth } from "@/store/useAuth";
 import { Profile } from "@/utils/types/Settings";
 import DeleteAccount from "@/components/dashboard/DeleteAccount";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
-import { deleteProfilePicture } from "@/actions/profile/profile";
+import { z } from "zod";
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { toast } = useToast();
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [notifications, setNotifications] = React.useState({
-    email: true,
-    push: false,
-    marketing: true,
-    updates: true,
-  });
   const [profile, setProfile] = useState<Profile>();
   const user = useAuth((store) => store.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const form = useForm({
     resolver: zodResolver(SettingProfileSchema),
     defaultValues: {
@@ -85,9 +56,14 @@ export default function SettingsPage() {
       username: "",
       image_url: "",
       bio: "",
-      image_file: "",
     },
   });
+
+  useEffect(() => {
+    return () => {
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    };
+  }, [avatarPreview]);
 
   useEffect(() => {
     (async () => {
@@ -111,71 +87,68 @@ export default function SettingsPage() {
           setError(
             err instanceof Error ? err.message : "Failed to load profile",
           );
-          toast({
-            title: "Error",
-            description:
-              "Failed to load profile data. Please refresh the page.",
-            variant: "destructive",
+          toast.error("Error", {
+            description: "Failed to load profile data. Please refresh the page.",
           });
         } finally {
           setLoading(false);
         }
       }
     })();
-  }, [user, user?.id, form, toast]);
+  }, [user, user?.id, form]);
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setAvatarFile(file);
+    setAvatarPreview(URL.createObjectURL(file));
+  };
 
   const handleRemoveImage = async () => {
-    form.setValue("image_file", "");
+    setAvatarFile(null);
+    setAvatarPreview(null);
     form.setValue("image_url", "");
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: z.infer<typeof SettingProfileSchema>) => {
     if (!user?.id) return;
-
-    const existingImagePath = profile?.image?.path;
-
-    if (!data.image_url && existingImagePath) {
-      await deleteProfilePicture(user.id, existingImagePath);
-    } else if (data.image_url !== profile?.image?.url && data.image_file) {
-      // upload new picture new image
-      await upsertProfilePicure(user.id, data.image_file);
-    }
-
-    // Check if form data has actually changed
-    const hasChanges =
-      data.full_name !== profile?.full_name ||
-      data.username !== profile?.username ||
-      data.bio !== profile?.bio ||
-      data.image_url !== profile?.image?.url;
-
-    if (!hasChanges) {
-      toast({
-        title: "No Changes",
-        description: "No changes detected in your profile.",
-        variant: "default",
-      });
-      return;
-    }
 
     try {
       setLoading(true);
+
+      let imageUrl = data.image_url || "";
+      let newImagePath: string | undefined;
+
+      if (avatarFile) {
+        const { url, path } = await upsertProfilePicure(user.id, avatarFile);
+        imageUrl = url;
+        newImagePath = path;
+      } else if (!imageUrl && profile?.image?.path) {
+        await deleteProfilePicture(user.id, profile.image.path);
+      }
 
       // Prepare the data for the database update
       const updateData = {
         full_name: data.full_name,
         username: data.username,
         bio: data.bio,
-        image_url: data.image_url || null,
+        image_url: imageUrl || undefined,
       };
 
       const updatedProfile = await updateProfile(user.id, updateData);
       setProfile(updatedProfile);
 
+      // Clean up the previous profile picture if a new one was uploaded
+      if (newImagePath && profile?.image?.path) {
+        await deleteProfilePicture(user.id, profile.image.path);
+      }
+
+      setAvatarFile(null);
+      setAvatarPreview(null);
+
       // Show success toast
-      toast({
-        title: "Profile Updated",
+      toast.success("Profile Updated", {
         description: "Your profile has been updated successfully.",
-        variant: "default",
       });
 
       // Optionally refresh the form with new data
@@ -189,10 +162,8 @@ export default function SettingsPage() {
       console.error("Error updating profile:", error);
 
       // Show error toast
-      toast({
-        title: "Update Failed",
+      toast.error("Update Failed", {
         description: "Failed to update profile. Please try again.",
-        variant: "destructive",
       });
     } finally {
       setLoading(false);
@@ -283,7 +254,7 @@ export default function SettingsPage() {
                   <Avatar className="h-20 w-20 border-4 border-border">
                     <AvatarImage
                       src={
-                        form.getValues("image_file") ??
+                        avatarPreview ??
                         profile?.image?.url ??
                         "/placeholder-user.jpg"
                       }
@@ -297,9 +268,19 @@ export default function SettingsPage() {
                     size="sm"
                     variant="outline"
                     className="absolute -bottom-2 -right-2 h-8 w-8 p-0 border-border bg-background"
+                    onClick={() => fileInputRef.current?.click()}
+                    aria-label="Upload profile picture"
                   >
                     <Camera className="h-4 w-4 text-muted-foreground" />
                   </Button>
+                  <Input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    aria-hidden
+                    onChange={handleAvatarChange}
+                  />
                 </div>
                 <div className="space-y-2">
                   <h3 className="font-semibold">Profile Picture</h3>
@@ -311,23 +292,7 @@ export default function SettingsPage() {
                       size="sm"
                       variant="outline"
                       className="border-border"
-                      onClick={() => {
-                        // Create a hidden file input and trigger it
-                        const input = document.createElement("input");
-                        input.type = "file";
-                        input.accept = "image/*";
-                        input.onchange = (e: any) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            form.setValue(
-                              "image_file",
-                              URL.createObjectURL(file),
-                              { shouldDirty: true },
-                            );
-                          }
-                        };
-                        input.click();
-                      }}
+                      onClick={() => fileInputRef.current?.click()}
                     >
                       Change Photo
                     </Button>
@@ -478,30 +443,30 @@ export default function SettingsPage() {
             <CardDescription>
               Manage your password and security preferences
             </CardDescription>
-            <CardContent className="m-0 mt-5 p-0">
-              <div className="flex items-center justify-between ">
-                <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground font-medium">
-                    Email Address
-                  </span>
-                  <span className="text-base font-semibold tracking-tight text-foreground">
-                    {user?.email}
-                  </span>
-                </div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="border-border"
-                  aria-label="Edit Email"
-                  onClick={() =>
-                    router.push("/dashboard/settings/change-email")
-                  }
-                >
-                  <Pen className="h-4 w-4 text-muted-foreground" />
-                </Button>
-              </div>
-            </CardContent>
           </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-xs text-muted-foreground font-medium">
+                  Email Address
+                </span>
+                <span className="text-base font-semibold tracking-tight text-foreground">
+                  {user?.email}
+                </span>
+              </div>
+              <Button
+                variant="outline"
+                size="icon"
+                className="border-border"
+                aria-label="Edit Email"
+                onClick={() =>
+                  router.push("/dashboard/settings/change-email")
+                }
+              >
+                <Pen className="h-4 w-4 text-muted-foreground" />
+              </Button>
+            </div>
+          </CardContent>
         </Card>
 
         {/* Security Settings */}

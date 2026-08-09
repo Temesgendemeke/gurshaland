@@ -9,7 +9,8 @@ const HIDDEN_PREFIXES = [
   "/restaurant/add",
   "/login",
   "/signup",
-  "/forgot-password"
+  "/forgot-password",
+  "/reset-password",
 ];
 
 export default function FooterController() {

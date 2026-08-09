@@ -1,7 +1,7 @@
 "use client";
+import { useState } from "react";
 import { Post } from "@/utils/types/Dashboard";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { Checkbox } from "../ui/checkbox";
 import { DefaultHeader } from "./DefaultHeader";
 import { cn } from "@/lib/utils";
 import {
@@ -13,22 +13,22 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import {
-  MoreVertical,
-  MoreVerticalIcon,
-  Eye,
-  PenBox,
-  DeleteIcon,
-  Trash,
-} from "lucide-react";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../ui/alert-dialog";
+import { MoreVertical, PenBox, Trash, Eye } from "lucide-react";
 import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 import Link from "next/link";
-import generate_error from "@/utils/generate_error";
 import { toast } from "sonner";
-import { deleteBlog, getBlogBySlug } from "@/actions/blog/blog";
-import { Blog } from "@/utils/types/blog";
 import { useBlog } from "@/store/DashboardBlog";
 import useRecipe from "@/store/DashboardRecipe";
-import DeleteWarning from "./DeleteWarning";
 import { useRouter } from "next/navigation";
 
 function PostActionsCell({
@@ -41,16 +41,18 @@ function PostActionsCell({
   const router = useRouter();
   const deleteBlogFn = useBlog((store) => store.deleteBlog);
   const deleteRecipeFn = useRecipe((store) => store.deleteRecipe);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   if (!slug) return null;
 
   const handleDelete = async () => {
     try {
       if (linkBasePath === "/blog") {
-        deleteBlogFn(slug);
+        await deleteBlogFn(slug);
       } else {
-        deleteRecipeFn(slug);
+        await deleteRecipeFn(slug);
       }
+      toast.success("Post deleted successfully");
     } catch (err) {
       console.error("Error deleting post:", err);
       toast.error("Failed to delete");
@@ -58,77 +60,106 @@ function PostActionsCell({
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant={"ghost"}>
-          <MoreVerticalIcon />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        onCloseAutoFocus={(e) => e.preventDefault()}
-        className="bg-background z-50"
-      >
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Button
-            onClick={() => router.push(`${linkBasePath}/edit/${slug}`)}
-            className="flex gap-1 justify-center"
-            variant="ghost"
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" aria-label="Post actions">
+            <MoreVertical />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          onCloseAutoFocus={(e) => e.preventDefault()}
+          className="bg-background z-50"
+        >
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onSelect={() => router.push(`${linkBasePath}/edit/${slug}`)}
           >
-            <PenBox />
+            <PenBox className="h-4 w-4" />
             <span>Edit</span>
-          </Button>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Button onClick={handleDelete} variant="ghost" className="flex">
-            <Trash />
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onSelect={() => setDeleteOpen(true)}
+            className="text-error focus:text-error"
+          >
+            <Trash className="h-4 w-4" />
             <span>Delete</span>
-          </Button>
-          {/* <DeleteWarning post={linkBasePath} slug={slug}/> */}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <AlertDialogContent className="border border-error/20 shadow-sm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this post?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. The post and all associated
+              comments, likes, and media will be permanently deleted and cannot
+              be recovered.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+              onClick={async () => {
+                await handleDelete();
+                setDeleteOpen(false);
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
 
 // Modern Status Badge Component
-const StatusBadge = ({ status }: { status: string }) => {
-  const getStatusConfig = (status: string) => {
-    switch (status?.toLowerCase()) {
-      case "published":
-        return {
-          bg: "bg-success/10",
-          text: "text-success",
-          border: "border-success/20",
-          dot: "bg-success",
-        };
-      case "draft":
-        return {
-          bg: "bg-warning/10",
-          text: "text-warning",
-          border: "border-warning/20",
-          dot: "bg-warning",
-        };
-      default:
-        return {
-          bg: "bg-muted/50",
-          text: "text-muted-foreground",
-          border: "border-border",
-          dot: "bg-muted-foreground",
-        };
-    }
-  };
+const getStatusConfig = (status: string) => {
+  switch (status?.toLowerCase()) {
+    case "published":
+      return {
+        color: "hsl(var(--success))",
+        bg: "hsl(var(--success) / 0.10)",
+        border: "hsl(var(--success) / 0.20)",
+      };
+    case "draft":
+      return {
+        color: "hsl(var(--warning))",
+        bg: "hsl(var(--warning) / 0.10)",
+        border: "hsl(var(--warning) / 0.20)",
+      };
+    default:
+      return {
+        color: "hsl(var(--muted-foreground))",
+        bg: "hsl(var(--muted) / 0.5)",
+        border: "hsl(var(--border))",
+      };
+  }
+};
 
+const StatusBadge = ({ status }: { status: string }) => {
   const config = getStatusConfig(status);
 
   return (
-    <div
-      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${config.bg} ${config.border} ${config.text} text-xs font-medium transition-colors cursor-default`}
+    <Badge
+      variant="outline"
+      className="gap-2 px-3 py-1.5 cursor-default"
+      style={{
+        color: config.color,
+        backgroundColor: config.bg,
+        borderColor: config.border,
+      }}
     >
-      <div className={`w-2 h-2 rounded-full ${config.dot}`}></div>
+      <span
+        className="h-2 w-2 rounded-full"
+        style={{ backgroundColor: config.color }}
+      />
       <span className="capitalize font-semibold tracking-wide">{status}</span>
-    </div>
+    </Badge>
   );
 };
 
@@ -137,32 +168,6 @@ const columnHelper = createColumnHelper<Post>();
 export const createPostColumns = (
   linkBasePath: "/recipes" | "/blog" = "/recipes",
 ): ColumnDef<Post, any>[] => [
-  // columnHelper.display({
-  //   id: "action",
-  //   header: ({ table }) => (
-  //     <div className="w-6">
-  //       <Checkbox
-  //         checked={
-  //           table.getIsAllPageRowsSelected() ||
-  //           (table.getIsSomePageRowsSelected() && "indeterminate")
-  //         }
-  //         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //         aria-label="Select All"
-  //       />
-  //     </div>
-  //   ),
-  //   cell: ({ row }) => (
-  //     <div className="w-6">
-  //       <Checkbox
-  //         checked={row.getIsSelected()}
-  //         onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //         aria-label="Select Row"
-  //       />
-  //     </div>
-  //   ),
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // }),
   columnHelper.accessor("title", {
     header: (info) => <DefaultHeader info={info as any} name="Title" />,
     cell: (info) => {

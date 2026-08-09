@@ -1,4 +1,4 @@
-import { getProfilebyUsername } from "@/actions/profile/profile";
+import { getProfilebyUsername } from "@/actions/profile/getProfile";
 import { Header } from "@/components/header";
 import RecipeCard from "@/components/recipe/RecipeCard";
 import { Profile } from "@/utils/types/profile";

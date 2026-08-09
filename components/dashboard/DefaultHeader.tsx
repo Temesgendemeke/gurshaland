@@ -1,4 +1,3 @@
-import { FollowerColumnType, Post } from "@/utils/types/Dashboard";
 import { HeaderContext } from "@tanstack/react-table";
 import { SortAsc, SortDesc } from "lucide-react";
 import {
@@ -8,12 +7,12 @@ import {
   ContextMenuTrigger,
 } from "../ui/context-menu";
 
-interface DefaultHeaderType {
-  info: HeaderContext<Post, any>;
+interface DefaultHeaderType<T> {
+  info: HeaderContext<T, unknown>;
   name: string;
 }
 
-export function DefaultHeader<T>({ info, name }: DefaultHeaderType) {
+export function DefaultHeader<T>({ info, name }: DefaultHeaderType<T>) {
   const sorted = info.column.getIsSorted();
   const { table } = info;
   return (

@@ -79,7 +79,7 @@ export default function RootLayout({
           disableTransitionOnChange={false}
         >
           <Providers>
-            <main className="flex-1">{children}</main>
+            {children}
             <FooterController />
           </Providers>
           <Toaster />

@@ -3,6 +3,7 @@ export interface Profile{
     image?: {
         id?: string;
         url?: string;
+        path?: string;
         profile_id?: string;
     };
     full_name: string;
