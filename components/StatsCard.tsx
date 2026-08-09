@@ -11,10 +11,38 @@ interface StatsCardProps {
   Icon: LucideIcon;
   className?: string;
   loading: boolean;
-  type: "post" | "follower";
+  type: "post" | "follower" | "engagement";
   published_posts_count?: number;
   draft_posts_count?: number;
+  likes_count?: number;
+  comments_count?: number;
+  href?: string;
+  subtitle?: string;
 }
+
+const StatBlock = ({
+  label,
+  value,
+  highlight = false,
+}: {
+  label: string;
+  value: number;
+  highlight?: boolean;
+}) => (
+  <div className="rounded-lg p-3 ring-1 ring-inset ring-border bg-background transition-colors">
+    <div className="text-[0.6875rem] font-semibold uppercase tracking-wide text-muted-foreground">
+      {label}
+    </div>
+    <div
+      className={cn(
+        "mt-0.5 text-xl font-bold",
+        highlight ? "text-primary" : "text-foreground",
+      )}
+    >
+      {value.toLocaleString()}
+    </div>
+  </div>
+);
 
 const StatsCard = ({
   name,
@@ -25,6 +53,10 @@ const StatsCard = ({
   type,
   published_posts_count,
   draft_posts_count,
+  likes_count,
+  comments_count,
+  href = `/dashboard/${name}`,
+  subtitle,
 }: StatsCardProps) => {
   if (loading) {
     return <StatsCardSkeleton className={className} />;
@@ -34,47 +66,45 @@ const StatsCard = ({
     <Card
       className={cn(
         "relative overflow-hidden aspect-[5/3] group",
-        "shadow-sm transition-colors hover:bg-accent",
+        "shadow-sm transition-colors hover:bg-card border border-transparent  hover:border-primary ",
         className,
       )}
     >
       <Link
-        href={`/dashboard/${name}`}
+        href={href}
         aria-label={`${name} stats`}
         className="absolute inset-0 z-10 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2"
       />
       <CardContent className="flex h-full flex-col justify-end p-5">
-        <div className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-          <Icon className="h-5 w-5" />
+        <div className="mb-3 flex items-center justify-between">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Icon className="h-5 w-5" />
+          </span>
         </div>
         <div className="text-4xl font-bold tracking-tight text-foreground select-none">
           {count.toLocaleString()}
         </div>
         <p className="mt-1 text-sm font-medium uppercase tracking-wide text-muted-foreground">
-          {name}
+          {subtitle ?? name}
         </p>
 
-        {type === "post" && (
+        {/* {type === "post" && (
           <div className="mt-3 grid grid-cols-2 gap-2">
-            <div className="rounded-lg p-3 ring-1 ring-inset ring-border bg-background transition-colors">
-              <div className="text-[0.6875rem] font-semibold uppercase tracking-wide text-muted-foreground">
-                Published
-              </div>
-              <div className="mt-0.5 text-xl font-bold text-primary">
-                {(published_posts_count ?? 0).toLocaleString()}
-              </div>
-            </div>
-
-            <div className="rounded-lg p-3 ring-1 ring-inset ring-border bg-background transition-colors">
-              <div className="text-[0.6875rem] font-semibold uppercase tracking-wide text-muted-foreground">
-                Drafts
-              </div>
-              <div className="mt-0.5 text-xl font-bold text-foreground">
-                {(draft_posts_count ?? 0).toLocaleString()}
-              </div>
-            </div>
+            <StatBlock
+              label="Published"
+              value={published_posts_count ?? 0}
+              highlight
+            />
+            <StatBlock label="Drafts" value={draft_posts_count ?? 0} />
           </div>
         )}
+
+        {type === "engagement" && (
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <StatBlock label="Likes" value={likes_count ?? 0} />
+            <StatBlock label="Comments" value={comments_count ?? 0} />
+          </div>
+        )} */}
       </CardContent>
     </Card>
   );

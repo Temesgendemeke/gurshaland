@@ -233,9 +233,9 @@ const Sidebar = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "group peer hidden sm:flex flex-col text-sidebar-foreground overflow-hidden",
+          "group peer hidden sm:flex flex-col text-sidebar-foreground overflow-hidden bg-sidebar",
           "duration-300 transition-[width] ease-[cubic-bezier(0.4,0,0.2,1)]",
-          "w-[--sidebar-width]",
+          "w-[--sidebar-width] sticky top-0 self-start h-screen",
           "data-[collapsible=icon]:w-[--sidebar-width-icon]",
           state === "collapsed" && collapsible === "offcanvas" ? "w-0 overflow-hidden" : "",
           variant === "floating" || variant === "inset"
@@ -252,7 +252,7 @@ const Sidebar = React.forwardRef<
       >
         <div
           data-sidebar="sidebar"
-          className="sticky top-0 z-30 flex h-screen w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow overflow-visible"
+          className="z-30 flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow overflow-visible"
         >
           {children}
         </div>

@@ -77,7 +77,7 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       {/* Logo header — lettermark only when collapsed, full logo when expanded */}
-      <SidebarHeader className="bg-background border-b border-border/50 px-3 h-12 flex items-center">
+      <SidebarHeader className="border-b border-border/50 px-3 h-12 flex items-center">
         <Link
           href="/"
           className="flex items-center gap-2.5 overflow-hidden w-full"
@@ -107,7 +107,7 @@ export function AppSidebar() {
         </Link>
       </SidebarHeader>
 
-      <SidebarContent className="bg-background px-2 py-4">
+      <SidebarContent className="px-2 py-4">
         <SidebarGroup>
           <SidebarGroupContent className="w-full">
             <SidebarMenu className="w-full space-y-1">
@@ -141,9 +141,9 @@ export function AppSidebar() {
                         >
                           {item.title}
                         </span>
-                        {active && (
+                        {/* {active && (
                           <div className="absolute right-2 w-2 h-2 bg-primary rounded-full" />
-                        )}
+                        )} */}
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -154,7 +154,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="bg-background border-t border-border/50">
+      <SidebarFooter className="border-t border-border/50">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>

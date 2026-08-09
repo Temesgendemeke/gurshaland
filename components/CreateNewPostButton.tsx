@@ -1,17 +1,24 @@
 import Link from "next/link";
 import { PlusCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-const CreateNewPostButton = ({ postType }: { postType: "Blog" | "Recipe" }) => {
+const CreateNewPostButton = ({
+  postType,
+  className,
+}: {
+  postType: "Blog" | "Recipe";
+  className?: string;
+}) => {
   return (
-    <div className="flex justify-end mb-6">
+    <Button asChild className={cn("gap-2 shadow-sm", className)}>
       <Link
         href={`${postType === "Blog" ? "/blog/create" : "/recipes/create"}`}
-        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
-        <PlusCircle className="w-5 h-5" />
-        <span>Create New {postType}</span>
+        <PlusCircle className="h-5 w-5" />
+        Create New {postType}
       </Link>
-    </div>
+    </Button>
   );
 };
 

@@ -16,12 +16,12 @@ export default function DashboardLayout({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="sticky top-0 z-40 flex h-12 shrink-0 items-center gap-2 border-b border-border/50 bg-background">
+        <header className="sticky top-0 z-40 flex h-12 shrink-0 items-center  border-b border-border/50 bg-background">
           <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
+            <SidebarTrigger className="" />
             <Separator
               orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
+              className="data-[orientation=vertical]:h-4"
             />
           </div>
           <DashboardBreadcrumb />

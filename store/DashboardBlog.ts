@@ -34,7 +34,13 @@ export const useBlog = create<Blog>((set, get)=> ({
         try {
             set({loading: true})
             const data: Post[]  = await getBlogByAuthor(author_id)
-            set({blogs: data, loading: false})
+            const normalized: Post[] = (data ?? []).map((blog) => ({
+                ...blog,
+                view_count: Number(blog.view_count ?? blog.view) || 0,
+                comment_count: Number(blog.comment_count ?? blog.comments) || 0,
+                like_count: Number(blog.like_count ?? blog.like) || 0,
+            }))
+            set({blogs: normalized, loading: false})
         } catch (error) {
             set({error: generate_error(error), loading: false})
         }

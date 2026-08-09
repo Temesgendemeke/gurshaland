@@ -201,9 +201,10 @@ export const createPostColumns = (
       <DefaultHeader info={info as any} name="Engagement Rate" />
     ),
     cell: (info) => {
-      const views = Number(info.getValue()) || 0;
-      const likes = Number((info.row.original as any).like) || 0;
-      const comments = Number((info.row.original as any).comment_count) || 0;
+      const row = info.row.original as Post;
+      const views = Number(row.view_count ?? row.view) || 0;
+      const likes = Number(row.like_count ?? row.like) || 0;
+      const comments = Number(row.comment_count ?? row.comments) || 0;
 
       let engagementRate = 0;
       if (views > 0) {

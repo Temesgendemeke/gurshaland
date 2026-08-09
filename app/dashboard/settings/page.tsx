@@ -171,10 +171,10 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="mx-auto w-[calc(100%-1rem)] max-w-5xl space-y-8">
+    <div className="mx-auto w-full max-w-5xl space-y-8">
       {/* Header */}
       <div className="text-center md:text-left space-y-2">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold font-gosh tracking-tight text-foreground">
           Settings
         </h1>
         <p className="text-muted-foreground max-w-full">

@@ -11,20 +11,38 @@ import { cn } from "@/lib/utils";
 import { ArrowUpRight, Eye } from "lucide-react";
 import React from "react";
 import TableSkeleton from "../skeleton/TableSkeleton";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface SimpleTableProps {
   data: Post[];
   name: string;
   loading: boolean;
+  type?: "recipe" | "blog";
 }
 
-export function SimpleTable({ data, name, loading }: SimpleTableProps) {
+export function SimpleTable({
+  data,
+  name,
+  loading,
+  type,
+}: SimpleTableProps) {
   const top = data.slice(0, 10);
+
+  const editHref = (post: Post) => {
+    if (type === "blog") return `/blog/edit/${post.slug}`;
+    return `/recipes/edit/${post.slug}`;
+  };
+
+  const listHref = `/dashboard/${(type === "blog" ? "blogs" : "recipes")}`;
+  const plural = type === "blog" ? "blogs" : "recipes";
+  const router = useRouter();
 
   // Calculate engagement-to-view ratio for each post
   const postsWithEngagement = top.map((post) => {
     const views = Number(post.view_count) || 0;
-    const likes = Number(post.like) || 0;
+    const likes = Number(post.like_count ?? post.like) || 0;
     const comments = Number(post.comment_count) || 0;
 
     // Engagement = likes + comments
@@ -57,9 +75,13 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
         <h3 className="text-base font-semibold tracking-tight">
           Top 10 {name} Posts
         </h3>
-        <span className="text-xs text-muted-foreground">
-          Updated {new Date().toLocaleDateString()}
-        </span>
+        <Link
+          href={listHref}
+          className="flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary"
+        >
+          View all {plural}
+          <ArrowUpRight className="h-3.5 w-3.5" />
+        </Link>
       </div>
       <div className="max-h-[26.25rem] overflow-auto">
         <Table className="text-sm">
@@ -88,8 +110,9 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
               return (
                 <TableRow
                   key={post.id?.toString() ?? i}
+                  onClick={() => router.push(editHref(post))}
                   className={cn(
-                    "group transition-colors hover:bg-muted/40",
+                    "group cursor-pointer transition-colors hover:bg-muted/40",
                     i < 3 && "bg-primary/5",
                   )}
                 >
@@ -111,7 +134,15 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
                         <p className="font-medium leading-snug line-clamp-1">
                           {post.title}
                         </p>
-                        <p className="text-xs text-muted-foreground line-clamp-1">
+                        <p className="flex items-center gap-1.5 text-xs text-muted-foreground line-clamp-1">
+                          {post.status === "draft" && (
+                            <Badge
+                              variant="outline"
+                              className="border-amber-300/60 bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
+                            >
+                              Draft
+                            </Badge>
+                          )}
                           {post.slug?.replace(/-/g, " ")}
                         </p>
                       </div>
@@ -151,7 +182,7 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
                     <div className="text-xs space-y-0.5">
                       <div>
                         <span className="font-medium">
-                          {Number(post.like || 0)}
+                          {Number(post.like_count ?? post.like ?? 0)}
                         </span>{" "}
                         <span className="text-muted-foreground">likes</span>
                       </div>

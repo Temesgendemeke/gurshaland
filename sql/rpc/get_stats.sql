@@ -12,7 +12,8 @@ BEGIN
         'recipes_published_count', COALESCE(recipes_published_count, 0),
         'recipes_draft_count', COALESCE(recipes_draft_count, 0),
         'blogs_published_count', COALESCE(blogs_published_count, 0),
-        'blogs_draft_count', COALESCE(blogs_draft_count, 0)
+        'blogs_draft_count', COALESCE(blogs_draft_count, 0),
+        'recent_activity', COALESCE(activity_data, '[]'::jsonb)
     ) INTO result
     FROM (
         -- Get top 10 recipes by engagement (rating * rating_count + like_count + comment_count + view_count)
@@ -144,7 +145,44 @@ BEGIN
         SELECT COUNT(*) AS blogs_draft_count
         FROM blog b
         WHERE b.author_id = _profile_id AND b.status = 'draft'
-    ) blogs_draft;
+    ) blogs_draft,
+    (
+        -- Get recent activity (comments on your posts + new followers)
+        SELECT COALESCE(jsonb_agg(act ORDER BY act.created_at DESC), '[]'::jsonb) AS activity_data
+        FROM (
+            SELECT
+                'recipe_comment' AS type,
+                r.title AS title,
+                rc.comment AS text,
+                p.username AS actor,
+                rc.created_at AS created_at
+            FROM recipe_comment rc
+            JOIN recipe r ON r.id = rc.recipe_id
+            LEFT JOIN profile p ON p.id = rc.author_id
+            WHERE r.author_id = _profile_id
+            UNION ALL
+            SELECT
+                'blog_comment' AS type,
+                b.title AS title,
+                bc.comment AS text,
+                p.username AS actor,
+                bc.created_at AS created_at
+            FROM blog_comment bc
+            JOIN blog b ON b.id = bc.blog_id
+            LEFT JOIN profile p ON p.id = bc.user_id
+            WHERE b.author_id = _profile_id
+            UNION ALL
+            SELECT
+                'follower' AS type,
+                NULL AS title,
+                NULL AS text,
+                p.username AS actor,
+                f.created_at AS created_at
+            FROM follower f
+            JOIN profile p ON p.id = f.follower_id
+            WHERE f.profile_id = _profile_id
+        ) act
+    ) activity;
 
     RETURN result;
 END;

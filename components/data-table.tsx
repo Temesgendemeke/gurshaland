@@ -43,7 +43,7 @@ import TableSkeleton from "./skeleton/TableSkeleton";
 
 interface DataTableRow {
   id?: string;
-  slug: string;
+  slug?: string;
 }
 
 interface DataTableProps<TData extends DataTableRow, TValue> {
