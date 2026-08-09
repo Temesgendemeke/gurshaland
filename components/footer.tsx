@@ -4,12 +4,12 @@ import Logo from "./Logo";
 
 export function Footer() {
   return (
-    <footer className="bg-muted text-muted-foreground w-full mx-auto ">
-      <div className="container mx-auto px-6 py-12">
+    <footer className="bg-muted text-muted-foreground w-full mx-auto">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
         <div className="grid md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Logo />
-            <p className="leading-relaxed text-sm max-w-[250px]">
+            <p className="leading-relaxed text-sm max-w-[15.625rem]">
               Sharing the rich culinary heritage of Ethiopia, one recipe at a
               time.
             </p>

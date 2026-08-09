@@ -38,7 +38,7 @@ const columns: ColumnDef<KnowledgeItem>[] = [
     accessorKey: "text",
     header: "Content",
     cell: ({ row }) => (
-      <div className="max-w-[500px] truncate font-medium">
+      <div className="max-w-[31.25rem] truncate font-medium">
         {row.getValue("text")}
       </div>
     ),

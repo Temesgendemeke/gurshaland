@@ -75,6 +75,8 @@ interface AppState {
     stories: CulturalStory[]
     posts: BlogPost[]
   }
+  isCookingAssistantOpen: boolean
+
 
   // Actions
   setRecipes: (recipes: Recipe[]) => void
@@ -90,6 +92,7 @@ interface AppState {
   getRecommendedRecipes: () => Recipe[]
   getTrendingRecipes: () => Recipe[]
   getNewRecipes: () => Recipe[]
+  SetCookingAssistantOpen: (isOpen: boolean) => void
 }
 
 // Mock data
@@ -257,8 +260,12 @@ export const useAppStore = create<AppState>()(
         stories: [],
         posts: [],
       },
+      isCookingAssistantOpen: false,
 
       // Actions
+      SetCookingAssistantOpen(isOpen) {
+        set({ isCookingAssistantOpen: isOpen })
+      },
       setRecipes: (recipes) => set({ recipes }),
       setCulturalStories: (stories) => set({ culturalStories: stories }),
       setBlogPosts: (posts) => set({ blogPosts: posts }),

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,9 +14,25 @@ import {
 } from "@heroicons/react/24/outline";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import { usePathname } from "next/navigation";
+import { useAuth } from "@/store/useAuth";
+import { useAppStore } from "@/lib/store";
+import {
+  clearPendingAIGeneration,
+  getPendingAIGeneration,
+  requireLogin,
+  savePendingAIGeneration,
+} from "@/lib/auth-gate";
+import { PersonIcon } from "@radix-ui/react-icons";
+
+const AUTH_PATHS = ["/login", "/signup", "/forgot-password", "/reset-password"];
 
 export function AIChatWidget() {
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
+  const isOpen = useAppStore((store) => store.isCookingAssistantOpen);
+  const setIsOpen = useAppStore((store) => store.SetCookingAssistantOpen);
+  const user = useAuth((store) => store.user);
+  const pathname = usePathname();
 
   const { messages, sendMessage, error, status, stop } = useChat({
     transport: new DefaultChatTransport({
@@ -27,9 +43,32 @@ export function AIChatWidget() {
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
+  useEffect(() => {
+    const unsubscribe = useAuth.subscribe((state, prevState) => {
+      if (!state.user || prevState.user) return;
+      const pending = getPendingAIGeneration();
+      if (pending?.action !== "ai-chat") return;
+      if (pending.prompt) setInputMessage(pending.prompt);
+      setIsOpen(true);
+      clearPendingAIGeneration();
+    });
+    return unsubscribe;
+  }, [setIsOpen]);
+
+  if (AUTH_PATHS.includes(pathname)) {
+    return null;
+  }
+
   const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
+
+    if (!user) {
+      savePendingAIGeneration({ action: "ai-chat", prompt: inputMessage });
+      requireLogin();
+      return;
+    }
+
     setIsTyping(true);
     sendMessage({ text: inputMessage });
     setInputMessage("");
@@ -49,12 +88,13 @@ export function AIChatWidget() {
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 w-[calc(100vw-2rem)] max-w-md sm:w-[400px] h-[70vh] max-h-[900px] modern-card shadow-lg z-50 flex flex-col">
+    <Card className="fixed bottom-6 right-6 w-[calc(100vw-2rem)] max-w-md sm:w-100 h-[min(70vh,56.25rem)] sm:min-h-120 min-h-96  shadow-lg z-50 flex flex-col  border-primary border">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-border/60">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-            <Restaurant className="w-4 h-4 text-primary-foreground" />
+            {/* <Restaurant className="w-4 h-4 text-primary-foreground" /> */}
+            <PersonIcon className="text-primary-foreground"/>
           </div>
           <div>
             <h3 className="font-semibold text-sm heading-primary">
@@ -144,13 +184,13 @@ export function AIChatWidget() {
         />
       </div>
       {/* Input */}
-      <div className="p-4 border-t border-border/60">
+      <div className="p-2 border-t border-border/60">
         <form className="flex space-x-2" onSubmit={handleSendMessage}>
           <Input
             placeholder="Ask about Ethiopian cooking..."
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            className="flex-1 text-sm focus-modern"
+            className="flex-1  text-xs "
           />
           {status === "streaming" ? (
             <Button type="button" onClick={stop}>

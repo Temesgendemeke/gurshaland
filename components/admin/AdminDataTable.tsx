@@ -137,7 +137,7 @@ export function AdminDataTable<TData, TValue>({
                 table.setPageSize(Number(value));
               }}
             >
-              <SelectTrigger className="h-8 w-[70px]">
+              <SelectTrigger className="h-8 w-[4.375rem]">
                 <SelectValue
                   placeholder={table.getState().pagination.pageSize}
                 />
@@ -151,7 +151,7 @@ export function AdminDataTable<TData, TValue>({
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="flex w-[6.25rem] items-center justify-center text-sm font-medium">
             Page {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount()}
           </div>

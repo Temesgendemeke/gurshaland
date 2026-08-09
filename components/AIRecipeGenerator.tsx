@@ -9,6 +9,12 @@ import RecipeProgressBar from "./RecipeProgressBar";
 import { generateAIRecipe } from "@/actions/Recipe/airecipe";
 import { getCredits } from "@/actions/credits";
 import { useAuth } from "@/store/useAuth";
+import {
+  clearPendingAIGeneration,
+  getPendingAIGeneration,
+  requireLogin,
+  savePendingAIGeneration,
+} from "@/lib/auth-gate";
 import { toast } from "sonner";
 
 const QUICK_PROMPTS = [
@@ -37,11 +43,30 @@ export default function AIRecipeGenerator() {
     else setCredits(null);
   }, [user]);
 
+  useEffect(() => {
+    if (!user) return;
+    const pending = getPendingAIGeneration();
+    if (pending?.action === "recipe-generator") {
+      if (pending.prompt) setPrompt(pending.prompt);
+      clearPendingAIGeneration();
+    }
+  }, [user]);
+
   const needsLogin = !user;
   const outOfCredits = !!user && credits !== null && credits < RECIPE_CREDIT_COST;
 
+  const handleLoginRedirect = () => {
+    savePendingAIGeneration({ action: "recipe-generator", prompt });
+    requireLogin();
+  };
+
   const handleGenerate = async () => {
     if (!prompt.trim() || isGenerating) return;
+
+    if (needsLogin) {
+      handleLoginRedirect();
+      return;
+    }
     setIsGenerating(true);
     setError(null);
 
@@ -108,9 +133,13 @@ export default function AIRecipeGenerator() {
 
           {needsLogin ? (
             <p className="rounded-lg border border-border bg-muted px-3 py-2.5 text-sm text-muted-foreground">
-              <a href="/login" className="font-medium text-primary underline">
+              <button
+                type="button"
+                onClick={handleLoginRedirect}
+                className="font-medium text-primary underline"
+              >
                 Log in
-              </a>{" "}
+              </button>{" "}
               to generate recipes. New users get 100 free credits.
             </p>
           ) : outOfCredits ? (
@@ -130,7 +159,7 @@ export default function AIRecipeGenerator() {
 
           <Button
             onClick={handleGenerate}
-            disabled={isGenerating || !prompt.trim() || needsLogin || outOfCredits}
+            disabled={isGenerating || !prompt.trim() || outOfCredits}
             className="w-full sm:w-auto"
           >
             {isGenerating ? (

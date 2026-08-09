@@ -9,9 +9,9 @@ const BackNav = () => {
     <div className="relative z-10 flex items-center justify-between w-full">
       <Button
         onClick={() => router.back()}
-        className="flex items-center gap-2 px-4 py-2 rounded-md bg-white/10 hover:bg-primary/20 border border-white/10 transition-colors duration-200 text-sm font-medium group text-white"
+        className="flex items-center gap-2 px-4 py-1 rounded-md bg-transparent hover:bg-transparent transition-colors duration-200 text-xs font-medium group text-primary-foreground/60 hover:text-primary-foreground"
       >
-        <ArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="w-2 h-2" />
         Go Back
       </Button>
     </div>

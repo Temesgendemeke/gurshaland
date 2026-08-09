@@ -9,7 +9,7 @@ const HeroImage = ({ cls }: { cls?: string }) => {
         <Image
           src={gursh_image}
           alt="Traditional Ethiopian platter with injera, doro wat, and various dishes"
-          className="w-full h-[360px] sm:h-[440px] lg:h-[380px] object-cover rounded-lg shadow-sm"
+          className="w-full h-[22.5rem] sm:h-[27.5rem] lg:h-[23.75rem] object-cover rounded-lg shadow-sm"
         />
       </div>
     </>

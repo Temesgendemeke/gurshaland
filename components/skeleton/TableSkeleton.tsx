@@ -27,7 +27,7 @@ const TableSkeleton = () => {
       </div>
 
       {/* Table skeleton */}
-      <div className="max-h-[420px] overflow-auto">
+      <div className="max-h-[26.25rem] overflow-auto">
         <Table className="text-sm">
           <TableHeader className="sticky top-0 bg-card z-10">
             <TableRow className="hover:bg-transparent">

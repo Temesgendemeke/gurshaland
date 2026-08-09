@@ -18,7 +18,7 @@ const CreateAPost = ({ align, cls }: CreateAPost) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="btn-primary-modern">
+        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium flex items-center space-x-1">
           <Plus className="w-4 h-4" />
           <span> Create a Post</span>
         </Button>

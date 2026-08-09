@@ -7,6 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { generateMealPlan } from "@/actions/meal/generator";
 import { getCredits } from "@/actions/credits";
 import { useAuth } from "@/store/useAuth";
+import {
+  clearPendingAIGeneration,
+  getPendingAIGeneration,
+  requireLogin,
+  savePendingAIGeneration,
+} from "@/lib/auth-gate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -78,15 +84,30 @@ export default function MealPlanner() {
   const [credits, setCredits] = useState<number | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
-  const loadCredits = async () => {
-    const balance = await getCredits();
-    setCredits(balance);
-  };
+  const loadCredits = () =>
+    getCredits().then((balance) => setCredits(balance));
 
   useEffect(() => {
-    if (user) loadCredits();
-    else setCredits(null);
-  }, [user]);
+    let cancelled = false;
+
+    const load = () => {
+      getCredits().then((balance) => {
+        if (!cancelled) setCredits(balance);
+      });
+    };
+
+    if (useAuth.getState().user) load();
+
+    const unsubscribe = useAuth.subscribe((state, prevState) => {
+      if (state.user && !prevState.user) load();
+      else if (!state.user && prevState.user) setCredits(null);
+    });
+
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
+  }, []);
 
   const needsLogin = !user;
   const outOfCredits =
@@ -118,9 +139,32 @@ export default function MealPlanner() {
     },
   });
 
+  useEffect(() => {
+    if (!user) return;
+    const pending = getPendingAIGeneration();
+    if (pending?.action === "meal-plan") {
+      if (pending.values) form.reset(pending.values as mealPlannerType);
+      clearPendingAIGeneration();
+    }
+  }, [user, form]);
+
+  const handleLoginRedirect = (values?: Record<string, unknown>) => {
+    savePendingAIGeneration({
+      action: "meal-plan",
+      values: values ?? (form.getValues() as Record<string, unknown>),
+    });
+    requireLogin();
+  };
+
   const onSubmit = async (data: mealPlannerType) => {
     setError(null);
     setPlan(null);
+
+    if (needsLogin) {
+      handleLoginRedirect(data as Record<string, unknown>);
+      return;
+    }
+
     setIsLoading(true);
     const res = await generateMealPlan(data);
     if (!res?.success) {
@@ -695,12 +739,13 @@ export default function MealPlanner() {
                   <div className="">
                     {needsLogin ? (
                       <p className="rounded-lg border border-border bg-muted px-3 py-2.5 text-sm text-muted-foreground">
-                        <a
-                          href="/login"
+                        <button
+                          type="button"
+                          onClick={() => handleLoginRedirect()}
                           className="font-medium text-primary underline"
                         >
                           Log in
-                        </a>{" "}
+                        </button>{" "}
                         to generate meal plans. New users get 100 free credits.
                       </p>
                     ) : outOfCredits ? (
@@ -718,7 +763,7 @@ export default function MealPlanner() {
                     ) : null}
                     <Button
                       type="submit"
-                      disabled={isLoading || needsLogin || outOfCredits}
+                      disabled={isLoading || outOfCredits}
                       size="lg"
                       className="w-full h-14 text-lg font-bold rounded-xl btn-primary-modern"
                     >

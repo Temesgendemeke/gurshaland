@@ -207,7 +207,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                           className="group relative pl-6 border-l-2 border-border/50 hover:border-primary/50 transition-colors duration-300 cursor-pointer"
                         >
                           {/* Timeline Dot */}
-                          <div className="absolute -left-[9px] top-1.5 h-4 w-4 rounded-full border-4 border-background bg-border group-hover:bg-primary transition-colors duration-300" />
+                          <div className="absolute -left-[0.5625rem] top-1.5 h-4 w-4 rounded-full border-4 border-background bg-border group-hover:bg-primary transition-colors duration-300" />
 
                           <div className="space-y-2">
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between ">
@@ -217,7 +217,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                               <div className="flex items-start mt-2 sm:mt-0  justify-between gap-3">
                                 {/* <Badge
                                   variant="secondary"
-                                  className="bg-secondary/40 text-secondary-foreground hover:bg-secondary/60 transition-colors uppercase tracking-wider text-[10px] font-bold px-2 py-0.5 rounded-md"
+                                  className="bg-secondary/40 text-secondary-foreground hover:bg-secondary/60 transition-colors uppercase tracking-wider text-[0.625rem] font-bold px-2 py-0.5 rounded-md"
                                 >
                                   {meal.type}
                                 </Badge> */}

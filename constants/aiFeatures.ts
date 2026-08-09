@@ -28,7 +28,7 @@ const aiFeatures = [
     title: "AI Cooking Assistant",
     description: "Get real-time cooking guidance and tips",
     icon: MessageCircle,
-    badge: "Coming Soon",
+    badge: "Live",
   },
   {
     id: "/meal-planner",

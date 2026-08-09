@@ -21,7 +21,7 @@ const MeasurementSelect = ({ form, name }: MeasurementSelectProps) => {
       onValueChange={(value) => form.setValue(name, value)}
       value={form.watch(name) || ""}
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[11.25rem]">
         <SelectValue placeholder="Select measurement" />
       </SelectTrigger>
       <SelectContent>

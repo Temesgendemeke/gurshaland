@@ -53,7 +53,7 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
             <div className="absolute left-3 top-3 z-20">
               <Badge
                 className={cn(
-                  "border-0 shadow-sm font-bold uppercase tracking-wider text-[10px]",
+                  "border-0 shadow-sm font-bold uppercase tracking-wider text-[0.625rem]",
                   badge.toLowerCase() === "trending"
                     ? "bg-popular text-white hover:bg-popular/90"
                     : badge.toLowerCase() === "featured"
@@ -136,7 +136,7 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
                 {recipe.tags.slice(0, 2).map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center rounded-md bg-primary/5 px-2 py-1 text-[10px] font-medium text-primary"
+                    className="inline-flex items-center rounded-md bg-primary/5 px-2 py-1 text-[0.625rem] font-medium text-primary"
                   >
                     <Hash className="mr-1 h-2.5 w-2.5 opacity-50" /> {tag}
                   </span>
@@ -166,7 +166,7 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
                   <span className="line-clamp-1 text-xs font-semibold text-foreground">
                     {recipe.author?.username || "Anonymous"}
                   </span>
-                  <span className="text-[10px] text-muted-foreground">
+                  <span className="text-[0.625rem] text-muted-foreground">
                     Chef
                   </span>
                 </div>

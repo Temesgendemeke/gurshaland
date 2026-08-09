@@ -16,7 +16,7 @@ export default function SectionText({
         <h2 className="sm:text-3xl font-bold heading-primary sm:mb-2">
           {header}
         </h2>
-        <p className="text-gray-500 text-[10px] sm:text-base w-45 sm:w-auto">
+        <p className="text-gray-500 text-[0.625rem] sm:text-base w-45 sm:w-auto">
           {description}
         </p>
       </div>

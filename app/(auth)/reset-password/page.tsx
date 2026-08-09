@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { changePassword } from "@/actions/auth";
 import EyeButton from "@/components/EyeButton";
 import { Header } from "@/components/header";
@@ -64,16 +64,18 @@ const Page = () => {
   return (
     <div>
       <Header />
-      <div className="mt-20 flex flex-col items-center">
-        <h1 className="text-4xl text-primary font-bold">Reset your Password</h1>
-        <p className="text-muted-foreground mt-2 mb-6 max-w-xl">
+      <div className="mt-16 sm:mt-20 flex flex-col items-center px-4">
+        <h1 className="text-3xl sm:text-4xl text-primary font-bold text-center">
+          Reset your Password
+        </h1>
+        <p className="text-muted-foreground mt-2 mb-6 max-w-xl text-center text-sm sm:text-base">
           Please enter your new password below. Make sure it is strong and
           secure.
         </p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="w-2/6 space-y-6"
+            className="w-full max-w-md space-y-6"
           >
             <FormField
               control={form.control}
@@ -85,7 +87,7 @@ const Page = () => {
                     <div className="relative">
                       <Input
                         placeholder="enter your email address"
-                        className="bg-transparent"
+                        className="bg-transparent md:text-base!"
                         type={showPassword ? "text" : "password"}
                         {...field}
                       ></Input>
@@ -108,7 +110,7 @@ const Page = () => {
                     <div className="relative">
                       <Input
                         placeholder="enter your email address"
-                        className="bg-transparent"
+                        className="bg-transparent md:text-base!"
                         type={showConfirmPassword ? "text" : "password"}
                         {...field}
                       ></Input>

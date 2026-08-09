@@ -45,20 +45,24 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
     }
   };
 
-  const fetchUsername = async()=>{
-    if(!user?.id) return;
-    const supabase  = await createClient();
-    const {data, error} = await supabase.from('profiles').select('*').eq('id', user?.id).maybeSingle();
-    if(data){
-      setUserName(data.username)
+  const fetchUsername = async () => {
+    if (!user?.id) return;
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user?.id)
+      .maybeSingle();
+    if (data) {
+      setUserName(data.username);
     }
-  }
+  };
 
   useEffect(() => {
     fetchUsername();
   }, [user?.id]);
 
-  const  dropdownList = [
+  const dropdownList = [
     {
       route: `/profile/${username}`,
       page: "Profile",
@@ -88,7 +92,7 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild >
         <Button
           variant="ghost"
           size="icon"

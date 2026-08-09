@@ -94,7 +94,7 @@ const BasicInforForm = ({ form }: { form: any }) => {
                 <FormControl>
                   <Textarea
                     placeholder="Tell us about your restaurant, atmosphere, and specialties..."
-                    className="min-h-[120px] resize-y"
+                    className="min-h-[7.5rem] resize-y"
                     {...field}
                   />
                 </FormControl>

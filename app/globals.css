@@ -51,6 +51,72 @@
 }
 
 @layer base {
+  /* ------------------------------------------------------------------
+     Normalize/reset layer — removes default browser differences in
+     box model, margin, line-height, and font rendering so Chrome,
+     Firefox, and Safari all start from the same baseline.
+  ------------------------------------------------------------------ */
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 100%;
+    line-height: 1.5;
+    /* Prevent iOS/Android and some desktop browsers from auto-inflating
+       text when the page is zoomed, so rem-based sizing stays stable. */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
   *,
   ::after,
   ::before,
@@ -188,6 +254,15 @@
   }
 }
 
+html {
+  overflow-y: auto;
+}
+
+html body[data-scroll-locked] {
+  --removed-body-scroll-bar-size: 0 !important;
+  margin-right: 0 !important;
+}
+
 @layer base {
   * {
     border-color: hsl(var(--border));
@@ -202,12 +277,34 @@
     );
     color: hsl(var(--foreground));
     min-height: 100vh;
+    min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-statoshi), ui-sans-serif, system-ui, sans-serif;
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
+  }
+}
+
+/* Full-height container that adapts to mobile browser UI (address bar).
+   Falls back to 100vh for browsers without 100dvh support. */
+@layer utilities {
+  /* Fluid type scale: clamp() instead of fixed breakpoint sizes so text
+     scales smoothly with viewport/zoom instead of jumping at thresholds. */
+  .text-fluid-hero {
+    font-size: clamp(3rem, 2.1rem + 2.6vw, 4.5rem);
+    line-height: 1.1;
+  }
+
+  .text-fluid-section {
+    font-size: clamp(1.875rem, 1.5rem + 1.4vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .min-h-viewport {
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 }
 

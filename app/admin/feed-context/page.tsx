@@ -137,7 +137,7 @@ const FeedContextPage = () => {
                     <FormControl>
                       <Textarea
                         placeholder="e.g. Traditional Ethiopian coffee ceremonies involve several stages..."
-                        className="min-h-[250px] resize-y p-4 border-muted focus-visible:ring-primary/30 transition-shadow bg-background"
+                        className="min-h-[15.625rem] resize-y p-4 border-muted focus-visible:ring-primary/30 transition-shadow bg-background"
                         {...field}
                       />
                     </FormControl>

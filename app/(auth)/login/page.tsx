@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,15 +16,16 @@ import { Input } from "@/components/ui/input";
 import { loginFormSchema } from "@/utils/schema";
 import Link from "next/link";
 import { login } from "@/actions/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { z } from "zod";
 import PasswordField from "@/components/PasswordField";
 import Image from "next/image";
 import gursh_image from "@/public/gursha.webp";
 import Logo from "@/components/Logo";
-import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowLeft, Sparkles, X } from "lucide-react";
 import AuthVisual from "@/components/AuthVisual";
 import { createClient } from "@/utils/supabase/client";
+import GoBackNoText from "@/components/GoBackNoText";
 
 export type LoginFormSchema = z.infer<typeof loginFormSchema>;
 
@@ -39,14 +40,20 @@ const Page = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
+  const safeNext = next && next.startsWith("/") ? next : "/";
 
   const onSubmit = async (formData: { email: string; password: string }) => {
     try {
       await login(formData.email, formData.password);
-      toast.success("You have successfully logged in. እንኳን ደህና መጡ።", {
-        icon: <Sparkles className="w-4 h-4 text-primary" />,
-      });
-      router.push("/");
+      toast.success(
+        "You have successfully logged in. áŠ¥áŠ•áŠ³áŠ• á‹°áˆ…áŠ“ áˆ˜áŒ¡á¢",
+        {
+          icon: <Sparkles className="w-4 h-4 text-primary" />,
+        },
+      );
+      router.push(safeNext);
     } catch (error) {
       console.log(error);
       toast.error(
@@ -63,7 +70,7 @@ const Page = () => {
       await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/api/auth/callback`,
+          redirectTo: `${window.location.origin}/api/auth/callback?next=${encodeURIComponent(safeNext)}`,
         },
       });
     } catch (error) {
@@ -77,66 +84,48 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-screen w-full grid lg:grid-cols-2">
-      <div className="grain-overlay">
-        <svg
-          className="grain-svg"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <filter id="grain">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.7"
-              numOctaves="3"
-              stitchTiles="stitch"
-              result="noise"
-            />
-            <feColorMatrix
-              in="noise"
-              type="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
-              result="mono"
-            />
-            <feComponentTransfer in="mono" result="grainAlpha">
-              <feFuncA type="gamma" amplitude="1" exponent="1.4" offset="0" />
-            </feComponentTransfer>
-            <feComposite in="SourceGraphic" in2="grainAlpha" operator="in" />
-          </filter>
-
-          <rect
-            className="grain-rect"
-            width="100%"
-            height="100%"
-            filter="url(#grain)"
-          />
-        </svg>
-      </div>
-
+    <div className="min-h-viewport w-full grid lg:h-screen lg:grid-cols-2 lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden relative">
       {/* Left Side - Visuals */}
       <AuthVisual />
 
+      {/* close button overlay on top right */}
+      {/* <div className="absolute top-4 left-4 z-10">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => router.back()}
+          className="flex items-center text-primary-foreground hover:text-primary-foreground  gap-1.5 sm:gap-2   transition-colors duration-200 text-xs sm:text-sm font-medium bg-transparent hover:bg-primary p-2 rounded-full"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </Button>
+      </div> */}
+      <GoBackNoText />
+
       {/* Right Side - Form */}
-      <div className="flex flex-col justify-center p-6 md:p-12 relative z-10">
-        <div className="w-full  mx-auto space-y-8  p-8 md:p-10 rounded-lg border border-border/20">
-          <div className="relative z-10 flex items-center justify-between w-full lg:hidden">
+      <div className="flex flex-col relative z-10 lg:min-h-0 lg:overflow-y-auto">
+        <div className="w-full mx-auto space-y-6 sm:space-y-8 sm:p-8 md:p-10 rounded-lg max-w-2xl lg:mr-0 lg:my-auto">
+          <div className="relative z-10 hidden sm:flex items-center justify-between w-full lg:hidden">
+            <Logo />
             <Link
               href="/"
-              className="flex items-center gap-2 px-4 py-2 rounded-md bg-muted hover:bg-muted/70 border border-border transition-colors duration-200 text-sm font-medium text-foreground"
+              className="hidden sm:flex  items-center gap-1.5   sm:gap-2 px-3 sm:px-4 py-2 rounded-md bg-muted hover:bg-muted/70 border border-border transition-colors duration-200 text-xs sm:text-sm font-medium text-foreground"
             >
               <ArrowLeft className="w-4 h-4" />
               Back
             </Link>
           </div>
-          <div className="space-y-3">
-            <h1 className="text-5xl font-bold tracking-tight text-foreground font-gosh">
+          <div className="space-y-2 sm:space-y-3 flex flex-col items-center sm:items-start text-center sm:text-left">
+            <h1 className="text-[clamp(1.75rem,1.5rem+1.5vw,3rem)] font-bold tracking-tight text-foreground font-gosh">
               Welcome back
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               New to Gurshaland?{" "}
               <Link
-                href="/signup"
+                href={
+                  safeNext !== "/"
+                    ? `/signup?next=${encodeURIComponent(safeNext)}`
+                    : "/signup"
+                }
                 className="text-primary hover:text-primary/90 font-semibold transition-colors"
               >
                 Create an account
@@ -144,78 +133,83 @@ const Page = () => {
             </p>
           </div>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2">
-                    <FormLabel className="text-foreground text-lg font-semibold ">
-                      Email Address
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="name@example.com"
-                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-sm font-medium pl-1" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2">
-                    <div className="flex items-center justify-between">
-                      <FormLabel className="text-foreground text-lg font-semibold">
-                        Password
-                      </FormLabel>
-                      <Link
-                        href="/forgot-password"
-                        className="text-sm text-primary font-medium hover:underline focus:outline-none  focus:ring-2 focus:ring-primary/20 rounded-sm"
-                      >
-                        Forgot password?
-                      </Link>
-                    </div>
-                    <FormControl>
-                      <PasswordField
-                        placeholder="Enter your password"
-                        {...field}
-                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50 "
-                      />
-                    </FormControl>
-                    <FormMessage className="text-sm font-medium pl-1" />
-                  </FormItem>
-                )}
-              />
-
-              <Button
-                type="submit"
-                className="w-full h-14 rounded-xl text-lg font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 shadow-sm mt-2"
-                disabled={form.formState.isSubmitting}
+          <div>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-5"
               >
-                {form.formState.isSubmitting ? (
-                  <span className="flex items-center gap-2">
-                    <span className="h-5 w-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                    Signing in...
-                  </span>
-                ) : (
-                  "Log in"
-                )}
-              </Button>
-            </form>
-          </Form>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2">
+                      <FormLabel className="text-foreground text-sm sm:text-base font-semibold">
+                        Email Address
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="name@example.com"
+                          className="h-12 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-base px-4 placeholder:text-muted-foreground/50"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-sm font-medium pl-1" />
+                    </FormItem>
+                  )}
+                />
 
-          <div className="relative my-8">
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <FormLabel className="text-foreground text-sm sm:text-base font-semibold">
+                          Password
+                        </FormLabel>
+                        <Link
+                          href="/forgot-password"
+                          className="text-xs sm:text-sm text-primary font-medium hover:underline focus:outline-none  focus:ring-2 focus:ring-primary/20 rounded-sm"
+                        >
+                          Forgot password?
+                        </Link>
+                      </div>
+                      <FormControl>
+                        <PasswordField
+                          placeholder="Enter your password"
+                          {...field}
+                          className="h-12 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-base px-4 placeholder:text-muted-foreground/50"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-sm font-medium pl-1" />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  type="submit"
+                  className="w-full h-12 rounded-xl text-base font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 shadow-sm mt-2"
+                  disabled={form.formState.isSubmitting}
+                >
+                  {form.formState.isSubmitting ? (
+                    <span className="flex items-center gap-2">
+                      <span className="h-5 w-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      Signing in...
+                    </span>
+                  ) : (
+                    "Log in"
+                  )}
+                </Button>
+              </form>
+            </Form>
+          </div>
+
+          <div className="relative my-5 sm:my-6">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-border/50" />
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
+            <div className="relative flex justify-center text-[0.6875rem] sm:text-xs uppercase">
               <span className="bg-transparent px-4 text-muted-foreground font-semibold tracking-wider">
                 Or continue with
               </span>
@@ -225,10 +219,10 @@ const Page = () => {
           <div className="grid">
             <Button
               variant="outline"
-              className="h-14 rounded-xl border-2 border-muted bg-background hover:bg-muted/50 transition-colors text-lg font-medium text-foreground"
+              className="h-12 rounded-xl border-2 border-muted bg-background hover:bg-muted/50 transition-colors text-base font-medium text-foreground"
               onClick={handleGoogleSignIn}
             >
-              <svg className="mr-3 h-6 w-6" viewBox="0 0 24 24">
+              <svg className="mr-3 h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 24 24">
                 <path
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                   fill="#4285F4"

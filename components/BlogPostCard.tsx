@@ -59,7 +59,7 @@ export default function BlogPostCard({ post }: { post: Blog }) {
                 {post.tags.slice(0, 2).map((tag, idx) => (
                   <span
                     key={`${post.slug}-tag-${idx}`}
-                    className="inline-flex items-center text-[10px] font-medium text-muted-foreground bg-muted px-2 py-1 rounded-md"
+                    className="inline-flex items-center text-[0.625rem] font-medium text-muted-foreground bg-muted px-2 py-1 rounded-md"
                   >
                     <Hash className="w-2.5 h-2.5 mr-1 opacity-50" /> {tag}
                   </span>
@@ -89,7 +89,7 @@ export default function BlogPostCard({ post }: { post: Blog }) {
                   <span className="text-xs font-semibold text-foreground line-clamp-1">
                     {post.author?.full_name || "Anonymous"}
                   </span>
-                  <span className="text-[10px] text-muted-foreground">
+                  <span className="text-[0.625rem] text-muted-foreground">
                     @{post.author?.username || "unknown"}
                   </span>
                 </div>

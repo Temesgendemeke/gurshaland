@@ -1,11 +1,19 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const NotFound = () => {
   const router = useRouter();
+
+  useEffect(() => {
+    document.body.dataset.hideFooter = "true";
+    return () => {
+      delete document.body.dataset.hideFooter;
+    };
+  }, []);
+
   return (
     <div className=" flex flex-col items-center justify-center h-screen text-foreground">
       <h1 className="text-5xl md:text-7xl font-bold text-destructive tracking-widest">

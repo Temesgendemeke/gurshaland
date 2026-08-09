@@ -188,11 +188,11 @@ export function DataTable<TData extends DataTableRow, TValue>({
           </div>
         )}
 
-        <div className="max-h-[600px] sm:max-h-[820px] max-w-[28.5rem] sm:max-w-[100%] overflow-y-auto overflow-x-auto">
+        <div className="max-h-[37.5rem] sm:max-h-[51.25rem] max-w-[28.5rem] sm:max-w-[100%] overflow-y-auto overflow-x-auto">
           <div className="overflow-x-auto max-w-full w-full">
             <Table
               className={`w-full text-sm ${
-                isMobile ? "min-w-[600px]" : "min-w-[800px]"
+                isMobile ? "min-w-[37.5rem]" : "min-w-[50rem]"
               }`}
             >
               <TableHeader className="sticky top-0 bg-card z-10">
@@ -206,8 +206,8 @@ export function DataTable<TData extends DataTableRow, TValue>({
                         key={header.id}
                         className="truncate cursor-pointer align-middle font-medium"
                         style={{
-                          padding: isMobile ? "12px 8px" : "16px",
-                          fontSize: isMobile ? "11px" : "14px",
+                          padding: isMobile ? "0.75rem 0.5rem" : "1rem",
+                          fontSize: isMobile ? "0.6875rem" : "0.875rem",
                         }}
                       >
                         {header.isPlaceholder
@@ -239,8 +239,8 @@ export function DataTable<TData extends DataTableRow, TValue>({
                           key={cell.id}
                           className="truncate align-middle"
                           style={{
-                            padding: isMobile ? "12px 8px" : "16px",
-                            fontSize: isMobile ? "11px" : "14px",
+                            padding: isMobile ? "0.75rem 0.5rem" : "1rem",
+                            fontSize: isMobile ? "0.6875rem" : "0.875rem",
                           }}
                         >
                           <div
@@ -322,7 +322,7 @@ function DataTablePagination<TData>({
               table.setPageSize(Number(value));
             }}
           >
-            <SelectTrigger className="h-8 w-[70px]">
+            <SelectTrigger className="h-8 w-[4.375rem]">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
@@ -334,7 +334,7 @@ function DataTablePagination<TData>({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-full sm:w-[100px] items-center justify-center text-sm font-medium">
+        <div className="flex w-full sm:w-[6.25rem] items-center justify-center text-sm font-medium">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </div>

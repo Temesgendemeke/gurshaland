@@ -17,10 +17,11 @@ import Link from "next/link";
 import { signup } from "@/actions/auth";
 import { toast } from "sonner";
 import { SignUpData } from "@/utils/types/account";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import AuthVisual from "@/components/AuthVisual";
 import PasswordField from "@/components/PasswordField";
-import { Apple, AppleIcon, Sparkles } from "lucide-react";
+import Logo from "@/components/Logo";
+import { ArrowLeft, Sparkles } from "lucide-react";
 
 const Page = () => {
   const form = useForm({
@@ -33,6 +34,11 @@ const Page = () => {
     },
   });
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
+  const safeNext = next && next.startsWith("/") ? next : "/";
+  const loginHref =
+    safeNext !== "/" ? `/login?next=${encodeURIComponent(safeNext)}` : "/login";
 
   const onSubmit = async (formData: SignUpData) => {
     try {
@@ -43,7 +49,7 @@ const Page = () => {
           icon: <Sparkles className="w-4 h-4 text-primary" />,
         },
       );
-      router.push("/login");
+      router.push(loginHref);
     } catch (error) {
       console.log(error);
       toast.error(
@@ -59,59 +65,31 @@ const Page = () => {
     } catch (error) {}
   };
   return (
-    <div className="min-h-screen w-full grid lg:grid-cols-2">
-      <div className="grain-overlay">
-        <svg
-          className="grain-svg"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <filter id="grain">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.7"
-              numOctaves="3"
-              stitchTiles="stitch"
-              result="noise"
-            />
-            <feColorMatrix
-              in="noise"
-              type="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
-              result="mono"
-            />
-            <feComponentTransfer in="mono" result="grainAlpha">
-              <feFuncA type="gamma" amplitude="1" exponent="1.4" offset="0" />
-            </feComponentTransfer>
-            <feComposite in="SourceGraphic" in2="grainAlpha" operator="in" />
-          </filter>
-
-          <rect
-            className="grain-rect"
-            width="100%"
-            height="100%"
-            filter="url(#grain)"
-          />
-        </svg>
-      </div>
-
+    <div className="w-full grid lg:grid-cols-2 lg:h-screen lg:overflow-hidden">
       {/* Left Side - Visuals */}
-      <div className="hidden lg:block h-full">
-        <AuthVisual />
-      </div>
+      <AuthVisual />
 
       {/* Right Side - Form */}
-      <div className="flex flex-col justify-center p-6 md:p-12 relative z-10">
-        <div className="w-full mx-auto space-y-8 p-8 md:p-10 rounded-lg border border-border/20">
-          <div className="space-y-3">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground font-gosh">
+      <div className="flex flex-col items-center justify-start   relative z-10 lg:h-screen lg:overflow-y-auto">
+        <div className="w-full max-w-7xl  mx-auto space-y-6 sm:space-y-8 p-5 sm:p-8 md:p-10">
+          {/* <div className="relative z-10 flex items-center justify-between w-full lg:hidden">
+            <Logo />
+            <Link
+              href="/"
+              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-md bg-muted hover:bg-muted/70 border border-border transition-colors duration-200 text-xs sm:text-sm font-medium text-foreground"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Link>
+          </div> */}
+          <div className="space-y-2 sm:space-y-3">
+            <h1 className="text-[clamp(1.75rem,1.5rem+1.5vw,3rem)] font-bold tracking-tight text-foreground font-gosh">
               Create Account
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               Already have an account?{" "}
               <Link
-                href="/login"
+                href={loginHref}
                 className="text-primary hover:text-primary/90 font-semibold transition-colors"
               >
                 Log in
@@ -120,19 +98,19 @@ const Page = () => {
           </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <FormField
                 control={form.control}
                 name="username"
                 render={({ field }) => (
                   <FormItem className="flex gap-0.5 flex-col">
-                    <FormLabel className="text-foreground text-lg font-semibold">
+                    <FormLabel className="text-foreground text-sm sm:text-base font-semibold">
                       Username
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="eg. abebe"
-                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-12 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-base px-4 placeholder:text-muted-foreground/50"
                         {...field}
                       />
                     </FormControl>
@@ -145,13 +123,13 @@ const Page = () => {
                 name="full_name"
                 render={({ field }) => (
                   <FormItem className="flex gap-0.5 flex-col">
-                    <FormLabel className="text-foreground text-lg font-semibold">
+                    <FormLabel className="text-foreground text-sm sm:text-base font-semibold">
                       Full name
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="eg. aleme kebde"
-                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-12 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-base px-4 placeholder:text-muted-foreground/50"
                         {...field}
                       />
                     </FormControl>
@@ -164,13 +142,13 @@ const Page = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="flex gap-0.5 flex-col">
-                    <FormLabel className="text-foreground text-lg font-semibold">
+                    <FormLabel className="text-foreground text-sm sm:text-base font-semibold">
                       Email
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="eg. abebebeso@test.com"
-                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-12 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-base px-4 placeholder:text-muted-foreground/50"
                         {...field}
                       />
                     </FormControl>
@@ -183,14 +161,14 @@ const Page = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="flex gap-0.5 flex-col">
-                    <FormLabel className="text-foreground text-lg font-semibold">
+                    <FormLabel className="text-foreground text-sm sm:text-base font-semibold">
                       Password
                     </FormLabel>
                     <FormControl>
                       <PasswordField
                         placeholder="Enter your password"
                         {...field}
-                        className="h-14 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-lg px-4 placeholder:text-muted-foreground/50"
+                        className="h-12 rounded-xl bg-background border-2 border-muted focus:border-primary focus:ring-0 transition-colors duration-200 text-base px-4 placeholder:text-muted-foreground/50"
                       />
                     </FormControl>
                     <FormMessage className="text-sm font-medium pl-1" />
@@ -200,7 +178,7 @@ const Page = () => {
 
               <Button
                 type="submit"
-                className="w-full h-14 rounded-xl text-lg font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 shadow-sm mt-2"
+                className="w-full h-12 rounded-xl text-base font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 shadow-sm mt-2"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? (
@@ -214,11 +192,11 @@ const Page = () => {
               </Button>
             </form>
           </Form>
-          <div className="relative my-8">
+          <div className="relative my-5 sm:my-6">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-border/50" />
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
+            <div className="relative flex justify-center text-[0.6875rem] sm:text-xs uppercase">
               <span className="bg-transparent px-4 text-muted-foreground font-semibold tracking-wider">
                 Or continue with
               </span>
@@ -228,10 +206,10 @@ const Page = () => {
           <div className="grid ">
             <Button
               variant="outline"
-              className="h-14 rounded-xl border-2 border-muted bg-background hover:bg-muted/50 transition-colors text-lg font-medium text-foreground"
+              className="h-12 rounded-xl border-2 border-muted bg-background hover:bg-muted/50 transition-colors text-base font-medium text-foreground"
               onClick={handleGoogleSignup}
             >
-              <svg className="mr-3 h-6 w-6" viewBox="0 0 24 24">
+              <svg className="mr-3 h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 24 24">
                 <path
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                   fill="#4285F4"

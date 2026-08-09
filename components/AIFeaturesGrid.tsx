@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation";
 import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
 import { cn } from "@/lib/utils";
 import AIRecipeGenerator from "@/components/AIRecipeGenerator";
+import { getPendingAIGeneration } from "@/lib/auth-gate";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { useAppStore } from "@/lib/store";
 
 function IngredientsBackground() {
   const items = ["chickpea flour", "onions", "garlic", "berbere"];
@@ -44,7 +46,10 @@ function MealPlannerBackground() {
     <div className="flex h-full items-end justify-center gap-4 px-6 pb-6">
       <div className="flex items-end gap-4 rounded-xl border border-border/60 bg-background/70 px-5 pt-5 pb-3 shadow-sm">
         {days.map((day) => (
-          <div key={day.label} className="flex w-12 flex-col items-center gap-2">
+          <div
+            key={day.label}
+            className="flex w-12 flex-col items-center gap-2"
+          >
             <div
               className="w-full rounded-t-md bg-gradient-to-t from-primary/40 to-primary/20"
               style={{ height: day.h }}
@@ -76,7 +81,7 @@ function FoodRecognitionBackground() {
 function CookingAssistantBackground() {
   return (
     <div className="flex h-full items-center justify-center px-6">
-      <div className="max-w-[220px] rounded-2xl rounded-bl-sm border border-border bg-background px-4 py-3 text-sm text-foreground shadow-sm">
+      <div className="max-w-[13.75rem] rounded-2xl rounded-bl-sm border border-border bg-background px-4 py-3 text-sm text-foreground shadow-sm">
         Simmer the berbere until the oil turns deep red — then add the onions.
       </div>
     </div>
@@ -136,7 +141,17 @@ function AIFeaturesGrid({
   onSelect: (id: string) => void;
 }) {
   const router = useRouter();
-  const [generatorOpen, setGeneratorOpen] = useState(false);
+  const [generatorOpen, setGeneratorOpen] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const pending = getPendingAIGeneration();
+    return !!pending && pending.action === "recipe-generator";
+  });
+  const SetCookingAssistantOpen = useAppStore(
+    (store) => store.SetCookingAssistantOpen,
+  );
+  const isCookingAssistantOpen = useAppStore(
+    (store) => store.isCookingAssistantOpen,
+  );
 
   const handleClick = (e: React.MouseEvent, featureId: string) => {
     const feature = features.find((f) => f.id === featureId);
@@ -147,6 +162,8 @@ function AIFeaturesGrid({
       setGeneratorOpen(true);
     } else if (featureId === "/meal-planner") {
       router.push("/meal-planner");
+    } else if (featureId === "cooking-assistant") {
+      SetCookingAssistantOpen(!isCookingAssistantOpen);
     }
   };
 
@@ -181,48 +198,47 @@ function AIFeaturesGrid({
   return (
     <>
       <BentoGrid>
-      {features.map((feature) => {
-        const comingSoon = feature.badge === "Coming Soon";
-        return (
-          <BentoCard
-            key={feature.id}
-            name={feature.title}
-            className={cn(
-              cards[feature.id],
-              selected === feature.id && "border-primary/60",
-            )}
-            background={backgroundFor(feature.id)}
-            Icon={feature.icon}
-            description={feature.description}
-            href="#"
-            cta={
-              comingSoon
-                ? "Coming Soon"
-                : feature.id === "/meal-planner"
-                  ? "Open planner"
-                  : "Try now"
-            }
-            onClick={(e) => handleClick(e, feature.id)}
-          />
-        );
-      })}
+        {features.map((feature) => {
+          const comingSoon = feature.badge === "Coming Soon";
+          return (
+            <BentoCard
+              key={feature.id}
+              name={feature.title}
+              className={cn(
+                cards[feature.id],
+                selected === feature.id && "border-primary/60",
+              )}
+              background={backgroundFor(feature.id)}
+              Icon={feature.icon}
+              description={feature.description}
+              href="#"
+              cta={
+                comingSoon
+                  ? "Coming Soon"
+                  : feature.id === "/meal-planner"
+                    ? "Open planner"
+                    : "Try now"
+              }
+              onClick={(e) => handleClick(e, feature.id)}
+            />
+          );
+        })}
       </BentoGrid>
 
       <Sheet open={generatorOpen} onOpenChange={setGeneratorOpen}>
-      <SheetContent
-        side="right"
-        className="w-full overflow-y-auto sm:max-w-4xl"
-      >
-        <SheetTitle className="sr-only">
-          Generate a Recipe with AI
-        </SheetTitle>
-        <SheetDescription className="sr-only">
-          Describe your ingredients to generate a personalized Ethiopian recipe.
-        </SheetDescription>
-        <div className="mt-4">
-          <AIRecipeGenerator />
-        </div>
-      </SheetContent>
+        <SheetContent
+          side="right"
+          className="w-full overflow-y-auto sm:max-w-4xl"
+        >
+          <SheetTitle className="sr-only">Generate a Recipe with AI</SheetTitle>
+          <SheetDescription className="sr-only">
+            Describe your ingredients to generate a personalized Ethiopian
+            recipe.
+          </SheetDescription>
+          <div className="mt-4">
+            <AIRecipeGenerator />
+          </div>
+        </SheetContent>
       </Sheet>
     </>
   );

@@ -126,7 +126,7 @@ const MenuInputSection = ({
                       <SelectTrigger>
                         <SelectValue placeholder="Select a currency" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background p-0 max-h-[300px]">
+                      <SelectContent className="bg-background p-0 max-h-[18.75rem]">
                         <div className="p-2 sticky top-0 bg-background z-10 border-b">
                           <Input
                             placeholder="Search currency..."
@@ -153,7 +153,7 @@ const MenuInputSection = ({
                             onKeyDown={(e) => e.stopPropagation()}
                           />
                         </div>
-                        <div className="overflow-y-auto max-h-[250px]">
+                        <div className="overflow-y-auto max-h-[15.625rem]">
                           {currencies.map((curr) => (
                             <SelectItem
                               key={curr.cc}
@@ -185,7 +185,7 @@ const MenuInputSection = ({
                 <FormControl>
                   <Textarea
                     placeholder="Describe the dish..."
-                    className="resize-none min-h-[80px]"
+                    className="resize-none min-h-[5rem]"
                     {...field}
                   />
                 </FormControl>

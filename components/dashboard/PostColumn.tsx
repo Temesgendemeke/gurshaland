@@ -222,7 +222,7 @@ export const createPostColumns = (
               <Eye className="h-3 w-3 text-sm" />
               {views.toLocaleString()} views
             </span>
-            <span className="text-[10px] font-medium text-muted-foreground ml-auto">
+            <span className="text-[0.625rem] font-medium text-muted-foreground ml-auto">
               {displayRate.toFixed(1)}%
             </span>
           </div>
@@ -235,7 +235,7 @@ export const createPostColumns = (
               style={{ width: `${displayRate}%` }}
             />
           </div>
-          <div className="text-[10px] text-muted-foreground">
+          <div className="text-[0.625rem] text-muted-foreground">
             {likes} likes • {comments} comments
           </div>
         </div>

@@ -125,10 +125,10 @@ export function SimpleTable({ data, name, loading }: SimpleTableProps) {
                           <Eye className="h-3 w-3" />
                           {isNaN(views) ? "0" : views.toLocaleString()}
                         </span>
-                        <span className="text-[10px] font-medium text-muted-foreground">
+                        <span className="text-[0.625rem] font-medium text-muted-foreground">
                           {isNaN(pct) ? "0%" : `${pct}%`}
                         </span>
-                        <span className="text-[10px] text-muted-foreground/70">
+                        <span className="text-[0.625rem] text-muted-foreground/70">
                           {engagementRatio.toFixed(2)}
                         </span>
                       </div>

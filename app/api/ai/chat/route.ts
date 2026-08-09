@@ -5,8 +5,21 @@ import { UIMessage } from "@ai-sdk/react";
 import { tavilySearch } from "@tavily/ai-sdk";
 import { chat_personality } from "@/ai/prompt";
 import { query } from "@/ai/chunking";
+import { createClient } from "@/utils/supabase/server";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json(
+      { error: "Please log in to use AI features." },
+      { status: 401 },
+    );
+  }
+
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const userquery = messages[messages.length - 1]?.parts?.find((p) =>

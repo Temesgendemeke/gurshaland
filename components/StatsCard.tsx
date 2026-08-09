@@ -61,7 +61,7 @@ const StatsCard = ({
           {type === "post" && (
             <div className="mt-3 grid grid-cols-2 gap-2">
               <div className="rounded-lg p-3 ring-1 ring-inset ring-border bg-background transition-colors">
-                <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                <div className="text-[0.6875rem] font-semibold uppercase tracking-wide text-muted-foreground">
                   Published
                 </div>
                 <div className="mt-0.5 text-xl font-bold text-primary">
@@ -70,7 +70,7 @@ const StatsCard = ({
               </div>
 
               <div className="rounded-lg p-3 ring-1 ring-inset ring-border bg-background transition-colors">
-                <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                <div className="text-[0.6875rem] font-semibold uppercase tracking-wide text-muted-foreground">
                   Drafts
                 </div>
                 <div className="mt-0.5 text-xl font-bold text-foreground">

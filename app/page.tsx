@@ -15,56 +15,55 @@ import SectionText from "@/components/SectionText";
 export default async function HomePage() {
   const categories = await getCategories();
   return (
-    <div className="relative z-10 container mx-auto px-6 sm:px-12 space-y-10 ">
+    <div className="relative z-10">
       <Header />
 
-      {/* Hero Section */}
-      <HeroSection />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 space-y-16 sm:space-y-20">
+        {/* Hero Section */}
+        <HeroSection />
 
-      <div className="">
-        <SectionText
-          header="Explore Categories"
-          description="Discover our wide range of delicious Ethiopian dishes"
-          seeMoreLink="/categories"
-        />
-        <div className="flex gap-6  overflow-hidden relative  w-full flex-col items-center justify-center ">
-          <Marquee pauseOnHover className="[--duration:30s]">
-            {categories.map((category: any) => (
-              <Link
-                href={`/categories/${category.name.toLowerCase().replace(/\s+/g, "-")}?id=${category.id}`}
-                key={category.id}
-                className="flex flex-col items-center shrink-0  hover:scale-105 transition-transform duration-300"
-              >
-                <div className="w-25 h-25 sm:w-40 sm:h-40 rounded-full overflow-hidden ">
-                  <Image
-                    src={category.image || "/placeholder.svg"}
-                    alt={category.name}
-                    width={400}
-                    height={400}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <h2 className="text-xs  sm:text-sm sm:font-medium mt-1.5">
-                  {category.name}
-                </h2>
-              </Link>
-            ))}
-          </Marquee>
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 xl:w-1/4  bg-linear-to-r from-background"></div>
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 xl:w-1/4 bg-linear-to-l from-background"></div>
+        {/* Explore Categories */}
+        <div>
+          <SectionText
+            header="Explore Categories"
+            description="Discover our wide range of delicious Ethiopian dishes"
+            seeMoreLink="/categories"
+          />
+          <div className="flex gap-6 overflow-hidden relative w-full flex-col items-center justify-center">
+            <Marquee pauseOnHover className="[--duration:30s]">
+              {categories.map((category: any) => (
+                <Link
+                  href={`/categories/${category.name.toLowerCase().replace(/\s+/g, "-")}?id=${category.id}`}
+                  key={category.id}
+                  className="flex flex-col items-center shrink-0 hover:scale-105 transition-transform duration-300"
+                >
+                  <div className="w-25 h-25 sm:w-40 sm:h-40 rounded-full overflow-hidden">
+                    <Image
+                      src={category.image || "/placeholder.svg"}
+                      alt={category.name}
+                      width={400}
+                      height={400}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                  <h2 className="text-xs sm:text-sm sm:font-medium mt-1.5">
+                    {category.name}
+                  </h2>
+                </Link>
+              ))}
+            </Marquee>
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 xl:w-1/4 bg-linear-to-r from-background"></div>
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 xl:w-1/4 bg-linear-to-l from-background"></div>
+          </div>
         </div>
-      </div>
 
-      {/* Featured Content */}
-      <section className="">
-        <div className="max-w-7xl mx-auto">
+        {/* Featured Content */}
+        <section>
           <FeaturedCards />
-        </div>
-      </section>
+        </section>
 
-      {/* Features */}
-      <section className="">
-        <div className="max-w-7xl mx-auto">
+        {/* Features */}
+        <section>
           <div className="mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold heading-primary mb-3">
               Why Choose Gurshaland?
@@ -80,40 +79,40 @@ export default async function HomePage() {
                 key={item.title}
                 title={item.title}
                 description={item.description}
-                icon={<item.icon className="w-8 h-8 text-primary-foreground " />}
+                icon={<item.icon className="w-8 h-8 text-primary-foreground" />}
               />
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA Section */}
-      <Card className="p-10 text-center bg-card border border-border text-foreground">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-4">
-            Ready to Start Your Culinary Journey?
-          </h2>
-          <p className="text-xl mb-8 opacity-90">
-            Join thousands of food lovers discovering the magic of Ethiopian
-            cuisine
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="btn-primary-modern px-8">
-              <Link href="/recipes">Browse Recipes</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="px-8 text-primary"
-            >
-              <Link href="/recipes/create">Share Your Recipe</Link>
-            </Button>
+        {/* CTA Section */}
+        <Card className="p-10 text-center bg-card border border-border text-foreground">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Ready to Start Your Culinary Journey?
+            </h2>
+            <p className="text-xl mb-8 opacity-90">
+              Join thousands of food lovers discovering the magic of Ethiopian
+              cuisine
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" className="btn-primary-modern px-8">
+                <Link href="/recipes">Browse Recipes</Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="px-8 text-primary"
+              >
+                <Link href="/recipes/create">Share Your Recipe</Link>
+              </Button>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
 
-      {/* Footer is rendered globally in RootLayout */}
+        {/* Footer is rendered globally in RootLayout */}
+      </div>
     </div>
   );
 }

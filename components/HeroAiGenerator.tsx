@@ -10,9 +10,14 @@ import {
   SheetTitle,
 } from "./ui/sheet";
 import { Button } from "./ui/button";
+import { getPendingAIGeneration } from "@/lib/auth-gate";
 
 export default function HeroAiGenerator() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const pending = getPendingAIGeneration();
+    return !!pending && pending.action === "recipe-generator";
+  });
 
   useEffect(() => {
     if (open) {
@@ -20,13 +25,17 @@ export default function HeroAiGenerator() {
     }
   }, [open]);
 
+  const handleOpenGenerator = () => {
+    setOpen(true);
+  };
+
   return (
     <>
       <div className="relative">
         <HeroImage />
         <div className="absolute inset-x-0 bottom-4 sm:bottom-6 flex justify-center px-4">
           <Button
-            onClick={() => setOpen(true)}
+            onClick={handleOpenGenerator}
             size="lg"
             className="btn-primary-modern font-semibold text-primary-foreground shadow-xl"
           >

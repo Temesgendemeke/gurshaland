@@ -147,7 +147,7 @@ const PreviewSection = ({
             </Badge>
           </div>
 
-          <ScrollArea className="h-[180px] w-full pr-4">
+          <ScrollArea className="h-[11.25rem] w-full pr-4">
             {menuItems.length > 0 ? (
               <div className="space-y-3">
                 {menuItems.map((item: any, index: number) => (
@@ -189,7 +189,7 @@ const PreviewSection = ({
                 {form.watch("gallery")?.length} Images
               </Badge>
             </div>
-            {/* <ScrollArea className="h-[180px] w-full pr-4"> */}
+            {/* <ScrollArea className="h-[11.25rem] w-full pr-4"> */}
             <div className="columns-2 gap-3 space-y-3">
               {form.watch("gallery")?.[0]?.url ? (
                 form.watch("gallery")?.map((item: any, index: number) => (

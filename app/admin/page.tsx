@@ -141,7 +141,7 @@ const AdminDashboard = () => {
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <Badge
                           variant="outline"
-                          className="text-[10px] uppercase tracking-wider"
+                          className="text-[0.625rem] uppercase tracking-wider"
                         >
                           Text Source
                         </Badge>
