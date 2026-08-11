@@ -61,6 +61,7 @@
     "@tanstack/react-query-devtools": "^5.90.2",
     "@tanstack/react-table": "^8.21.3",
     "@tavily/ai-sdk": "^0.4.0",
+    "@vercel/analytics": "^2.0.1",
     "ai": "^5.0.121",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

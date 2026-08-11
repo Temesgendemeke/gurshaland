@@ -7,6 +7,7 @@ import { AIChatWidget } from "@/components/ai-chat-widget";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "./providers";
 import { SatoshiFont, GoshFont } from "./fonts";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Gurshaland - Ethiopian Recipe Sharing",
