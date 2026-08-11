@@ -66,7 +66,7 @@ const StatsCard = ({
     <Card
       className={cn(
         "relative overflow-hidden aspect-[5/3] group",
-        "shadow-sm transition-colors hover:bg-card border border-transparent  hover:border-primary ",
+        " transition-colors hover:bg-card border border-transparent  hover:border-primary ",
         className,
       )}
     >

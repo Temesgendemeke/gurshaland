@@ -1,17 +1,14 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import RestaurantForm from "./RestaurantForm";
-import RestaurantSchema, {
-  getRestaurentSchema,
-  GetRestaurentType,
-} from "@/schema/restaurent";
-import { RestaurantFormType } from "@/schema/restaurent";
-import { useForm, UseFormRegisterReturn } from "react-hook-form";
+import { getRestaurentSchema, GetRestaurentType } from "@/schema/restaurent";
+import { useForm } from "react-hook-form";
 import PreviewSection from "./PreviewSection";
 import { toast } from "sonner";
 import generate_error from "@/utils/generate_error";
 import { updateRestaurant } from "@/actions/restaurant/crud";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { IconMapPin as MapPin } from "@tabler/icons-react";
 
 const EditRestaurantForm = ({
   restaurant,
@@ -57,22 +54,18 @@ const EditRestaurantForm = ({
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start h-full bg-background text-card-foreground max-w-7xl mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start h-full bg-background text-card-foreground max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-10">
       <div className="lg:col-span-7">
         <RestaurantForm form={form} onSubmit={onSubmit} mode="edit" />
       </div>
       <div className="hidden lg:block lg:col-span-5 relative">
         <div className="sticky top-24 space-y-6">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-px flex-1 bg-border" />
-            <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-              Live Preview
-            </span>
-            <div className="h-px flex-1 bg-border" />
-          </div>
+          <h2 className="font-gosh text-xl font-bold tracking-tight text-foreground">
+            Live Preview
+          </h2>
 
-          <div className="rounded-lg shadow-sm border border-border overflow-hidden">
-            <PreviewSection form={form} onSubmit={onSubmit} />
+          <div className="overflow-hidden rounded-2xl border border-border/60 bg-card shadow-[0_25px_60px_-30px_hsl(var(--foreground)/0.15)]">
+            <PreviewSection form={form} />
           </div>
         </div>
       </div>

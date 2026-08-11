@@ -26,19 +26,15 @@ async function EditRecipe({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <>
       <Header />
-      <div className="mx-auto px-4 sm:px-6 lg:px-10 py-12 space-y-8">
+      <div className="mx-auto max-w-6xl space-y-8 px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
         <BackNavigation />
-        <div className="text-center ">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4">
-            <span className="">Edit Your Recipe</span>
-          </h1>
+        <div className="space-y-3 text-center">
+          <h1 className="text-3xl font-bold sm:text-4xl">Edit Your Recipe</h1>
           <p className="text-lg text-muted-foreground">
             Update and refine your Ethiopian culinary masterpiece below.
           </p>
         </div>
-        <div>
-          <SubmitRecipeForm recipe={recipe} mode="update" />
-        </div>
+        <SubmitRecipeForm recipe={recipe} mode="update" />
       </div>
     </>
   );

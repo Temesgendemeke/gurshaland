@@ -1,74 +1,76 @@
-import {
-  ArrowTrendingUpIcon as TrendingUp,
-  UserIcon as User,
-  CalendarIcon as Calendar,
-  ClockIcon as Clock,
-} from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { Card } from "./ui/card";
-import { Badge } from "./ui/badge";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import { format_date } from "@/utils/formatdate";
+import { Blog } from "@/utils/types/blog";
 
-export default function FeaturedPost({
-  post,
-}: {
-  post: (typeof blogPosts)[0];
-}) {
+type FeaturedPostProps = {
+  post: Blog & { excerpt?: string };
+};
+
+export default function FeaturedPost({ post }: FeaturedPostProps) {
+  const authorName =
+    post.author?.full_name || post.author?.username || "Anonymous";
+
   return (
-    <div className="mb-16">
-      <div className="flex items-center mb-6">
-        <TrendingUp className="w-5 h-5 text-primary mr-2" />
-        <h2 className="text-2xl font-bold text-foreground">Featured Article</h2>
+    <section className="group grid overflow-hidden rounded-xl border border-border/60 bg-card transition-colors duration-300 hover:border-primary/40 md:grid-cols-12">
+      {/* Image */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-muted md:col-span-7 md:aspect-auto md:min-h-[440px]">
+        <Image
+          src={post.image?.url || "/placeholder.svg"}
+          alt={post.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 58vw"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
       </div>
-      <Link href={`/blog/${post.slug}`}>
-        <Card className="overflow-hidden group bg-card border border-border">
-          <div className="grid md:grid-cols-2 gap-0">
-            <div className="relative">
-              <img
-                src={post.image.url || "/placeholder.svg"}
-                alt={post.title}
-                className="w-full h-64 md:h-full object-cover"
+
+      {/* Content */}
+      <div className="flex flex-col justify-center p-6 sm:p-10 md:col-span-5 lg:p-12">
+        <p className="mb-4 inline-flex items-center gap-2 text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-primary">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          Featured Story
+        </p>
+
+        <h3 className="mb-4 text-2xl font-bold leading-tight tracking-tight text-foreground transition-colors duration-200 group-hover:text-primary sm:text-3xl">
+          {post.title}
+        </h3>
+
+        <p className="mb-6 line-clamp-4 leading-relaxed text-muted-foreground">
+          {post.excerpt || post.subtitle}
+        </p>
+
+        <div className="flex items-center gap-3">
+          <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border/70 bg-muted text-xs font-bold text-muted-foreground">
+            {post.author?.avatar ? (
+              <Image
+                src={post.author.avatar}
+                alt={authorName}
+                fill
+                sizes="40px"
+                className="object-cover"
               />
-              <div className="absolute top-4 left-4">
-                <Badge className="bg-primary text-primary-foreground">
-                  Featured
-                </Badge>
-              </div>
-            </div>
-            <div className="p-8 flex flex-col justify-center">
-              <Badge className="w-fit mb-4 bg-muted text-muted-foreground">
-                {post.category}
-              </Badge>
-              <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
-                {post.title}
-              </h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                {post.excerpt}
-              </p>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <User className="w-4 h-4" />
-                    <span>
-                      {post.author?.full_name ||
-                        post.author?.username ||
-                        "unkown"}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>{format_date(post.created_at)}</span>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Clock className="w-4 h-4" />
-                  <span>{post.read_time}</span>
-                </div>
-              </div>
-            </div>
+            ) : (
+              authorName[0]?.toUpperCase() || "A"
+            )}
+          </span>
+          <div>
+            <p className="text-sm font-semibold text-foreground">{authorName}</p>
+            <p className="text-xs text-muted-foreground">
+              {format_date(post.created_at as string)} · {post.read_time} read
+            </p>
           </div>
-        </Card>
-      </Link>
-    </div>
+        </div>
+
+        <Link
+          href={`/blog/${post.slug}`}
+          className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:bg-primary/90 active:scale-[0.98]"
+        >
+          Read the story
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </Link>
+      </div>
+    </section>
   );
 }

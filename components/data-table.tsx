@@ -162,7 +162,7 @@ export function DataTable<TData extends DataTableRow, TValue>({
       </div>
 
       {/* Responsive Table Container */}
-      <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+      <div className="rounded-xl border bg-card overflow-hidden">
         {/* Mobile Scroll Indicator */}
         {isMobile && (
           <div className="p-3 text-center text-xs text-muted-foreground bg-muted/20 border-b">

@@ -1,11 +1,6 @@
 "use client";
 import React from "react";
-import {
-  useFieldArray,
-  Controller,
-  UseFormProps,
-  UseFormReturn,
-} from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Collapsible,
@@ -16,18 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  ChevronDown,
-  ChevronRight,
-  Minus,
-  Plus,
-  List,
-  ChefHat,
-} from "lucide-react";
+import { ChevronDown, ChevronRight, Minus } from "lucide-react";
 import ImageBox from "../ImageBox";
 import TipsForm from "./TipsForm";
 import RecipeForm from "./RecipeForm";
-import deleteImageFromStorage, { deleteImageFromDb } from "@/actions/Image";
+import { deleteImageFromDb } from "@/actions/Image";
 
 interface ContentSectionProps {
   index: number;
@@ -44,28 +32,22 @@ export function ContentSection({
   isOpen,
   onToggle,
 }: ContentSectionProps) {
-  const {
-    fields: itemFields,
-    append: appendItem,
-    remove: removeItem,
-  } = useFieldArray({
-    control: form.control,
-    name: `contents.${index}.items` as any,
-  });
-
   return (
-    <Card className="bg-card/70 border-border">
+    <Card className="overflow-hidden rounded-xl border-border/70">
       <Collapsible open={isOpen} onOpenChange={onToggle}>
         <CollapsibleTrigger asChild>
-          <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg flex items-center gap-2">
-                {isOpen ? (
-                  <ChevronDown className="h-4 w-4" />
-                ) : (
-                  <ChevronRight className="h-4 w-4" />
-                )}
+          <CardHeader className="cursor-pointer transition-colors hover:bg-muted/40">
+            <div className="flex items-center justify-between gap-3">
+              <CardTitle className="flex items-center gap-3 text-base">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
+                  {index + 1}
+                </span>
                 Content Section {index + 1}
+                {isOpen ? (
+                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                )}
               </CardTitle>
               <Button
                 type="button"
@@ -74,8 +56,9 @@ export function ContentSection({
                   onRemove();
                 }}
                 variant="ghost"
-                size="sm"
-                className="text-error hover:text-error/80"
+                size="icon"
+                aria-label={`Remove content section ${index + 1}`}
+                className="h-8 w-8 text-error hover:bg-error/10 hover:text-error"
               >
                 <Minus className="h-4 w-4" />
               </Button>
@@ -84,7 +67,7 @@ export function ContentSection({
         </CollapsibleTrigger>
 
         <CollapsibleContent>
-          <CardContent className="space-y-4">
+          <CardContent className="flex flex-col gap-5 border-t border-border/60 pt-5">
             <ImageBox
               form={form}
               field={`contents.${index}.image` as any}
@@ -98,19 +81,20 @@ export function ContentSection({
                 );
               }}
             />
-            <div className="grid grid-cols-1  gap-4">
-              <div className="space-y-2">
-                <Label>Section Title</Label>
-                <Input
-                  {...form.register(`contents.${index}.title`)}
-                  placeholder="Section title"
-                />
-              </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor={`section-title-${index}`}>Section Title</Label>
+              <Input
+                id={`section-title-${index}`}
+                {...form.register(`contents.${index}.title`)}
+                placeholder="Section title"
+              />
             </div>
 
-            <div className="space-y-2">
-              <Label>Content *</Label>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor={`section-body-${index}`}>Content *</Label>
               <Textarea
+                id={`section-body-${index}`}
                 {...form.register(`contents.${index}.body`)}
                 placeholder="Enter section content"
                 rows={4}
@@ -121,6 +105,7 @@ export function ContentSection({
                 </p>
               )}
             </div>
+
             {/* recipe */}
             <RecipeForm form={form} index={index} />
 

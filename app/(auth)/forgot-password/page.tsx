@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { resetPassword } from "@/actions/auth";
 import {
   Form,
@@ -111,7 +111,7 @@ const Page = () => {
 
                 <Button
                   type="submit"
-                  className="w-full h-12 rounded-xl text-base font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 shadow-sm mt-2"
+                  className="w-full h-12 rounded-xl text-base font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 mt-2"
                   disabled={form.formState.isSubmitting}
                 >
                   {form.formState.isSubmitting ? (

@@ -11,6 +11,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Marquee } from "@/components/magicui/marquee";
 import SectionText from "@/components/SectionText";
+import Reveal from "@/components/Reveal";
 
 export default async function HomePage() {
   const categories = await getCategories();
@@ -26,7 +27,7 @@ export default async function HomePage() {
         <div>
           <SectionText
             header="Explore Categories"
-            description="Discover our wide range of delicious Ethiopian dishes"
+            description="Stews, flatbreads, and street food from every region"
             seeMoreLink="/categories"
           />
           <div className="flex gap-6 overflow-hidden relative w-full flex-col items-center justify-center">
@@ -64,52 +65,64 @@ export default async function HomePage() {
 
         {/* Features */}
         <section>
-          <div className="mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold heading-primary mb-3">
-              Why Choose Gurshaland?
-            </h2>
-            <p className="text-lg text-body">
-              Your gateway to authentic Ethiopian cuisine
-            </p>
-          </div>
+          <Reveal>
+            <div className="mb-10">
+              <h2 className="heading-primary mb-3 text-2xl font-bold sm:text-3xl">
+                Why Gurshaland?
+              </h2>
+              <p className="text-body text-lg">
+                Recipes worth gathering around the mesob for
+              </p>
+            </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {why_gurshaland.map((item) => (
-              <WhyCard
-                key={item.title}
-                title={item.title}
-                description={item.description}
-                icon={<item.icon className="w-8 h-8 text-primary-foreground" />}
-              />
+            {why_gurshaland.map((item, index) => (
+              <Reveal key={item.title} delay={index * 0.08}>
+                <WhyCard
+                  title={item.title}
+                  description={item.description}
+                  icon={<item.icon className="w-8 h-8 text-primary" />}
+                />
+              </Reveal>
             ))}
           </div>
         </section>
 
         {/* CTA Section */}
-        <Card className="p-10 text-center bg-card border border-border text-foreground">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
-              Ready to Start Your Culinary Journey?
-            </h2>
-            <p className="text-xl mb-8 opacity-90">
-              Join thousands of food lovers discovering the magic of Ethiopian
-              cuisine
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="btn-primary-modern px-8">
-                <Link href="/recipes">Browse Recipes</Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="px-8 text-primary"
-              >
-                <Link href="/recipes/create">Share Your Recipe</Link>
-              </Button>
+        <Reveal>
+          <Card className="relative overflow-hidden border-border bg-card p-10 text-center text-foreground sm:p-14">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Gursha · ጉርሻ
+              </p>
+              <h2 className="heading-primary mb-4 text-3xl font-bold sm:text-4xl">
+                Pull up a chair.
+              </h2>
+              <p className="mb-8 text-lg text-body">
+                In Amharic, gursha is feeding a loved one with your own hands.
+                Save recipes, share your own, and eat together.
+              </p>
+              <div className="flex flex-col justify-center gap-4 sm:flex-row">
+                <Button
+                  asChild
+                  size="lg"
+                  className="btn-primary-modern px-8"
+                >
+                  <Link href="/recipes">Explore Recipes</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="px-8 text-primary"
+                >
+                  <Link href="/recipes/create">Share Your Recipe</Link>
+                </Button>
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </Reveal>
 
         {/* Footer is rendered globally in RootLayout */}
       </div>

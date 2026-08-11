@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { ArrowUpRight } from "lucide-react";
 
 export default function SectionText({
   header,
@@ -11,22 +11,22 @@ export default function SectionText({
   seeMoreLink: string;
 }) {
   return (
-    <div className="flex items-center justify-between mb-8 w-full ">
+    <div className="mb-8 flex w-full flex-wrap items-end justify-between gap-x-6 gap-y-3">
       <div>
-        <h2 className="sm:text-3xl font-bold heading-primary sm:mb-2">
+        <h2 className="heading-primary mb-1 text-2xl font-bold sm:text-3xl">
           {header}
         </h2>
-        <p className="text-gray-500 text-[0.625rem] sm:text-base w-45 sm:w-auto">
+        <p className="text-sm text-muted-foreground sm:text-base">
           {description}
         </p>
       </div>
-      <Button
-        asChild
-        variant="outline"
-        className="border-primary text-primary hover:bg-primary/5 text-xs sm:text-sm"
+      <Link
+        href={seeMoreLink}
+        className="group inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
       >
-        <Link href={seeMoreLink}>View All</Link>
-      </Button>
+        See all
+        <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+      </Link>
     </div>
   );
 }

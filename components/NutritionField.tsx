@@ -1,8 +1,12 @@
 "use client";
 
-import { Plus, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   FormField,
@@ -11,97 +15,126 @@ import {
   FormMessage,
   FormLabel,
 } from "@/components/ui/form";
+import { formSchema } from "@/utils/schema";
+import { z } from "zod";
+import { UseFormReturn } from "react-hook-form";
+import { Apple } from "lucide-react";
 
-interface NutritionField {
-  id: string;
-  item: string;
-  amount: string;
-  notes: string;
-  calories: number;
-}
+type FormValues = z.infer<typeof formSchema>;
 
 interface NutritionFieldProps {
-  form: any;
+  form: UseFormReturn<FormValues>;
 }
 
 export default function NutritionField({ form }: NutritionFieldProps) {
   return (
-    <Card className="p-6 bg-card/70 border-border">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-foreground">Nutrition</h2>
-      </div>
-
-      <div className="space-y-6 gap-x-1.5 grid md:grid-cols-2">
-        <FormField
-          control={form.control}
-          name={`nutrition.calories`}
-          render={({ field }) => (
-            <FormItem className="col-span-2">
-              <FormLabel>Calories (g)</FormLabel>
-              <FormControl>
-                <Input type="number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={`nutrition.protein`}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Protein (g)</FormLabel>
-              <FormControl>
-                <Input type="number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={`nutrition.carbs`}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Carbs (g)</FormLabel>
-              <FormControl>
-                <Input placeholder="" type="number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={`nutrition.fat`}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Fat (g)</FormLabel>
-              <FormControl>
-                <Input placeholder="" type="number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={`nutrition.fiber`}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Fiber (g)</FormLabel>
-              <span className="ml-2 text-xs text-muted-foreground">(g)</span>
-              <FormControl>
-                <Input placeholder="" type="number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="col-span-2">
-          <p className="mt-2">Note: Calories must be entered in grams (g).</p>
+    <Card className="border-border bg-card/70">
+      <CardHeader className="space-y-2">
+        {/* <div className="flex items-center gap-2 text-primary">
+          <Apple className="h-5 w-5" />
+          <span className="text-xs font-semibold uppercase tracking-wider">
+            Nutrition
+          </span>
+        </div> */}
+        <CardTitle>Nutrition</CardTitle>
+        <CardDescription className="text-sm leading-6">
+          Estimated nutritional information per serving.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="nutrition.calories"
+            render={({ field }) => (
+              <FormItem className="gap-2 sm:col-span-2">
+                <FormLabel>Calories (kcal)</FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-11"
+                    type="number"
+                    placeholder="e.g., 350"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="nutrition.protein"
+            render={({ field }) => (
+              <FormItem className="gap-2">
+                <FormLabel>Protein (g)</FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-11"
+                    type="number"
+                    placeholder="0"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="nutrition.carbs"
+            render={({ field }) => (
+              <FormItem className="gap-2">
+                <FormLabel>Carbs (g)</FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-11"
+                    type="number"
+                    placeholder="0"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="nutrition.fat"
+            render={({ field }) => (
+              <FormItem className="gap-2">
+                <FormLabel>Fat (g)</FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-11"
+                    type="number"
+                    placeholder="0"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="nutrition.fiber"
+            render={({ field }) => (
+              <FormItem className="gap-2">
+                <FormLabel>Fiber (g)</FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-11"
+                    type="number"
+                    placeholder="0"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-      </div>
+      </CardContent>
     </Card>
   );
 }

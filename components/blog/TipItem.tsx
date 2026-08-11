@@ -17,15 +17,13 @@ const TipItems = ({
     remove: removeItem,
   } = useFieldArray({
     control,
-    name: `content.${contentIndex}.tips.items`,
+    name: `contents.${contentIndex}.tips.items`,
   });
 
   return (
-    <div className="pl-6 space-y-2 mt-2 border-l-2 ml-2">
+    <div className="mt-1 flex flex-col gap-2 border-l-2 border-primary/20 pl-4">
       <Label
-        className={`${
-          itemFields.length === 0 && "hidden"
-        } text-xs text-muted-foreground`}
+        className={`${itemFields.length === 0 && "hidden"} text-xs text-muted-foreground`}
       >
         Items
       </Label>
@@ -33,7 +31,7 @@ const TipItems = ({
         <div key={item.id} className="flex items-center gap-2">
           <Input
             {...control.register(
-              `content.${contentIndex}.tips.items.${itemIndex}`
+              `contents.${contentIndex}.tips.items.${itemIndex}`,
             )}
             placeholder="Tip item"
             className="flex-1 h-9"
@@ -41,10 +39,10 @@ const TipItems = ({
           <Button
             type="button"
             onClick={() => removeItem(itemIndex)}
-            variant={"ghost"}
+            variant="ghost"
             size="icon"
             aria-label="Remove tip item"
-            className="h-8 w-8 shrink-0"
+            className="h-8 w-8 shrink-0 text-error hover:text-error"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -53,10 +51,11 @@ const TipItems = ({
       <Button
         type="button"
         onClick={() => appendItem("")}
-        variant={"outline"}
+        variant="outline"
         size="sm"
+        className="w-fit"
       >
-        <Plus className="h-4 w-4 mr-2" />
+        <Plus className="h-4 w-4 mr-1.5" />
         Add Item
       </Button>
     </div>

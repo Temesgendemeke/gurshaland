@@ -1,6 +1,5 @@
 import React from "react";
 import { Card } from "./ui/card";
-import { BookOpen } from "lucide-react";
 
 interface WhyCardProps {
   title: string;
@@ -10,11 +9,11 @@ interface WhyCardProps {
 
 const WhyCard = ({ title, description, icon }: WhyCardProps) => {
   return (
-    <Card className="p-8 text-left hover:shadow-sm bg-card transition-colors">
-      <div className="w-14 h-14 bg-primary/80 text-primary rounded-lg flex items-center justify-center mb-6">
+    <Card className="bg-card p-8 text-left transition-colors hover:border-primary/40">
+      <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10 text-primary">
         {icon}
       </div>
-      <h3 className="text-2xl font-bold heading-primary mb-4">{title}</h3>
+      <h3 className="heading-primary mb-4 text-2xl font-bold">{title}</h3>
       <p className="text-body leading-relaxed">{description}</p>
     </Card>
   );

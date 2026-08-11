@@ -11,19 +11,27 @@ const HIDDEN_PREFIXES = [
   "/signup",
   "/forgot-password",
   "/reset-password",
+  "/meal-planner/my-meal-plans",
+  "/recipes/create",
+  "/blog/create",
 ];
 
 export default function FooterController() {
   const pathname = usePathname() || "";
-  const [isNotFound, setIsNotFound] = useState(false);
+  const [shouldHide, setShouldHide] = useState(false);
 
   useEffect(() => {
-    setIsNotFound(document.body.dataset.hideFooter === "true");
+    const checkHide = () => {
+      setShouldHide(document.body.dataset.hideFooter === "true");
+    };
+    checkHide();
+    window.addEventListener("resize", checkHide);
+    return () => window.removeEventListener("resize", checkHide);
   }, []);
 
   if (
     HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix)) ||
-    isNotFound
+    shouldHide
   ) {
     return null;
   }

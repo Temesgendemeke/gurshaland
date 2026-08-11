@@ -8,13 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  ArrowRight,
-  CalendarDays,
-  Flame,
-  Target,
-  Utensils,
-} from "lucide-react";
+import { ArrowRight, CalendarDays, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import DeleteMealAlertDialog from "./DeleteMealAlertDialog";
@@ -30,35 +24,28 @@ const MealPlanCard = ({ plan }: { plan: GetMealPannerTyp }) => {
 
   const deleteMealPlan = async () => {
     try {
-      // Delete from database
       await deleteMealplan(plan.id);
-
-      // Invalidate and refetch the meal plans query
       await queryClient.invalidateQueries({
         queryKey: ["meal-plans", user?.id],
       });
-
       toast.success("Meal plan deleted successfully");
     } catch (error) {
       console.log(error);
-
-      // If deletion fails, refetch to restore the UI state
       await queryClient.invalidateQueries({
         queryKey: ["meal-plans", user?.id],
       });
-
       toast.error(generate_error(error));
     }
   };
+
+  const meta = [plan.goal, plan.diet].filter(Boolean).join(" · ");
+
   return (
-    <Card
-      key={plan.id}
-      className="bg-card border border-border/50 group relative flex flex-col h-full overflow-hidden"
-    >
-      <CardHeader>
-        <div className="flex justify-between items-start gap-2">
-          <div className="space-y-1">
-            <CardTitle className="text-xl font-bold line-clamp-1 transition-colors group-hover:text-primary">
+    <Card className="group flex h-full flex-col bg-card transition-colors hover:border-primary/40">
+      <CardHeader className="pb-2">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 space-y-1">
+            <CardTitle className="line-clamp-1 text-lg font-bold transition-colors group-hover:text-primary">
               {plan.name}
             </CardTitle>
             <CardDescription className="line-clamp-1">
@@ -73,53 +60,32 @@ const MealPlanCard = ({ plan }: { plan: GetMealPannerTyp }) => {
         </div>
       </CardHeader>
 
-      <CardContent className="grow space-y-6">
-        <div className="flex flex-wrap gap-2">
-          {plan.goal && (
-            <Badge
-              variant="outline"
-              className="flex items-center gap-1 bg-primary/5 border-border text-primary"
-            >
-              <Target className="w-3 h-3" />
-              {plan.goal}
-            </Badge>
-          )}
-          {plan.diet && (
-            <Badge
-              variant="outline"
-              className="flex items-center gap-1 bg-muted border-border/60 text-muted-foreground"
-            >
-              <Utensils className="w-3 h-3" />
-              {plan.diet}
-            </Badge>
-          )}
+      <CardContent className="grow space-y-3">
+        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5">
+            <CalendarDays className="h-4 w-4 text-primary" />
+            {plan.days?.length || 0} days
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Flame className="h-4 w-4 text-primary" />
+            {plan.meals_per_day} meals/day
+          </span>
         </div>
-
-        <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
-          <div className="flex items-center gap-1.5">
-            <CalendarDays className="w-4 h-4" />
-            <span>{plan.days?.length || 0} Days</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Flame className="w-4 h-4" />
-            <span>{plan.meals_per_day} Meals/day</span>
-          </div>
-        </div>
+        {meta && (
+          <p className="line-clamp-1 text-sm text-muted-foreground">{meta}</p>
+        )}
       </CardContent>
 
-      <CardFooter className="pt-2">
-        <div className="flex w-full gap-3">
-          <DeleteMealAlertDialog onConfirm={deleteMealPlan} />
-          <Button className="flex-1" variant="outline" asChild>
-            <Link
-              href={`/meal-planner/my-meal-plans/${plan.id}`}
-              className="flex items-center justify-center gap-2"
-            >
-              View Plan{" "}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
-        </div>
+      <CardFooter className="gap-3 pt-0">
+        <Button asChild variant="outline" className="flex-1">
+          <Link
+            href={`/meal-planner/my-meal-plans/${plan.id}`}
+            className="inline-flex items-center justify-center gap-2"
+          >
+            View Plan <ArrowRight className="h-4 w-4" />
+          </Link>
+        </Button>
+        <DeleteMealAlertDialog onConfirm={deleteMealPlan} />
       </CardFooter>
     </Card>
   );

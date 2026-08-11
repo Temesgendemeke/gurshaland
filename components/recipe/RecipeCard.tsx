@@ -1,16 +1,12 @@
 import React from "react";
-import { Card } from "../ui/card";
 import type Recipe from "@/utils/types/recipe";
 import {
+  ArrowUpRight,
   ChefHat,
   Clock,
   Star,
-  Users,
-  ArrowRight,
   TrendingUp,
-  Sparkles,
-  Hash,
-  Utensils,
+  Users,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import format_time from "@/utils/format_time";
@@ -30,155 +26,118 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
   const displayRating =
     typeof recipe.average_rating === "number"
       ? recipe.average_rating.toFixed(1)
-      : "—";
+      : null;
 
   return (
-    <Link href={`/recipes/${recipe.slug}`} className="group block h-full">
-      <Card
-        key={recipe.id}
-        className="flex h-full max-w-80 flex-col overflow-hidden border border-muted bg-card shadow-sm transition-shadow duration-200 hover:shadow-sm"
-      >
-        {/* Image Container */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden">
-          <Image
-            src={recipe.image?.url || "/placeholder.svg"}
-            alt={recipe.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+    <Link
+      href={`/recipes/${recipe.slug}`}
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/60 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    >
+      {/* Image */}
+      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+        <Image
+          src={recipe.image?.url || "/placeholder.svg"}
+          alt={recipe.title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
 
-          {/* Badge (Trending/Featured) */}
-          {badge && (
-            <div className="absolute left-3 top-3 z-20">
-              <Badge
-                className={cn(
-                  "border-0 shadow-sm font-bold uppercase tracking-wider text-[0.625rem]",
-                  badge.toLowerCase() === "trending"
-                    ? "bg-popular text-white hover:bg-popular/90"
-                    : badge.toLowerCase() === "featured"
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                      : "bg-background text-foreground",
-                )}
-              >
-                {icon ? (
-                  <span className="mr-1 flex items-center">{icon}</span>
-                ) : (
-                  <>
-                    {badge.toLowerCase() === "trending" && (
-                      <TrendingUp className="mr-1 h-3 w-3" />
-                    )}
-                    {badge.toLowerCase() === "featured" && (
-                      <Sparkles className="mr-1 h-3 w-3" />
-                    )}
-                  </>
-                )}
-                {badge}
-              </Badge>
-            </div>
-          )}
-
-          {/* Rating Badge */}
-          <div className="absolute right-3 top-3 rounded-full border border-border bg-background px-3 py-1.5">
-            <div className="flex items-center gap-1.5">
-              <Star className="h-3.5 w-3.5 fill-warning text-warning" />
-              <span className="text-xs font-bold text-foreground">
-                {displayRating}
-              </span>
-            </div>
-          </div>
-
-          {/* Time Badge (Bottom Left on Image) */}
-          <div className="absolute bottom-3 left-3">
-            <Badge className="border-0 bg-background text-foreground font-medium">
-              <Clock className="mr-1 h-3 w-3 text-primary" />
-              {displayTime}
+        {badge && (
+          <div className="absolute left-3 top-3">
+            <Badge
+              className={cn(
+                "border-0 font-bold uppercase tracking-wider text-[0.625rem]",
+                badge.toLowerCase() === "trending"
+                  ? "bg-secondary text-secondary-foreground"
+                  : "bg-primary text-primary-foreground",
+              )}
+            >
+              {icon ? (
+                <span className="mr-1 flex items-center">{icon}</span>
+              ) : (
+                badge.toLowerCase() === "trending" && (
+                  <TrendingUp className="mr-1 h-3 w-3" />
+                )
+              )}
+              {badge}
             </Badge>
           </div>
+        )}
+      </div>
+
+      {/* Body */}
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <p className="mb-3 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-primary">
+          {recipe.category?.name || "Ethiopian"}
+        </p>
+
+        <h3 className="mb-2 line-clamp-2 text-lg font-bold leading-snug tracking-tight text-foreground transition-colors duration-200 group-hover:text-primary">
+          {recipe.title}
+        </h3>
+
+        <p className="mb-5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+          {recipe.description}
+        </p>
+
+        {/* Meta */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5">
+            <Clock className="h-3.5 w-3.5" />
+            {displayTime}
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Users className="h-3.5 w-3.5" />
+            {recipe.servings || "-"} servings
+          </span>
+          {recipe.difficulty && (
+            <span className="inline-flex items-center gap-1.5">
+              <ChefHat className="h-3.5 w-3.5" />
+              {recipe.difficulty}
+            </span>
+          )}
+          {displayRating && (
+            <span className="inline-flex items-center gap-1.5 text-foreground">
+              <Star className="h-3.5 w-3.5 fill-warning text-warning" />
+              {displayRating}
+            </span>
+          )}
         </div>
 
-        {/* Content */}
-        <div className="flex flex-1 flex-col p-5">
-          {/* Top Meta: Cuisine & Servings/Difficulty */}
-          <div className="mb-3 flex items-center gap-3 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1.5 text-primary font-medium">
-              <Utensils className="h-3.5 w-3.5" />
-              <span>{recipe.category?.name || "Mixed"}</span>
-            </div>
-            <div className="h-1 w-1 rounded-full bg-muted-foreground/30" />
-            <div className="flex items-center gap-1.5">
-              <Users className="h-3.5 w-3.5" />
-              <span>{recipe.servings || "-"} ppl</span>
-            </div>
-            {recipe.difficulty && (
-              <>
-                <div className="h-1 w-1 rounded-full bg-muted-foreground/30" />
-                <div className="flex items-center gap-1 text-muted-foreground">
-                  <ChefHat className="h-3.5 w-3.5" />
-                  <span>{recipe.difficulty}</span>
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Title & Description */}
-          <h3 className="mb-2 line-clamp-1 text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
-            {recipe.title}
-          </h3>
-          <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-            {recipe.description}
-          </p>
-
-          <div className="mt-auto">
-            {/* Tags */}
-            {recipe.tags && recipe.tags.length > 0 && (
-              <div className="mb-4 flex flex-wrap gap-2">
-                {recipe.tags.slice(0, 2).map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-flex items-center rounded-md bg-primary/5 px-2 py-1 text-[0.625rem] font-medium text-primary"
-                  >
-                    <Hash className="mr-1 h-2.5 w-2.5 opacity-50" /> {tag}
-                  </span>
-                ))}
+        {/* Footer */}
+        <div className="mt-auto pt-5">
+          <div className="flex items-center justify-between border-t border-border/70 pt-4">
+            <div className="flex min-w-0 items-center gap-2.5">
+              <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border/70 bg-muted text-xs font-bold text-muted-foreground">
+                {recipe.author?.avatar_url ? (
+                  <Image
+                    src={recipe.author.avatar_url}
+                    alt={recipe.author.username || "Author"}
+                    fill
+                    sizes="36px"
+                    className="object-cover"
+                  />
+                ) : (
+                  recipe.author?.username?.[0]?.toUpperCase() || "A"
+                )}
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-xs font-semibold text-foreground">
+                  {recipe.author?.username || "Anonymous"}
+                </p>
+                <p className="text-[0.6875rem] text-muted-foreground">
+                  Gurshaland cook
+                </p>
               </div>
-            )}
-
-            {/* Footer: Author & Arrow */}
-            <div className="flex items-center justify-between border-t border-border pt-4 mt-2">
-              <div className="flex items-center gap-3">
-                <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border border-border bg-muted">
-                  {recipe.author?.avatar_url ? (
-                    <Image
-                      src={recipe.author.avatar_url}
-                      alt={recipe.author.username || "Author"}
-                      fill
-                      className="object-cover"
-                      sizes="36px"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-primary/10 text-xs font-bold text-primary">
-                      {recipe.author?.username?.[0]?.toUpperCase() || "A"}
-                    </div>
-                  )}
-                </div>
-                <div className="flex flex-col">
-                  <span className="line-clamp-1 text-xs font-semibold text-foreground">
-                    {recipe.author?.username || "Anonymous"}
-                  </span>
-                  <span className="text-[0.625rem] text-muted-foreground">
-                    Chef
-                  </span>
-                </div>
-              </div>
-{/* 
-              <div className="rounded-full border border-border bg-background p-2 text-muted-foreground transition-colors duration-200 group-hover:text-primary">
-                <ArrowRight className="h-4 w-4" />
-              </div> */}
             </div>
+
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/70 text-muted-foreground transition-colors duration-200 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+              <ArrowUpRight className="h-4 w-4" />
+            </span>
           </div>
         </div>
-      </Card>
+      </div>
     </Link>
   );
 };

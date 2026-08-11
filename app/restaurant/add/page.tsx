@@ -1,53 +1,14 @@
 "use client";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  FormDescription,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
 import { Header } from "@/components/header";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import {
-  PlusIcon,
-  Store,
-  MapPin,
-  Phone,
-  Mail,
-  Globe,
-  UtensilsCrossed,
-  ImageIcon,
-  Save,
-  FileWarning,
-  MessageCircleWarningIcon,
-  CircleAlert,
-  X,
-  Trash,
-  Loader2,
-} from "lucide-react";
-import ImageBox from "@/components/ImageBox";
+import { IconMapPin as MapPin } from "@tabler/icons-react";
 import PreviewSection from "@/components/restaurant/PreviewSection";
 import restaurantSchema, {
   GetRestaurentType,
-  RestaurantFormType,
 } from "@/schema/restaurent";
-import MenuInputSection from "@/components/restaurant/MenuInputSection";
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import RestaurantForm from "@/components/restaurant/RestaurantForm";
 import { toast } from "sonner";
 import generate_error from "@/utils/generate_error";
@@ -67,7 +28,7 @@ const AddRestaurantPage = () => {
       phone: "",
       email: "",
       website: "",
-      cuisines: [],
+      cuisines: [""],
       description: "",
       image: undefined,
       google_map_url: "",
@@ -94,15 +55,18 @@ const AddRestaurantPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-[100dvh] bg-background">
       <Header />
 
-      <main className="mx-auto w-[calc(100%-1rem)] max-w-7xl px-6 py-8 md:py-12">
-        <div className="mb-10 text-center space-y-2">
-          <h1 className="text-4xl md:text-5xl font-extrabold ">
-            Add New Restaurant
+      <main className="mx-auto max-w-7xl px-6 py-8 md:py-12">
+        <div className="mb-10 mx-auto max-w-2xl text-center space-y-2">
+          <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+            Add a New Spot
+          </span>
+          <h1 className="mt-4 font-gosh text-4xl font-extrabold tracking-tight md:text-5xl">
+            Add New <span className="text-primary">Restaurant</span>
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             Share your culinary haven with the world. Fill in the details below
             to create your restaurant profile.
           </p>
@@ -117,15 +81,11 @@ const AddRestaurantPage = () => {
           {/* Right Column: Preview */}
           <div className="hidden lg:block lg:col-span-5 relative">
             <div className="sticky top-24 space-y-6">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="h-px flex-1 bg-border" />
-                <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                  Live Preview
-                </span>
-                <div className="h-px flex-1 bg-border" />
-              </div>
+              <h2 className="font-gosh text-xl font-bold tracking-tight text-foreground">
+                Live Preview
+              </h2>
 
-              <div className="bg-card rounded-lg border border-border overflow-hidden">
+              <div className="overflow-hidden rounded-2xl border border-border/60 bg-card shadow-[0_25px_60px_-30px_hsl(var(--foreground)/0.15)]">
                 <PreviewSection form={form} />
               </div>
             </div>

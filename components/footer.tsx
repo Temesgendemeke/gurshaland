@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { HeartIcon as SolidHeart } from "@heroicons/react/24/solid";
+import { IconHeart as Heart } from "@tabler/icons-react";
 import Logo from "./Logo";
 
 export function Footer() {
   return (
-    <footer className="bg-muted text-muted-foreground w-full mx-auto">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
-        <div className="grid md:grid-cols-4 gap-8">
+    <footer className="text-muted-foreground w-full mx-auto border-t border-border">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-16">
+        <div className="grid md:grid-cols-4 gap-8 lg:gap-12">
           <div className="space-y-4">
             <Logo />
             <p className="leading-relaxed text-sm max-w-[15.625rem]">
@@ -16,12 +16,12 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4 text-foreground">Recipes</h3>
+            <h3 className="font-gosh font-semibold mb-4 text-foreground">Recipes</h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/categories/vegetarian"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Vegetarian
                 </Link>
@@ -29,7 +29,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/categories/meat"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Meat Dishes
                 </Link>
@@ -37,7 +37,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/categories/beverages"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Beverages
                 </Link>
@@ -45,7 +45,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/categories/desserts"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Desserts
                 </Link>
@@ -53,7 +53,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/categories/spices"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Spices & Sauces
                 </Link>
@@ -62,12 +62,12 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4 text-foreground">Culture</h3>
+            <h3 className="font-gosh font-semibold mb-4 text-foreground">Culture</h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/culture/coffee-ceremony"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Coffee Ceremony
                 </Link>
@@ -75,7 +75,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/culture/dining-traditions"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Dining Traditions
                 </Link>
@@ -83,7 +83,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/culture/festivals"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Food Festivals
                 </Link>
@@ -91,7 +91,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/culture/history"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Culinary History
                 </Link>
@@ -100,12 +100,12 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4 text-foreground">Connect</h3>
+            <h3 className="font-gosh font-semibold mb-4 text-foreground">Connect</h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/about"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   About Us
                 </Link>
@@ -113,7 +113,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Contact
                 </Link>
@@ -121,7 +121,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Blog
                 </Link>
@@ -129,7 +129,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/newsletter"
-                  className="hover:text-foreground font-medium transition-colors"
+                  className="hover:text-primary font-medium transition-colors"
                 >
                   Newsletter
                 </Link>
@@ -138,10 +138,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-border mt-10 pt-8 text-center text-muted-foreground">
-          <p>
-            &copy; {new Date().getFullYear()} Gurshaland. Made with{" "}
-            <SolidHeart className="w-4 h-4 inline text-primary" /> for Ethiopian
+        <div className="mt-10 pt-8 text-center text-muted-foreground border-t border-border">
+          <p className="flex items-center justify-center gap-1.5">
+            &copy; {new Date().getFullYear()} Gurshaland. Made with
+            <Heart className="w-4 h-4 inline text-primary" strokeWidth={2} /> for Ethiopian
             cuisine.
           </p>
         </div>

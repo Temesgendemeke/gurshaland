@@ -10,7 +10,7 @@ const InstructionsView = ({
   instructions: Instruction[];
 }) => {
   return (
-    <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
+    <Card className="p-6 bg-card border border-border rounded-lg">
       <h2 className="heading-secondary text-2xl md:text-3xl border-b border-border pb-3 mb-4">
         Instructions
       </h2>
@@ -18,7 +18,7 @@ const InstructionsView = ({
         {instructions.map((instruction: Instruction) => (
           <div key={instruction.step} className="flex gap-4">
             <div
-              className="shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold shadow-sm"
+              className="shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold"
               aria-hidden="true"
             >
               {instruction.step}

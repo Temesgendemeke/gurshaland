@@ -24,14 +24,10 @@ function Page(): React.JSX.Element {
     <>
        <Header/>
 
-       <div className="mx-auto px-4 sm:px-6 lg:px-10 py-12 space-y-8">
+       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-10 py-12 space-y-8">
         <BackNavigation/>
         
-        <div>
-            <BlogForm blog={blog} mode="update"/>
-        </div>
-        <div>    
-        </div>  
+        <BlogForm blog={blog ?? undefined} mode="update"/>
        </div>
     </>
    )   

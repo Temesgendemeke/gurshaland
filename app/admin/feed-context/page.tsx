@@ -118,7 +118,7 @@ const FeedContextPage = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <Card className="border bg-card shadow-sm">
+          <Card className="border bg-card">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="w-5 h-5 text-primary" />
@@ -137,7 +137,7 @@ const FeedContextPage = () => {
                     <FormControl>
                       <Textarea
                         placeholder="e.g. Traditional Ethiopian coffee ceremonies involve several stages..."
-                        className="min-h-[15.625rem] resize-y p-4 border-muted focus-visible:ring-primary/30 transition-shadow bg-background"
+                        className="min-h-[15.625rem] resize-y p-4 border-muted focus-visible:ring-primary/30 bg-background"
                         {...field}
                       />
                     </FormControl>
@@ -148,7 +148,7 @@ const FeedContextPage = () => {
             </CardContent>
           </Card>
 
-          <Card className="border bg-card shadow-sm">
+          <Card className="border bg-card">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Upload className="w-5 h-5 text-primary" />

@@ -37,7 +37,7 @@ export default function HeroAiGenerator() {
           <Button
             onClick={handleOpenGenerator}
             size="lg"
-            className="btn-primary-modern font-semibold text-primary-foreground shadow-xl"
+            className="btn-primary-modern font-semibold text-primary-foreground"
           >
             <Sparkles className="w-4 h-4 mr-2" />
             Generate Recipe with AI

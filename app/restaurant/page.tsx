@@ -1,15 +1,18 @@
 "use client";
 import { Header } from "@/components/header";
 import { Input } from "@/components/ui/input";
-import React from "react";
 import { useForm } from "react-hook-form";
-// import { searchSchema } from "@/schema/search";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Search, StarsIcon, Plus } from "lucide-react";
+import {
+  IconSearch as Search,
+  IconPlus as Plus,
+  IconMapPin as MapPin,
+} from "@tabler/icons-react";
 import Link from "next/link";
 import RestaurantCard from "@/components/restaurant/RestaurantCard";
+import RestaurantCardSkeleton from "@/components/restaurant/RestaurantCardSkeleton";
 import { z } from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
@@ -24,13 +27,119 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import RecipeListSkeleton from "@/components/skeleton/RecipeList";
+import { useReducedMotion } from "motion/react";
 
 const searchSchema = z.object({
   query: z.string().min(1, "Please enter a search term"),
 });
 
 type SearchFormValues = z.infer<typeof searchSchema>;
+
+function PaginationControls({
+  pageParam,
+  totalPages,
+  router,
+}: {
+  pageParam: number;
+  totalPages: number;
+  router: ReturnType<typeof useRouter>;
+}) {
+  if (totalPages <= 1) return null;
+
+  const items: React.ReactNode[] = [];
+
+  const createPageLink = (page: number, label?: string) => (
+    <PaginationItem key={page}>
+      <PaginationLink
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          router.push(`?page=${page}`);
+        }}
+        isActive={pageParam === page}
+      >
+        {label ?? page}
+      </PaginationLink>
+    </PaginationItem>
+  );
+
+  items.push(
+    <PaginationItem key="prev">
+      <PaginationPrevious
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          if (pageParam > 1) router.push(`?page=${pageParam - 1}`);
+        }}
+        className={pageParam <= 1 ? "pointer-events-none opacity-50" : ""}
+      />
+    </PaginationItem>
+  );
+
+  const maxVisiblePages = 5;
+
+  if (totalPages <= maxVisiblePages) {
+    for (let i = 1; i <= totalPages; i++) {
+      items.push(createPageLink(i));
+    }
+  } else {
+    items.push(createPageLink(1));
+
+    if (pageParam > 3) {
+      items.push(
+        <PaginationItem key="ellipsis-start">
+          <PaginationEllipsis />
+        </PaginationItem>
+      );
+    }
+
+    let startPage = Math.max(2, pageParam - 1);
+    let endPage = Math.min(totalPages - 1, pageParam + 1);
+
+    if (pageParam <= 3) {
+      endPage = 4;
+      startPage = 2;
+    }
+
+    if (pageParam >= totalPages - 2) {
+      startPage = totalPages - 3;
+      endPage = totalPages - 1;
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      items.push(createPageLink(i));
+    }
+
+    if (pageParam < totalPages - 2) {
+      items.push(
+        <PaginationItem key="ellipsis-end">
+          <PaginationEllipsis />
+        </PaginationItem>
+      );
+    }
+
+    items.push(createPageLink(totalPages));
+  }
+
+  items.push(
+    <PaginationItem key="next">
+      <PaginationNext
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          if (pageParam < totalPages) router.push(`?page=${pageParam + 1}`);
+        }}
+        className={pageParam >= totalPages ? "pointer-events-none opacity-50" : ""}
+      />
+    </PaginationItem>
+  );
+
+  return (
+    <Pagination>
+      <PaginationContent>{items}</PaginationContent>
+    </Pagination>
+  );
+}
 
 const RestaurantsPageContent = () => {
   const form = useForm({
@@ -43,6 +152,7 @@ const RestaurantsPageContent = () => {
   const searchParams = useSearchParams();
   const pageParam = Number(searchParams.get("page")) || 1;
   const limit = 10;
+  const reduceMotion = useReducedMotion();
 
   const onSubmit = async (data: SearchFormValues) => {
     // TODO: wire up server-side search when available
@@ -59,31 +169,29 @@ const RestaurantsPageContent = () => {
   const totalPages = Math.ceil(totalCount / limit);
 
   return (
-    <div className="">
+    <div className="min-h-[100dvh]">
       <Header />
 
-      <main className="mx-auto w-[calc(100%-1rem)] max-w-7xl px-4 sm:px-6 py-12 mt-6 md:mt-12">
-        <div className="text-center">
-          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground font-gosh">
-            Discover the <span className="text-primary">hottest</span>{" "}
-            lounges
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-16">
+        {/* Page Header */}
+        <div className="max-w-3xl">
+          <h1 className="font-gosh text-4xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-5xl">
+            Find a table in Addis Ababa
           </h1>
-          <p className="mt-3 text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
-            Search, explore, and find your next favorite spot.
+
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            From sizzling kitfo joints to sunset terrace lounges, the spots
+            where the berbere, the coffee, and the company are all worth
+            staying for.
           </p>
-          <Button asChild className="btn-primary-modern px-8 py-6 text-base">
-            <Link href="/restaurant/add">
-              <Plus className="w-5 h-5 mr-2" />
-              Add Restaurant
-            </Link>
-          </Button>
         </div>
 
-        <div className="mt-8 max-w-4xl mx-auto">
+        {/* Search */}
+        <div className="mt-10 max-w-4xl">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="modern-card flex flex-col md:flex-row gap-3 p-4 sm:p-2 rounded-lg border border-border/50 shadow-sm"
+              className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4"
             >
               <div className="flex-1">
                 <FormField
@@ -91,11 +199,14 @@ const RestaurantsPageContent = () => {
                   name="query"
                   render={({ field }) => (
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Search
+                        className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground"
+                        strokeWidth={1.5}
+                      />
                       <Input
                         {...field}
-                        placeholder="Search for a lounge..."
-                        className="pl-10 h-12 bg-background text-foreground border-border/50 focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary/50 transition-colors"
+                        placeholder="Search for a restaurant, cuisine, or area"
+                        className="h-12 border-border bg-card pl-12"
                       />
                     </div>
                   )}
@@ -104,172 +215,58 @@ const RestaurantsPageContent = () => {
 
               <Button
                 type="submit"
-                className="h-12 md:w-auto px-6 w-full btn-primary-modern "
+                className="h-12 w-full rounded-xl px-8 btn-primary-modern md:w-auto"
               >
-                <StarsIcon className="w-5 h-5" />
-                <span>Search</span>
+                Search
               </Button>
             </form>
           </Form>
         </div>
 
+        {/* Results Count */}
+        {!isLoading && (
+          <div className="mt-8 flex items-center justify-start gap-2 text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4 text-primary" strokeWidth={1.5} />
+            <span>
+              <strong className="font-semibold text-foreground">{totalCount}</strong>{" "}
+              {totalCount === 1 ? "restaurant" : "restaurants"} in Addis Ababa
+            </span>
+          </div>
+        )}
+
         {isLoading ? (
-          <div className="mt-10">
-            <RecipeListSkeleton />
+          <div className="mt-8" aria-busy="true" aria-live="polite">
+            <RestaurantCardSkeleton />
           </div>
         ) : (
-          <div className="mt-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+          <div className="mt-8">
+            <div
+              className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch"
+              role="list"
+              aria-label="Restaurant listings"
+            >
               {restaurants?.map((restaurant) => (
-                <div key={restaurant.id} className="h-full">
+                <div key={restaurant.id} className="h-full" role="listitem">
                   <RestaurantCard restaurant={restaurant} />
                 </div>
               ))}
             </div>
 
             {totalPages > 1 && (
-              <div className="mt-10 mb-2 flex justify-center">
-                <div className="modern-card border border-border/50 rounded-lg px-3 py-2">
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (pageParam > 1) {
-                              router.push(`?page=${pageParam - 1}`);
-                            }
-                          }}
-                          className={
-                            pageParam <= 1
-                              ? "pointer-events-none opacity-50"
-                              : ""
-                          }
-                        />
-                      </PaginationItem>
+              <div className="mt-12 flex justify-center" role="navigation" aria-label="Pagination">
+                <PaginationControls
+                  pageParam={pageParam}
+                  totalPages={totalPages}
+                  router={router}
+                />
+              </div>
+            )}
 
-                      {(() => {
-                        const items = [];
-                        const maxVisiblePages = 5;
-
-                        if (totalPages <= maxVisiblePages) {
-                          for (let i = 1; i <= totalPages; i++) {
-                            items.push(
-                              <PaginationItem key={i}>
-                                <PaginationLink
-                                  href="#"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    router.push(`?page=${i}`);
-                                  }}
-                                  isActive={pageParam === i}
-                                >
-                                  {i}
-                                </PaginationLink>
-                              </PaginationItem>,
-                            );
-                          }
-                        } else {
-                          items.push(
-                            <PaginationItem key={1}>
-                              <PaginationLink
-                                href="#"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  router.push(`?page=1`);
-                                }}
-                                isActive={pageParam === 1}
-                              >
-                                1
-                              </PaginationLink>
-                            </PaginationItem>,
-                          );
-
-                          if (pageParam > 3) {
-                            items.push(
-                              <PaginationItem key="ellipsis-start">
-                                <PaginationEllipsis />
-                              </PaginationItem>,
-                            );
-                          }
-
-                          let startPage = Math.max(2, pageParam - 1);
-                          let endPage = Math.min(totalPages - 1, pageParam + 1);
-
-                          if (pageParam <= 3) {
-                            endPage = 4;
-                            startPage = 2;
-                          }
-
-                          if (pageParam >= totalPages - 2) {
-                            startPage = totalPages - 3;
-                            endPage = totalPages - 1;
-                          }
-
-                          for (let i = startPage; i <= endPage; i++) {
-                            items.push(
-                              <PaginationItem key={i}>
-                                <PaginationLink
-                                  href="#"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    router.push(`?page=${i}`);
-                                  }}
-                                  isActive={pageParam === i}
-                                >
-                                  {i}
-                                </PaginationLink>
-                              </PaginationItem>,
-                            );
-                          }
-
-                          if (pageParam < totalPages - 2) {
-                            items.push(
-                              <PaginationItem key="ellipsis-end">
-                                <PaginationEllipsis />
-                              </PaginationItem>,
-                            );
-                          }
-
-                          items.push(
-                            <PaginationItem key={totalPages}>
-                              <PaginationLink
-                                href="#"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  router.push(`?page=${totalPages}`);
-                                }}
-                                isActive={pageParam === totalPages}
-                              >
-                                {totalPages}
-                              </PaginationLink>
-                            </PaginationItem>,
-                          );
-                        }
-
-                        return items;
-                      })()}
-
-                      <PaginationItem>
-                        <PaginationNext
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (pageParam < totalPages) {
-                              router.push(`?page=${pageParam + 1}`);
-                            }
-                          }}
-                          className={
-                            pageParam >= totalPages
-                              ? "pointer-events-none opacity-50"
-                              : ""
-                          }
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
-                </div>
+            {restaurants.length === 0 && !isLoading && (
+              <div className="mt-16 py-12 text-center">
+                <p className="text-muted-foreground">
+                  No restaurants found.
+                </p>
               </div>
             )}
           </div>
@@ -281,7 +278,7 @@ const RestaurantsPageContent = () => {
 
 export default function RestaurantsPage() {
   return (
-    <Suspense fallback={<RecipeListSkeleton />}>
+    <Suspense fallback={<RestaurantCardSkeleton />}>
       <RestaurantsPageContent />
     </Suspense>
   );

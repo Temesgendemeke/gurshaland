@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { PlusIcon, UtensilsCrossed } from "lucide-react";
+import { IconPlus as Plus, IconCooker as UtensilsCrossed } from "@tabler/icons-react";
 import { Button } from "../ui/button";
 import MenuInputSection from "./MenuInputSection";
 import { useFieldArray } from "react-hook-form";
@@ -52,16 +52,18 @@ const MenuForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
   };
 
   return (
-    <Card className="bg-card">
-      <CardHeader className="flex flex-row items-center justify-between">
+    <Card className="border-border/60 bg-card shadow-[0_15px_40px_-30px_hsl(var(--foreground)/0.15)]">
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-primary mb-1">
-            <UtensilsCrossed className="h-5 w-5" />
-            <span className="font-semibold uppercase tracking-wider text-xs">
+          <div className="flex items-center gap-2 text-primary">
+            <UtensilsCrossed className="h-4 w-4" strokeWidth={1.5} />
+            <span className="text-xs font-semibold uppercase tracking-[0.18em]">
               Menu
             </span>
           </div>
-          <CardTitle>Menu Highlights</CardTitle>
+          <CardTitle className="mt-1 font-gosh text-xl">
+            Menu Highlights
+          </CardTitle>
           <CardDescription>
             Add your signature dishes to entice customers.
           </CardDescription>
@@ -70,21 +72,23 @@ const MenuForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
           type="button"
           variant={"outline"}
           onClick={addMenuField}
-          className="gap-2 shadow-sm"
+          className="shrink-0 gap-2"
         >
-          <PlusIcon size={18} />
+          <Plus className="h-4 w-4" strokeWidth={2} />
           Add Item
         </Button>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           {menuFields.length === 0 ? (
-            <div className="text-center py-12 px-4 border-2 border-dashed border-border rounded-xl bg-muted/30">
-              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <UtensilsCrossed className="h-6 w-6 text-primary" />
+            <div className="rounded-xl border border-dashed border-border bg-muted/20 px-4 py-12 text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                <UtensilsCrossed className="h-6 w-6 text-primary" strokeWidth={1.5} />
               </div>
-              <h3 className="text-lg font-medium mb-1">No menu items yet</h3>
-              <p className="text-muted-foreground mb-4">
+              <h3 className="font-gosh text-lg font-bold">
+                No menu items yet
+              </h3>
+              <p className="mx-auto mt-1 mb-5 max-w-xs text-sm text-muted-foreground">
                 Start adding your delicious dishes to showcase your menu.
               </p>
               <Button type="button" variant="outline" onClick={addMenuField}>

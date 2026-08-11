@@ -70,7 +70,7 @@ export function SimpleTable({
   }
 
   return (
-    <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+    <div className="rounded-xl border bg-card overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4 border-b">
         <h3 className="text-base font-semibold tracking-tight">
           Top 10 {name} Posts

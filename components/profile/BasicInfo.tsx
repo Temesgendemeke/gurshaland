@@ -19,7 +19,7 @@ const BasicInfo = ({ profile }: BasicInfoProps) => {
   };
   return (
     <>
-      <div className="relative w-32 h-32 rounded-full overflow-hidden border border-border shadow-sm">
+      <div className="relative w-32 h-32 rounded-full overflow-hidden border border-border">
         <img
           src={`${profile.avatar_url || avatar.src}`}
           alt={`${profile.username} avatar`}

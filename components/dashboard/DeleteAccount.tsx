@@ -42,7 +42,7 @@ const DeleteAccount = ({ profile_id }: DeleteAccountProps) => {
     }
   };
   return (
-    <Card className="border border-error/20 bg-card shadow-sm">
+    <Card className="border border-error/20 bg-card">
       <CardHeader>
         <CardTitle className="flex items-center gap-3 text-error text-xl font-bold">
           <span className="inline-flex items-center justify-center bg-error/10 rounded-full p-2">
@@ -80,7 +80,7 @@ const DeleteAccount = ({ profile_id }: DeleteAccountProps) => {
                 Delete Account
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent className="border border-error/20 shadow-sm">
+            <AlertDialogContent className="border border-error/20">
               <AlertDialogHeader>
                 <AlertDialogTitle className="text-error text-lg font-bold flex items-center gap-2">
                   <Shield className="h-5 w-5 text-error" />

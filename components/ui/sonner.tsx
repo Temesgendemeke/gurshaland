@@ -17,7 +17,6 @@ const Toaster = ({ ...props }: ToasterProps) => {
             "group-[.toaster]:border group-[.toaster]:border-border",
             "group-[.toaster]:border-l-4 group-[.toaster]:border-l-border",
             "group-[.toaster]:rounded-xl group-[.toaster]:px-4 group-[.toaster]:py-3.5",
-            "group-[.toaster]:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-1px_rgba(0,0,0,0.06)]",
             "data-[type=success]:group-[.toaster]:border-l-success",
             "data-[type=error]:group-[.toaster]:border-l-error",
             "data-[type=warning]:group-[.toaster]:border-l-warning",

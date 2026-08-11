@@ -46,7 +46,7 @@ const BentoCard = ({
   <div
     key={name}
     className={cn(
-      "group relative col-span-1 flex flex-col justify-between overflow-hidden rounded-2xl border  border-border bg-card transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 cursor-pointer",
+      "group relative col-span-1 flex flex-col justify-between overflow-hidden rounded-2xl border  border-border bg-card transition-all duration-300 hover:border-primary/40 cursor-pointer",
       className,
     )}
     {...props}

@@ -10,7 +10,7 @@ export default function GenerateSkeleton() {
       </div>
 
       {/* Form Container */}
-      <div className="bg-card rounded-lg shadow-sm border border-border p-8">
+      <div className="bg-card rounded-lg border border-border p-8">
         {/* Input Fields */}
         <div className="space-y-6">
           {/* Recipe Type */}

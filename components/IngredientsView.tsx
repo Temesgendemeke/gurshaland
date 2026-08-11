@@ -18,7 +18,7 @@ const IngredientsView = ({
   ingredients: IngredientWithUnit[];
 }) => {
   return (
-    <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
+    <Card className="p-6 bg-card border border-border rounded-lg">
       <h2 className="heading-secondary text-2xl md:text-3xl border-b border-border pb-3">
         Ingredients
       </h2>

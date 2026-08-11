@@ -1,6 +1,5 @@
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,10 +13,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Pattern as FileUpload } from "@/components/FileUpload";
-import { CircleAlert, Store } from "lucide-react";
+import { IconAlertCircle as AlertCircle, IconBuildingStore as Store } from "@tabler/icons-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { UtensilsCrossed } from "lucide-react";
 import restaurantSchema from "@/schema/restaurent";
 import { z } from "zod";
 import CusinesForm from "./cusinesForm";
@@ -26,23 +24,27 @@ type FormValues = z.infer<typeof restaurantSchema>;
 
 const BasicInforForm = ({ form }: { form: any }) => {
   return (
-    <Card className="bg-card">
+    <Card className="border-border/60 bg-card shadow-[0_15px_40px_-30px_hsl(var(--foreground)/0.15)]">
       <CardHeader>
-        <div className="flex items-center gap-2 text-primary mb-1">
-          <Store className="h-5 w-5" />
-          <span className="font-semibold uppercase tracking-wider text-xs">
+        <div className="flex items-center gap-2 text-primary">
+          <Store className="h-4 w-4" strokeWidth={1.5} />
+          <span className="text-xs font-semibold uppercase tracking-[0.18em]">
             Basic Info
           </span>
         </div>
-        <CardTitle>Restaurant Details</CardTitle>
+        <CardTitle className="mt-1 font-gosh text-xl">
+          Restaurant Details
+        </CardTitle>
         <CardDescription>
-          The core identity of your establishment.
+          The core identity of your establishment — name, story, and cover.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-4">
-          <div className="p-6 border-2 border-dashed border-border rounded-xl bg-muted/30 hover:bg-muted/40 transition-colors">
-            <h3 className="text-sm font-semibold mb-4 text-foreground/80">Cover Image</h3>
+        <div className="space-y-5">
+          <div className="rounded-xl border border-border/60 bg-muted/20 p-5">
+            <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-foreground/80">
+              Cover Image
+            </h3>
             <FileUpload
               maxSize={10 * 1024 * 1024} // 10MB
               accept="image/*"
@@ -55,15 +57,16 @@ const BasicInforForm = ({ form }: { form: any }) => {
                       file,
                       path: "",
                     },
-                    { shouldDirty: true }
+                    { shouldDirty: true },
                   );
                 } else {
                   form.setValue("image", undefined, { shouldDirty: true });
                 }
               }}
             />
-            <p className="text-xs text-muted-foreground mt-4 flex items-center gap-2">
-              <CircleAlert className="w-4 h-4" /> <span>Recommended size: 1200x600px</span>
+            <p className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+              <AlertCircle className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+              <span>Recommended size: 1200x600px</span>
             </p>
           </div>
 
@@ -103,68 +106,7 @@ const BasicInforForm = ({ form }: { form: any }) => {
             )}
           />
 
-          {/* {form.watch('cuisines').map((cuisine, index) => (
-                               <FormField
-                                 control={form.control}
-                                 name={`cuisines.${index}`}
-                                 render={({ field }) => (
-                                   <FormItem>
-                                     <FormLabel>Cuisine Type</FormLabel>
-                                     <FormControl>
-                                       <Input placeholder="e.g. Ethiopian, Italian, Fusion" className="h-11" {...field} />
-                                     </FormControl>
-                                     <FormMessage />
-                                   </FormItem>
-                                 )}
-                               />
-                             ))} */}
-
-          {/* <div>
-            {form.watch("cuisines")?.map((cuisine, index) => (
-              <FormField
-                control={form.control}
-                name={`cuisines.${index}`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cuisine Type</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="e.g. Ethiopian, Italian, Fusion"
-                        className="h-11"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ))}
-          </div> */}
           <CusinesForm form={form} />
-
-          {/* <FormField
-            control={form.control}
-            name="cuisines"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Cuisine Type</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <UtensilsCrossed className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="e.g. Ethiopian, Italian, Fusion"
-                      className="pl-10 h-11"
-                      {...field}
-                    />
-                  </div>
-                </FormControl>
-                <FormDescription>
-                  Separate multiple cuisines with commas.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
         </div>
       </CardContent>
     </Card>

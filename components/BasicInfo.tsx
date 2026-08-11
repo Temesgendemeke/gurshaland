@@ -1,13 +1,18 @@
+"use client";
 import {
-  Form,
   FormField,
   FormItem,
   FormLabel,
   FormControl,
   FormMessage,
-  FormDescription,
 } from "@/components/ui/form";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -16,176 +21,215 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { Clock, Users } from "lucide-react";
 import { difficulties } from "@/constants/recipe";
+import { formSchema } from "@/utils/schema";
+import { z } from "zod";
+import { UseFormReturn } from "react-hook-form";
+import RecipeImageField from "./RecipeImageField";
+
+type FormValues = z.infer<typeof formSchema>;
 
 interface BasicInfoFieldsProps {
-  form: any;
-  recipe: any;
-  categories: any[];
+  form: UseFormReturn<FormValues>;
+  categories: { id: number; name: string }[];
+  image?: File | string;
+  setImage: (image: File | string | undefined) => void;
 }
 
 export default function BasicInfoFields({
   form,
-  recipe,
   categories,
+  image,
+  setImage,
 }: BasicInfoFieldsProps) {
   return (
-    <Card className="p-6 bg-card/70 border-border">
-      <h2 className="text-2xl font-bold text-foreground mb-6">
-        Basic Information
-      </h2>
-      <div className="grid md:grid-cols-2 gap-6">
-        <FormField
-          control={form.control}
-          name="recipe.title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Recipe Title *</FormLabel>
-              <FormControl>
-                <Input placeholder="e.g., Traditional Injera" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category *</FormLabel>
-              <FormControl>
-                <Select
-                  // When a category is selected, set both id and name on the field
-                  onValueChange={(selectedName) => {
-                    const selectedCat = categories.find(
-                      (cat) => cat.name === selectedName,
-                    );
-                    if (selectedCat) {
-                      form.setValue("category", {
-                        id: selectedCat.id,
-                        name: selectedCat.name,
-                      });
-                    }
-                  }}
-                  value={field.value?.name || ""}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background">
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.name}>
-                        {cat.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-      <FormField
-        control={form.control}
-        name="recipe.description"
-        render={({ field }) => (
-          <FormItem className="mt-6">
-            <FormLabel>Description *</FormLabel>
-            <FormControl>
-              <Textarea
-                placeholder="Describe your recipe, its origins, and what makes it special..."
-                rows={4}
-                {...field}
+    <Card className="border-border bg-card/70">
+      <CardHeader className="space-y-2">
+        <CardTitle>Recipe Details</CardTitle>
+        <CardDescription className="text-sm leading-6">
+          The core details of your dish.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        <div className="rounded-lg border border-border/60 p-4 sm:p-5">
+          <div className="grid gap-4 grid-cols-[280px_1fr] items-start">
+            <RecipeImageField
+              image={image}
+              setImage={setImage}
+              className="h-64"
+            />
+
+            <div className="flex flex-col gap-2 max-w-lg">
+              <FormField
+                control={form.control}
+                name="recipe.title"
+                render={({ field }) => (
+                  <FormItem className="gap-2">
+                    <FormLabel>Recipe Title *</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="e.g., Traditional Injera"
+                        className="h-11"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <div className="grid md:grid-cols-4 gap-4 mt-6">
-        <FormField
-          control={form.control}
-          name="recipe.prepTime"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Prep Time (min)</FormLabel>
-              <FormControl>
-                <div className="relative flex items-center">
-                  <Input {...field} type="number" className="pr-10" />
-                  <Clock className="w-4 h-4 text-muted-foreground absolute right-3 pointer-events-none" />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="recipe.cookTime"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Cook Time (min)</FormLabel>
-              <FormControl>
-                <div className="relative flex items-center">
-                  <Input {...field} className="pr-10" type="number" />
-                  <Clock className="w-4 h-4 text-muted-foreground absolute right-3 pointer-events-none" />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="recipe.servings"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Servings</FormLabel>
-              <FormControl>
-                <div className="relative flex items-center">
-                  <Input
-                    type="number"
-                    placeholder="4"
-                    {...field}
-                    className="pr-10"
-                    min={1}
-                  />
-                  <Users className="w-4 h-4 text-muted-foreground absolute right-3 pointer-events-none" />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="recipe.difficulty"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Difficulty</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Level" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background">
-                    {difficulties.map((d) => (
-                      <SelectItem key={d.value} value={d.value}>
-                        {d.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem className="gap-2">
+                    <FormLabel>Category *</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(selectedName) => {
+                          const selectedCat = categories.find(
+                            (cat) => cat.name === selectedName,
+                          );
+                          if (selectedCat) {
+                            form.setValue("category", {
+                              id: selectedCat.id,
+                              name: selectedCat.name,
+                            });
+                          }
+                        }}
+                        value={field.value?.name || ""}
+                      >
+                        <SelectTrigger className="h-11 w-full">
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background">
+                          {categories.map((cat) => (
+                            <SelectItem key={cat.id} value={cat.name}>
+                              {cat.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="recipe.description"
+                render={({ field }) => (
+                  <FormItem className="gap-2">
+                    <FormLabel>Description *</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Describe your recipe, its origins, and what makes it special..."
+                        className="min-h-32 resize-y"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <FormField
+                  control={form.control}
+                  name="recipe.prepTime"
+                  render={({ field }) => (
+                    <FormItem className="gap-2">
+                      <FormLabel>Prep Time (min)</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type="number"
+                            className="h-11 pr-10"
+                            {...field}
+                          />
+                          <Clock className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="recipe.cookTime"
+                  render={({ field }) => (
+                    <FormItem className="gap-2">
+                      <FormLabel>Cook Time (min)</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type="number"
+                            className="h-11 pr-10"
+                            {...field}
+                          />
+                          <Clock className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="recipe.servings"
+                  render={({ field }) => (
+                    <FormItem className="gap-2">
+                      <FormLabel>Servings</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type="number"
+                            placeholder="4"
+                            min={1}
+                            className="h-11 pr-10"
+                            {...field}
+                          />
+                          <Users className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="recipe.difficulty"
+                  render={({ field }) => (
+                    <FormItem className="gap-2">
+                      <FormLabel>Difficulty</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger className="h-11 w-full">
+                            <SelectValue placeholder="Level" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background">
+                            {difficulties.map((d) => (
+                              <SelectItem key={d.value} value={d.value}>
+                                {d.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
     </Card>
   );
 }

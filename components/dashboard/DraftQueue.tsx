@@ -34,7 +34,7 @@ export function DraftQueue({
   const totalDrafts = recipesDraft + blogsDraft;
 
   return (
-    <Card className="rounded-xl border bg-card shadow-sm overflow-hidden flex flex-col">
+    <Card className="rounded-xl border bg-card overflow-hidden flex flex-col">
       <CardHeader className="border-b px-5 py-4">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-base font-semibold tracking-tight">

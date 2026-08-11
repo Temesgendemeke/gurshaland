@@ -88,7 +88,7 @@ export function AIChatWidget() {
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 w-[calc(100vw-2rem)] max-w-md sm:w-100 h-[min(70vh,56.25rem)] sm:min-h-120 min-h-96  shadow-lg z-50 flex flex-col  border-primary border">
+    <Card className="fixed bottom-6 right-6 w-[calc(100vw-2rem)] max-w-md sm:w-100 h-[min(70vh,56.25rem)] sm:min-h-120 min-h-96 z-50 flex flex-col  border-primary border">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-border/60">
         <div className="flex items-center space-x-2">

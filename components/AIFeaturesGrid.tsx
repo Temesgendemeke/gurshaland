@@ -23,7 +23,7 @@ function IngredientsBackground() {
         {items.map((item) => (
           <div
             key={item}
-            className="flex items-center gap-2.5 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground shadow-sm"
+            className="flex items-center gap-2.5 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
           >
             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
               <Check className="h-3 w-3" />
@@ -44,7 +44,7 @@ function MealPlannerBackground() {
   ];
   return (
     <div className="flex h-full items-end justify-center gap-4 px-6 pb-6">
-      <div className="flex items-end gap-4 rounded-xl border border-border/60 bg-background/70 px-5 pt-5 pb-3 shadow-sm">
+      <div className="flex items-end gap-4 rounded-xl border border-border/60 bg-background/70 px-5 pt-5 pb-3">
         {days.map((day) => (
           <div
             key={day.label}
@@ -65,9 +65,9 @@ function MealPlannerBackground() {
 function FoodRecognitionBackground() {
   return (
     <div className="flex h-full items-center justify-center">
-      <div className="relative h-28 w-36 overflow-hidden rounded-xl border border-border bg-gradient-to-br from-primary/15 via-primary/5 to-transparent shadow-sm">
+      <div className="relative h-28 w-36 overflow-hidden rounded-xl border border-border bg-gradient-to-br from-primary/15 via-primary/5 to-transparent">
         <div className="absolute inset-0 grid place-items-center">
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-background shadow-md">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-background">
             <Camera className="h-5 w-5 text-primary" />
           </span>
         </div>
@@ -81,7 +81,7 @@ function FoodRecognitionBackground() {
 function CookingAssistantBackground() {
   return (
     <div className="flex h-full items-center justify-center px-6">
-      <div className="max-w-[13.75rem] rounded-2xl rounded-bl-sm border border-border bg-background px-4 py-3 text-sm text-foreground shadow-sm">
+      <div className="max-w-[13.75rem] rounded-2xl rounded-bl-sm border border-border bg-background px-4 py-3 text-sm text-foreground">
         Simmer the berbere until the oil turns deep red — then add the onions.
       </div>
     </div>
@@ -97,7 +97,7 @@ function NutritionBackground() {
   ];
   return (
     <div className="flex h-full items-end justify-center gap-4 px-6 pb-6">
-      <div className="flex items-end gap-3 rounded-xl border border-border/60 bg-background/70 px-5 pt-5 pb-3 shadow-sm">
+      <div className="flex items-end gap-3 rounded-xl border border-border/60 bg-background/70 px-5 pt-5 pb-3">
         {bars.map((bar) => (
           <div key={bar.label} className="flex w-9 flex-col items-center gap-2">
             <div
@@ -115,13 +115,13 @@ function NutritionBackground() {
 function TranslatorBackground() {
   return (
     <div className="flex h-full items-center justify-center gap-3 px-6">
-      <div className="rounded-lg border border-border bg-background px-5 py-2.5 text-sm shadow-sm">
+      <div className="rounded-lg border border-border bg-background px-5 py-2.5 text-sm">
         ዶሮ ወጥ
       </div>
       <div className="flex items-center justify-center">
         <ArrowRight className="h-4 w-4 text-primary" />
       </div>
-      <div className="rounded-lg border border-border bg-background px-5 py-2.5 text-sm text-muted-foreground shadow-sm">
+      <div className="rounded-lg border border-border bg-background px-5 py-2.5 text-sm text-muted-foreground">
         Doro Wat
       </div>
       <span className="hidden text-xs text-muted-foreground sm:inline">

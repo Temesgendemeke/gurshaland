@@ -2,10 +2,9 @@ import React from "react";
 import { Control, useFieldArray, UseFormReturn } from "react-hook-form";
 import { Input } from "../ui/input";
 import MeasurementSelect from "../MeasurementSelect";
-import { Plus, X } from "lucide-react";
+import { Plus, X, Egg } from "lucide-react";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
-import { Egg } from "lucide-react";
 
 interface RecipeIngredientProps {
   form: UseFormReturn<any>;
@@ -18,56 +17,62 @@ const RecipeIngredient = ({ form, control, index }: RecipeIngredientProps) => {
     fields: ingredientFields,
     append: appendIngredient,
     remove: removeIngredient,
-  } = useFieldArray({ control, name: `content.${index}.recipe.ingredients` });
+  } = useFieldArray({
+    control,
+    name: `contents.${index}.recipe.ingredients`,
+  });
 
   return (
-    <div className="space-y-4 ml-4 border-l-2 pl-2 ">
-      <Label className="flex gap-2">
-        <Egg className="h-4 w-4" />
-        Ingrediens
+    <div className="flex flex-col gap-2.5 border-l-2 border-primary/20 pl-4">
+      <Label className="flex items-center gap-2 font-semibold">
+        <Egg className="h-4 w-4 text-primary" />
+        Ingredients
       </Label>
       {ingredientFields.map((ingredient, ingredientIndex) => (
-        <div key={ingredient.id} className="flex gap-2 ">
+        <div key={ingredient.id} className="flex flex-wrap items-center gap-2">
           <Input
             {...form.register(
-              `content.${index}.recipe.ingredients.${ingredientIndex}.amount`
+              `contents.${index}.recipe.ingredients.${ingredientIndex}.amount`,
             )}
-            placeholder="Amount (e.g., 2)"
+            placeholder="Amount (e.g. 2)"
             type="number"
             min={0}
             className="w-24"
           />
           <MeasurementSelect
             form={form}
-            name={`content.${index}.recipe.ingredients.${ingredientIndex}.measurement`}
+            name={`contents.${index}.recipe.ingredients.${ingredientIndex}.measurement`}
           />
           <Input
             {...form.register(
-              `content.${index}.recipe.ingredients.${ingredientIndex}.name`
+              `contents.${index}.recipe.ingredients.${ingredientIndex}.name`,
             )}
-            placeholder="name: e.g., Sugar"
+            placeholder="Name (e.g. Sugar)"
             type="text"
+            className="min-w-40 flex-1"
           />
           <Button
             type="button"
-            variant={"outline"}
-            onClick={() =>
-              removeIngredient(ingredientIndex)
-            }
+            variant="outline"
+            size="icon"
+            aria-label="Remove ingredient"
+            onClick={() => removeIngredient(ingredientIndex)}
           >
-            <X className="w-4 h-4"/>
+            <X className="h-4 w-4" />
           </Button>
         </div>
       ))}
       <Button
         type="button"
-        variant={"outline"}
+        variant="outline"
+        size="sm"
+        className="w-fit"
         onClick={() =>
           appendIngredient({ amount: undefined, measurement: "", name: "" })
         }
       >
-        <Plus />
-        Add Ingredinent
+        <Plus className="h-4 w-4 mr-1.5" />
+        Add ingredient
       </Button>
     </div>
   );

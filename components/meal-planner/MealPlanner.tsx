@@ -227,7 +227,7 @@ export default function MealPlanner() {
           className={`grid-cols-1 md:grid-cols-2 gap-8 overflow-hidden ${plan?.timeframe ? "grid" : "block"}`}
         >
           {/* Main Form Card */}
-          <Card className="bg-card border border-border/40 shadow-sm relative overflow-hidden order-2 lg:order-0">
+          <Card className="bg-card border border-border/40 relative overflow-hidden order-2 lg:order-0">
             <CardHeader className="relative pb-8">
               <CardTitle className="text-3xl font-bold flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-primary text-primary-foreground">
@@ -266,14 +266,14 @@ export default function MealPlanner() {
                             <TabsList className="grid grid-cols-2 w-full h-14 rounded-lg bg-muted p-1.5 border border-border">
                               <TabsTrigger
                                 value="today"
-                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all font-semibold text-base"
+                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:text-primary transition-all font-semibold text-base"
                               >
                                 <Clock className="h-4 w-4 mr-2" />
                                 Today
                               </TabsTrigger>
                               <TabsTrigger
                                 value="full-week"
-                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all font-semibold text-base"
+                                className="rounded-xl data-[state=active]:bg-card data-[state=active]:text-primary transition-all font-semibold text-base"
                               >
                                 <Calendar className="h-4 w-4 mr-2" />
                                 Full Week

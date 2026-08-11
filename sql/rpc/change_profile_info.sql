@@ -36,13 +36,14 @@ BEGIN
 
     -- Upsert the profile_image if image data is provided
     IF _image_url IS NOT NULL OR _image_path IS NOT NULL THEN
-        INSERT INTO profile_image(profile_id, url, path)
-        VALUES (_profile_id, _image_url, _image_path)
-        ON CONFLICT (profile_id) DO UPDATE
-        SET
-            url = COALESCE(EXCLUDED.url, profile_image.url),
-            path = COALESCE(EXCLUDED.path, profile_image.path);
-        -- No need to check FOUND here, as upsert always "succeeds"
+        UPDATE profile_image
+        SET url = _image_url, path = _image_path
+        WHERE profile_id = _profile_id;
+
+        IF NOT FOUND THEN
+            INSERT INTO profile_image(profile_id, url, path)
+            VALUES (_profile_id, _image_url, _image_path);
+        END IF;
     END IF;
 
     IF NOT _profile_updated THEN
@@ -59,6 +60,8 @@ BEGIN
             SELECT row_to_json(img)
             FROM profile_image img
             WHERE img.profile_id = p.id
+            ORDER BY img.id DESC
+            LIMIT 1
         )
     ) INTO _updated_profile
     FROM profile p

@@ -27,7 +27,7 @@ export function AdminStatsCard({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-lg border bg-card p-6 shadow-sm",
+        "relative overflow-hidden rounded-lg border bg-card p-6",
         className,
       )}
     >

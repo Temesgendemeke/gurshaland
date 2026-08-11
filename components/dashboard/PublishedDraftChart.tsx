@@ -37,7 +37,7 @@ export function PublishedDraftChart({
 }: PublishedDraftChartProps) {
   if (loading) {
     return (
-      <Card className="rounded-xl border bg-card shadow-sm overflow-hidden">
+      <Card className="rounded-xl border bg-card overflow-hidden">
         <CardHeader className="border-b px-5 py-4">
           <CardTitle className="text-base font-semibold tracking-tight">
             Published vs Drafts
@@ -72,7 +72,7 @@ export function PublishedDraftChart({
 
   if (total === 0) {
     return (
-      <Card className="rounded-xl border bg-card shadow-sm overflow-hidden">
+      <Card className="rounded-xl border bg-card overflow-hidden">
         <CardHeader className="border-b px-5 py-4">
           <CardTitle className="text-base font-semibold tracking-tight">
             Published vs Drafts
@@ -88,7 +88,7 @@ export function PublishedDraftChart({
   }
 
   return (
-    <Card className="rounded-xl border bg-card shadow-sm overflow-hidden">
+    <Card className="rounded-xl border bg-card overflow-hidden">
       <CardHeader className="border-b px-5 py-4">
         <CardTitle className="text-base font-semibold tracking-tight">
           Published vs Drafts

@@ -31,7 +31,7 @@ const NutritionView = ({ nutrition }: NutritionViewProps) => {
     },
   ];
   return (
-    <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
+    <Card className="p-6 bg-card border border-border rounded-lg">
       <h3 className="text-xl heading-primary mb-3">Nutrition (per serving)</h3>
 
       <ul className="divide-y divide-border">

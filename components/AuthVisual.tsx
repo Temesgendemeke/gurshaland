@@ -42,7 +42,7 @@ const AuthVisual = () => {
 
       {/* Bottom Content */}
       {/* <div className="relative z-10 p-12 lg:p-16 pt-0">
-        <div className="max-w-lg rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md p-8 lg:p-10 shadow-2xl shadow-black/30">
+        <div className="max-w-lg rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md p-8 lg:p-10">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.25em] text-secondary">
             Ethiopian Cuisine
           </p>

@@ -1,8 +1,14 @@
 "use client";
 
-import { Plus, X } from "lucide-react";
+import { List, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   FormField,
@@ -18,13 +24,22 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import measurements from "@/constants/measurements";
-import { Ingredient, Instruction } from "@/utils/types/recipe";
+import { formSchema } from "@/utils/schema";
+import { z } from "zod";
+import {
+  FieldArrayWithId,
+  UseFieldArrayAppend,
+  UseFieldArrayRemove,
+  UseFormReturn,
+} from "react-hook-form";
+
+type FormValues = z.infer<typeof formSchema>;
 
 interface IngredientsFieldProps {
-  form: any;
-  ingredientFields: Ingredient[] | any;
-  appendIngredient: (ingredient: Omit<Ingredient, "id">) => void;
-  removeIngredient: (index: number) => void;
+  form: UseFormReturn<FormValues>;
+  ingredientFields: FieldArrayWithId<FormValues, "ingredients">[];
+  appendIngredient: UseFieldArrayAppend<FormValues, "ingredients">;
+  removeIngredient: UseFieldArrayRemove;
 }
 
 export default function IngredientsField({
@@ -34,156 +49,131 @@ export default function IngredientsField({
   removeIngredient,
 }: IngredientsFieldProps) {
   return (
-    <Card className="p-6 bg-card/70 border-border">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-foreground">Ingredients</h2>
-        <Button
-          onClick={() => appendIngredient({ item: "", amount: 0, notes: "" })}
-          type="button"
-          variant="outline"
-          size="sm"
-          className="border-primary/30 text-primary hover:bg-primary/10"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Ingredient
-        </Button>
-      </div>
-      <div className="space-y-4">
-        {ingredientFields.map((field: Ingredient, index: number) => (
+    <Card className="border-border bg-card/70">
+      <CardHeader className="space-y-2">
+        {/* <div className="flex items-center gap-2 text-primary">
+          <List className="h-5 w-5" />
+          <span className="text-xs font-semibold uppercase tracking-wider">
+            Ingredients
+          </span>
+        </div> */}
+        <CardTitle>Ingredients</CardTitle>
+        <CardDescription className="text-sm leading-6">
+          What you&apos;ll need to make it.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        {ingredientFields.map((field, index) => (
           <div
-            className={`flex  ${ingredientFields.length > 1 ? "border-primary/50 border-b p-4" : ""}`}
-            key={field.id!}
+            key={field.id}
+            className="flex flex-col gap-2 rounded-lg border border-border/60 p-4 sm:p-5"
           >
-            <div className="grid flex-grow md:grid-cols-3 gap-4 items-start">
-              <FormField
-                control={form.control}
-                name={`ingredients.${index}.amount`}
-                render={({
-                  field,
-                }: {
-                  field: {
-                    name: string;
-                    value: string;
-                    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-                    onBlur: () => void;
-                    ref: React.Ref<HTMLInputElement>;
-                  };
-                }) => (
-                  <FormItem className="">
-                    <FormControl>
-                      <Input placeholder="Amount (e.g., 2 cups)" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+              <div className="grid flex-1 gap-3 md:grid-cols-3">
+                <FormField
+                  control={form.control}
+                  name={`ingredients.${index}.amount`}
+                  render={({ field }) => (
+                    <FormItem className="gap-2">
+                      <FormControl>
+                        <Input
+                          className="h-11"
+                          placeholder="Amount"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`ingredients.${index}.unit`}
+                  render={({ field }) => (
+                    <FormItem className="gap-2">
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger className="h-11 w-full">
+                            <SelectValue placeholder="Unit" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background">
+                            {measurements.map((measurement) => (
+                              <SelectItem
+                                key={measurement.code}
+                                value={measurement.code}
+                              >
+                                {measurement.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`ingredients.${index}.item`}
+                  render={({ field }) => (
+                    <FormItem className="gap-2">
+                      <FormControl>
+                        <Input
+                          className="h-11"
+                          placeholder="Ingredient name"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-              <FormField
-                control={form.control}
-                name={`ingredients.${index}.unit`}
-                render={({
-                  field,
-                }: {
-                  field: {
-                    name: string;
-                    value: string;
-                    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-                    onBlur: () => void;
-                    ref: React.Ref<HTMLInputElement>;
-                  };
-                }) => (
-                  <FormItem className="">
-                    <FormControl>
-                      <Select
-                        onValueChange={(value) =>
-                          field.onChange({
-                            target: {
-                              value: value as string,
-                            },
-                          } as React.ChangeEvent<HTMLInputElement>)
-                        }
-                        value={field.value}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select unit" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {measurements.map((measurement) => (
-                            <SelectItem
-                              key={measurement.code}
-                              value={measurement.code}
-                            >
-                              {measurement.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`ingredients.${index}.item`}
-                render={({
-                  field,
-                }: {
-                  field: {
-                    name: string;
-                    value: string;
-                    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-                    onBlur: () => void;
-                    ref: React.Ref<HTMLInputElement>;
-                  };
-                }) => (
-                  <FormItem className="">
-                    <FormControl>
-                      <Input placeholder="Ingredient name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`ingredients.${index}.notes`}
-                render={({
-                  field,
-                }: {
-                  field: {
-                    name: string;
-                    value: string;
-                    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-                    onBlur: () => void;
-                    ref: React.Ref<HTMLInputElement>;
-                  };
-                }) => (
-                  <FormItem className="md:col-span-3">
-                    <FormControl>
-                      <Input placeholder="Notes (optional)" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="">
               {ingredientFields.length > 1 && (
                 <Button
                   onClick={() => removeIngredient(index)}
                   variant="ghost"
-                  size="sm"
+                  size="icon"
                   type="button"
-                  className="text-error hover:text-error/80 hover:bg-error/10"
+                  className="h-10 w-10 shrink-0 self-start text-error hover:bg-error/10 hover:text-error"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="h-4 w-4" />
                 </Button>
               )}
             </div>
+
+            <FormField
+              control={form.control}
+              name={`ingredients.${index}.notes`}
+              render={({ field }) => (
+                <FormItem className="gap-2">
+                  <FormControl>
+                    <Input
+                      className="h-11"
+                      placeholder="Notes (optional)"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
           </div>
         ))}
-      </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => appendIngredient({ item: "", amount: 0, notes: "" })}
+          className="w-full border-dashed border-primary/40 text-primary hover:bg-primary/10"
+        >
+          <Plus className="mr-2 h-4 w-4" />
+          Add Ingredient
+        </Button>
+      </CardContent>
     </Card>
   );
 }

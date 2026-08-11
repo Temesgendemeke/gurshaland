@@ -119,7 +119,7 @@ export const updateProfile = async (profile_id: string, profileData: {
   full_name?: string;
   username?: string;
   bio?: string;
-  image_url?: string;
+  image?: { url: string; path: string };
 }) => {
   const supabase = createClient();
   const { data, error } = await supabase.rpc("change_profile_info", {
@@ -189,20 +189,26 @@ export const deleteProfilePicture = async (
   image_path: string,
 ) => {
   const supabase = createClient();
-  // Delete the profile image row for the given profile_id
-  const { error, data, count } = await supabase
+
+  // Delete the profile image row for the given profile_id and path
+  const { error } = await supabase
     .from("profile_image")
     .delete()
-    .eq("profile_id", profile_id);
+    .eq("profile_id", profile_id)
+    .eq("path", image_path);
 
   if (error) throw error;
 
-  // If any rows were deleted, also remove the image from storage
-  // Supabase JS v2: .delete() returns { data, error }, where data is an array of deleted rows
-  if (count) {
-    const { error: storageError } = await supabase.storage.from(BUCKET).remove([
-      image_path,
-    ]);
-    if (storageError) throw storageError;
-  }
+  // Remove the image from storage
+  const { error: storageError } = await supabase.storage
+    .from(BUCKET)
+    .remove([image_path]);
+  if (storageError) throw storageError;
+};
+
+//  remove a profile picture file from storage without touching the database
+export const removeProfilePictureFile = async (image_path: string) => {
+  const supabase = createClient();
+  const { error } = await supabase.storage.from(BUCKET).remove([image_path]);
+  if (error) throw error;
 };

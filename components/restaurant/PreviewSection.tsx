@@ -1,28 +1,26 @@
-import { UseFormReturn, FieldValues } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import {
-  MapPin,
-  Phone,
-  Mail,
-  Globe,
-  UtensilsCrossed,
-  Star,
-  ChefHat,
-  MapPinHouseIcon,
-} from "lucide-react";
+  IconMapPin as MapPin,
+  IconPhone as Phone,
+  IconMail as Mail,
+  IconGlobe as Globe,
+  IconCooker as UtensilsCrossed,
+  IconStar as Star,
+  IconChefHat as ChefHat,
+  IconPhoto as ImageIcon,
+} from "@tabler/icons-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
-import { GetRestaurentType, RestaurantFormType } from "@/schema/restaurent";
 
 const PreviewSection = ({
   form,
 }: {
-  form: UseFormReturn<RestaurantFormType | GetRestaurentType>;
+  form: UseFormReturn<any>;
 }) => {
   const menuItems = form.watch("menu") || [];
-  const coverImage = form.watch("image")?.url || "/placeholder.svg";
+  const coverImage = form.watch("image")?.url || "";
   const name = form.watch("name");
   const cuisine = form.watch("cuisines");
   const description = form.watch("description");
@@ -30,13 +28,13 @@ const PreviewSection = ({
   const phone = form.watch("phone");
   const email = form.watch("email");
   const website = form.watch("website");
-  const gallery = form.watch("gallery");
+  const gallery = form.watch("gallery") || [];
 
   return (
-    <div className="flex flex-col h-full bg-background  text-card-foreground">
+    <div className="flex flex-col text-card-foreground">
       {/* Cover Image Area */}
-      <div className="relative h-48 w-full bg-muted overflow-hidden">
-        {coverImage && coverImage !== "/placeholder.svg" ? (
+      <div className="relative h-44 w-full overflow-hidden bg-muted">
+        {coverImage ? (
           <Image
             src={coverImage}
             alt="Restaurant Cover"
@@ -45,49 +43,53 @@ const PreviewSection = ({
             className="object-cover"
           />
         ) : (
-          <div className="flex flex-col items-center justify-center h-full text-muted-foreground bg-secondary/30">
-            <UtensilsCrossed className="h-12 w-12 mb-2 opacity-20" />
-            <span className="text-sm font-medium opacity-50">Cover Image</span>
+          <div className="flex h-full w-full flex-col items-center justify-center bg-secondary/20 text-muted-foreground">
+            <UtensilsCrossed className="mb-2 h-10 w-10 opacity-20" strokeWidth={1.5} />
+            <span className="text-xs font-medium uppercase tracking-wider opacity-50">
+              Cover Image
+            </span>
           </div>
         )}
-        <div className="absolute top-4 right-4">
-          <Badge
-            variant="secondary"
-            className="bg-background text-foreground border border-border/50"
-          >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute right-3 top-3">
+          <Badge className="border border-border bg-background/90 text-foreground backdrop-blur-sm">
             Preview
           </Badge>
         </div>
       </div>
 
-      <div className="p-6 space-y-6">
+      <div className="space-y-6 p-5">
         {/* Header Info */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-start">
-            <div>
-              <h2 className="text-2xl font-bold leading-tight tracking-tight">
-                {name || "Restaurant Name"}
-              </h2>
-              <div className="flex items-center gap-2 mt-1 text-muted-foreground">
-                <UtensilsCrossed className="h-3.5 w-3.5" />
-                <span className="text-sm font-medium">
-                  {cuisine?.join(", ") || "Cuisine Type"}
-                </span>
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="font-gosh text-2xl font-bold leading-tight tracking-tight">
+              {name || "Restaurant Name"}
+            </h2>
+            {cuisine?.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {cuisine.filter(Boolean).map((c: string, i: number) => (
+                  <span
+                    key={i}
+                    className="rounded-full border border-border/70 bg-card px-2 py-0.5 text-[0.625rem] font-medium text-muted-foreground"
+                  >
+                    {c}
+                  </span>
+                ))}
               </div>
-            </div>
-            <div className="flex gap-0.5 text-warning">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} className="h-4 w-4 fill-current" />
-              ))}
-            </div>
+            )}
+          </div>
+          <div className="flex shrink-0 gap-0.5 text-secondary">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Star key={i} className="h-4 w-4 fill-current" strokeWidth={1.5} />
+            ))}
           </div>
         </div>
 
-        <Separator />
+        <Separator className="opacity-40" />
 
         {/* Description */}
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             About
           </h3>
           <p className="text-sm leading-relaxed text-muted-foreground/90">
@@ -97,31 +99,36 @@ const PreviewSection = ({
         </div>
 
         {/* Contact Details */}
-        <div className="grid gap-3 p-4 bg-secondary/20 rounded-lg border border-border/50">
+        <div className="space-y-3 rounded-xl border border-border/60 bg-muted/30 p-4">
           <div className="flex items-center gap-3 text-sm">
-            <MapPin className="h-4 w-4 text-primary shrink-0" />
-            <span className="truncate">{address || "Address"}</span>
+            <MapPin className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
+            <span className="truncate text-foreground">
+              {address || "Address"}
+            </span>
           </div>
           <div className="flex items-center gap-3 text-sm">
-            <Phone className="h-4 w-4 text-primary shrink-0" />
-            <span className="truncate">{phone || "Phone Number"}</span>
+            <Phone className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
+            <span className="truncate text-foreground">
+              {phone || "Phone Number"}
+            </span>
           </div>
           <div className="flex items-center gap-3 text-sm">
-            <Mail className="h-4 w-4 text-primary shrink-0" />
-            <span className="truncate">{email || "Email Address"}</span>
+            <Mail className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
+            <span className="truncate text-foreground">
+              {email || "Email Address"}
+            </span>
           </div>
           {website && (
             <Link
-              href={website || ""}
+              href={website}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 text-sm"
             >
-              <Globe className="h-4 w-4 text-primary shrink-0" />
-              <span className="truncate ">{website}</span>
+              <Globe className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
+              <span className="truncate text-foreground">{website}</span>
             </Link>
           )}
-
           {form.watch("google_map_url") && (
             <Link
               href={form.watch("google_map_url") || ""}
@@ -129,8 +136,10 @@ const PreviewSection = ({
               rel="noopener noreferrer"
               className="flex items-center gap-3 text-sm"
             >
-              <MapPinHouseIcon className="h-4 w-4 text-primary shrink-0" />
-              <span className="truncate ">Google map</span>
+              <MapPin className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
+              <span className="truncate text-foreground">
+                Google Maps
+              </span>
             </Link>
           )}
         </div>
@@ -138,87 +147,78 @@ const PreviewSection = ({
         {/* Menu Preview */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-              <ChefHat className="h-4 w-4" />
+            <h3 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <ChefHat className="h-4 w-4" strokeWidth={1.5} />
               Menu Highlights
             </h3>
             <Badge variant="outline" className="text-xs font-normal">
-              {menuItems.length} Items
+              {menuItems.length} {menuItems.length === 1 ? "Item" : "Items"}
             </Badge>
           </div>
 
-          <ScrollArea className="h-[11.25rem] w-full pr-4">
-            {menuItems.length > 0 ? (
-              <div className="space-y-3">
-                {menuItems.map((item: any, index: number) => (
+          {menuItems.length > 0 ? (
+            <div className="space-y-1.5">
+              {menuItems
+                .filter((item: any) => item?.name)
+                .map((item: any, index: number) => (
                   <div
                     key={index}
-                    className="flex justify-between items-start group p-2 rounded-md hover:bg-secondary/40 transition-colors"
+                    className="flex items-baseline gap-2 text-sm"
                   >
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium leading-none group-hover:text-primary transition-colors">
-                        {item.name || "Dish Name"}
-                      </p>
-                      <p className="text-xs text-muted-foreground line-clamp-1">
-                        {item.description || "Description..."}
-                      </p>
-                    </div>
-                    <div className="font-semibold text-sm whitespace-nowrap pl-4">
-                      {item.price.amount
-                        ? `${item.price.amount} ${item.price.currency}`
-                        : "-"}
-                    </div>
+                    <span className="truncate font-medium text-foreground">
+                      {item.name}
+                    </span>
+                    <span className="flex-1 border-b border-dashed border-border" />
+                    <span className="shrink-0 font-semibold text-primary">
+                      {item.price?.amount ? (
+                        `${item.price.amount} ${item.price.currency}`
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      )}
+                    </span>
                   </div>
                 ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-32 text-muted-foreground border-2 border-dashed rounded-lg border-muted">
-                <span className="text-xs">No menu items added</span>
-              </div>
-            )}
-          </ScrollArea>
+            </div>
+          ) : (
+            <div className="flex h-20 items-center justify-center rounded-xl border border-dashed border-border bg-muted/20 text-xs text-muted-foreground">
+              No menu items added yet
+            </div>
+          )}
+        </div>
 
-          {/* Gallery Preview */}
+        {/* Gallery Preview */}
+        {gallery.length > 0 && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                <UtensilsCrossed className="h-4 w-4" />
+              <h3 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <ImageIcon className="h-4 w-4" strokeWidth={1.5} />
                 Gallery
               </h3>
               <Badge variant="outline" className="text-xs font-normal">
-                {form.watch("gallery")?.length} Images
+                {gallery.filter((g: any) => g?.url).length} Images
               </Badge>
             </div>
-            {/* <ScrollArea className="h-[11.25rem] w-full pr-4"> */}
-            <div className="columns-2 gap-3 space-y-3">
-              {form.watch("gallery")?.[0]?.url ? (
-                form.watch("gallery")?.map((item: any, index: number) => (
+            <div className="grid grid-cols-3 gap-2">
+              {gallery
+                .filter((g: any) => g?.url)
+                .slice(0, 6)
+                .map((item: any, index: number) => (
                   <div
                     key={index}
-                    className="break-inside-avoid mb-3 overflow-hidden rounded-lg border border-border/50 bg-muted/30"
+                    className="relative aspect-square overflow-hidden rounded-lg border border-border/60 bg-muted/30"
                   >
-                    <div className="relative w-full">
-                      <Image
-                        src={item?.url ? item?.url : "/placeholder.svg"}
-                        width={200}
-                        height={200}
-                        unoptimized
-                        alt={`Gallery ${index + 1}`}
-                        className="w-full h-auto object-cover"
-                      />
-                    </div>
+                    <Image
+                      src={item.url}
+                      alt={`Gallery ${index + 1}`}
+                      fill
+                      unoptimized
+                      className="object-cover"
+                    />
                   </div>
-                ))
-              ) : (
-                <div className="flex flex-col items-center justify-center h-32 text-muted-foreground border-2 border-dashed rounded-lg border-muted col-span-2 break-inside-avoid w-full">
-                  <span className="text-xs">No gallery images added</span>
-                </div>
-              )}
+                ))}
             </div>
-
-            {/* </ScrollArea> */}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

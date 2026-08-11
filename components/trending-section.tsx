@@ -64,7 +64,7 @@ export function TrendingSection() {
             {newRecipes?.map((recipe) => (
               <Card
                 key={recipe.id}
-                className="bg-card border border-border shadow-sm group"
+                className="bg-card border border-border group"
               >
                 <div className="relative">
                   <img

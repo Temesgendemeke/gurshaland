@@ -1,5 +1,5 @@
 import React from "react";
-import { Controller, useFormContext, UseFormReturn } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import {
   Select,
@@ -8,14 +8,16 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
-import { ChefHat } from "lucide-react";
+import { CircleDashed } from "lucide-react";
 
 const StatusSelect = ({ form }: { form: UseFormReturn<any> }) => {
   return (
-    <Card className="bg-card/70 border-border">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <ChefHat className="h-5 w-5" />
+    <Card className="rounded-xl border-border/70 shadow-[0_1px_2px_hsl(215_15%_10%/0.04)]">
+      <CardHeader className="border-b border-border/60">
+        <CardTitle className="flex items-center gap-3 text-lg">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <CircleDashed className="h-4 w-4" />
+          </span>
           Status
         </CardTitle>
       </CardHeader>
@@ -29,7 +31,7 @@ const StatusSelect = ({ form }: { form: UseFormReturn<any> }) => {
               onValueChange={field.onChange}
               value={field.value}
             >
-              <SelectTrigger>
+              <SelectTrigger className="h-11">
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent className="bg-background">

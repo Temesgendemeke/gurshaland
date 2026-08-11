@@ -161,7 +161,7 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
               aria-live="polite"
               className="absolute inset-0 z-30 flex items-center justify-center bg-background/70 backdrop-blur-sm"
             >
-              <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-4 shadow-lg">
+              <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-4">
                 <Loader2 className="h-5 w-5 animate-spin text-primary" />
                 <span className="text-sm font-medium text-foreground">
                   Saving recipe...

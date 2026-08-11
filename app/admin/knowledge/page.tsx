@@ -106,7 +106,7 @@ export default function KnowledgeBasePage() {
         </div>
       </div>
 
-      <div className="bg-card rounded-xl shadow-sm border overflow-hidden">
+      <div className="bg-card rounded-xl border overflow-hidden">
         <AdminDataTable columns={columns} data={data} loading={loading} />
       </div>
     </div>

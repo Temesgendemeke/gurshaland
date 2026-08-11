@@ -35,7 +35,7 @@ function timeAgo(iso: string | undefined): string {
 
 export function RecentActivity({ items, loading }: RecentActivityProps) {
   return (
-    <Card className="rounded-xl border bg-card shadow-sm overflow-hidden">
+    <Card className="rounded-xl border bg-card overflow-hidden">
       <CardHeader className="border-b px-5 py-4">
         <CardTitle className="text-base font-semibold tracking-tight">
           Recent Activity

@@ -36,7 +36,7 @@ const RecipeRating = ({ user_id, recipe_id, rating }: RecipeRatingProps) => {
   };
 
   return (
-    <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
+    <Card className="p-6 bg-card border border-border rounded-lg">
       <h2 className="text-xl font-bold text-foreground mb-4 flex items-center">
         Rate this recipe
       </h2>

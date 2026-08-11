@@ -1,3 +1,4 @@
+"use client";
 import {
   FormControl,
   FormField,
@@ -9,9 +10,15 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
-import { ChevronDown, ChevronUp, Trash2, GripVertical } from "lucide-react";
+import {
+  IconChevronDown as ChevronDown,
+  IconChevronUp as ChevronUp,
+  IconTrash as Trash,
+  IconGripVertical as GripVertical,
+} from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { currencies } from "@/constants/currencies";
+import { useMemo, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -36,22 +43,33 @@ const MenuInputSection = ({
   onToggle,
 }: MenuInputProps) => {
   const isExpanded = isOpen(index);
+  const [currencySearch, setCurrencySearch] = useState("");
+
+  const filteredCurrencies = useMemo(() => {
+    const q = currencySearch.trim().toLowerCase();
+    if (!q) return currencies;
+    return currencies.filter(
+      (curr) =>
+        curr.cc.toLowerCase().includes(q) ||
+        curr.name.toLowerCase().includes(q),
+    );
+  }, [currencySearch]);
 
   return (
     <Card
       className={cn(
-        "mb-4 transition-all duration-200 border-l-4",
+        "mb-4 overflow-hidden transition-all duration-200 border-l-4",
         isExpanded
-          ? "border-l-primary shadow-md"
-          : "border-l-transparent hover:border-l-muted-foreground/50 bg-background",
+          ? "border-l-primary"
+          : "border-l-transparent hover:border-l-muted-foreground/50",
       )}
     >
-      <CardHeader className="p-4 flex flex-row items-center justify-between space-y-0 bg-background">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 bg-muted/20 p-4">
         <div className="flex items-center gap-3">
-          <div className="cursor-grab active:cursor-grabbing text-muted-foreground">
-            <GripVertical size={20} />
+          <div className="cursor-grab text-muted-foreground active:cursor-grabbing">
+            <GripVertical className="h-5 w-5" strokeWidth={1.5} />
           </div>
-          <CardTitle className="text-lg font-medium">
+          <CardTitle className="font-gosh text-base font-bold">
             Menu Item {index + 1}
           </CardTitle>
         </div>
@@ -64,23 +82,23 @@ const MenuInputSection = ({
             className="h-8 w-8"
             type="button"
           >
-            {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+            {isExpanded ? <ChevronUp className="h-4 w-4" strokeWidth={2} /> : <ChevronDown className="h-4 w-4" strokeWidth={2} />}
           </Button>
           <Button
             variant="ghost"
             size="icon"
             aria-label="Remove menu item"
             onClick={onRemove}
-            className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive shadow-none"
+            className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
             type="button"
           >
-            <Trash2 size={18} />
+            <Trash className="h-4 w-4" strokeWidth={2} />
           </Button>
         </div>
       </CardHeader>
 
       {isExpanded && (
-        <CardContent className="p-4 pt-0 grid gap-4 animate-in fade-in slide-in-from-top-2 duration-200 bg-background">
+        <CardContent className="grid gap-4 p-4 pt-4 animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="col-span-2">
               <FormField
@@ -126,46 +144,33 @@ const MenuInputSection = ({
                       <SelectTrigger>
                         <SelectValue placeholder="Select a currency" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background p-0 max-h-[18.75rem]">
-                        <div className="p-2 sticky top-0 bg-background z-10 border-b">
+                      <SelectContent className="bg-background max-h-[18.75rem] p-0">
+                        <div className="sticky top-0 z-10 border-b bg-background p-2">
                           <Input
                             placeholder="Search currency..."
                             className="h-8"
-                            onChange={(e) => {
-                              // We need to handle search state locally or via a ref if we want to avoid re-rendering the whole form too much,
-                              // but for now let's use a simple state in the component if we can, or just direct DOM manipulation if we can't add state easily.
-                              // Actually, since this is inside a map, we should probably extract this currency selector or use a more robust Combobox.
-                              // However, to strictly follow the user request "make search functional" within this structure:
-                              const value = e.target.value.toLowerCase();
-                              const items = document.querySelectorAll(
-                                `.currency-item-${index}`,
-                              );
-                              items.forEach((item) => {
-                                const text =
-                                  item.textContent?.toLowerCase() || "";
-                                if (text.includes(value)) {
-                                  (item as HTMLElement).style.display = "flex";
-                                } else {
-                                  (item as HTMLElement).style.display = "none";
-                                }
-                              });
-                            }}
+                            value={currencySearch}
+                            onChange={(e) =>
+                              setCurrencySearch(e.target.value)
+                            }
                             onKeyDown={(e) => e.stopPropagation()}
                           />
                         </div>
-                        <div className="overflow-y-auto max-h-[15.625rem]">
-                          {currencies.map((curr) => (
-                            <SelectItem
-                              key={curr.cc}
-                              value={curr.cc}
-                              className={` currency-item-${index}`}
-                            >
-                              <span>{curr.cc}</span>
-                              <span className="ml-2 text-muted-foreground text-xs truncate ">
-                                {curr.name}
-                              </span>
-                            </SelectItem>
-                          ))}
+                        <div className="max-h-[15.625rem] overflow-y-auto">
+                          {filteredCurrencies.length > 0 ? (
+                            filteredCurrencies.map((curr) => (
+                              <SelectItem key={curr.cc} value={curr.cc}>
+                                <span>{curr.cc}</span>
+                                <span className="ml-2 truncate text-xs text-muted-foreground">
+                                  {curr.name}
+                                </span>
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <p className="px-3 py-6 text-center text-xs text-muted-foreground">
+                              No currency found
+                            </p>
+                          )}
                         </div>
                       </SelectContent>
                     </Select>
@@ -185,7 +190,7 @@ const MenuInputSection = ({
                 <FormControl>
                   <Textarea
                     placeholder="Describe the dish..."
-                    className="resize-none min-h-[5rem]"
+                    className="min-h-[5rem] resize-none"
                     {...field}
                   />
                 </FormControl>

@@ -7,6 +7,7 @@ import { TrendingRecipe } from "@/utils/types/recipe";
 import RecipeListSkeleton from "./skeleton/RecipeList";
 import RecipeCard from "./recipe/RecipeCard";
 import SectionText from "./SectionText";
+import Reveal from "./Reveal";
 
 export function TrendingRecipes() {
   const trendingRecipes = recipeStore((state) => state.trendingRecipes);
@@ -27,7 +28,7 @@ export function TrendingRecipes() {
     <section className="space-y-8 mt-4">
       <SectionText
         header="Trending Recipes"
-        description="Recipes that are hot this week"
+        description="What everyone is cooking right now"
         seeMoreLink="/recipes?sorted_by=trending"
       />
 
@@ -50,11 +51,13 @@ export function TrendingRecipes() {
       {loading ? (
         <RecipeListSkeleton />
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
-          {trendingRecipes.map((recipe: TrendingRecipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} badge="trending" />
-          ))}
-        </div>
+        <Reveal>
+          <div className="grid md:grid-cols-3 gap-6">
+            {trendingRecipes.map((recipe: TrendingRecipe) => (
+              <RecipeCard key={recipe.id} recipe={recipe} badge="trending" />
+            ))}
+          </div>
+        </Reveal>
       )}
     </section>
   );

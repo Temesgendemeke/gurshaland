@@ -77,7 +77,7 @@ export default function RecipeDetailPage() {
               <img
                 src={recipe.image.url || "/placeholder.svg"}
                 alt={recipe.title}
-                className="w-full h-96 object-cover rounded-lg shadow-md"
+                className="w-full h-96 object-cover rounded-lg"
               />
             </div>
 
@@ -180,7 +180,7 @@ export default function RecipeDetailPage() {
               <RecipeCulturalNote culturalNote={recipe?.culturalNote} />
 
               {/* youtube video section */}
-              <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
+              <Card className="p-6 bg-card border border-border rounded-lg">
                 <YoutubeVideoSection
                   videoId={recipe.youtube_video_id}
                   videoQuery={recipe.youtube_search_query}
@@ -202,7 +202,7 @@ export default function RecipeDetailPage() {
               />
 
               {/* Comments */}
-              <Card className="p-6 bg-card border border-border rounded-lg shadow-modern">
+              <Card className="p-6 bg-card border border-border rounded-lg">
                 <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
                   <MessageRoundedDetail className="w-5 h-5 mr-2" />
                   Comments ({recipe.comments.length})

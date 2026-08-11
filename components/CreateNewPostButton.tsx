@@ -11,7 +11,7 @@ const CreateNewPostButton = ({
   className?: string;
 }) => {
   return (
-    <Button asChild className={cn("gap-2 shadow-sm", className)}>
+    <Button asChild className={cn("gap-2", className)}>
       <Link
         href={`${postType === "Blog" ? "/blog/create" : "/recipes/create"}`}
       >

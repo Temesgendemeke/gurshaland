@@ -11,3 +11,4 @@ todos
 - implement view and like and comment
 - payment with polar sandbox or real
 - make every pros i dont care if you up late
+- 

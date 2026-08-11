@@ -20,40 +20,45 @@ const ContentRecipeInstruction = ({
     fields: instructionsFields,
     append: appendInstruction,
     remove: removeInstruction,
-  } = useFieldArray({ control, name: `content.${index}.recipe.instructions` });
+  } = useFieldArray({
+    control,
+    name: `contents.${index}.recipe.instructions`,
+  });
 
   return (
-    <div className="space-y-4 ml-4 border-l-2 pl-2 ">
-      <Label className="flex gap-2">
-        <ListOrdered className="w-4 h-4" />
+    <div className="flex flex-col gap-2.5 border-l-2 border-primary/20 pl-4">
+      <Label className="flex items-center gap-2 font-semibold">
+        <ListOrdered className="h-4 w-4 text-primary" />
         Instructions
       </Label>
       {instructionsFields.map((instruction, instructionIndex) => (
-        <div className="flex items-center  gap-2" key={instruction.id}>
+        <div className="flex items-center gap-2" key={instruction.id}>
           <Input
             {...form.register(
-              `content.${index}.recipe.instructions.${instructionIndex}`
+              `contents.${index}.recipe.instructions.${instructionIndex}`,
             )}
             type="text"
             placeholder="e.g. Mix the flour and water together."
           />
-
           <Button
-            variant={"outline"}
+            variant="outline"
+            size="icon"
+            aria-label="Remove instruction"
             onClick={() => removeInstruction(instructionIndex)}
             type="button"
           >
-            <X className="" />
+            <X className="h-4 w-4" />
           </Button>
         </div>
       ))}
       <Button
-        variant={"outline"}
-        className="flex"
+        variant="outline"
+        size="sm"
+        className="w-fit"
         type="button"
         onClick={() => appendInstruction("")}
       >
-        <Plus className="w-4 h-4" />
+        <Plus className="h-4 w-4 mr-1.5" />
         Add Instruction
       </Button>
     </div>

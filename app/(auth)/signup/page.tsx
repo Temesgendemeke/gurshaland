@@ -1,7 +1,7 @@
 "use client";
 import { signupFormSchema } from "@/utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +23,7 @@ import PasswordField from "@/components/PasswordField";
 import Logo from "@/components/Logo";
 import { ArrowLeft, Sparkles } from "lucide-react";
 
-const Page = () => {
+const SignupPage = () => {
   const form = useForm({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -178,7 +178,7 @@ const Page = () => {
 
               <Button
                 type="submit"
-                className="w-full h-12 rounded-xl text-base font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 shadow-sm mt-2"
+                className="w-full h-12 rounded-xl text-base font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 mt-2"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? (
@@ -236,4 +236,10 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <SignupPage />
+    </Suspense>
+  );
+}

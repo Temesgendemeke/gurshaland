@@ -129,128 +129,125 @@
 @layer base {
   :root {
     /*
-      "Berbere & Injera" theme — replaces the generic
-      terracotta/cream "mocha" palette with tones pulled
-      from actual Ethiopian spice, coffee, and textile colors.
-      Fewer, more saturated, more deliberate.
+      "Berbere & Slate" theme — replaces the banned warm beige/brass/espresso
+      AI-default palette with Terracotta + Slate: warm rust primary against
+      cool grey neutrals, no brass. Ethiopian flag green as functional accent.
     */
 
-    /* Base: injera-tan background, near-black coffee text (not muddy brown-gray) */
-    --background: 36 24% 95%;
-    --foreground: 20 20% 12%;
+    /* Base: cool slate background, near-black text (not warm espresso) */
+    --background: 215 25% 96%;
+    --foreground: 215 20% 10%;
 
-    --card: 36 20% 98%;
-    --card-foreground: 20 20% 12%;
-    --popover: 36 20% 98%;
-    --popover-foreground: 20 20% 12%;
+    --card: 215 20% 98%;
+    --card-foreground: 215 20% 10%;
+    --popover: 215 20% 98%;
+    --popover-foreground: 215 20% 10%;
 
-    /* Primary: berbere red — the actual spice color, not a generic terracotta */
+    /* Primary: berbere red — authentic spice color, kept as brand anchor */
     --primary: 12 68% 42%;
-    --primary-foreground: 36 30% 97%;
+    --primary-foreground: 215 25% 97%;
 
-    /* Secondary: warm gold, tied to the flag, used as a real functional accent
-       (buttons/highlights) instead of sitting unused */
-    --secondary: 42 88% 50%;
-    --secondary-foreground: 20 30% 12%;
+    /* Secondary: deep slate — functional, not decorative brass/gold */
+    --secondary: 215 15% 18%;
+    --secondary-foreground: 215 25% 97%;
 
-    --muted: 34 14% 90%;
-    --muted-foreground: 25 10% 40%;
+    --muted: 215 15% 88%;
+    --muted-foreground: 215 10% 35%;
 
-    --accent: 34 20% 88%;
-    --accent-foreground: 20 20% 12%;
+    --accent: 215 15% 90%;
+    --accent-foreground: 215 20% 10%;
 
     --destructive: 6 72% 46%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 30 14% 82%;
-    --input: 30 14% 82%;
+    --border: 215 15% 82%;
+    --input: 215 15% 82%;
     --ring: 12 68% 42%;
     --radius: 0.625rem;
 
     --chart-1: 12 68% 42%;
-    --chart-2: 142 40% 34%;
-    --chart-3: 42 88% 50%;
-    --chart-4: 20 20% 22%;
+    --chart-2: 142 45% 35%;
+    --chart-3: 215 15% 25%;
+    --chart-4: 215 20% 15%;
     --chart-5: 200 30% 40%;
 
-    --sidebar-background: 36 22% 93%;
-    --sidebar-foreground: 20 20% 12%;
+    --sidebar-background: 215 22% 94%;
+    --sidebar-foreground: 215 20% 10%;
     --sidebar-primary: 12 68% 42%;
-    --sidebar-primary-foreground: 36 30% 97%;
-    --sidebar-accent: 34 14% 90%;
-    --sidebar-accent-foreground: 20 20% 12%;
-    --sidebar-border: 30 14% 82%;
+    --sidebar-primary-foreground: 215 25% 97%;
+    --sidebar-accent: 215 15% 88%;
+    --sidebar-accent-foreground: 215 20% 10%;
+    --sidebar-border: 215 15% 82%;
     --sidebar-ring: 12 68% 42%;
 
-    /* Semantic colors — muted so they don't fight the palette, but distinct from each other */
-    --success: 142 38% 32%;
-    --warning: 42 80% 42%;
+    /* Semantic colors — distinct, not fighting the palette */
+    --success: 142 45% 32%;
+    --warning: 35 85% 45%;
     --error: 6 68% 45%;
-    --info: 200 35% 40%;
+    --info: 200 40% 40%;
     --popular: 12 60% 40%;
 
-    /* Ethiopian flag colors — now actually used as functional accents,
-       not decorative unused tokens (see .flag-accent-* utilities below) */
-    --ethiopian-green: 142 60% 28%;
+    /* Ethiopian flag colors — green as functional accent, red = primary, yellow removed as accent */
+    --ethiopian-green: 142 55% 30%;
     --ethiopian-yellow: 42 88% 50%;
     --ethiopian-red: 12 68% 42%;
 
-    --gradient-from: 36 26% 95%;
-    --gradient-via: 34 20% 96%;
-    --gradient-to: 30 22% 93%;
+    --gradient-from: 215 25% 96%;
+    --gradient-via: 215 20% 97%;
+    --gradient-to: 215 22% 94%;
   }
 
   .dark {
-    --background: 20 24% 9%;
-    --foreground: 36 20% 92%;
-    --card: 20 20% 13%;
-    --card-foreground: 36 20% 92%;
-    --popover: 20 20% 13%;
-    --popover-foreground: 36 20% 92%;
+    --background: 215 25% 8%;
+    --foreground: 215 20% 92%;
+    --card: 215 20% 12%;
+    --card-foreground: 215 20% 92%;
+    --popover: 215 20% 12%;
+    --popover-foreground: 215 20% 92%;
 
     --primary: 12 65% 54%;
-    --primary-foreground: 20 24% 9%;
+    --primary-foreground: 215 25% 8%;
 
-    --secondary: 42 80% 55%;
-    --secondary-foreground: 20 24% 9%;
+    --secondary: 215 15% 22%;
+    --secondary-foreground: 215 25% 92%;
 
-    --muted: 20 16% 18%;
-    --muted-foreground: 34 10% 68%;
+    --muted: 215 15% 18%;
+    --muted-foreground: 215 10% 65%;
 
-    --accent: 20 16% 18%;
-    --accent-foreground: 36 20% 92%;
+    --accent: 215 15% 18%;
+    --accent-foreground: 215 20% 92%;
 
     --destructive: 6 60% 40%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 20 16% 22%;
-    --input: 20 16% 22%;
+    --border: 215 15% 22%;
+    --input: 215 15% 22%;
     --ring: 12 65% 54%;
 
     --chart-1: 12 65% 54%;
-    --chart-2: 142 40% 44%;
-    --chart-3: 42 80% 55%;
-    --chart-4: 36 20% 80%;
+    --chart-2: 142 45% 45%;
+    --chart-3: 215 15% 35%;
+    --chart-4: 215 20% 80%;
     --chart-5: 200 35% 55%;
 
-    --sidebar-background: 20 24% 7%;
-    --sidebar-foreground: 36 20% 92%;
+    --sidebar-background: 215 24% 7%;
+    --sidebar-foreground: 215 20% 92%;
     --sidebar-primary: 12 65% 54%;
-    --sidebar-primary-foreground: 20 24% 9%;
-    --sidebar-accent: 20 16% 18%;
-    --sidebar-accent-foreground: 36 20% 92%;
-    --sidebar-border: 20 16% 22%;
+    --sidebar-primary-foreground: 215 25% 8%;
+    --sidebar-accent: 215 15% 18%;
+    --sidebar-accent-foreground: 215 20% 92%;
+    --sidebar-border: 215 15% 22%;
     --sidebar-ring: 12 65% 54%;
 
-    --success: 142 36% 52%;
-    --warning: 42 75% 58%;
+    --success: 142 40% 52%;
+    --warning: 35 80% 55%;
     --error: 6 62% 58%;
-    --info: 200 40% 56%;
+    --info: 200 45% 56%;
     --popular: 12 55% 55%;
 
-    --gradient-from: 20 24% 9%;
-    --gradient-via: 20 20% 11%;
-    --gradient-to: 20 24% 7%;
+    --gradient-from: 215 25% 8%;
+    --gradient-via: 215 20% 10%;
+    --gradient-to: 215 24% 6%;
   }
 }
 
@@ -306,6 +303,15 @@ html body[data-scroll-locked] {
     min-height: 100vh;
     min-height: 100dvh;
   }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .modern-gradient-bg {
@@ -328,18 +334,12 @@ html body[data-scroll-locked] {
 }
 
 .ethiopian-accent {
-  background: hsl(var(--popular));
+  background: hsl(var(--ethiopian-green));
 }
 
-/* Flag-color accents — small, deliberate uses instead of a decorative
-   unused set of tokens. Use sparingly: e.g. a green checkmark on a
-   verified recipe, a gold star rating, a thin red underline on an
-   active nav item. */
+/* Flag-color accents — green as functional accent, red = primary, yellow removed */
 .flag-accent-green {
   color: hsl(var(--ethiopian-green));
-}
-.flag-accent-gold {
-  color: hsl(var(--ethiopian-yellow));
 }
 .flag-accent-red {
   color: hsl(var(--ethiopian-red));
@@ -409,7 +409,7 @@ html body[data-scroll-locked] {
   }
 
   .modern-card {
-    @apply bg-card border border-border/50 shadow-sm transition-colors;
+    @apply bg-card border border-border/50 transition-colors;
   }
 
   .modern-card-hover {
@@ -417,7 +417,7 @@ html body[data-scroll-locked] {
   }
 
   .btn-primary-modern {
-    @apply bg-primary hover:opacity-90 text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:shadow-xl transition-all duration-200;
+    @apply bg-primary hover:opacity-90 text-primary-foreground font-semibold transition-all duration-200;
   }
 
   .modern-bckground-gradient {
@@ -431,7 +431,7 @@ html body[data-scroll-locked] {
   /* Secondary button now uses the gold flag-color directly instead of a
      warning/popular gradient blend that had no thematic reasoning */
   .btn-secondary-modern {
-    @apply bg-secondary hover:opacity-90 text-secondary-foreground font-semibold shadow-lg shadow-secondary/25 hover:shadow-xl transition-all duration-200;
+    @apply bg-secondary hover:opacity-90 text-secondary-foreground font-semibold transition-all duration-200;
   }
 
   .heading-primary {
@@ -467,36 +467,11 @@ html body[data-scroll-locked] {
   @apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200;
 }
 
-.shadow-modern {
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.shadow-modern-lg {
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-.dark .shadow-modern {
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.3),
-    0 2px 4px -1px rgba(0, 0, 0, 0.2);
-}
-
-.dark .shadow-modern-lg {
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.3),
-    0 4px 6px -2px rgba(0, 0, 0, 0.2);
-}
-
 .transition-standard {
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease;
+    color 0.2s ease;
 }
 
 ::selection {

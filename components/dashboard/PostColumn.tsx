@@ -90,7 +90,7 @@ function PostActionsCell({
       </DropdownMenu>
 
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialogContent className="border border-error/20 shadow-sm">
+        <AlertDialogContent className="border border-error/20">
           <AlertDialogHeader>
             <AlertDialogTitle>Delete this post?</AlertDialogTitle>
             <AlertDialogDescription>

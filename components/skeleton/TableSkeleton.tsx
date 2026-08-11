@@ -15,7 +15,7 @@ import {
 
 const TableSkeleton = () => {
   return (
-    <div className="relative rounded-xl border bg-card shadow-sm overflow-hidden">
+    <div className="relative rounded-xl border bg-card overflow-hidden">
       {/* Subtle shimmer overlay */}
       <ShimmerSkeleton className="absolute inset-0 opacity-20 pointer-events-none" />
       {/* Header skeleton with shimmer */}

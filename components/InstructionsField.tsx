@@ -1,7 +1,13 @@
 "use client";
-import { Plus, X } from "lucide-react";
+import { Plus, X, ListOrdered } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -11,18 +17,25 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { useAuth } from "@/store/useAuth";
 import Image from "next/image";
-import { Instruction, InstructionImage } from "@/utils/types/recipe";
 import { deleteImage } from "@/actions/Recipe/image";
-import ImageBoxSkeleton from "./skeleton/ImageBoxSkeleton";
 import { Skeleton } from "./ui/skeleton";
+import { formSchema } from "@/utils/schema";
+import { z } from "zod";
+import {
+  FieldArrayWithId,
+  UseFieldArrayAppend,
+  UseFieldArrayRemove,
+  UseFormReturn,
+} from "react-hook-form";
+
+type FormValues = z.infer<typeof formSchema>;
 
 type InstructionsFieldProps = {
-  form: any;
-  instructionFields: Instruction[] | any;
-  appendInstruction: (instruction: Omit<Instruction, "id">) => void;
-  removeInstruction: (index: number) => void;
+  form: UseFormReturn<FormValues>;
+  instructionFields: FieldArrayWithId<FormValues, "instructions">[];
+  appendInstruction: UseFieldArrayAppend<FormValues, "instructions">;
+  removeInstruction: UseFieldArrayRemove;
 };
 
 export default function InstructionsField({
@@ -31,68 +44,79 @@ export default function InstructionsField({
   appendInstruction,
   removeInstruction,
 }: InstructionsFieldProps) {
-  const user = useAuth((store) => store.user);
   const watchInstructions = form.watch("instructions");
 
-  const handleImage = (input_cls: string) => {
-    document.getElementById(input_cls)?.click();
+  type PreviewImage = {
+    path?: string;
+    url?: string;
+    instruction_id?: number;
+    file?: File;
+  };
+
+  const handleImage = (inputId: string) => {
+    document.getElementById(inputId)?.click();
   };
 
   const handleImageChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     step: number,
   ) => {
-    const files = e.target.files;
-    const file = files && files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
     form.setValue(`instructions.${step - 1}.image`, {
       step,
       url: "",
       path: "",
       file,
-    });
+    } as any);
+  };
 
-    // if (file && user) {
-    //   try {
-    //     const url = await uploadImage(file, user.id);
-    //     field.onChange({ path: url });
-    //   } catch (error) {
-    //     toast.error("Failed to upload image.");
-    //   }
-    // }
+  const handleImageDelete = async (e: React.MouseEvent, step: number) => {
+    e.stopPropagation();
+    const image = form.getValues(`instructions.${step - 1}.image`);
+    if (image?.path) {
+      await deleteImage(image.path);
+    }
+    form.setValue(`instructions.${step - 1}.image`, undefined);
   };
 
   const handleInstructionDelete = async (
     e: React.MouseEvent,
     index: number,
   ) => {
-    removeInstruction(index);
     await handleImageDelete(e, index + 1);
-    await removeInstruction(index);
-  };
-
-  const handleImageDelete = async (e: React.MouseEvent, step: number) => {
-    e.stopPropagation();
-    await deleteImage(form.getValues(`instructions.${step - 1}.image.path`));
-    form.setValue(`instructions.${step - 1}.image`, undefined);
+    removeInstruction(index);
   };
 
   return (
-    <Card className="p-6 bg-card/70 border-border">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-foreground">Instructions</h2>
-      </div>
-
-      <div className="space-y-6">
-        {instructionFields.map((field: any, index: number) => (
+    <Card className="border-border bg-card/70">
+      <CardHeader className="space-y-2">
+        {/* <div className="flex items-center gap-2 text-primary">
+          <ListOrdered className="h-5 w-5" />
+          <span className="text-xs font-semibold uppercase tracking-wider">
+            Instructions
+          </span>
+        </div> */}
+        <CardTitle>Instructions</CardTitle>
+        <CardDescription className="text-sm leading-6">
+          Step-by-step how to prepare the dish.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        {instructionFields.map((field, index) => (
           <div
             key={field.id}
-            className="border border-border/60 rounded-lg p-4"
+            className="space-y-5 rounded-lg border border-border/60 p-4 sm:p-5 md:p-6"
           >
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-lg font-semibold text-foreground">
-                Step {index + 1}
-              </span>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                  {index + 1}
+                </span>
+                <span className="text-base font-semibold text-foreground">
+                  Step {index + 1}
+                </span>
+              </div>
               <FormField
                 control={form.control}
                 name={`instructions.${index}.step`}
@@ -104,41 +128,48 @@ export default function InstructionsField({
                 <Button
                   onClick={(e) => handleInstructionDelete(e, index)}
                   variant="ghost"
-                  size="sm"
+                  size="icon"
                   type="button"
-                  className="text-error hover:text-error/80 hover:bg-error/10"
+                  className="h-9 w-9 text-error hover:bg-error/10 hover:text-error"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="h-4 w-4" />
                 </Button>
               )}
             </div>
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
+
+            <div className="grid gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
               <div
-                className="border-2 border-dashed border-border/70 rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer"
+                className="flex min-h-52 cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-border/70 p-6 text-center transition-colors hover:border-primary/50"
                 onClick={() =>
                   document.getElementById(`input-${index + 1}`)?.click()
                 }
               >
                 {watchInstructions[index].image ? (
-                  <div className="flex flex-col items-center w-full  ">
-                    <div className="w-60  sm:w-80 h-56 ">
-                      {watchInstructions[index].image?.url ? (
+                  <div className="flex w-full flex-col items-center">
+                    <div className="h-56 w-full">
+                      {(watchInstructions[index].image as PreviewImage)?.url ? (
                         <Image
                           src={
-                            watchInstructions[index].image?.file
-                              ? (URL.createObjectURL(
-                                  watchInstructions[index].image?.file,
-                                ) ?? "")
-                              : (watchInstructions[index].image?.url ?? "")
+                            (watchInstructions[index].image as PreviewImage)
+                              ?.file
+                              ? URL.createObjectURL(
+                                  (
+                                    watchInstructions[index]
+                                      .image as PreviewImage
+                                  )?.file as File,
+                                )
+                              : ((
+                                  watchInstructions[index].image as PreviewImage
+                                )?.url ?? "")
                           }
                           width={800}
                           height={400}
                           alt="Recipe Preview"
-                          className="h-full w-full rounded-lg mb-2 object-cover"
+                          className="h-full w-full rounded-lg object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full">
-                          <Skeleton className="w-full h-full rounded-lg animate-pulse " />
+                        <div className="h-full w-full">
+                          <Skeleton className="h-full w-full animate-pulse rounded-lg" />
                         </div>
                       )}
                     </div>
@@ -147,81 +178,86 @@ export default function InstructionsField({
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="text-error hover:text-error/80 hover:bg-error/10"
+                      className="mt-3 text-error hover:bg-error/10 hover:text-error/80"
                       onClick={(e) => handleImageDelete(e, index + 1)}
                     >
-                      <X className="w-4 h-4 mr-1" />
+                      <X className="mr-1 h-4 w-4" />
                       Remove
                     </Button>
                   </div>
                 ) : (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="mt-4 border-primary/30 text-primary hover:bg-primary/10"
-                    onClick={() => handleImage(`input-${index + 1}`)}
-                  >
-                    Choose File
-                  </Button>
+                  <>
+                    <p className="text-sm font-medium text-foreground/80">
+                      Step Image
+                    </p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="border-primary/30 text-primary hover:bg-primary/10"
+                      onClick={() => handleImage(`input-${index + 1}`)}
+                    >
+                      Choose File
+                    </Button>
+                  </>
                 )}
-                {/* {
-
-                } */}
               </div>
-              <FormField
-                control={form.control}
-                name={`instructions.${index}.image`}
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormControl>
-                      <Input
-                        id={`input-${index + 1}`}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => handleImageChange(e, index + 1)}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`instructions.${index}.title`}
-                render={({ field }) => (
-                  <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Step Title</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="e.g., Prepare the batter"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`instructions.${index}.time`}
-                render={({ field }) => (
-                  <FormItem className="col-span-2 lg:col-span-1">
-                    <FormLabel>Time Required(minute)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., 15n" {...field} type="number" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+
+              <div className="flex flex-col gap-2">
+                <FormField
+                  control={form.control}
+                  name={`instructions.${index}.title`}
+                  render={({ field }) => (
+                    <FormItem className="gap-2">
+                      <FormLabel>Step Title</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="h-11"
+                          placeholder="e.g., Prepare the batter"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`instructions.${index}.time`}
+                  render={({ field }) => (
+                    <FormItem className="gap-2">
+                      <FormLabel>Time Required (minute)</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="h-11"
+                          placeholder="e.g., 15"
+                          type="number"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
+
+            <input
+              id={`input-${index + 1}`}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => handleImageChange(e, index + 1)}
+            />
+
             <FormField
               control={form.control}
               name={`instructions.${index}.description`}
               render={({ field }) => (
-                <FormItem className="mb-4">
-                  <FormLabel>Instructions</FormLabel>
+                <FormItem className="gap-2">
+                  <FormLabel>Describe this step</FormLabel>
                   <FormControl>
                     <Textarea
+                      className="min-h-30 resize-y"
                       placeholder="Describe this step in detail..."
                       rows={3}
                       {...field}
@@ -231,47 +267,47 @@ export default function InstructionsField({
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name={`instructions.${index}.tips`}
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="gap-2">
                   <FormLabel>Tips (Optional)</FormLabel>
                   <FormControl>
                     <Textarea
+                      className="min-h-20 resize-y"
                       placeholder="Any helpful tips for this step..."
                       rows={2}
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
-
-            <div className="flex justify-end">
-              <Button
-                type="button"
-                onClick={() =>
-                  appendInstruction({
-                    title: "",
-                    description: "",
-                    time: "",
-                    tips: "",
-                    step: instructionFields.length + 1,
-                    image: undefined,
-                  })
-                }
-                variant="outline"
-                size="sm"
-                className="my-5 border-primary/40 text-primary hover:bg-primary/10"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Step
-              </Button>
-            </div>
           </div>
         ))}
-      </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() =>
+            appendInstruction({
+              title: "",
+              description: "",
+              time: 0,
+              tips: "",
+              step: instructionFields.length + 1,
+              image: undefined,
+            })
+          }
+          className="w-full border-dashed border-primary/40 text-primary hover:bg-primary/10"
+        >
+          <Plus className="mr-2 h-4 w-4" />
+          Add Step
+        </Button>
+      </CardContent>
     </Card>
   );
 }

@@ -1,5 +1,5 @@
-﻿"use client";
-import React, { useState } from "react";
+"use client";
+import React, { Suspense, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -29,7 +29,7 @@ import GoBackNoText from "@/components/GoBackNoText";
 
 export type LoginFormSchema = z.infer<typeof loginFormSchema>;
 
-const Page = () => {
+const LoginPage = () => {
   const form = useForm<LoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -189,7 +189,7 @@ const Page = () => {
 
                 <Button
                   type="submit"
-                  className="w-full h-12 rounded-xl text-base font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 shadow-sm mt-2"
+                  className="w-full h-12 rounded-xl text-base font-bold tracking-wide bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 mt-2"
                   disabled={form.formState.isSubmitting}
                 >
                   {form.formState.isSubmitting ? (
@@ -249,4 +249,10 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <LoginPage />
+    </Suspense>
+  );
+}

@@ -1,108 +1,76 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Card } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Clock, Calendar, ArrowRight, Hash } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { format_date } from "@/utils/formatdate";
 import { Blog } from "@/utils/types/blog";
-import { cn } from "@/lib/utils";
 
 export default function BlogPostCard({ post }: { post: Blog }) {
+  const authorName =
+    post.author?.full_name || post.author?.username || "Anonymous";
+
   return (
-    <Link href={`/blog/${post.slug}`} className="group h-full block">
-      <Card className="flex h-full flex-col overflow-hidden border border-muted bg-card shadow-sm hover:shadow-sm transition-colors">
-        {/* Image Section */}
-        <div className="relative aspect-video w-full overflow-hidden">
-          <Image
-            src={post?.image?.url || "/placeholder.svg"}
-            alt={post.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+    <Link
+      href={`/blog/${post.slug}`}
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/60 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    >
+      {/* Image */}
+      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+        <Image
+          src={post?.image?.url || "/placeholder.svg"}
+          alt={post.title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
+      </div>
 
-          {/* Category Badge */}
-          <div className="absolute left-3 top-3">
-            <Badge className="border-0 bg-background text-foreground font-medium hover:bg-muted shadow-sm">
-              {post.category}
-            </Badge>
+      {/* Body */}
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <p className="mb-3 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-primary">
+          {post.category}
+        </p>
+
+        <h3 className="mb-2 line-clamp-2 text-lg font-bold leading-snug tracking-tight text-foreground transition-colors duration-200 group-hover:text-primary">
+          {post.title}
+        </h3>
+
+        <p className="mb-5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+          {post.subtitle}
+        </p>
+
+        <div className="mt-auto">
+          <div className="flex items-center justify-between border-t border-border/70 pt-4">
+            <div className="flex min-w-0 items-center gap-2.5">
+              <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border/70 bg-muted text-xs font-bold text-muted-foreground">
+                {post.author?.avatar ? (
+                  <Image
+                    src={post.author.avatar}
+                    alt={authorName}
+                    fill
+                    sizes="36px"
+                    className="object-cover"
+                  />
+                ) : (
+                  authorName[0]?.toUpperCase() || "A"
+                )}
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-xs font-semibold text-foreground">
+                  {authorName}
+                </p>
+                <p className="text-[0.6875rem] text-muted-foreground">
+                  {format_date(post?.created_at as string)} · {post.read_time}
+                </p>
+              </div>
+            </div>
+
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/70 text-muted-foreground transition-colors duration-200 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+              <ArrowUpRight className="h-4 w-4" />
+            </span>
           </div>
         </div>
-
-        {/* Content Section */}
-        <div className="flex flex-1 flex-col p-5">
-          {/* Date & Read Time */}
-          <div className="mb-3 flex items-center gap-3 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1.5">
-              <Calendar className="h-3.5 w-3.5" />
-              <span>{format_date(post?.created_at as string)}</span>
-            </div>
-            <div className="h-1 w-1 rounded-full bg-muted-foreground/30" />
-            <div className="flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5" />
-              <span>{post.read_time}</span>
-            </div>
-          </div>
-
-          <h3 className="mb-2 line-clamp-2 text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
-            {post.title}
-          </h3>
-
-          <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
-            {post.subtitle}
-          </p>
-
-          <div className="mt-auto">
-            {/* Tags */}
-            {post.tags && post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {post.tags.slice(0, 2).map((tag, idx) => (
-                  <span
-                    key={`${post.slug}-tag-${idx}`}
-                    className="inline-flex items-center text-[0.625rem] font-medium text-muted-foreground bg-muted px-2 py-1 rounded-md"
-                  >
-                    <Hash className="w-2.5 h-2.5 mr-1 opacity-50" /> {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            <div className="flex items-center justify-between border-t border-border pt-4 mt-2">
-              {/* Author */}
-              <div className="flex items-center gap-3">
-                <div className="h-9 w-9 overflow-hidden rounded-full border border-border bg-muted shrink-0 relative">
-                  {post.author?.avatar ? (
-                    <Image
-                      src={post.author.avatar}
-                      alt={post.author.full_name}
-                      fill
-                      className="object-cover"
-                      sizes="36px"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-muted text-xs font-bold text-muted-foreground">
-                      {post.author?.full_name?.[0]?.toUpperCase() || "A"}
-                    </div>
-                  )}
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs font-semibold text-foreground line-clamp-1">
-                    {post.author?.full_name || "Anonymous"}
-                  </span>
-                  <span className="text-[0.625rem] text-muted-foreground">
-                    @{post.author?.username || "unknown"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Arrow */}
-              {/* <div className="rounded-full border border-border bg-background p-2 text-muted-foreground transition-colors duration-200 group-hover:text-primary">
-                <ArrowRight className="h-4 w-4" />
-              </div> */}
-            </div>
-          </div>
-        </div>
-      </Card>
+      </div>
     </Link>
   );
 }

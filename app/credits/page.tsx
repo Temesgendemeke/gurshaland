@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Coins, Loader2, Sparkles, CheckCircle2 } from "lucide-react";
 import { Header } from "@/components/header";
@@ -16,7 +16,7 @@ import { getCredits, createCreditCheckout } from "@/actions/credits";
 import { useAuth } from "@/store/useAuth";
 import { toast } from "sonner";
 
-export default function CreditsPage() {
+function CreditsPageContent() {
   const user = useAuth((store) => store.user);
   const searchParams = useSearchParams();
   const [credits, setCredits] = useState<number | null>(null);
@@ -168,5 +168,13 @@ export default function CreditsPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function CreditsPage() {
+  return (
+    <Suspense fallback={null}>
+      <CreditsPageContent />
+    </Suspense>
   );
 }

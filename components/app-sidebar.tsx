@@ -34,6 +34,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import BackNavigation from "./BackNavigation";
 import Logout from "./Logout";
 import Image from "next/image";
+import useProfile from "@/store/Profile";
+import { use, useEffect, useState } from "react";
+import { getProfileByID } from "@/actions/profile/getProfile";
 
 const items = [
   { title: "Home", url: "/dashboard", icon: Home },
@@ -52,6 +55,8 @@ export function AppSidebar() {
   const displayName =
     user?.user_metadata?.full_name || user?.email || "Account";
   const avatarUrl = user?.user_metadata?.avatar_url;
+  // const profile = useProfile((store) => store.profile);
+  const [profile, setProfile] = useState<any>(null);
   const initials = displayName.charAt(0).toUpperCase();
 
   const isActive = (itemUrl: string) => {
@@ -73,6 +78,19 @@ export function AppSidebar() {
   const handleMenuItemClick = () => {
     setTimeout(() => setOpenMobile(false), 100);
   };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (user?.id) {
+        // const data = await useProfile
+        //   .getState()
+        //   .setProfile(await getProfileByID(user.id));
+        const data = await getProfileByID(user.id);
+        setProfile(data);
+      }
+    };
+    fetchProfile();
+  }, [user?.id]);
 
   return (
     <Sidebar collapsible="icon">
@@ -120,7 +138,7 @@ export function AppSidebar() {
                       tooltip={item.title}
                       className={`${
                         active
-                          ? "bg-muted/70 border-l-4 border-l-primary text-foreground shadow-sm"
+                          ? "bg-muted/70 border-l-4 border-l-primary text-foreground"
                           : "hover:bg-muted/40 hover:border-l-4 hover:border-l-border"
                       } p-4 transition-colors relative rounded-lg`}
                     >
@@ -164,7 +182,11 @@ export function AppSidebar() {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg flex-shrink-0">
-                    <AvatarImage src={avatarUrl} alt={displayName} />
+                    <AvatarImage
+                      src={profile?.image?.url ?? avatarUrl}
+                      alt={displayName}
+                      className="object-cover w-full h-full"
+                    />
                     <AvatarFallback className="rounded-lg">
                       {initials}
                     </AvatarFallback>

@@ -2,21 +2,21 @@ import { Award, Group, Users } from "lucide-react";
 
 export const why_gurshaland = [
     {
-        title: "Easy to Follow",
+        title: "Step by step",
         description:
-            "Our step-by-step instructions and helpful tips make cooking Ethiopian cuisine accessible for everyone, from beginners to seasoned chefs.",
+            "Every recipe walks you from the first pinch of berbere to a table-ready platter, with the small details that keep a stew from falling flat.",
         icon: Group,
     },
     {
-        title: "Community Driven",
+        title: "From the community",
         description:
-            "Join a vibrant community of food enthusiasts who share their culinary experiences, tips, and love for Ethiopian food.",
+            "Home cooks across Ethiopia and the diaspora trade tips, photos, and the adjustments that make a dish taste like it came from their kitchen.",
         icon: Users,
     },
     {
-        title: "Highly Rated",
+        title: "Tried and true",
         description:
-            "Explore recipes that have been tried and tested by our community, ensuring you get the best results every time.",
+            "Recipes our community has actually cooked and rated, so you can skip the trial and error and get straight to the good part.",
         icon: Award,
     },
 ];

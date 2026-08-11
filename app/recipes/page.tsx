@@ -1,199 +1,288 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { motion, useReducedMotion } from "motion/react";
 import { Header } from "@/components/header";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import { Search, Filter, Star, Clock, Users, ChefHat } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  getFeaturedRecipes,
-  getTrendingRecipes,
-  getRecipes,
-} from "@/actions/Recipe/recipe";
-import { toast } from "sonner";
-import { createClient } from "@/utils/supabase/client";
-
-import { useAuth } from "@/store/useAuth";
+import { ArrowDown, Search } from "lucide-react";
 import { recipeStore } from "@/store/Recipe";
 import RecipeListSkeleton from "@/components/skeleton/RecipeList";
-import { format_date } from "@/utils/formatdate";
-import format_time from "@/utils/format_time";
 import RecipeCard from "@/components/recipe/RecipeCard";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { cn } from "@/lib/utils";
+
+const POSTS_PER_PAGE = 6;
+
+const gridVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0 },
+};
+
+const SORTS = [
+  { value: "latest", label: "Latest" },
+  { value: "trending", label: "Trending" },
+  { value: "featured", label: "Featured" },
+];
+
+const CATEGORIES = [
+  "all",
+  "Bread",
+  "Meat",
+  "Vegetarian",
+  "Spices",
+  "Beverages",
+  "Desserts",
+];
+
+const DIFFICULTIES = ["all", "Easy", "Medium", "Hard"];
 
 function RecipesPageContent() {
-  const supabase = createClient();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const sorted_by = searchParams.get("sorted_by");
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
-  const [data, setData] = useState([]);
-  const user = useAuth((store) => store.user);
-  const fetchRecipes = recipeStore((store) => store.fetchRecipes);
-  const recipes = recipeStore((store) => store.recipes) || [];
+  const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
+  const reduceMotion = useReducedMotion();
+
+  const allRecipes = recipeStore((store) => store.recipes) || [];
+  const trendingRecipes = recipeStore((store) => store.trendingRecipes) || [];
+  const featuredRecipes = recipeStore((store) => store.featuredRecipes) || [];
   const loading = recipeStore((store) => store.loading);
-  const searchParams = useSearchParams();
-  const sorted_by = searchParams.get("sorted_by");
+  const fetchRecipes = recipeStore((store) => store.fetchRecipes);
+  const fetchTrendingRecipes = recipeStore(
+    (store) => store.fetchTrendingRecipes,
+  );
+  const fetchFeaturedRecipes = recipeStore(
+    (store) => store.fetchFeaturedRecipes,
+  );
+
+  const sort =
+    sorted_by === "trending" || sorted_by === "featured" ? sorted_by : "latest";
+
+  const recipes =
+    sort === "trending"
+      ? trendingRecipes
+      : sort === "featured"
+        ? featuredRecipes
+        : allRecipes;
 
   useEffect(() => {
-    fetchRecipes();
+    if (sort === "trending") fetchTrendingRecipes();
+    else if (sort === "featured") fetchFeaturedRecipes();
+    else fetchRecipes();
+  }, [sort, fetchRecipes, fetchTrendingRecipes, fetchFeaturedRecipes]);
 
-    const fetchRecipe = async () => {
-      try {
-        let data = [];
-        if (sorted_by == "trending") {
-          data = await getTrendingRecipes();
-        } else if (sorted_by == "featured") {
-          data = await getFeaturedRecipes();
-        } else {
-          data = await getRecipes();
-        }
-        console.log(data);
-        setData(data);
-      } catch (error) {
-        console.log(error);
-        toast.error("Failed to fetch recipes. Please try again.");
-      }
-    };
+  const handleSortChange = (value: string) => {
+    setVisibleCount(POSTS_PER_PAGE);
+    const params = new URLSearchParams(searchParams.toString());
+    if (value === "latest") params.delete("sorted_by");
+    else params.set("sorted_by", value);
+    const query = params.toString();
+    router.replace(query ? `/recipes?${query}` : "/recipes", { scroll: false });
+  };
 
-    fetchRecipe();
-  }, []);
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value);
+    setVisibleCount(POSTS_PER_PAGE);
+  };
 
-  const categories = [
-    "all",
-    "Bread",
-    "Meat",
-    "Vegetarian",
-    "Spices",
-    "Beverages",
-    "Desserts",
-  ];
-  const difficulties = ["all", "Easy", "Medium", "Hard"];
+  const handleDifficultyChange = (value: string) => {
+    setSelectedDifficulty(value);
+    setVisibleCount(POSTS_PER_PAGE);
+  };
 
-  const filteredRecipes = recipes.filter((recipe) => {
-    const matchesSearch =
-      recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      recipe.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      recipe.tags.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-    const matchesCategory =
-      selectedCategory === "all" || recipe.category.name === selectedCategory;
-    const matchesDifficulty =
-      selectedDifficulty === "all" ||
-      recipe.difficulty === selectedDifficulty.toLowerCase();
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    setVisibleCount(POSTS_PER_PAGE);
+  };
 
-    return matchesSearch && matchesCategory && matchesDifficulty;
-  });
+  const filteredRecipes = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    return recipes.filter((recipe) => {
+      const matchesSearch =
+        term === "" ||
+        recipe.title.toLowerCase().includes(term) ||
+        recipe.description.toLowerCase().includes(term) ||
+        (recipe.tags || []).some((tag) => tag.toLowerCase().includes(term));
+      const matchesCategory =
+        selectedCategory === "all" ||
+        recipe.category?.name === selectedCategory;
+      const matchesDifficulty =
+        selectedDifficulty === "all" ||
+        recipe.difficulty?.toLowerCase() === selectedDifficulty.toLowerCase();
+      return matchesSearch && matchesCategory && matchesDifficulty;
+    });
+  }, [recipes, searchTerm, selectedCategory, selectedDifficulty]);
+
+  const visibleRecipes = filteredRecipes.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredRecipes.length;
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       <Header />
 
-      <div className="mx-auto w-[calc(100%-1rem)] max-w-7xl px-6 py-12">
-        {/* Page Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4">
-            <span className="">Ethiopian Recipes</span>
-          </h1>
-          <p className="text-xl text-body max-w-2xl mx-auto">
-            Discover authentic Ethiopian dishes from our community of passionate
-            cooks
-          </p>
-        </div>
+      {/* Masthead */}
+      <header className="mx-auto w-full max-w-7xl px-4 pt-14 sm:px-6 md:pt-20">
+        <p className="mb-4 text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-primary">
+          The Gurshaland Kitchen
+        </p>
+        <h1 className="max-w-3xl text-5xl font-black leading-[1.04] tracking-tighter text-foreground sm:text-6xl lg:text-7xl">
+          Recipes Worth Cooking
+        </h1>
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+          Dishes from Ethiopian kitchens, collected and tested by our cooks.
+          Find your next meal by category or skill level.
+        </p>
+      </header>
 
-        {/* Search and Filters */}
-        <div className="modern-card rounded-lg p-2 mb-8 border border-border">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-              <Input
-                placeholder="Search recipes, ingredients, or tags..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-12 bg-background text-foreground border-border/50 focus-modern"
-              />
+      {/* Filters */}
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+        <div className="mt-12 border-t border-border/70 pb-2">
+          <div className="flex flex-col gap-3 py-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+            <div className="scrollbar-hide -mb-1 flex gap-2 overflow-x-auto pb-1">
+              {SORTS.map((s) => {
+                const active = sort === s.value;
+                return (
+                  <button
+                    key={s.value}
+                    onClick={() => handleSortChange(s.value)}
+                    className={cn(
+                      "shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97]",
+                      active
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                        : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
+                    )}
+                  >
+                    {s.label}
+                  </button>
+                );
+              })}
             </div>
 
-            <Select
-              value={selectedCategory}
-              onValueChange={setSelectedCategory}
-            >
-              <SelectTrigger className="w-full md:w-48 h-12 border-border bg-background text-foreground">
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category === "all" ? "All Categories" : category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select
-              value={selectedDifficulty}
-              onValueChange={setSelectedDifficulty}
-            >
-              <SelectTrigger className="w-full md:w-48 h-12 border-border bg-background text-foreground">
-                <SelectValue placeholder="Difficulty" />
-              </SelectTrigger>
-              <SelectContent>
-                {difficulties.map((difficulty) => (
-                  <SelectItem key={difficulty} value={difficulty}>
-                    {difficulty === "all" ? "All Levels" : difficulty}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Button className="btn-primary h-12 px-6">
-              <Filter className="w-4 h-4 mr-2" />
-              Filter
-            </Button>
+            <div className="relative lg:w-72">
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search recipes..."
+                value={searchTerm}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="h-11 rounded-full border-border bg-card pl-10"
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Results Count */}
-        <div className="mb-8">
-          <p className="text-muted-foreground">
-            Showing {filteredRecipes.length} of {recipes.length} recipes
-          </p>
-        </div>
-
-        {/* Recipe Grid */}
-        {loading ? (
-          <RecipeListSkeleton />
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredRecipes.map((recipe, index) => (
-              <RecipeCard recipe={recipe} key={index} />
-            ))}
+          <div className="scrollbar-hide -mb-1 flex gap-2 overflow-x-auto pb-1">
+            {CATEGORIES.map((category) => {
+              const active = selectedCategory === category;
+              return (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryChange(category)}
+                  className={cn(
+                    "shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97]",
+                    active
+                      ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                      : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
+                  )}
+                >
+                  {category === "all" ? "All categories" : category}
+                </button>
+              );
+            })}
           </div>
-        )}
 
-        {/* Load More */}
-        <div className="text-center mt-12">
-          <Button
-            variant="outline"
-            size="lg"
-            className="px-8 text-primary"
-          >
-            Load More Recipes
-          </Button>
+          <div className="scrollbar-hide -mb-1 flex gap-2 overflow-x-auto pb-1">
+            {DIFFICULTIES.map((difficulty) => {
+              const active = selectedDifficulty === difficulty;
+              return (
+                <button
+                  key={difficulty}
+                  onClick={() => handleDifficultyChange(difficulty)}
+                  className={cn(
+                    "shrink-0 rounded-full border px-4 py-1.5 text-xs font-semibold transition-all duration-200 active:scale-[0.97]",
+                    active
+                      ? "border-secondary bg-secondary text-secondary-foreground shadow-sm"
+                      : "border-border bg-transparent text-muted-foreground hover:border-secondary/40 hover:text-foreground",
+                  )}
+                >
+                  {difficulty === "all" ? "All levels" : difficulty}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
+      {/* Content */}
+      <div className="mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6">
+        {loading ? (
+          <RecipeListSkeleton />
+        ) : (
+          <>
+            <div className="mt-16 mb-8 flex items-end justify-between gap-4 border-b border-border/70 pb-5">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                The Collection
+              </h2>
+              <p className="shrink-0 text-sm text-muted-foreground">
+                {filteredRecipes.length}{" "}
+                {filteredRecipes.length === 1 ? "recipe" : "recipes"}
+              </p>
+            </div>
+
+            {filteredRecipes.length > 0 ? (
+              <>
+                <motion.div
+                  className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                  initial={reduceMotion ? false : "hidden"}
+                  animate="show"
+                  variants={gridVariants}
+                >
+                  {visibleRecipes.map((recipe) => (
+                    <motion.div
+                      key={recipe.id ?? recipe.slug}
+                      variants={cardVariants}
+                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <RecipeCard recipe={recipe} />
+                    </motion.div>
+                  ))}
+                </motion.div>
+
+                {hasMore && (
+                  <div className="mt-12 flex justify-center">
+                    <button
+                      onClick={() =>
+                        setVisibleCount((count) => count + POSTS_PER_PAGE)
+                      }
+                      className="group inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground transition-all duration-200 hover:border-primary/40 hover:text-primary active:scale-[0.98]"
+                    >
+                      Load more recipes
+                      <ArrowDown className="h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5" />
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="rounded-xl border border-dashed border-border bg-card/50 py-20 text-center">
+                <p className="text-lg font-semibold text-foreground">
+                  No recipes found
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Try a different search term, category, or skill level.
+                </p>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

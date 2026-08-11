@@ -15,7 +15,7 @@ const PreviewSection = ({ plan }: { plan: MealPlannerFormType }) => {
     <div className="grid gap-8 max-h-[calc(100vh-10rem)] overflow-hidden">
       {/* Main Plan */}
       <div className="lg:col-span-2 space-y-6">
-        <Card className="border shadow-sm bg-card">
+        <Card className="border bg-card">
           <CardHeader className="pb-4">
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <Badge className="bg-primary text-primary-foreground px-3 py-1">
@@ -119,7 +119,7 @@ const PreviewSection = ({ plan }: { plan: MealPlannerFormType }) => {
       <div className="space-y-6 w-full ">
         {/* Shopping List */}
         {plan.shoppingList?.length ? (
-          <Card className="border shadow-sm bg-card sticky top-4">
+          <Card className="border bg-card sticky top-4">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-bold flex items-center gap-2">
                 <div className="p-2 rounded-lg bg-primary">
@@ -150,7 +150,7 @@ const PreviewSection = ({ plan }: { plan: MealPlannerFormType }) => {
         ) : null}
 
         {/* Tips Card */}
-        <Card className="border shadow-sm bg-card">
+        <Card className="border bg-card">
           <CardHeader className="pb-4">
             <CardTitle className="text-xl font-bold flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-primary" />

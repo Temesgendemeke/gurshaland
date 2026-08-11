@@ -6,7 +6,7 @@ import {
   PulseSkeleton,
   StatsCardSkeleton,
 } from "./loading-skeleton";
-import { BarChart3, Users, FileText, TrendingUp } from "lucide-react";
+import { IconChartBar as BarChart3, IconUsers as Users, IconFileText as FileText, IconTrendingUp as TrendingUp } from "@tabler/icons-react";
 
 export function LoadingDemo() {
   const [isLoading, setIsLoading] = useState(false);

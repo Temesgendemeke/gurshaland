@@ -14,9 +14,8 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Camera, Mail, Lock, Pen } from "lucide-react";
+import { User, Camera, Lock } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { SettingProfileSchema } from "@/schema/SettingsProfile";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,6 +31,7 @@ import {
   updateProfile,
   upsertProfilePicure,
   deleteProfilePicture,
+  removeProfilePictureFile,
 } from "@/actions/profile/profile";
 import { useAuth } from "@/store/useAuth";
 import { Profile } from "@/utils/types/Settings";
@@ -41,7 +41,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 
 export default function SettingsPage() {
-  const router = useRouter();
   const [profile, setProfile] = useState<Profile>();
   const user = useAuth((store) => store.user);
   const [loading, setLoading] = useState<boolean>(true);
@@ -88,7 +87,8 @@ export default function SettingsPage() {
             err instanceof Error ? err.message : "Failed to load profile",
           );
           toast.error("Error", {
-            description: "Failed to load profile data. Please refresh the page.",
+            description:
+              "Failed to load profile data. Please refresh the page.",
           });
         } finally {
           setLoading(false);
@@ -118,29 +118,42 @@ export default function SettingsPage() {
 
       let imageUrl = data.image_url || "";
       let newImagePath: string | undefined;
+      const previousImagePath = profile?.image?.path;
 
       if (avatarFile) {
         const { url, path } = await upsertProfilePicure(user.id, avatarFile);
         imageUrl = url;
         newImagePath = path;
-      } else if (!imageUrl && profile?.image?.path) {
-        await deleteProfilePicture(user.id, profile.image.path);
+      } else if (!imageUrl && previousImagePath) {
+        await deleteProfilePicture(user.id, previousImagePath);
       }
 
       // Prepare the data for the database update
-      const updateData = {
+      const updateData: {
+        full_name: string;
+        username: string;
+        bio: string;
+        image?: { url: string; path: string };
+      } = {
         full_name: data.full_name,
         username: data.username,
         bio: data.bio,
-        image_url: imageUrl || undefined,
       };
+
+      if (imageUrl && newImagePath) {
+        updateData.image = { url: imageUrl, path: newImagePath };
+      }
 
       const updatedProfile = await updateProfile(user.id, updateData);
       setProfile(updatedProfile);
 
-      // Clean up the previous profile picture if a new one was uploaded
-      if (newImagePath && profile?.image?.path) {
-        await deleteProfilePicture(user.id, profile.image.path);
+      // Clean up the previous profile picture file (not the new one) from storage
+      if (
+        newImagePath &&
+        previousImagePath &&
+        newImagePath !== previousImagePath
+      ) {
+        await removeProfilePictureFile(previousImagePath);
       }
 
       setAvatarFile(null);
@@ -235,7 +248,7 @@ export default function SettingsPage() {
           <Card className="border-border bg-card">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-foreground">
-                <User className="h-5 w-5 text-muted-foreground" />
+                {/* <User className="h-5 w-5 text-muted-foreground" /> */}
                 Profile Settings
                 {form.formState.isDirty && (
                   <Badge variant="secondary" className="ml-2">
@@ -256,8 +269,10 @@ export default function SettingsPage() {
                       src={
                         avatarPreview ??
                         profile?.image?.url ??
+                        user?.user_metadata?.avatar_url ??
                         "/placeholder-user.jpg"
                       }
+                      className="object-cover w-full h-full"
                       alt="Profile"
                     />
                     <AvatarFallback className="bg-muted text-foreground text-xl font-semibold">
@@ -419,7 +434,7 @@ export default function SettingsPage() {
                     </Button>
                     <Button
                       type="submit"
-                      className="btn-primary-modern"
+                      className=""
                       disabled={form.formState.isSubmitting || loading}
                     >
                       {form.formState.isSubmitting || loading
@@ -433,47 +448,11 @@ export default function SettingsPage() {
           </Card>
         )}
 
-        {/* Email Settings */}
-        <Card className="border-border bg-card">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-foreground">
-              <Mail className="h-5 w-5 text-muted-foreground" />
-              Email Settings
-            </CardTitle>
-            <CardDescription>
-              Manage your password and security preferences
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="text-xs text-muted-foreground font-medium">
-                  Email Address
-                </span>
-                <span className="text-base font-semibold tracking-tight text-foreground">
-                  {user?.email}
-                </span>
-              </div>
-              <Button
-                variant="outline"
-                size="icon"
-                className="border-border"
-                aria-label="Edit Email"
-                onClick={() =>
-                  router.push("/dashboard/settings/change-email")
-                }
-              >
-                <Pen className="h-4 w-4 text-muted-foreground" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Security Settings */}
         <Card className="border-border bg-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground">
-              <Lock className="h-5 w-5 text-muted-foreground" />
+              {/* <Lock className="h-5 w-5 text-muted-foreground" /> */}
               Security Settings
             </CardTitle>
             <CardDescription>
@@ -481,7 +460,7 @@ export default function SettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <Button asChild className="btn-primary-modern gap-2">
+            <Button asChild className=" gap-2">
               <Link href="/dashboard/settings/change-password">
                 <Lock className="h-4 w-4" />
                 Change Password

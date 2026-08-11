@@ -17,7 +17,7 @@ const ItemList = ({ form, index }: ItemListProps) => {
     remove: removeItem,
   } = useFieldArray({
     control: form.control,
-    name: `content.${index}.items`,
+    name: `contents.${index}.items`,
   });
   return (
     <div className="space-y-2">
@@ -28,7 +28,7 @@ const ItemList = ({ form, index }: ItemListProps) => {
       {itemFields.map((item, itemIndex) => (
         <div key={item.id} className="flex gap-2">
           <Input
-            {...form.register(`content.${index}.items.${itemIndex}`)}
+            {...form.register(`contents.${index}.items.${itemIndex}`)}
             placeholder="List item"
           />
           <Button

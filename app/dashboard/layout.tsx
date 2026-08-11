@@ -1,3 +1,5 @@
+"use client";
+import { getProfileByID } from "@/actions/profile/getProfile";
 import { AppSidebar } from "@/components/app-sidebar";
 import { DashboardBreadcrumb } from "@/components/dashboard/DashboardBreadcrumb";
 import { Separator } from "@/components/ui/separator";
@@ -6,12 +8,24 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import useProfile from "@/store/Profile";
+import { useAuth } from "@/store/useAuth";
+import { useEffect } from "react";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const setProfile = useProfile((store) => store.setProfile);
+  const user = useAuth((store) => store.user);
+
+  useEffect(() => {
+    (() => {
+      const data = getProfileByID(user?.id as string);
+      setProfile(data);
+    })();
+  });
   return (
     <SidebarProvider>
       <AppSidebar />

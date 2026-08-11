@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Sparkles } from "lucide-react";
+import { IconMenu as Menu, IconSparkles as Sparkle } from "@tabler/icons-react";
 import { useState } from "react";
 
 import { useAuth } from "@/store/useAuth";
@@ -43,8 +43,8 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background border-b border-border">
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 sm:px-6 py-3">
+    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-sm border-b border-border">
+      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 sm:px-6 py-3 h-16">
         <div className="flex items-center">
           <Logo />
         </div>
@@ -65,7 +65,7 @@ export function Header() {
               href="/ai-features"
               className={`${linkClass("/ai-features")} font-medium flex items-center space-x-1`}
             >
-              {/* <Sparkles className="w-4 h-4" /> */}
+              <Sparkle className="w-4 h-4" strokeWidth={1.5} />
               <span>AI Features</span>
             </Link>
           </nav>
@@ -85,7 +85,7 @@ export function Header() {
             aria-label="Toggle navigation menu"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-5 h-5" strokeWidth={2} />
           </Button>
           <AccountDropDown user={user} />
         </div>
@@ -100,6 +100,7 @@ export function Header() {
                 key={index}
                 href={navigation.route}
                 className={`${linkClass(navigation.route)} font-medium`}
+                onClick={() => setIsMenuOpen(false)}
               >
                 {navigation.page}
               </Link>
@@ -107,8 +108,9 @@ export function Header() {
             <Link
               href="/ai-features"
               className={`${linkClass("/ai-features")} font-medium flex items-center space-x-1`}
+              onClick={() => setIsMenuOpen(false)}
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkle className="w-4 h-4" strokeWidth={1.5} />
               <span>AI Features</span>
             </Link>
             <CreateAPost

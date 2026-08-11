@@ -103,7 +103,7 @@ const AdminDashboard = () => {
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main Content: Knowledge Base List */}
-        <Card className="lg:col-span-2 overflow-hidden border bg-card shadow-sm">
+        <Card className="lg:col-span-2 overflow-hidden border bg-card">
           <CardHeader className="pb-3 border-b bg-muted/30">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>

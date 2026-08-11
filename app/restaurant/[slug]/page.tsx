@@ -1,21 +1,42 @@
 import { getRestaurantBySlug } from "@/actions/restaurant/crud";
 import { Header } from "@/components/header";
-import Image from "next/image";
 import {
-  MapPin,
-  Star,
-  Phone,
-  Globe,
-  Mail,
-  Image as ImageIcon,
-  UtensilsCrossed,
-} from "lucide-react";
+  IconMapPin as MapPin,
+  IconStar as Star,
+  IconPhone as Phone,
+  IconGlobe as Globe,
+  IconMail as Mail,
+  IconCooker as UtensilsCrossed,
+  IconChevronLeft as ChevronLeft,
+} from "@tabler/icons-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FallbackImage } from "@/components/fallback-image";
-import { BackButton } from "@/components/back-button";
+import Link from "next/link";
+
+function SectionHeading({ title }: { title: string }) {
+  return (
+    <h2 className="font-gosh text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+      {title}
+    </h2>
+  );
+}
+
+function BackButton({ href, className }: { href: string; className?: string }) {
+  return (
+    <Link
+      href={href}
+      className={className}
+      aria-label="Back to restaurants"
+    >
+      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/30 text-white transition-colors hover:bg-black/40">
+        <ChevronLeft className="h-5 w-5" strokeWidth={2} />
+      </div>
+    </Link>
+  );
+}
 
 export default async function RestaurantPage({
   params,
@@ -27,108 +48,110 @@ export default async function RestaurantPage({
 
   if (!restaurant) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-[100dvh] flex flex-col">
         <Header />
-        <div className="flex-1 flex items-center justify-center">
-          <p className="text-muted-strong text-lg">Restaurant not found.</p>
+        <div className="flex-1 flex items-center justify-center px-4">
+          <p className="text-muted-foreground text-lg">Restaurant not found.</p>
         </div>
       </div>
     );
   }
 
+  const categories =
+    (restaurant as any).category &&
+    (Array.isArray((restaurant as any).category)
+      ? (restaurant as any).category.map((cat: any) => cat.name || cat)
+      : [typeof (restaurant as any).category === "object"
+          ? ((restaurant as any).category as any).name
+          : (restaurant as any).category]);
+
+  const hasDirections = restaurant.google_map_url || restaurant.address;
+  const heroImage = (restaurant as any).image?.url;
+
   return (
-    <div className="min-h-screen flex flex-col pb-20">
+    <div className="min-h-[100dvh] flex flex-col">
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero Section - Asymmetric, content left, image right on desktop */}
       <div className="max-w-7xl mx-auto w-full px-4 md:px-8 mt-6 md:mt-8">
-        <div className="relative h-[25vh] md:h-[40vh] w-full overflow-hidden rounded-lg shadow-modern">
-          {(restaurant as any).image?.url ? (
-          <>
-            <FallbackImage
-              src={(restaurant as any).image.url}
-              alt={restaurant.name || "Restaurant"}
-              fill
-              className="object-cover z-0"
-              priority
-              unoptimized
-            />
-            {/* Simple Overlay */}
-            <div className="absolute inset-0 z-10 bg-linear-to-t from-black/50 via-black/20 to-transparent pointer-events-none"></div>
-          </>
-        ) : (
-          <div className="absolute inset-0 z-0 bg-muted"></div>
-        )}
+        <div className="relative overflow-hidden rounded-2xl border border-border/60">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            {heroImage ? (
+              <FallbackImage
+                src={heroImage}
+                alt={restaurant.name}
+                fill
+                className="object-cover"
+                priority
+                unoptimized
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-muted">
+                <UtensilsCrossed className="h-14 w-14 opacity-10" strokeWidth={1.5} />
+              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent pointer-events-none" />
+          </div>
 
-        {/* Back Button */}
-        <BackButton href="/restaurant" className="absolute top-4 left-4 md:top-6 md:left-6 z-30" />
+          {/* Hero Content - Left aligned, not bottom-centered */}
+          <div className="relative z-10 py-10 md:py-16 px-6 md:px-10 lg:max-w-2xl">
+            <BackButton href="/restaurant" className="mb-6 inline-flex" />
 
-        {/* Hero Content */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 z-20">
-          <div className="flex flex-col gap-3">
-            {/* Category Handling */}
-            <div className="flex flex-wrap gap-2">
-              {(restaurant as any).category ? (
-                Array.isArray((restaurant as any).category) ? (
-                  (restaurant as any).category.map((cat: any) => (
+            <div className="flex flex-col gap-4">
+              {categories?.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((cat: string, idx: number) => (
                     <Badge
-                      key={cat.id || cat.name || cat}
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground border-none shadow-sm"
+                      key={`${cat}-${idx}`}
+                      variant="outline"
+                      className="border-white/20 bg-black/30 text-white hover:bg-black/40"
                     >
-                      {cat.name || cat}
+                      {cat}
                     </Badge>
-                  ))
-                ) : (
-                  <Badge className="bg-primary hover:bg-primary/90 text-primary-foreground border-none shadow-sm">
-                    {typeof (restaurant as any).category === "object"
-                      ? ((restaurant as any).category as any).name
-                      : (restaurant as any).category}
-                  </Badge>
-                )
-              ) : null}
-            </div>
-
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight drop-shadow-md">
-              {restaurant.name}
-            </h1>
-
-            <div className="flex flex-wrap items-center gap-4 text-white/90 text-sm md:text-base font-medium">
-              {restaurant.rating !== null &&
-                restaurant.rating !== undefined && (
-                  <div className="flex items-center gap-1.5 drop-shadow-sm">
-                    <Star className="w-5 h-5 fill-warning text-warning" />
-                    <span>{Number(restaurant.rating).toFixed(1)}</span>
-                    {(restaurant as any).review ? (
-                      <span className="text-white/70 ml-1">
-                        ({(restaurant as any).review} reviews)
-                      </span>
-                    ) : null}
-                  </div>
-                )}
-
-              {restaurant.address && (
-                <div className="flex items-center gap-1.5 drop-shadow-sm">
-                  <MapPin className="w-5 h-5 text-primary" />
-                  <span>{restaurant.address}</span>
+                  ))}
                 </div>
               )}
+
+              <h1 className="font-gosh text-4xl font-extrabold leading-[1.1] tracking-tight text-white md:text-5xl lg:text-6xl">
+                {restaurant.name}
+              </h1>
+
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-white/90 md:text-base">
+                {restaurant.rating !== null &&
+                  restaurant.rating !== undefined && (
+                    <div className="flex items-center gap-1.5">
+                      <Star className="w-5 h-5 fill-secondary text-secondary" strokeWidth={1.5} />
+                      <span>{Number(restaurant.rating).toFixed(1)}</span>
+                      {(restaurant as any).review ? (
+                        <span className="text-white/70">
+                          ({(restaurant as any).review} reviews)
+                        </span>
+                      ) : null}
+                    </div>
+                  )}
+
+                {restaurant.address && (
+                  <div className="flex items-center gap-1.5">
+                    <MapPin className="w-5 h-5 text-secondary" strokeWidth={1.5} />
+                    <span>{restaurant.address}</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto w-full px-4 md:px-8 pt-8 md:pt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <main className="max-w-7xl mx-auto w-full px-4 md:px-8 pt-10 md:pt-14 pb-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Details & Menu */}
         <div className="lg:col-span-2 space-y-12">
           {/* About Section */}
           {restaurant.description && (
-            <section className="min-h-25">
-              <h2 className="heading-secondary text-2xl mb-4 text-primary-strong">
-                About
-              </h2>
-              <p className="text-body text-lg leading-relaxed">
+            <section>
+              <SectionHeading title="About" />
+              <p className="mt-4 text-body text-lg leading-relaxed max-w-prose">
                 {restaurant.description}
               </p>
             </section>
@@ -136,19 +159,17 @@ export default async function RestaurantPage({
 
           {/* Cuisines Section */}
           {restaurant.cuisines && restaurant.cuisines.length > 0 && (
-            <section className="min-h-25">
-              <h2 className="heading-secondary text-2xl mb-4 text-primary-strong">
-                Cuisines
-              </h2>
-              <div className="flex flex-wrap gap-2">
+            <section>
+              <SectionHeading title="Cuisines" />
+              <div className="mt-4 flex flex-wrap gap-2.5">
                 {restaurant.cuisines.map((cuisine: string, idx: number) => (
-                  <Badge
-                    key={idx}
-                    variant="outline"
-                    className="px-4 py-1.5 text-sm bg-card text-secondary-strong shadow-sm rounded-xl"
+                  <span
+                    key={`${cuisine}-${idx}`}
+                    className="flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-2 text-sm font-medium text-foreground"
                   >
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                     {cuisine}
-                  </Badge>
+                  </span>
                 ))}
               </div>
             </section>
@@ -157,21 +178,19 @@ export default async function RestaurantPage({
           {/* Gallery Section */}
           {(restaurant as any).gallery &&
             (restaurant as any).gallery.length > 0 && (
-              <section className="min-h-50">
-                <h2 className="heading-secondary text-2xl mb-4 text-primary-strong">
-                  Gallery
-                </h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <section>
+                <SectionHeading title="Gallery" />
+                <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
                   {(restaurant as any).gallery.map((img: any, idx: number) => (
                     <div
                       key={idx}
-                      className="relative aspect-square rounded-lg overflow-hidden shadow-modern modern-card-hover cursor-pointer group"
+                      className="group relative aspect-square overflow-hidden rounded-xl border border-border/60 bg-muted"
                     >
                       <FallbackImage
                         src={img.url}
                         alt={`Gallery view ${idx + 1}`}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                         unoptimized
                       />
                     </div>
@@ -182,39 +201,34 @@ export default async function RestaurantPage({
 
           {/* Menu Section */}
           {restaurant.menu && restaurant.menu.length > 0 && (
-            <section className="min-h-75">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="heading-secondary text-2xl text-primary-strong">
-                  Menu Highlights
-                </h2>
+            <section>
+              <div className="flex items-end justify-between gap-4">
+                <SectionHeading title="Menu Highlights" />
+                <span className="mb-1 hidden text-sm font-medium text-muted-foreground sm:block">
+                  {restaurant.menu.length}{" "}
+                  {restaurant.menu.length === 1 ? "dish" : "dishes"}
+                </span>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-card">
                 {restaurant.menu.map((item: any, idx: number) => (
-                  <Card
+                  <div
                     key={idx}
-                    className="shadow-modern border-border/40 modern-card-hover rounded-lg group overflow-hidden"
+                    className="group flex flex-col gap-1 px-5 py-4 transition-colors hover:bg-muted/40 sm:flex-row sm:items-baseline sm:gap-4 border-t border-border/40 first:border-0"
                   >
-                    <CardContent className="p-5 flex flex-col justify-between h-full">
-                      <div>
-                        <div className="flex justify-between items-start gap-4 mb-2">
-                          <h3 className="text-primary-strong text-lg group-hover:text-primary transition-colors font-semibold">
-                            {item.name}
-                          </h3>
-                          <Badge
-                            variant="secondary"
-                            className="text-sm font-bold text-primary bg-primary/10 hover:bg-primary/20 whitespace-nowrap"
-                          >
-                            {item.price?.amount} {item.price?.currency}
-                          </Badge>
-                        </div>
-                        {item.description ? (
-                          <p className="text-muted-foreground text-sm line-clamp-3 mt-2 leading-relaxed">
-                            {item.description}
-                          </p>
-                        ) : null}
-                      </div>
-                    </CardContent>
-                  </Card>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-semibold text-foreground transition-colors group-hover:text-primary">
+                        {item.name}
+                      </h3>
+                      {item.description ? (
+                        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                          {item.description}
+                        </p>
+                      ) : null}
+                    </div>
+                    <div className="font-gosh text-lg font-bold whitespace-nowrap text-primary">
+                      {item.price?.amount} {item.price?.currency}
+                    </div>
+                  </div>
                 ))}
               </div>
             </section>
@@ -223,25 +237,28 @@ export default async function RestaurantPage({
 
         {/* Right Column: Info Card */}
         <div className="space-y-6">
-          <Card className="rounded-lg sticky top-24 shadow-modern border-border/50">
+          <Card className="rounded-2xl border-border/60 sticky top-24">
             <CardContent className="p-6">
-              <h3 className="heading-secondary text-xl mb-4 text-primary-strong">
+              <h3 className="font-gosh text-xl font-bold tracking-tight text-foreground">
                 Info & Contact
               </h3>
-              <Separator className="mb-6 opacity-50" />
+              <Separator className="my-5 opacity-40" />
 
-              <ul className="space-y-6">
+              <ul className="space-y-5">
                 {restaurant.address && (
-                  <li className="flex items-start gap-4 text-secondary-strong group">
-                    <div className="p-2.5 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors shrink-0">
-                      <MapPin className="w-5 h-5 text-primary" />
+                  <li className="flex items-start gap-4">
+                    <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/5 text-primary">
+                      <MapPin className="h-4.5 w-4.5" strokeWidth={1.5} />
                     </div>
-                    <div className="mt-1">
-                      <span className="block font-medium">
+                    <div>
+                      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        Address
+                      </span>
+                      <span className="mt-0.5 block font-medium text-foreground">
                         {restaurant.address}
                       </span>
                       {(restaurant.city || restaurant.country) && (
-                        <span className="text-sm text-muted-foreground mt-0.5 block">
+                        <span className="text-sm text-muted-foreground">
                           {[restaurant.city, restaurant.country]
                             .filter(Boolean)
                             .join(", ")}
@@ -252,25 +269,33 @@ export default async function RestaurantPage({
                 )}
 
                 {restaurant.phone && (
-                  <li className="flex items-start gap-4 text-secondary-strong group">
-                    <div className="p-2.5 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors shrink-0">
-                      <Phone className="w-5 h-5 text-primary" />
+                  <li className="flex items-start gap-4">
+                    <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/5 text-primary">
+                      <Phone className="h-4.5 w-4.5" strokeWidth={1.5} />
                     </div>
-                    <div className="mt-1.5">
-                      <span className="font-medium">{restaurant.phone}</span>
+                    <div>
+                      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        Phone
+                      </span>
+                      <span className="mt-0.5 block font-medium text-foreground">
+                        {restaurant.phone}
+                      </span>
                     </div>
                   </li>
                 )}
 
                 {restaurant.email && (
-                  <li className="flex items-start gap-4 text-secondary-strong group">
-                    <div className="p-2.5 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors shrink-0">
-                      <Mail className="w-5 h-5 text-primary" />
+                  <li className="flex items-start gap-4">
+                    <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/5 text-primary">
+                      <Mail className="h-4.5 w-4.5" strokeWidth={1.5} />
                     </div>
-                    <div className="mt-1.5 select-all">
+                    <div>
+                      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        Email
+                      </span>
                       <a
                         href={`mailto:${restaurant.email}`}
-                        className="font-medium hover:text-primary transition-colors"
+                        className="mt-0.5 block font-medium text-foreground transition-colors hover:text-primary"
                       >
                         {restaurant.email}
                       </a>
@@ -279,16 +304,19 @@ export default async function RestaurantPage({
                 )}
 
                 {restaurant.website && (
-                  <li className="flex items-start gap-4 text-secondary-strong group">
-                    <div className="p-2.5 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors shrink-0">
-                      <Globe className="w-5 h-5 text-primary" />
+                  <li className="flex items-start gap-4">
+                    <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/5 text-primary">
+                      <Globe className="h-4.5 w-4.5" strokeWidth={1.5} />
                     </div>
-                    <div className="mt-1.5 overflow-hidden">
+                    <div className="min-w-0">
+                      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        Website
+                      </span>
                       <a
                         href={restaurant.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-medium hover:text-primary transition-colors truncate block"
+                        className="mt-0.5 block truncate font-medium text-foreground transition-colors hover:text-primary"
                       >
                         Visit Website
                       </a>
@@ -297,12 +325,12 @@ export default async function RestaurantPage({
                 )}
               </ul>
 
-              <Separator className="my-6 opacity-50" />
+              <Separator className="my-6 opacity-40" />
 
               <Button
                 asChild
-                className="w-full btn-primary-modern rounded-xl py-6 shadow-modern font-semibold"
-                disabled={!restaurant.google_map_url && !restaurant.address}
+                className="w-full btn-primary-modern rounded-xl py-6 font-semibold"
+                disabled={!hasDirections}
               >
                 <a
                   href={
@@ -314,12 +342,10 @@ export default async function RestaurantPage({
                   target="_blank"
                   rel="noopener noreferrer"
                   className={
-                    !restaurant.google_map_url && !restaurant.address
-                      ? "pointer-events-none opacity-50"
-                      : ""
+                    !hasDirections ? "pointer-events-none opacity-50" : ""
                   }
                 >
-                  <MapPin className="w-4 h-4 mr-2" />
+                  <MapPin className="mr-2 h-4 w-4" strokeWidth={1.5} />
                   Get Directions
                 </a>
               </Button>
@@ -327,8 +353,6 @@ export default async function RestaurantPage({
           </Card>
         </div>
       </main>
-
-      <div className="h-20"></div>
     </div>
   );
 }

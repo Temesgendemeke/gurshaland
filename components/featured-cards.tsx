@@ -23,6 +23,7 @@ import RecipeListSkeleton from "./skeleton/RecipeList";
 import RecipeCard from "./recipe/RecipeCard";
 import BlogPostCard from "./BlogPostCard";
 import SectionText from "./SectionText";
+import Reveal from "./Reveal";
 
 export function FeaturedCards() {
   // const { featuredContent, getFeaturedContent } = useAppStore()
@@ -46,7 +47,7 @@ export function FeaturedCards() {
       <section>
         <SectionText
           header="Featured Recipes"
-          description="Top-rated recipes with high engagement"
+          description="The recipes our community keeps coming back to"
           seeMoreLink="/recipes"
         />
         {/* <div className="flex items-center justify-between mb-8">
@@ -68,11 +69,13 @@ export function FeaturedCards() {
         {RecipeLoading ? (
           <RecipeListSkeleton />
         ) : featuredRecipes?.length ? (
-          <div className="grid md:grid-cols-3 gap-6">
-            {featuredRecipes.map((recipe: FeaturedRecipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
-            ))}
-          </div>
+          <Reveal>
+            <div className="grid md:grid-cols-3 gap-6">
+              {featuredRecipes.map((recipe: FeaturedRecipe) => (
+                <RecipeCard key={recipe.id} recipe={recipe} />
+              ))}
+            </div>
+          </Reveal>
         ) : (
           <p className="text-body">No featured recipes yet.</p>
         )}
@@ -85,18 +88,20 @@ export function FeaturedCards() {
       <section>
         <SectionText
           header="Latest from Our Blog"
-          description="Tips, techniques, and insights from Ethiopian cooking experts"
+          description="Stories and know-how from real Ethiopian kitchens"
           seeMoreLink="/blog"
         />
 
         {BlogLoading ? (
           <RecipeListSkeleton />
         ) : (
-          <div className="grid md:grid-cols-3 gap-6">
-            {blogs?.slice(0, 3)?.map((post) => (
-              <BlogPostCard key={post.id} post={post} />
-            ))}
-          </div>
+          <Reveal>
+            <div className="grid md:grid-cols-3 gap-6">
+              {blogs?.slice(0, 3)?.map((post) => (
+                <BlogPostCard key={post.id} post={post} />
+              ))}
+            </div>
+          </Reveal>
         )}
       </section>
     </div>

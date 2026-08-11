@@ -61,7 +61,7 @@ export function StatsCardSkeleton({ className }: StatsCardSkeletonProps) {
         "relative overflow-hidden rounded-xl border",
         "border-border/60",
         "bg-card",
-        "shadow-sm p-5 aspect-[5/3]",
+        " p-5 aspect-[5/3]",
         className,
       )}
     >

@@ -2,7 +2,7 @@
 import deleteImageFromStorage, { deleteImageFromDb } from "@/actions/Image";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Upload, X } from "lucide-react";
+import { IconUpload as Upload, IconX as X } from "@tabler/icons-react";
 import Image from "next/image";
 import React from "react";
 import { UseFormReturn, FieldValues, Path } from "react-hook-form";
@@ -58,7 +58,7 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
 
   return (
     <Card className="p-6 bg-card border-border">
-      <h2 className="text-2xl font-bold text-foreground mb-6">{label} Image</h2>
+      <h2 className="text-xl font-bold text-foreground mb-6">{label} Image</h2>
 
       {/*{JSON.stringify(oldPath)}*/}
       {/* Preview and controls */}
@@ -72,7 +72,7 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
               width={400}
               height={400}
               src={getImageSrc()}
-              alt="Recipe Preview"
+              alt={label}
               className="max-h-48 rounded-lg mb-2 object-contain"
             />
             <Button
@@ -85,13 +85,13 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
                 await handleDeleteImage();
               }}
             >
-              <X className="w-4 h-4 mr-1" />
+              <X className="w-4 h-4 mr-1" strokeWidth={2} />
               Remove
             </Button>
           </div>
         ) : (
           <>
-            <Upload className="w-12 h-12 text-primary mx-auto mb-4" />
+            <Upload className="w-12 h-12 text-primary mx-auto mb-4" strokeWidth={1.5} />
             <p className="text-muted-foreground mb-2">
               Click to upload or drag and drop
             </p>

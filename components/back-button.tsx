@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
+import { IconChevronLeft as ChevronLeft } from "@tabler/icons-react";
 import Link from "next/link";
 
 interface BackButtonProps {
@@ -17,7 +17,7 @@ export function BackButton({ href, className }: BackButtonProps) {
         asChild
       >
         <Link href={href} aria-label="Go back">
-          <ChevronLeft className="w-5 h-5 -ml-0.5" />
+          <ChevronLeft className="w-5 h-5 -ml-0.5" strokeWidth={2} />
         </Link>
       </Button>
     </div>

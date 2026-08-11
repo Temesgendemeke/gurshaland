@@ -18,7 +18,7 @@ const PreviewWarning = ({
 }: PreviewWarningProps) => {
   if (author_id === user_id && status === "draft") {
     return (
-      <div className="p-4 bg-error text-error-foreground border border-error/20 rounded-lg shadow-sm flex justify-between items-center">
+      <div className="p-4 bg-error text-error-foreground border border-error/20 rounded-lg flex justify-between items-center">
         <p className="text-sm font-medium">
           This {postType} is currently in draft mode and is only visible to you.
         </p>

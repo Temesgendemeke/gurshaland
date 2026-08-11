@@ -73,13 +73,13 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
       <DialogTrigger asChild>
         <Button
           variant="default"
-          className="relative z-10 flex w-full h-14 md:h-16 items-center justify-center btn-primary-modern text-lg font-semibold shadow-sm"
+          className="relative z-10 flex w-full h-14 md:h-16 items-center justify-center btn-primary-modern text-lg font-semibold"
         >
           <BookOpen className="mr-3 h-5 w-5" />
           <span>View Full Plan</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full max-w-[100vw] sm:max-w-[95vw] lg:max-w-7xl h-screen sm:h-[90vh] p-0 gap-0 bg-background border-none sm:border sm:border-border/40 shadow-sm overflow-hidden flex flex-col sm:rounded-lg ">
+      <DialogContent className="w-full max-w-[100vw] sm:max-w-[95vw] lg:max-w-7xl h-screen sm:h-[90vh] p-0 gap-0 bg-background border-none sm:border sm:border-border/40 overflow-hidden flex flex-col sm:rounded-lg ">
         {/* Grain Texture Overlay from Layout */}
         <div className="grain-overlay">
           <svg
@@ -154,7 +154,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                 </span>
               </div>
               {plan.calories && (
-                <div className="flex items-center px-4 py-2 rounded-xl bg-primary text-primary-foreground shadow-sm">
+                <div className="flex items-center px-4 py-2 rounded-xl bg-primary text-primary-foreground">
                   <Sparkles className="w-4 h-4 mr-2" />
                   <span className="font-bold">
                     {plan.calories}{" "}
@@ -333,7 +333,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               <Button
                 variant="outline"
-                className="w-full sm:w-auto h-12 px-6 text-base font-semibold border-border/50 bg-background hover:bg-muted/30 rounded-xl shadow-sm"
+                className="w-full sm:w-auto h-12 px-6 text-base font-semibold border-border/50 bg-background hover:bg-muted/30 rounded-xl"
               >
                 <Download className="h-5 w-5 mr-2 opacity-70" />
                 Export PDF
