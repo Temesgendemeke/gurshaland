@@ -34,7 +34,7 @@ const TableSkeleton = () => {
               <TableHead className="w-12 text-center">#</TableHead>
               <TableHead>Title</TableHead>
               <TableHead className="w-40">Views</TableHead>
-              <TableHead className="w-24 text-right pr-6">Eng.</TableHead>
+              <TableHead className="w-44 pr-6">Engagement</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

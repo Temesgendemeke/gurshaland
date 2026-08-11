@@ -12,6 +12,13 @@ import { Button } from "@/components/ui/button";
 import { formSchema } from "@/utils/schema";
 import Recipe from "@/utils/types/recipe";
 import { Form } from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import BasicInfoFields from "./BasicInfo";
 import StatusField from "./StatusField";
 import CulturalNoteField from "./CulturalNoteField";
@@ -189,7 +196,7 @@ export default function SubmitRecipeForm({
       }
 
       toast.success(
-        "Recipe submitted successfully! Ethiopia thanks you for preserving our culinary heritage! 🇪🇹",
+        "Recipe submitted successfully. Ethiopia thanks you for preserving our culinary heritage.",
       );
       router.push("/");
     } catch (error) {
@@ -340,9 +347,7 @@ export default function SubmitRecipeForm({
 
       updateRecipeInStore(updatedRecipeData);
 
-      toast.success(
-        "Recipe updated successfully! Your Ethiopian culinary masterpiece has been refined! 🇪🇹",
-      );
+      toast.success("Recipe updated successfully. Your changes have been saved.");
 
       router.push(`/recipes/${newSlug}`);
     } catch (error) {
@@ -366,7 +371,7 @@ export default function SubmitRecipeForm({
 
   return (
     <Form {...form}>
-      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
         <BasicInfoFields
           form={form}
           categories={categories}
@@ -385,20 +390,43 @@ export default function SubmitRecipeForm({
           appendInstruction={appendInstruction}
           removeInstruction={removeInstruction}
         />
-        <NutritionField form={form} />
-        <TagsField
-          tags={form.watch("recipe.tags")}
-          newTag={newTag}
-          setNewTag={setNewTag}
-          addTag={addTag}
-          removeTag={removeTag}
-        />
-        <CulturalNoteField form={form} />
-        <StatusField form={form} />
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Final touches</CardTitle>
+            <CardDescription>
+              Details that help people find and trust your recipe.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="divide-y divide-border/70">
+              <div className="pb-6">
+                <NutritionField form={form} />
+              </div>
+              <div className="py-6">
+                <TagsField
+                  tags={form.watch("recipe.tags")}
+                  newTag={newTag}
+                  setNewTag={setNewTag}
+                  addTag={addTag}
+                  removeTag={removeTag}
+                />
+              </div>
+              <div className="py-6">
+                <CulturalNoteField form={form} />
+              </div>
+              <div className="pt-6">
+                <StatusField form={form} />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         <div className="flex justify-center pt-2">
           <Button
             type="submit"
             size="lg"
+            className="w-full active:scale-[0.98] sm:w-auto"
             disabled={form.formState.isSubmitting}
             aria-disabled={form.formState.isSubmitting}
           >

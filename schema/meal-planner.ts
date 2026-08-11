@@ -17,7 +17,8 @@ export const dayPlanSchema = z.object({
 });
 
 export const mealPlannerSchema = z.object({
-  timeframe: z.enum(["today",  "full-week"]),
+  name: z.string().optional(),
+  timeframe: z.enum(["today", "full-week"]),
   goal: z.enum(["fat_loss", "muscle_gain", "maintenance"]),
   diet: z.enum(["standard", "vegetarian", "vegan", "keto"]),
   calories: z.number().optional(),

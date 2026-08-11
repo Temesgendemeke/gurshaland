@@ -1,7 +1,5 @@
 "use client";
 import { getStatus } from "@/actions/dashboard/stats";
-import { DraftQueue } from "@/components/dashboard/DraftQueue";
-import { PublishedDraftChart } from "@/components/dashboard/PublishedDraftChart";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
 import { SimpleTable } from "@/components/dashboard/SimpleTable";
 import { TopPostsTabs } from "@/components/dashboard/TopPostsTabs";
@@ -10,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/store/useAuth";
 import { Post } from "@/utils/types/Dashboard";
-import { Eye, Plus, Send, User2, UtensilsCrossed } from "lucide-react";
+import { Plus, Send, User2, UtensilsCrossed } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -49,20 +47,6 @@ export default function Page() {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const user = useAuth((store) => store.user);
 
-  const allPosts = [...status.recipes, ...status.blogs];
-  const totalViews = allPosts.reduce(
-    (sum, p) => sum + (Number(p.view_count) || 0),
-    0,
-  );
-  const totalLikes = allPosts.reduce(
-    (sum, p) => sum + (Number(p.like_count ?? p.like) || 0),
-    0,
-  );
-  const totalComments = allPosts.reduce(
-    (sum, p) => sum + (Number(p.comment_count) || 0),
-    0,
-  );
-
   useEffect(() => {
     let cancelled = false;
 
@@ -99,7 +83,7 @@ export default function Page() {
               Dashboard Overview
             </h1>
             <p className="text-sm sm:text-base text-muted-foreground">
-              Welcome back! Here’s what’s happening.
+              A snapshot of your recipes, blogs, and followers.
             </p>
             {lastUpdated && (
               <p className="mt-1 text-xs text-muted-foreground/70">
@@ -164,34 +148,8 @@ export default function Page() {
             published_posts_count={status.blogs_published_count}
             draft_posts_count={status.blogs_draft_count}
           />
-          {/* <StatsCard
-            name={"engagement"}
-            count={totalViews}
-            Icon={Eye}
-            loading={loading}
-            type="engagement"
-            likes_count={totalLikes}
-            comments_count={totalComments}
-            subtitle="views · top 10 posts"
-            href="/dashboard"
-          /> */}
         </div>
       </div>
-
-      {/* <div className="grid gap-6 xl:grid-cols-2">
-        <PublishedDraftChart
-          recipesPublished={status.recipes_published_count}
-          recipesDraft={status.recipes_draft_count}
-          blogsPublished={status.blogs_published_count}
-          blogsDraft={status.blogs_draft_count}
-          loading={loading}
-        />
-        <DraftQueue
-          recipesDraft={status.recipes_draft_count}
-          blogsDraft={status.blogs_draft_count}
-          loading={loading}
-        />
-      </div> */}
 
       <TopPostsTabs
         recipes={status.recipes}

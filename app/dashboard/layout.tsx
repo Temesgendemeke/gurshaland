@@ -21,11 +21,18 @@ export default function DashboardLayout({
   const user = useAuth((store) => store.user);
 
   useEffect(() => {
-    (() => {
-      const data = getProfileByID(user?.id as string);
-      setProfile(data);
+    if (!user?.id) return;
+    let cancelled = false;
+
+    (async () => {
+      const data = await getProfileByID(user.id);
+      if (!cancelled) setProfile(data);
     })();
-  });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id, setProfile]);
   return (
     <SidebarProvider>
       <AppSidebar />

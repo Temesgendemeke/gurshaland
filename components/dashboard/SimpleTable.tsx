@@ -90,13 +90,15 @@ export function SimpleTable({
               <TableHead className="w-12 text-center">#</TableHead>
               <TableHead>Title</TableHead>
               <TableHead className="w-40">Views</TableHead>
-              <TableHead className="w-24 text-right pr-6">Eng.</TableHead>
+              <TableHead className="w-44 pr-6">Engagement</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {postsWithEngagement.map((post, i) => {
               const views = post.views;
               const engagementRatio = post.engagementRatio;
+              const likes = Number(post.like_count ?? post.like) || 0;
+              const comments = Number(post.comment_count) || 0;
 
               // Calculate percentage based on engagement-to-view ratio
               const pct =
@@ -150,44 +152,36 @@ export function SimpleTable({
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center justify-between">
-                        <span className="flex items-center gap-1 text-muted-foreground text-xs">
-                          <Eye className="h-3 w-3" />
-                          {isNaN(views) ? "0" : views.toLocaleString()}
-                        </span>
-                        <span className="text-[0.625rem] font-medium text-muted-foreground">
+                    <span className="flex items-center gap-1.5 text-muted-foreground">
+                      <Eye className="h-3.5 w-3.5" />
+                      <span className="font-medium tabular-nums text-foreground">
+                        {views.toLocaleString()}
+                      </span>
+                    </span>
+                  </TableCell>
+                  <TableCell className="pr-6">
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs font-medium tabular-nums text-foreground">
                           {isNaN(pct) ? "0%" : `${pct}%`}
                         </span>
                         <span className="text-[0.625rem] text-muted-foreground/70">
-                          {engagementRatio.toFixed(2)}
+                          {likes} like{likes === 1 ? "" : "s"} ·{" "}
+                          {comments} comment{comments === 1 ? "" : "s"}
                         </span>
                       </div>
-                      <div className="h-2 rounded bg-muted overflow-hidden">
+                      <div className="h-1.5 rounded bg-muted overflow-hidden">
                         <div
                           className={cn(
                             "h-full rounded-r bg-primary transition-all",
                             pct < 15 && "bg-primary/40",
                             pct > 70 && "bg-primary/80",
                           )}
-                          style={{ width: `${isNaN(pct) ? "0%" : `${pct}%`}` }}
-                          title={`Engagement: ${
-                            post.engagement
-                          } | Ratio: ${engagementRatio.toFixed(2)}`}
+                          style={{
+                            width: `${isNaN(pct) ? "0%" : `${pct}%`}`,
+                          }}
+                          title={`${likes} likes, ${comments} comments across ${views} views`}
                         />
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right pr-6">
-                    <div className="text-xs space-y-0.5">
-                      <div>
-                        <span className="font-medium">
-                          {Number(post.like_count ?? post.like ?? 0)}
-                        </span>{" "}
-                        <span className="text-muted-foreground">likes</span>
-                      </div>
-                      <div className="text-muted-foreground">
-                        {Number(post.comment_count) || 0} comm.
                       </div>
                     </div>
                   </TableCell>

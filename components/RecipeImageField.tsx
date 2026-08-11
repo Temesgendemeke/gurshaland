@@ -27,7 +27,7 @@ export default function RecipeImageField({
           <img
             src={typeof image === "string" ? image : URL.createObjectURL(image)}
             alt="Recipe Preview"
-            className="mb-4 max-h-56 w-full rounded-lg object-contain"
+            className="mb-4 aspect-[4/3] w-full rounded-lg object-cover"
           />
           <Button
             type="button"

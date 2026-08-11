@@ -20,7 +20,7 @@ const CreateAPost = ({ align, cls }: CreateAPost) => {
       <DropdownMenuTrigger asChild>
         <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium flex items-center space-x-1">
           <Plus className="w-4 h-4" />
-          <span> Create a Post</span>
+          <span>Create a Post</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align={align} className={`bg-background ${cls}`}>

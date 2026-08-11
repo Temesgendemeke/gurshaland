@@ -6,36 +6,10 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Apple,
-  BookOpen,
-  CheckCheckIcon,
-  ChefHat,
-  Download,
-  NotebookPen,
-  SaveIcon,
-  ShoppingCart,
-  Sparkles,
-  Target,
-  WeightIcon,
-  X,
-  Zap,
-} from "lucide-react";
-import ReactMarkdown from "react-markdown";
+import { BookOpen, CheckCheckIcon, ChefHat, SaveIcon, ShoppingCart, WeightIcon } from "lucide-react";
 import { PlanType } from "@/schema/meal-planner";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -43,13 +17,11 @@ import { saveMealplan } from "@/actions/meal/crud";
 import generate_error from "@/utils/generate_error";
 import { useAuth } from "@/store/useAuth";
 import CheifNotes from "./CheifNotes";
-import { useState } from "react";
 
 const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
   const router = useRouter();
   const user = useAuth((store) => store.user);
   const handleSave = async () => {
-    
     try {
       const mealPlan = {
         ...plan,
@@ -59,14 +31,10 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
       toast.message("Meal plan saved successfully");
       router.push("/meal-planner/my-meal-plans");
     } catch (error) {
-      console.log("hrllo")
       console.log(error);
       toast.message(generate_error(error));
-    } 
+    }
   };
-
-  const [showDescription, setShowDescription] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   return (
     <Dialog>
@@ -122,57 +90,23 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
             <div className="space-y-3">
               <div className="flex items-center">
                 <DialogTitle className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
-                  {plan?.name}
+                  {plan.name ?? "Your Meal Plan"}
                 </DialogTitle>
-                <div
-                  className={`hidden sm:flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold tracking-wide uppercase`}
-                >
+                <div className="hidden sm:flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold tracking-wide uppercase">
                   {plan.timeframe === "today" ? "Daily" : "Full Week"}
                 </div>
               </div>
-              <DialogDescription
-                className={`text-lg text-foreground max-w-4xl leading-relaxed cursor-pointer transition-all duration-300 ease-in-out ${
-                  isScrolled
-                    ? "opacity-0 h-0 overflow-hidden m-0 p-0"
-                    : "opacity-100"
-                }`}
-              >
-                {showDescription
-                  ? plan.notes?.slice(0, 100) + "..."
-                  : plan.notes ||
-                    "Your personalized nutrition roadmap, carefully crafted to align with your health goals and dietary preferences."}
-              </DialogDescription>
-            </div>
-
-            {/* <div className="flex flex-wrap gap-3">
-              <div className="flex items-center px-4 py-2 rounded-xl bg-primary/10 border border-primary/40 text-primary">
-                <span className="font-medium text-foreground">{plan.diet}</span>
-              </div>
-              <div className="flex items-center px-4 py-2 rounded-xl bg-primary/10 border border-primary/40 text-primary">
-                <span className="font-medium text-foreground">
-                  {plan.goal.replace("_", " ")}
-                </span>
-              </div>
-              {plan.calories && (
-                <div className="flex items-center px-4 py-2 rounded-xl bg-primary text-primary-foreground">
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  <span className="font-bold">
-                    {plan.calories}{" "}
-                    <span className="text-primary-foreground/80 font-normal text-sm">
-                      kcal/day
-                    </span>
-                  </span>
-                </div>
+              {plan.notes && (
+                <DialogDescription className="text-lg text-foreground max-w-4xl leading-relaxed">
+                  {plan.notes}
+                </DialogDescription>
               )}
-            </div> */}
+            </div>
           </div>
         </div>
 
         {/* Scrollable Content - Open Layout */}
-        <div
-          className="flex-1 overflow-y-auto relative z-10"
-          onScroll={(e) => setIsScrolled(e.currentTarget.scrollTop > 20)}
-        >
+        <div className="flex-1 overflow-y-auto relative z-10">
           <div className="max-w-7xl mx-auto w-full">
             <div className="grid grid-cols-1 xl:grid-cols-12 min-h-full">
               {/* Main Meals Column */}
@@ -188,7 +122,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                         <h3 className="text-3xl font-bold text-foreground">
                           {day.day}
                         </h3>
-                        {day?.totalCalories > 0 && (
+                        {day.totalCalories && (
                           <p className="text-base font-medium text-muted-foreground mt-0.5">
                             Approx.{" "}
                             <span className="text-foreground font-semibold">
@@ -204,7 +138,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                       {day.meals.map((meal, idx) => (
                         <div
                           key={idx}
-                          className="group relative pl-6 border-l-2 border-border/50 hover:border-primary/50 transition-colors duration-300 cursor-pointer"
+                          className="group relative pl-6 border-l-2 border-border/50 hover:border-primary/50 transition-colors duration-300"
                         >
                           {/* Timeline Dot */}
                           <div className="absolute -left-[0.5625rem] top-1.5 h-4 w-4 rounded-full border-4 border-background bg-border group-hover:bg-primary transition-colors duration-300" />
@@ -215,12 +149,6 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                                 {meal.name}
                               </h4>
                               <div className="flex items-start mt-2 sm:mt-0  justify-between gap-3">
-                                {/* <Badge
-                                  variant="secondary"
-                                  className="bg-secondary/40 text-secondary-foreground hover:bg-secondary/60 transition-colors uppercase tracking-wider text-[0.625rem] font-bold px-2 py-0.5 rounded-md"
-                                >
-                                  {meal.type}
-                                </Badge> */}
                                 {typeof meal.calories === "number" && (
                                   <span className="font-mono  text-muted-foreground bg-muted font-semibold px-2 py-2 rounded  text-sm hover:text-primary transition-colors flex items-center w-28">
                                     <WeightIcon className="w-4 h-4 mr-2" />
@@ -282,7 +210,7 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
               {/* Sidebar Column - Clean Dashboard Style */}
               <div className="xl:col-span-4 bg-muted/5 p-4 md:p-4 space-y-10 border-t xl:border-t-0 border-border/40">
                 {/* Shopping List */}
-                {plan?.shopping_list?.length > 0 && (
+                {plan?.shopping_list?.length && (
                   <div className="space-y-5">
                     <div className="flex items-center gap-3 pb-2 border-b border-border/40">
                       <div className="p-2 rounded-lg text-primary">
@@ -294,10 +222,10 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
                     </div>
 
                     <ul className="space-y-3">
-                      {plan?.shopping_list.map((item, idx) => (
+                      {plan.shopping_list.map((item, idx) => (
                         <li
                           key={idx}
-                          className="flex items-start gap-4 p-3 rounded-xl bg-card border border-border/40   cursor-default"
+                          className="flex items-start gap-4 p-3 rounded-xl bg-card border border-border/40"
                         >
                           <CheckCheckIcon className="w-5 h-5 text-primary" />
                           <span className="text-base text-foreground/90 leading-snug font-medium">
@@ -331,13 +259,6 @@ const FullMealPlanModel = ({ plan }: { plan: PlanType }) => {
             </DialogClose>
 
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <Button
-                variant="outline"
-                className="w-full sm:w-auto h-12 px-6 text-base font-semibold border-border/50 bg-background hover:bg-muted/30 rounded-xl"
-              >
-                <Download className="h-5 w-5 mr-2 opacity-70" />
-                Export PDF
-              </Button>
               <Button
                 type="submit"
                 className="w-full sm:w-auto h-12 px-8 text-base font-bold btn-primary-modern rounded-xl"

@@ -1,6 +1,6 @@
 "use client";
 
-import { List, Plus, X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -49,27 +49,16 @@ export default function IngredientsField({
   removeIngredient,
 }: IngredientsFieldProps) {
   return (
-    <Card className="border-border bg-card/70">
-      <CardHeader className="space-y-2">
-        {/* <div className="flex items-center gap-2 text-primary">
-          <List className="h-5 w-5" />
-          <span className="text-xs font-semibold uppercase tracking-wider">
-            Ingredients
-          </span>
-        </div> */}
+    <Card>
+      <CardHeader>
         <CardTitle>Ingredients</CardTitle>
-        <CardDescription className="text-sm leading-6">
-          What you&apos;ll need to make it.
-        </CardDescription>
+        <CardDescription>What you&apos;ll need to make it.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
         {ingredientFields.map((field, index) => (
-          <div
-            key={field.id}
-            className="flex flex-col gap-2 rounded-lg border border-border/60 p-4 sm:p-5"
-          >
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
-              <div className="grid flex-1 gap-3 md:grid-cols-3">
+          <div key={field.id} className="space-y-3">
+            <div className="flex gap-3">
+              <div className="grid flex-1 gap-3 md:grid-cols-[7rem_9rem_minmax(0,1fr)]">
                 <FormField
                   control={form.control}
                   name={`ingredients.${index}.amount`}
@@ -139,7 +128,8 @@ export default function IngredientsField({
                   variant="ghost"
                   size="icon"
                   type="button"
-                  className="h-10 w-10 shrink-0 self-start text-error hover:bg-error/10 hover:text-error"
+                  className="h-11 w-11 shrink-0 self-start text-muted-foreground hover:bg-error/10 hover:text-error"
+                  aria-label={`Remove ingredient ${index + 1}`}
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -168,7 +158,7 @@ export default function IngredientsField({
           type="button"
           variant="outline"
           onClick={() => appendIngredient({ item: "", amount: 0, notes: "" })}
-          className="w-full border-dashed border-primary/40 text-primary hover:bg-primary/10"
+          className="w-full border-dashed border-primary/40 text-primary hover:border-primary hover:bg-primary/5 active:scale-[0.99]"
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Ingredient

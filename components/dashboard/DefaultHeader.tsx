@@ -23,19 +23,14 @@ export function DefaultHeader<T>({ info, name }: DefaultHeaderType<T>) {
           if (e.button === 2) return;
           info.column.toggleSorting(info.column.getIsSorted() == "asc");
         }}
-        className="flex  h-full items-center  gap-2"
+        className="flex h-full items-center gap-2"
       >
         {name}
-        {
-          <SortAsc
-            className={`${sorted == "asc" ? "inline-block" : "hidden"}`}
-          />
-        }
-        {
-          <SortDesc
-            className={`${sorted == "desc" ? "inline-block" : "hidden"}`}
-          />
-        }
+        {sorted === "asc" ? (
+          <SortAsc />
+        ) : sorted === "desc" ? (
+          <SortDesc />
+        ) : null}
       </ContextMenuTrigger>
       <ContextMenuContent>
         {table

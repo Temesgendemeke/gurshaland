@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Loader2, Save } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -128,7 +128,7 @@ export default function Page() {
   };
 
   return (
-    <div className="mx-auto w-full  space-y-6">
+    <div className="mx-auto w-full max-w-5xl space-y-6">
       <div className="space-y-2">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">

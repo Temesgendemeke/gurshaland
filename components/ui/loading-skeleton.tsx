@@ -61,7 +61,7 @@ export function StatsCardSkeleton({ className }: StatsCardSkeletonProps) {
         "relative overflow-hidden rounded-xl border",
         "border-border/60",
         "bg-card",
-        " p-5 aspect-[5/3]",
+        "p-5",
         className,
       )}
     >
@@ -69,14 +69,17 @@ export function StatsCardSkeleton({ className }: StatsCardSkeletonProps) {
       <ShimmerSkeleton className="absolute inset-0" />
 
       {/* icon skeleton */}
-      <PulseSkeleton className="absolute right-4 top-4 h-9 w-9 rounded-lg bg-muted" />
+      <PulseSkeleton className="h-9 w-9 rounded-lg bg-muted" />
 
       {/* content skeleton */}
-      <div className="relative h-full flex flex-col justify-end">
+      <div className="relative mt-4">
         {/* number skeleton */}
-        <PulseSkeleton className="h-20 md:h-16 lg:h-20 w-32 bg-muted rounded-lg" />
+        <PulseSkeleton className="h-10 w-32 bg-muted rounded-lg" />
         {/* name skeleton */}
-        <PulseSkeleton className="mt-1 h-4 w-20 bg-muted rounded" delay={0.2} />
+        <PulseSkeleton
+          className="mt-1.5 h-4 w-20 bg-muted rounded"
+          delay={0.2}
+        />
       </div>
     </div>
   );

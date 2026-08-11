@@ -197,9 +197,7 @@ export const createPostColumns = (
     },
   }),
   columnHelper.accessor("view_count", {
-    header: (info) => (
-      <DefaultHeader info={info as any} name="Engagement Rate" />
-    ),
+    header: (info) => <DefaultHeader info={info as any} name="Views" />,
     cell: (info) => {
       const row = info.row.original as Post;
       const views = Number(row.view_count ?? row.view) || 0;
@@ -225,7 +223,7 @@ export const createPostColumns = (
         <div className="flex flex-col gap-1">
           <div className="flex items-center justify-between gap-2 w-full">
             <span className="flex items-center gap-1 text-muted-foreground text-xs">
-              <Eye className="h-3 w-3 text-sm" />
+              <Eye className="h-3 w-3" />
               {views.toLocaleString()} views
             </span>
             <span className="text-[0.625rem] font-medium text-muted-foreground ml-auto">

@@ -11,7 +11,7 @@ const CheifNotes = ({ pro_tips }: CheifNotesProps) => {
     pro_tips.length > 0 && (
       <div className="space-y-5">
         <div className="flex items-center gap-3 pb-2 border-b border-border/40">
-          <div className="p-2 rounded-lg text-primary ">
+          <div className="p-2 rounded-lg text-primary">
             <NotebookPen className="w-5 h-5" />
           </div>
           <h3 className="text-xl font-bold text-foreground">
@@ -19,17 +19,17 @@ const CheifNotes = ({ pro_tips }: CheifNotesProps) => {
           </h3>
         </div>
 
-        <div className={`grid gap-4`}>
+        <div className="grid gap-4">
           {pro_tips.map((tip, idx) => (
             <div
               key={idx}
-              className="border rounded-lg p-4 bg-card transition-colors cursor-default"
+              className="border rounded-lg p-4 bg-card transition-colors"
             >
-              <div className="prose prose-sm prose-neutral max-w-none text-lg flex items-start gap-2">
-                <div className="shrink-0">
-                  <Target className="w-5 h-5 text-primary" />
+              <div className="flex items-start gap-2">
+                <Target className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <div className="text-[0.95rem] leading-relaxed text-foreground/90 [&_p]:m-0">
+                  <ReactMarkdown>{tip}</ReactMarkdown>
                 </div>
-                <ReactMarkdown>{tip}</ReactMarkdown>
               </div>
             </div>
           ))}

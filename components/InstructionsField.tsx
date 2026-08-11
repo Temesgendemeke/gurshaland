@@ -1,5 +1,5 @@
 "use client";
-import { Plus, X, ListOrdered } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -89,18 +89,10 @@ export default function InstructionsField({
   };
 
   return (
-    <Card className="border-border bg-card/70">
-      <CardHeader className="space-y-2">
-        {/* <div className="flex items-center gap-2 text-primary">
-          <ListOrdered className="h-5 w-5" />
-          <span className="text-xs font-semibold uppercase tracking-wider">
-            Instructions
-          </span>
-        </div> */}
+    <Card>
+      <CardHeader>
         <CardTitle>Instructions</CardTitle>
-        <CardDescription className="text-sm leading-6">
-          Step-by-step how to prepare the dish.
-        </CardDescription>
+        <CardDescription>Step-by-step how to prepare the dish.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
         {instructionFields.map((field, index) => (
@@ -302,7 +294,7 @@ export default function InstructionsField({
               image: undefined,
             })
           }
-          className="w-full border-dashed border-primary/40 text-primary hover:bg-primary/10"
+          className="w-full border-dashed border-primary/40 text-primary hover:border-primary hover:bg-primary/5 active:scale-[0.99]"
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Step

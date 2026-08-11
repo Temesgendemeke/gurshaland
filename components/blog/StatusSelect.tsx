@@ -1,6 +1,5 @@
 import React from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
-import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import {
   Select,
   SelectTrigger,
@@ -8,24 +7,33 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
-import { CircleDashed } from "lucide-react";
+import { IconCircleDashed as CircleDashed } from "@tabler/icons-react";
+import { motion, useReducedMotion } from "motion/react";
 
 const StatusSelect = ({ form }: { form: UseFormReturn<any> }) => {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <Card className="rounded-xl border-border/70 shadow-[0_1px_2px_hsl(215_15%_10%/0.04)]">
-      <CardHeader className="border-b border-border/60">
-        <CardTitle className="flex items-center gap-3 text-lg">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <CircleDashed className="h-4 w-4" />
-          </span>
+    <motion.div
+      initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+      className="space-y-4 pt-4"
+    >
+      <div className="flex items-center gap-2">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <CircleDashed className="h-4 w-4" strokeWidth={1.5} />
+        </span>
+        <h2 className="font-gosh text-xl font-bold tracking-tight text-foreground">
           Status
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <Controller
-          name="status"
-          control={form.control}
-          render={({ field }) => (
+        </h2>
+      </div>
+
+      <Controller
+        name="status"
+        control={form.control}
+        render={({ field }) => (
+          <div className="space-y-2">
             <Select
               defaultValue="draft"
               onValueChange={field.onChange}
@@ -39,16 +47,16 @@ const StatusSelect = ({ form }: { form: UseFormReturn<any> }) => {
                 <SelectItem value="published">Published</SelectItem>
               </SelectContent>
             </Select>
-          )}
-        />
-        {form.formState.errors.status?.message &&
-          typeof form.formState.errors.status.message === "string" && (
-            <p className="text-sm text-error">
-              {form.formState.errors.status.message}
-            </p>
-          )}
-      </CardContent>
-    </Card>
+            {form.formState.errors.status?.message &&
+              typeof form.formState.errors.status.message === "string" && (
+                <p className="text-sm text-error" role="alert">
+                  {form.formState.errors.status.message}
+                </p>
+              )}
+          </div>
+        )}
+      />
+    </motion.div>
   );
 };
 

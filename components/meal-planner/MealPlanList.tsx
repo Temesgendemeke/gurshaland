@@ -33,7 +33,7 @@ const MealPlanList = () => {
                     My Meal Plans
                 </h1>
                 <p className="text-muted-foreground text-lg max-w-2xl text-center">
-                    Manage and track your personalized nutrition journeys.
+                    Your saved plans, ready when you are.
                 </p>
             </div>
 

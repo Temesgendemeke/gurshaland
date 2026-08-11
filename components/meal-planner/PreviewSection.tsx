@@ -7,19 +7,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Apple, ChefHat, ShoppingCart, Sparkles, Zap } from "lucide-react";
-import { MealPlannerFormType } from "@/schema/meal-planner";
+import { ChefHat, ShoppingCart, Sparkles } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import { mealPlannerType } from "@/schema/meal-planner";
 
-const PreviewSection = ({ plan }: { plan: MealPlannerFormType }) => {
+const PreviewSection = ({ plan }: { plan: mealPlannerType }) => {
   return (
-    <div className="grid gap-8 max-h-[calc(100vh-10rem)] overflow-hidden">
+    <div className="grid gap-8 max-h-[calc(100vh-10rem)] overflow-y-auto">
       {/* Main Plan */}
       <div className="lg:col-span-2 space-y-6">
         <Card className="border bg-card">
           <CardHeader className="pb-4">
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <Badge className="bg-primary text-primary-foreground px-3 py-1">
-                {plan.timeframe === "today" ? "Today" : "Weekend"}
+                {plan.timeframe === "today" ? "Today" : "Full Week"}
               </Badge>
               <Badge variant="outline" className="capitalize px-3 py-1">
                 {plan.goal.replace("_", " ")}
@@ -28,12 +29,14 @@ const PreviewSection = ({ plan }: { plan: MealPlannerFormType }) => {
                 {plan.diet}
               </Badge>
               {plan.calories && (
-                <Badge className="bg-primary text-primary-foreground px-3 py-1">
+                <Badge variant="outline" className="px-3 py-1">
                   {plan.calories} kcal/day
                 </Badge>
               )}
             </div>
-            <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
+            <CardTitle className="text-2xl font-bold">
+              {plan.name ?? "Your Meal Plan"}
+            </CardTitle>
             {plan.notes && (
               <CardDescription className="text-base">
                 {plan.notes}
@@ -65,7 +68,9 @@ const PreviewSection = ({ plan }: { plan: MealPlannerFormType }) => {
                           </div>
                         </div>
                         {typeof m.calories === "number" && (
-                          <Badge className="">{m.calories} kcal</Badge>
+                          <Badge variant="outline" className="border-border">
+                            {m.calories} kcal
+                          </Badge>
                         )}
                       </div>
                       {(m.protein || m.carbs || m.fat) && (
@@ -102,7 +107,7 @@ const PreviewSection = ({ plan }: { plan: MealPlannerFormType }) => {
                     <div className="pt-3 border-t border-border">
                       <div className="flex items-center justify-between font-semibold">
                         <span>Day Total</span>
-                        <Badge className="bg-primary text-primary-foreground">
+                        <Badge variant="outline" className="border-border">
                           {d.totalCalories} kcal
                         </Badge>
                       </div>
@@ -116,9 +121,9 @@ const PreviewSection = ({ plan }: { plan: MealPlannerFormType }) => {
       </div>
 
       {/* Sidebar */}
-      <div className="space-y-6 w-full ">
+      <div className="space-y-6 w-full">
         {/* Shopping List */}
-        {plan.shoppingList?.length ? (
+        {plan.shopping_list?.length ? (
           <Card className="border bg-card sticky top-4">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-bold flex items-center gap-2">
@@ -133,7 +138,7 @@ const PreviewSection = ({ plan }: { plan: MealPlannerFormType }) => {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2">
-                {plan.shoppingList.map((item, idx) => (
+                {plan.shopping_list.map((item, idx) => (
                   <li
                     key={idx}
                     className="flex items-start gap-3 p-2 rounded-lg hover:bg-muted transition-colors"
@@ -150,34 +155,29 @@ const PreviewSection = ({ plan }: { plan: MealPlannerFormType }) => {
         ) : null}
 
         {/* Tips Card */}
-        <Card className="border bg-card">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-xl font-bold flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
-              Pro Tips
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
-              <ChefHat className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-              <p className="text-sm">
-                Prep proteins in bulk to save time during the week
-              </p>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
-              <Apple className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-              <p className="text-sm">
-                Keep healthy snacks aligned with your goal
-              </p>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
-              <Zap className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-              <p className="text-sm">
-                Stay hydrated throughout the day for best results
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        {plan.pro_tips?.length ? (
+          <Card className="border bg-card">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl font-bold flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-primary" />
+                Pro Tips
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {plan.pro_tips.map((tip, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-3 p-3 rounded-lg bg-muted/30"
+                >
+                  <ChefHat className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                  <div className="text-sm leading-relaxed [&_p]:m-0">
+                    <ReactMarkdown>{tip}</ReactMarkdown>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        ) : null}
       </div>
     </div>
   );

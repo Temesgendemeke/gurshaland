@@ -4,10 +4,13 @@ import { CookingPot } from "lucide-react";
 
 const Logo = () => {
   return (
-    <Link href="/" className="flex items-center space-x-2">
-      <div className="text-3xl modern-logo capitalize font-bold ">
+    <Link href="/" className="group flex shrink-0 items-center gap-2.5">
+      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-transform duration-300 group-hover:-rotate-6">
+        <CookingPot className="h-5 w-5" strokeWidth={1.75} />
+      </span>
+      <span className="font-gosh text-2xl font-bold tracking-tight text-foreground">
         Gurshaland
-      </div>
+      </span>
     </Link>
   );
 };

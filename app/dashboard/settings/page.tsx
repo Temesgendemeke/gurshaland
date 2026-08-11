@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Camera, Lock } from "lucide-react";
+import { Camera, Lock } from "lucide-react";
 import Link from "next/link";
 import { SettingProfileSchema } from "@/schema/SettingsProfile";
 import { FormProvider, useForm } from "react-hook-form";
@@ -184,7 +184,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-8">
+    <div className="mx-auto w-full max-w-5xl space-y-8 pb-16">
       {/* Header */}
       <div className="text-center md:text-left space-y-2">
         <h1 className="text-2xl sm:text-3xl font-bold font-gosh tracking-tight text-foreground">
@@ -460,7 +460,7 @@ export default function SettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <Button asChild className=" gap-2">
+            <Button asChild className="gap-2">
               <Link href="/dashboard/settings/change-password">
                 <Lock className="h-4 w-4" />
                 Change Password
@@ -470,7 +470,6 @@ export default function SettingsPage() {
         </Card>
 
         <DeleteAccount profile_id={user?.id as string} />
-        <div className="h-20"></div>
       </div>
     </div>
   );

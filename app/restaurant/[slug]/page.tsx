@@ -28,13 +28,82 @@ function BackButton({ href, className }: { href: string; className?: string }) {
   return (
     <Link
       href={href}
-      className={className}
       aria-label="Back to restaurants"
+      className={`${className} rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2`}
     >
-      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/30 text-white transition-colors hover:bg-black/40">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/30 text-white backdrop-blur-sm transition-colors hover:bg-black/40">
         <ChevronLeft className="h-5 w-5" strokeWidth={2} />
       </div>
     </Link>
+  );
+}
+
+function RestaurantJsonLd({ restaurant }: { restaurant: any }) {
+  const jsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    name: restaurant.name,
+  };
+
+  if (restaurant.description) jsonLd.description = restaurant.description;
+  if (restaurant.image?.url) jsonLd.image = restaurant.image.url;
+  if (restaurant.cuisines?.length) jsonLd.servesCuisine = restaurant.cuisines;
+  if (restaurant.phone) jsonLd.telephone = restaurant.phone;
+  if (restaurant.email) jsonLd.email = restaurant.email;
+  if (restaurant.google_map_url) jsonLd.hasMap = restaurant.google_map_url;
+  if (restaurant.website) jsonLd.sameAs = restaurant.website;
+
+  if (restaurant.address || restaurant.city || restaurant.country) {
+    jsonLd.address = {
+      "@type": "PostalAddress",
+      streetAddress: restaurant.address || undefined,
+      addressLocality: restaurant.city || undefined,
+      addressCountry: restaurant.country || undefined,
+    };
+  }
+
+  const rating = restaurant.rating;
+  const reviewCount = restaurant.review;
+  if (
+    rating != null &&
+    reviewCount != null &&
+    Number(reviewCount) > 0
+  ) {
+    jsonLd.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: Number(rating).toFixed(1),
+      reviewCount: Number(reviewCount),
+    };
+  }
+
+  const menuItems = (restaurant.menu ?? [])
+    .filter((item: any) => item.price?.amount != null)
+    .map((item: any) => ({
+      "@type": "MenuItem",
+      name: item.name,
+      description: item.description || undefined,
+      offers: {
+        "@type": "Offer",
+        price: Number(item.price.amount),
+        priceCurrency: item.price.currency || "ETB",
+      },
+    }));
+
+  if (menuItems.length > 0) {
+    jsonLd.hasMenu = {
+      "@type": "Menu",
+      hasMenuSection: {
+        "@type": "MenuSection",
+        hasMenuItem: menuItems,
+      },
+    };
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
   );
 }
 
@@ -57,19 +126,34 @@ export default async function RestaurantPage({
     );
   }
 
-  const categories =
-    (restaurant as any).category &&
-    (Array.isArray((restaurant as any).category)
-      ? (restaurant as any).category.map((cat: any) => cat.name || cat)
-      : [typeof (restaurant as any).category === "object"
-          ? ((restaurant as any).category as any).name
-          : (restaurant as any).category]);
+  const rawCategory = (restaurant as any).category;
+  const categories = Array.isArray(rawCategory)
+    ? rawCategory
+        .map((cat: any) => (typeof cat === "string" ? cat : cat?.name))
+        .filter(Boolean)
+    : typeof rawCategory === "string"
+      ? [rawCategory]
+      : rawCategory?.name
+        ? [rawCategory.name]
+        : [];
 
-  const hasDirections = restaurant.google_map_url || restaurant.address;
+  const mapsUrl =
+    restaurant.google_map_url ||
+    (restaurant.address
+      ? `https://maps.google.com/?q=${encodeURIComponent(restaurant.address)}`
+      : "");
+  const hasDirections = Boolean(mapsUrl);
   const heroImage = (restaurant as any).image?.url;
+
+  const formatPrice = (price?: { amount?: number; currency?: string }) => {
+    if (!price || price.amount == null) return null;
+    const currency = price.currency || "ETB";
+    return `${currency} ${Number(price.amount).toLocaleString("en-US")}`;
+  };
 
   return (
     <div className="min-h-[100dvh] flex flex-col">
+      <RestaurantJsonLd restaurant={restaurant} />
       <Header />
 
       {/* Hero Section - Asymmetric, content left, image right on desktop */}
@@ -105,7 +189,7 @@ export default async function RestaurantPage({
                     <Badge
                       key={`${cat}-${idx}`}
                       variant="outline"
-                      className="border-white/20 bg-black/30 text-white hover:bg-black/40"
+                      className="border-white/20 bg-black/30 text-white backdrop-blur-sm hover:bg-black/40"
                     >
                       {cat}
                     </Badge>
@@ -165,9 +249,8 @@ export default async function RestaurantPage({
                 {restaurant.cuisines.map((cuisine: string, idx: number) => (
                   <span
                     key={`${cuisine}-${idx}`}
-                    className="flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-2 text-sm font-medium text-foreground"
+                    className="rounded-full border border-border/70 bg-card px-4 py-2 text-sm font-medium text-foreground"
                   >
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                     {cuisine}
                   </span>
                 ))}
@@ -188,9 +271,9 @@ export default async function RestaurantPage({
                     >
                       <FallbackImage
                         src={img.url}
-                        alt={`Gallery view ${idx + 1}`}
+                        alt={`${restaurant.name} gallery photo ${idx + 1}`}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                         unoptimized
                       />
                     </div>
@@ -203,33 +286,38 @@ export default async function RestaurantPage({
           {restaurant.menu && restaurant.menu.length > 0 && (
             <section>
               <div className="flex items-end justify-between gap-4">
-                <SectionHeading title="Menu Highlights" />
+                <SectionHeading title="Menu" />
                 <span className="mb-1 hidden text-sm font-medium text-muted-foreground sm:block">
                   {restaurant.menu.length}{" "}
                   {restaurant.menu.length === 1 ? "dish" : "dishes"}
                 </span>
               </div>
               <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-card">
-                {restaurant.menu.map((item: any, idx: number) => (
-                  <div
-                    key={idx}
-                    className="group flex flex-col gap-1 px-5 py-4 transition-colors hover:bg-muted/40 sm:flex-row sm:items-baseline sm:gap-4 border-t border-border/40 first:border-0"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-semibold text-foreground transition-colors group-hover:text-primary">
-                        {item.name}
-                      </h3>
-                      {item.description ? (
-                        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                          {item.description}
-                        </p>
-                      ) : null}
+                {restaurant.menu.map((item: any, idx: number) => {
+                  const price = formatPrice(item.price);
+                  return (
+                    <div
+                      key={idx}
+                      className="group flex flex-col gap-1 px-5 py-4 transition-colors hover:bg-muted/40 sm:flex-row sm:items-baseline sm:gap-4 border-t border-border/40 first:border-0"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-semibold text-foreground transition-colors group-hover:text-primary">
+                          {item.name}
+                        </h3>
+                        {item.description ? (
+                          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                            {item.description}
+                          </p>
+                        ) : null}
+                      </div>
+                      {price && (
+                        <div className="font-gosh text-lg font-bold whitespace-nowrap text-primary">
+                          {price}
+                        </div>
+                      )}
                     </div>
-                    <div className="font-gosh text-lg font-bold whitespace-nowrap text-primary">
-                      {item.price?.amount} {item.price?.currency}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
           )}
@@ -248,15 +336,26 @@ export default async function RestaurantPage({
                 {restaurant.address && (
                   <li className="flex items-start gap-4">
                     <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/5 text-primary">
-                      <MapPin className="h-4.5 w-4.5" strokeWidth={1.5} />
+                      <MapPin className="h-[18px] w-[18px]" strokeWidth={1.5} />
                     </div>
                     <div>
                       <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                         Address
                       </span>
-                      <span className="mt-0.5 block font-medium text-foreground">
-                        {restaurant.address}
-                      </span>
+                      {mapsUrl ? (
+                        <a
+                          href={mapsUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-0.5 block font-medium text-foreground transition-colors hover:text-primary"
+                        >
+                          {restaurant.address}
+                        </a>
+                      ) : (
+                        <span className="mt-0.5 block font-medium text-foreground">
+                          {restaurant.address}
+                        </span>
+                      )}
                       {(restaurant.city || restaurant.country) && (
                         <span className="text-sm text-muted-foreground">
                           {[restaurant.city, restaurant.country]
@@ -271,15 +370,18 @@ export default async function RestaurantPage({
                 {restaurant.phone && (
                   <li className="flex items-start gap-4">
                     <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/5 text-primary">
-                      <Phone className="h-4.5 w-4.5" strokeWidth={1.5} />
+                      <Phone className="h-[18px] w-[18px]" strokeWidth={1.5} />
                     </div>
                     <div>
                       <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                         Phone
                       </span>
-                      <span className="mt-0.5 block font-medium text-foreground">
+                      <a
+                        href={`tel:${restaurant.phone}`}
+                        className="mt-0.5 block font-medium text-foreground transition-colors hover:text-primary"
+                      >
                         {restaurant.phone}
-                      </span>
+                      </a>
                     </div>
                   </li>
                 )}
@@ -287,7 +389,7 @@ export default async function RestaurantPage({
                 {restaurant.email && (
                   <li className="flex items-start gap-4">
                     <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/5 text-primary">
-                      <Mail className="h-4.5 w-4.5" strokeWidth={1.5} />
+                      <Mail className="h-[18px] w-[18px]" strokeWidth={1.5} />
                     </div>
                     <div>
                       <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -306,7 +408,7 @@ export default async function RestaurantPage({
                 {restaurant.website && (
                   <li className="flex items-start gap-4">
                     <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/5 text-primary">
-                      <Globe className="h-4.5 w-4.5" strokeWidth={1.5} />
+                      <Globe className="h-[18px] w-[18px]" strokeWidth={1.5} />
                     </div>
                     <div className="min-w-0">
                       <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -329,16 +431,11 @@ export default async function RestaurantPage({
 
               <Button
                 asChild
-                className="w-full btn-primary-modern rounded-xl py-6 font-semibold"
+                className="w-full btn-primary-modern h-12 rounded-xl font-semibold"
                 disabled={!hasDirections}
               >
                 <a
-                  href={
-                    restaurant.google_map_url ||
-                    (restaurant.address
-                      ? `https://maps.google.com/?q=${encodeURIComponent(restaurant.address)}`
-                      : "#")
-                  }
+                  href={mapsUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={

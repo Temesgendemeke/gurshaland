@@ -43,27 +43,19 @@ import {
 } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
 import {
-  Loader2,
-  Calendar,
-  Target,
-  Utensils,
-  Flame,
-  ShoppingCart,
-  Sparkles,
-  ChefHat,
+  AlertCircle,
   Apple,
-  Salad,
+  Calendar,
+  ChefHat,
   Clock,
-  TrendingUp,
-  Heart,
-  Zap,
-  Weight,
-  HandMetal,
-  Trophy,
-  Ruler,
-  User,
-  Watch,
   Coins,
+  Flame,
+  Heart,
+  Loader2,
+  Salad,
+  Sparkles,
+  TrendingUp,
+  Utensils,
 } from "lucide-react";
 import { mealPlannerType, mealPlannerSchema } from "@/schema/meal-planner";
 import PreviewSection from "./PreviewSection";
@@ -200,19 +192,11 @@ export default function MealPlanner() {
       <div className="max-w-7xl mx-auto space-y-8 mb-10 p-2">
         {/* Header */}
         <div className="text-center space-y-4 mb-12 relative">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-border mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-border">
             <Sparkles className="h-4 w-4 text-primary" />
             <span className="text-sm font-medium text-primary">
               AI-Powered Nutrition
             </span>
-          </div>
-          <div className="mb-4 flex items-center justify-center gap-1.5 rounded-full border border-border bg-muted px-3 py-1.5 text-sm text-muted-foreground">
-            <Coins className="h-4 w-4 text-primary" />
-            {user
-              ? credits === null
-                ? "— credits"
-                : `${credits} credits`
-              : "Log in required"}
           </div>
           <h1 className="text-4xl md:text-5xl font-bold heading-primary pb-1">
             Meal Planner
@@ -253,8 +237,7 @@ export default function MealPlanner() {
                     name="timeframe"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-base font-semibold flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-primary" />
+                        <FormLabel className="text-base font-semibold">
                           Planning Period
                         </FormLabel>
                         <FormControl>
@@ -294,16 +277,15 @@ export default function MealPlanner() {
                       name="goal"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Target className="h-4 w-4 text-primary" />
-                            Your Goal
-                          </FormLabel>
+                        <FormLabel className="text-base font-semibold">
+                          Your Goal
+                        </FormLabel>
                           <Select
                             value={field.value}
                             onValueChange={field.onChange}
                           >
                             <FormControl>
-                              <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
+                              <SelectTrigger className="h-12 rounded-xl border bg-background hover:border-primary transition-colors">
                                 <SelectValue placeholder="Select your goal" />
                               </SelectTrigger>
                             </FormControl>
@@ -348,16 +330,15 @@ export default function MealPlanner() {
                       name="diet"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Utensils className="h-4 w-4 text-primary" />
-                            Diet Type
-                          </FormLabel>
+                        <FormLabel className="text-base font-semibold">
+                          Diet Type
+                        </FormLabel>
                           <Select
                             value={field.value}
                             onValueChange={field.onChange}
                           >
                             <FormControl>
-                              <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
+                              <SelectTrigger className="h-12 rounded-xl border bg-background hover:border-primary transition-colors">
                                 <SelectValue placeholder="Select diet type" />
                               </SelectTrigger>
                             </FormControl>
@@ -411,16 +392,15 @@ export default function MealPlanner() {
                       name="meals_per_day"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Utensils className="h-4 w-4 text-primary" />
-                            Meals Per Day
-                          </FormLabel>
+                        <FormLabel className="text-base font-semibold">
+                          Meals Per Day
+                        </FormLabel>
                           <Select
                             value={String(field.value)}
                             onValueChange={(v) => field.onChange(parseInt(v))}
                           >
                             <FormControl>
-                              <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
+                              <SelectTrigger className="h-12 rounded-xl border bg-background hover:border-primary transition-colors">
                                 <SelectValue placeholder="Select meals" />
                               </SelectTrigger>
                             </FormControl>
@@ -448,16 +428,15 @@ export default function MealPlanner() {
                       name="age"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Watch className="h-4 w-4 text-primary" />
-                            Age (Optional)
-                          </FormLabel>
+                        <FormLabel className="text-base font-semibold">
+                          Age (Optional)
+                        </FormLabel>
                           <FormControl>
                             <Input
                               type="number"
                               inputMode="numeric"
                               placeholder="e.g., 20 years"
-                              className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors text-base"
+                              className="h-12 rounded-xl border bg-background hover:border-primary transition-colors text-base"
                               value={field.value ?? ""}
                               onChange={(e) =>
                                 field.onChange(
@@ -481,16 +460,15 @@ export default function MealPlanner() {
                       name="gender"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <User className="h-4 w-4 text-primary" />
-                            Gender (Optional)
-                          </FormLabel>
+                        <FormLabel className="text-base font-semibold">
+                          Gender (Optional)
+                        </FormLabel>
                           <FormControl>
                             <Select
                               value={field.value}
                               onValueChange={field.onChange}
                             >
-                              <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
+                              <SelectTrigger className="h-12 rounded-xl border bg-background hover:border-primary transition-colors">
                                 <SelectValue placeholder="Select gender" />
                               </SelectTrigger>
                               <SelectContent>
@@ -519,8 +497,7 @@ export default function MealPlanner() {
 
                     {/* Height Input Group */}
                     <div className="space-y-2">
-                      <FormLabel className="text-base font-semibold flex items-center gap-2">
-                        <Ruler className="h-4 w-4 text-primary" />
+                      <FormLabel className="text-base font-semibold">
                         Height (Optional)
                       </FormLabel>
                       <div className="flex gap-2">
@@ -533,7 +510,7 @@ export default function MealPlanner() {
                                 <Input
                                   type="number"
                                   placeholder="Value"
-                                  className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors text-base"
+                                  className="h-12 rounded-xl border bg-background hover:border-primary transition-colors text-base"
                                   {...field}
                                   onChange={(e) =>
                                     field.onChange(e.target.valueAsNumber)
@@ -554,7 +531,7 @@ export default function MealPlanner() {
                                   value={field.value}
                                   onValueChange={field.onChange}
                                 >
-                                  <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
+                                  <SelectTrigger className="h-12 rounded-xl border bg-background hover:border-primary transition-colors">
                                     <SelectValue placeholder="Unit" />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -578,8 +555,7 @@ export default function MealPlanner() {
 
                     {/* Weight Input Group */}
                     <div className="space-y-2">
-                      <FormLabel className="text-base font-semibold flex items-center gap-2">
-                        <Weight className="h-4 w-4 text-primary" />
+                      <FormLabel className="text-base font-semibold">
                         Weight (Optional)
                       </FormLabel>
                       <div className="flex gap-2">
@@ -592,7 +568,7 @@ export default function MealPlanner() {
                                 <Input
                                   type="number"
                                   placeholder="Value"
-                                  className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors text-base"
+                                  className="h-12 rounded-xl border bg-background hover:border-primary transition-colors text-base"
                                   {...field}
                                   onChange={(e) =>
                                     field.onChange(e.target.valueAsNumber)
@@ -613,7 +589,7 @@ export default function MealPlanner() {
                                   value={field.value}
                                   onValueChange={field.onChange}
                                 >
-                                  <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
+                                  <SelectTrigger className="h-12 rounded-xl border bg-background hover:border-primary transition-colors">
                                     <SelectValue placeholder="Unit" />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -642,16 +618,15 @@ export default function MealPlanner() {
                       name="activity_level"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Trophy className="h-4 w-4 text-primary" />
-                            Activity Level (Optional)
-                          </FormLabel>
+                        <FormLabel className="text-base font-semibold">
+                          Activity Level (Optional)
+                        </FormLabel>
                           <FormControl>
                             <Select
                               value={field.value}
                               onValueChange={field.onChange}
                             >
-                              <SelectTrigger className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors">
+                              <SelectTrigger className="h-12 rounded-xl border bg-background hover:border-primary transition-colors">
                                 <SelectValue placeholder="Select activity level" />
                               </SelectTrigger>
                               <SelectContent>
@@ -680,10 +655,9 @@ export default function MealPlanner() {
                       name="calories"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-base font-semibold flex items-center gap-2">
-                            <Zap className="h-4 w-4 text-primary" />
-                            Daily Calorie Target (Optional)
-                          </FormLabel>
+                        <FormLabel className="text-base font-semibold">
+                          Daily Calorie Target (Optional)
+                        </FormLabel>
                           <FormControl>
                             <Input
                               type="number"
@@ -691,7 +665,7 @@ export default function MealPlanner() {
                               min={800}
                               max={5000}
                               placeholder="e.g., 2000 calories"
-                              className="h-12 rounded-xl border-2 bg-background hover:border-primary transition-colors text-base"
+                              className="h-12 rounded-xl border bg-background hover:border-primary transition-colors text-base"
                               {...field}
                             />
                           </FormControl>
@@ -710,8 +684,7 @@ export default function MealPlanner() {
                     name="prompt"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-base font-semibold flex items-center gap-2">
-                          <Sparkles className="h-4 w-4 text-primary" />
+                        <FormLabel className="text-base font-semibold">
                           Special Instructions for AI
                         </FormLabel>
                         <FormControl>
@@ -736,7 +709,7 @@ export default function MealPlanner() {
                   />
 
                   {/* Generate Button */}
-                  <div className="">
+                  <div>
                     {needsLogin ? (
                       <p className="rounded-lg border border-border bg-muted px-3 py-2.5 text-sm text-muted-foreground">
                         <button
@@ -770,7 +743,7 @@ export default function MealPlanner() {
                       {isLoading ? (
                         <>
                           <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                          Generating Your Perfect Plan...
+                          Generating your meal plan...
                         </>
                       ) : (
                         <>
@@ -780,8 +753,12 @@ export default function MealPlanner() {
                       )}
                     </Button>
                     {!needsLogin && !outOfCredits && (
-                      <p className="mt-2 text-center text-xs text-muted-foreground">
-                        Costs {MEAL_PLAN_CREDIT_COST} credits per generation.
+                      <p className="mt-2 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
+                        <Coins className="h-3.5 w-3.5 text-primary" />
+                        {credits !== null
+                          ? `${credits} credits available · `
+                          : ""}
+                        costs {MEAL_PLAN_CREDIT_COST} credits per generation.
                       </p>
                     )}
                   </div>
@@ -805,7 +782,7 @@ export default function MealPlanner() {
             <CardContent className="pt-6">
               <div className="flex items-start gap-3">
                 <div className="p-2 rounded-lg bg-error/10">
-                  <Flame className="h-5 w-5 text-error" />
+                  <AlertCircle className="h-5 w-5 text-error" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-error">Error</h3>

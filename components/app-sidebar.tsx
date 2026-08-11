@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  Calendar,
   ChevronUp,
+  FileText,
   Home,
-  Inbox,
   Settings,
   User2,
+  UtensilsCrossed,
 } from "lucide-react";
 
 import {
@@ -34,15 +34,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import BackNavigation from "./BackNavigation";
 import Logout from "./Logout";
 import Image from "next/image";
-import useProfile from "@/store/Profile";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getProfileByID } from "@/actions/profile/getProfile";
 
 const items = [
   { title: "Home", url: "/dashboard", icon: Home },
   { title: "Followers", url: "/dashboard/followers", icon: User2 },
-  { title: "Recipes", url: "/dashboard/recipes", icon: Inbox },
-  { title: "Blogs", url: "/dashboard/blogs", icon: Calendar },
+  { title: "Recipes", url: "/dashboard/recipes", icon: UtensilsCrossed },
+  { title: "Blogs", url: "/dashboard/blogs", icon: FileText },
   { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ];
 
@@ -115,8 +114,7 @@ export function AppSidebar() {
           </div>
           {/* Wordmark — hidden when collapsed */}
           <span
-            className={`text-lg font-bold text-foreground tracking-tight font-gosh whitespace-nowrap transition-opacity duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-              // collapsed ? "opacity-0" : "opacity-100"
+            className={`text-lg font-bold text-foreground tracking-tight font-gosh whitespace-nowrap transition-opacity duration-300 ${
               collapsed ? "hidden" : "inline"
             }`}
           >
