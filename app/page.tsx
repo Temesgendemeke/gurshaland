@@ -93,9 +93,9 @@ export default async function HomePage() {
         <Reveal>
           <Card className="relative overflow-hidden border-border bg-card p-10 text-center text-foreground sm:p-14">
             <div className="mx-auto max-w-2xl text-center">
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-                Gursha · ጉርሻ
-              </p>
+              {/* <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Gursha · <span className="font-benaiah">ጉርሻ</span>
+              </p> */}
               <h2 className="heading-primary mb-4 text-3xl font-bold sm:text-4xl">
                 Pull up a chair.
               </h2>
@@ -104,11 +104,7 @@ export default async function HomePage() {
                 Save recipes, share your own, and eat together.
               </p>
               <div className="flex flex-col justify-center gap-4 sm:flex-row">
-                <Button
-                  asChild
-                  size="lg"
-                  className="btn-primary-modern px-8"
-                >
+                <Button asChild size="lg" className="btn-primary-modern px-8">
                   <Link href="/recipes">Explore Recipes</Link>
                 </Button>
                 <Button

@@ -58,7 +58,7 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
 
   return (
     <Card className="p-6 bg-card border-border">
-      <h2 className="text-xl font-bold text-foreground mb-6">{label} Image</h2>
+      {/* <h2 className="text-xl font-bold text-foreground mb-6">{label} Image</h2> */}
 
       {/*{JSON.stringify(oldPath)}*/}
       {/* Preview and controls */}
@@ -91,7 +91,10 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
           </div>
         ) : (
           <>
-            <Upload className="w-12 h-12 text-primary mx-auto mb-4" strokeWidth={1.5} />
+            <Upload
+              className="w-12 h-12 text-primary mx-auto mb-4"
+              strokeWidth={1.5}
+            />
             <p className="text-muted-foreground mb-2">
               Click to upload or drag and drop
             </p>

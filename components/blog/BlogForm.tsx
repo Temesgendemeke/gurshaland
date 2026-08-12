@@ -47,6 +47,14 @@ import generate_error from "@/utils/generate_error";
 import StatusSelect from "./StatusSelect";
 import { Blog } from "@/utils/types/blog";
 import deleteImageFromStorage, { deleteImageFromDb } from "@/actions/Image";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "../ui/card";
+import { Tag, X } from "lucide-react";
 
 type BlogFormData = z.infer<typeof blogSchema>;
 type ImageFormData = z.infer<typeof ImageSchema>;
@@ -277,139 +285,162 @@ export default function BlogForm({
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pb-12">
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="space-y-8 pb-12 bg-card border border-primary/80 p-4"
+    >
       {/* Cover Image - Full width, no card wrapper */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+      <Card className="space-y-4">
+        <CardHeader>
+          {/* <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <PhotoIcon className="h-4 w-4" strokeWidth={1.5} />
-          </span>
-          <h2 className="font-gosh text-xl font-bold tracking-tight text-foreground">
-            Cover Image
-          </h2>
-        </div>
-        <p className="text-sm text-muted-foreground">
-          This image appears at the top of your post and in previews.
-        </p>
-
-        <ImageBox
-          form={form}
-          field="image"
-          inputcls="blog-image"
-          label="Cover"
-          deleteImage={async (path) => {
-            await deleteImageFromDb(
-              "blog_image",
-              path,
-              form.watch("id"),
-            );
-          }}
-        />
-      </div>
-
-      {/* Basic Info - Direct spacing, no card */}
-      <div className="space-y-6 pt-4">
-        <Separator className="opacity-40" />
-
-        <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <PenSquare className="h-4 w-4" strokeWidth={1.5} />
-          </span>
-          <h2 className="font-gosh text-xl font-bold tracking-tight text-foreground">
-            Basic Information
-          </h2>
-        </div>
-
-        <div className="space-y-5">
-          {/* Title */}
-          <div className="space-y-2">
-            <Label htmlFor="title" className="text-sm font-medium text-foreground">
-              Title <span className="text-error">*</span>
-            </Label>
-            <Input
-              id="title"
-              className="h-11 text-lg"
-              {...form.register("title")}
-              placeholder="Enter your blog title"
+          </span> */}
+          <CardTitle>Basic Information</CardTitle>
+          <CardDescription>
+            This information will be displayed at the top of your post.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-2 md:space-y-4">
+          <div className="grid lg:grid-cols-2 w-full items-center gap-y-2 ">
+            <ImageBox
+              form={form}
+              field="image"
+              inputcls="blog-image"
+              label="Cover"
+              deleteImage={async (path) => {
+                await deleteImageFromDb("blog_image", path, form.watch("id"));
+              }}
             />
-            {form.formState.errors.title && (
-              <p className="text-sm text-error" role="alert">
-                {form.formState.errors.title.message}
-              </p>
-            )}
-          </div>
 
-          {/* Subtitle */}
-          <div className="space-y-2">
-            <Label htmlFor="subtitle" className="text-sm font-medium text-foreground">
-              Subtitle
-            </Label>
-            <Input
-              id="subtitle"
-              className="h-11"
-              {...form.register("subtitle")}
-              placeholder="A brief summary (optional)"
-            />
-            {form.formState.errors.subtitle && (
-              <p className="text-sm text-error" role="alert">
-                {form.formState.errors.subtitle.message}
-              </p>
-            )}
-          </div>
+            <div className="">
+              {/* Basic Info - Direct spacing, no card */}
+              <Card className=" border-none">
+                {/* <Separator className="opacity-40" /> */}
+                {/* <CardHeader>
+                  <CardTitle className="">Basic Information</CardTitle>
+                  <CardDescription className="">
+                    This information will be displayed at the top of your post.
+                  </CardDescription>
+                </CardHeader> */}
 
-          {/* Category */}
-          <div className="space-y-2">
-            <Label htmlFor="category" className="text-sm font-medium text-foreground">
-              Category <span className="text-error">*</span>
-            </Label>
-            <Controller
-              name="category"
-              control={form.control}
-              render={({ field }) => (
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                >
-                  <SelectTrigger id="category" className="h-11 w-full">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background">
-                    {categories.map((category, index) => (
-                      <SelectItem key={index} value={category} className="capitalize">
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            {form.formState.errors.category && (
-              <p className="text-sm text-error" role="alert">
-                {form.formState.errors.category.message}
-              </p>
-            )}
-          </div>
+                <CardContent className="space-y-2">
+                  {/* Title */}
+                  <div className="flex flex-col gap-1">
+                    <Label
+                      htmlFor="title"
+                      className="text-sm font-medium text-foreground"
+                    >
+                      Title <span className="text-error">*</span>
+                    </Label>
+                    <Input
+                      id="title"
+                      className="h-11 text-lg"
+                      {...form.register("title")}
+                      placeholder="Enter your blog title"
+                    />
+                    {form.formState.errors.title && (
+                      <p className="text-sm text-error" role="alert">
+                        {form.formState.errors.title.message}
+                      </p>
+                    )}
+                  </div>
 
+                  {/* Subtitle */}
+                  <div className="flex flex-col gap-1">
+                    <Label
+                      htmlFor="subtitle"
+                      className="text-sm font-medium text-foreground"
+                    >
+                      Subtitle
+                    </Label>
+                    <Input
+                      id="subtitle"
+                      className="h-11"
+                      {...form.register("subtitle")}
+                      placeholder="A brief summary (optional)"
+                    />
+                    {form.formState.errors.subtitle && (
+                      <p className="text-sm text-error" role="alert">
+                        {form.formState.errors.subtitle.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Category */}
+                  <div className="flex flex-col gap-1">
+                    <Label
+                      htmlFor="category"
+                      className="text-sm font-medium text-foreground"
+                    >
+                      Category <span className="text-error">*</span>
+                    </Label>
+                    <Controller
+                      name="category"
+                      control={form.control}
+                      render={({ field }) => (
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger id="category" className="h-11 w-full">
+                            <SelectValue placeholder="Select a category" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background">
+                            {categories.map((category, index) => (
+                              <SelectItem
+                                key={index}
+                                value={category}
+                                className="capitalize"
+                              >
+                                {category}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    {form.formState.errors.category && (
+                      <p className="text-sm text-error" role="alert">
+                        {form.formState.errors.category.message}
+                      </p>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Tags</CardTitle>
+          <CardDescription>
+            Add tags to help categorize your post. Press Enter or click the plus
+            button to add a tag.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-2">
           {/* Tags */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium text-foreground">Tags</Label>
-
+          <div className="flex flex-col gap-2 ">
+            {/* <Label className="text-sm font-medium text-foreground">Tags</Label> */}
             {(form.watch("tags") || []).length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 py-2">
                 {(form.watch("tags") || []).map((tag, index) => (
                   <Badge
                     key={index}
                     variant="outline"
-                    className="border-primary/30 bg-primary/5 text-primary hover:bg-primary/10"
+                    className="border-primary/30 bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm"
                   >
+                    <Tag className="mr-1 h-3 w-3" strokeWidth={1.5} />
                     {tag}
                     <button
                       type="button"
                       onClick={() => removeTag(index)}
-                      className="ml-1 hover:text-error transition-colors"
+                      className="ml-1 hover:text-primary-foreground/80 transition-colors"
                       aria-label={`Remove ${tag}`}
                     >
-                      <Minus className="h-3 w-3" strokeWidth={2} />
+                      <X className="h-3 w-3" strokeWidth={2} />
                     </button>
                   </Badge>
                 ))}
@@ -421,7 +452,7 @@ export default function BlogForm({
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 placeholder="Add a tag"
-                className="h-11 flex-1"
+                className="h-10 flex-1"
                 onKeyDown={(e) =>
                   e.key === "Enter" && (e.preventDefault(), addTag())
                 }
@@ -430,29 +461,31 @@ export default function BlogForm({
                 type="button"
                 onClick={addTag}
                 variant="outline"
-                className="h-11 shrink-0 px-4"
+                className="h-10 shrink-0 px-4 bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground transition-colors"
               >
                 <Plus className="h-4 w-4" strokeWidth={2} />
               </Button>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Content Sections - Direct spacing */}
-      <div className="space-y-6 pt-4">
-        <Separator className="opacity-40" />
+      <Card className="space-y-6 pt-4">
+        {/* <Separator className="opacity-40" /> */}
 
-        <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        <CardHeader className="gap-2">
+          {/* <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <List className="h-4 w-4" strokeWidth={1.5} />
-          </span>
-          <h2 className="font-gosh text-xl font-bold tracking-tight text-foreground">
-            Content Sections
-          </h2>
-        </div>
+          </span> */}
+          <CardTitle className="">Content Sections</CardTitle>
+          <CardDescription className="">
+            Add multiple sections to your blog post. Each section can have its
+            own title, body, and image.
+          </CardDescription>
+        </CardHeader>
 
-        <div className="space-y-4">
+        <CardContent className="space-y-4">
           {contentFields?.map((field, index) => (
             <ContentSection
               key={field.id}
@@ -470,19 +503,19 @@ export default function BlogForm({
             transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             type="button"
             onClick={addContentSection}
-            className="w-full flex items-center justify-center gap-2 h-12 rounded-xl border-dashed border-border bg-transparent text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/5 transition-all duration-200"
+            className="w-full flex items-center justify-center gap-2 h-12 rounded-xl border-dashed border-border bg-transparent text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/5 transition-all duration-200 "
           >
             <Plus className="h-4 w-4" strokeWidth={2} />
             <span className="font-medium">Add Content Section</span>
           </motion.button>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Status Select */}
-      <div className="space-y-4 pt-4">
-        <Separator className="opacity-40" />
-        <StatusSelect form={form} />
-      </div>
+      {/* <div className="space-y-4 pt-4"> */}
+      {/* <Separator className="opacity-40" /> */}
+      <StatusSelect form={form} />
+      {/* </div> */}
 
       {/* Submit Button */}
       <motion.div
@@ -499,13 +532,18 @@ export default function BlogForm({
         >
           {form.formState.isSubmitting ? (
             <>
-              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" strokeWidth={2} />
+              <LoaderCircle
+                className="mr-2 h-4 w-4 animate-spin"
+                strokeWidth={2}
+              />
               <span>Publishing...</span>
             </>
           ) : (
             <>
               <Upload className="mr-2 h-5 w-5" strokeWidth={1.5} />
-              <span>{mode === "create" ? "Publish Story" : "Save Changes"}</span>
+              <span>
+                {mode === "create" ? "Publish Story" : "Save Changes"}
+              </span>
             </>
           )}
         </Button>

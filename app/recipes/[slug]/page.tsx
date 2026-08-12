@@ -31,6 +31,10 @@ import BackNavigation from "@/components/BackNavigation";
 import Link from "next/link";
 import PreviewWarning from "@/components/PreviewWarning";
 import YoutubeVideoSection from "@/components/recipe/YoutubeVideoSection";
+import { motion, useReducedMotion } from "motion/react";
+import Reveal from "@/components/Reveal";
+
+const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export default function RecipeDetailPage() {
   const params = useParams();
@@ -40,6 +44,7 @@ export default function RecipeDetailPage() {
   const loading = useRecipeDetailStore((state) => state.loading);
   const fetchRecipe = useRecipeDetailStore((state) => state.fetchRecipe);
   const error = useRecipeDetailStore((store) => store.error);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     if (error) {
@@ -51,6 +56,26 @@ export default function RecipeDetailPage() {
     fetchRecipe(slug as string, user?.id);
   }, [slug, user]);
 
+  const stats = recipe
+    ? [
+        {
+          label: "Total Time",
+          value:
+            recipe.preptime && recipe.cooktime
+              ? `${recipe.preptime + recipe.cooktime} min`
+              : "Unknown",
+          icon: Clock,
+        },
+        { label: "Servings", value: recipe.servings, icon: Group },
+        { label: "Difficulty", value: recipe.difficulty, icon: Restaurant },
+        {
+          label: "Rating",
+          value: recipe.average_rating ? recipe.average_rating : "N/A",
+          icon: Star,
+        },
+      ]
+    : [];
+
   return (
     <div className="min-h-screen ">
       <Header />
@@ -60,7 +85,6 @@ export default function RecipeDetailPage() {
         <div className="w-full max-w-7xl mx-auto px-6 py-12 space-y-6">
           {/* Back Navigation */}
           <BackNavigation pagename={"Recipes"} />
-          {/* Compare user id with recipe author id */}
 
           {/* Preview Mode Warning */}
           <PreviewWarning
@@ -72,17 +96,30 @@ export default function RecipeDetailPage() {
           />
 
           {/* Recipe Header */}
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 mb-10">
-            <div>
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 mb-10 items-start">
+            {/* Image */}
+            <motion.div
+              initial={reduce ? false : { opacity: 0, x: -24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, ease }}
+              className="group relative overflow-hidden rounded-2xl border border-border shadow-[0_24px_70px_-40px_hsl(var(--foreground)/0.45)]"
+            >
               <img
                 src={recipe.image.url || "/placeholder.svg"}
                 alt={recipe.title}
-                className="w-full h-96 object-cover rounded-lg"
+                className="h-96 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
               />
-            </div>
+              <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/5" />
+            </motion.div>
 
+            {/* Info */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
+              <motion.div
+                initial={reduce ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1, ease }}
+                className="flex items-center gap-2 mb-4 flex-wrap"
+              >
                 <Badge className="bg-primary/10 text-primary border-primary/20">
                   {recipe.category?.name}
                 </Badge>
@@ -95,75 +132,71 @@ export default function RecipeDetailPage() {
                     {tag}
                   </Badge>
                 ))}
-              </div>
+              </motion.div>
 
-              <h1 className="heading-primary text-4xl md:text-5xl wrap-break-word max-w-full mb-3 font-gosh">
+              <motion.h1
+                initial={reduce ? false : { opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.16, ease }}
+                className="heading-primary text-4xl md:text-5xl wrap-break-word max-w-full mb-3 font-gosh"
+              >
                 {recipe.title}
-              </h1>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+              </motion.h1>
+
+              <motion.p
+                initial={reduce ? false : { opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.22, ease }}
+                className="text-lg text-muted-foreground leading-relaxed mb-6"
+              >
                 {recipe.description}
-              </p>
+              </motion.p>
 
               {/* Recipe Meta */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div className="text-center p-5 bg-card rounded-lg border border-border">
-                  <Clock
-                    className="w-6 h-6 text-muted-foreground mx-auto mb-2"
-                    aria-hidden="true"
-                  />
-                  <div className="text-sm text-muted-foreground">
-                    Total Time
-                  </div>
-                  <div className="text-base font-semibold text-foreground">
-                    {recipe.preptime && recipe.cooktime
-                      ? recipe.preptime + recipe.cooktime
-                      : "Unknown"}
-                  </div>
-                </div>
-                <div className="text-center p-5 bg-card rounded-lg border border-border">
-                  <Group
-                    className="w-6 h-6 text-muted-foreground mx-auto mb-2"
-                    aria-hidden="true"
-                  />
-                  <div className="text-sm text-muted-foreground">Servings</div>
-                  <div className="text-base font-semibold text-foreground">
-                    {recipe.servings}
-                  </div>
-                </div>
-                <div className="text-center p-5 bg-card rounded-lg border border-border">
-                  <Restaurant
-                    className="w-6 h-6 text-muted-foreground mx-auto mb-2"
-                    aria-hidden="true"
-                  />
-                  <div className="text-sm text-muted-foreground">
-                    Difficulty
-                  </div>
-                  <div className="text-base font-semibold text-foreground">
-                    {recipe.difficulty}
-                  </div>
-                </div>
-                <div className="text-center p-5 bg-card rounded-lg border border-border">
-                  <Star
-                    className="w-6 h-6 text-muted-foreground mx-auto mb-2"
-                    aria-hidden="true"
-                  />
-                  <div className="text-sm text-muted-foreground">Rating</div>
-                  <div className="text-base font-semibold text-foreground">
-                    {recipe.average_rating
-                      ? recipe.average_rating
-                      : "N/A"}
-                  </div>
-                </div>
+                {stats.map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={
+                      reduce ? false : { opacity: 0, y: 14, scale: 0.97 }
+                    }
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.45, delay: 0.3 + i * 0.07, ease }}
+                    className="group/stat relative overflow-hidden rounded-xl border border-border bg-card p-5 text-center transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_16px_40px_-22px_hsl(var(--primary)/0.4)] active:scale-[0.97]"
+                  >
+                    <span className="absolute inset-x-4 top-0 h-0.5 origin-left scale-x-0 rounded-full bg-primary transition-transform duration-300 group-hover/stat:scale-x-100" />
+                    <stat.icon
+                      className="w-6 h-6 text-muted-foreground mx-auto mb-2 transition-colors duration-300 group-hover/stat:text-primary"
+                      aria-hidden="true"
+                    />
+                    <div className="text-sm text-muted-foreground">
+                      {stat.label}
+                    </div>
+                    <div className="text-base font-semibold text-foreground">
+                      {stat.value}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
 
-              {/* Action Buttons */}
-              <ActionButtons
-                recipe_id={recipe.id ?? ""}
-                user_id={user?.id ?? ""}
-              />
+              <motion.div
+                initial={reduce ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.62, ease }}
+              >
+                <ActionButtons
+                  recipe_id={recipe.id ?? ""}
+                  user_id={user?.id ?? ""}
+                />
+              </motion.div>
 
-              {/* Author Info */}
-              {recipe.author && <AuthorInfo author={recipe.author} />}
+              <motion.div
+                initial={reduce ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.7, ease }}
+              >
+                {recipe.author && <AuthorInfo author={recipe.author} />}
+              </motion.div>
             </div>
           </div>
 
@@ -171,52 +204,67 @@ export default function RecipeDetailPage() {
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 space-y-8">
               {/* Instructions */}
-              <InstructionsView instructions={recipe?.instructions} />
+              <Reveal>
+                <InstructionsView instructions={recipe?.instructions} />
+              </Reveal>
 
               {/* Ingredients */}
-              <IngredientsView ingredients={recipe?.ingredients} />
+              <Reveal delay={0.05}>
+                <IngredientsView ingredients={recipe?.ingredients} />
+              </Reveal>
 
               {/* Cultural Note */}
-              <RecipeCulturalNote culturalNote={recipe?.culturalNote} />
+              <Reveal delay={0.1}>
+                <RecipeCulturalNote culturalNote={recipe?.culturalNote} />
+              </Reveal>
 
               {/* youtube video section */}
-              <Card className="p-6 bg-card border border-border rounded-lg">
-                <YoutubeVideoSection
-                  videoId={recipe.youtube_video_id}
-                  videoQuery={recipe.youtube_search_query}
-                />
-              </Card>
+              <Reveal delay={0.1}>
+                <Card className="p-6 bg-card border border-border rounded-lg">
+                  <YoutubeVideoSection
+                    videoId={recipe.youtube_video_id}
+                    videoQuery={recipe.youtube_search_query}
+                  />
+                </Card>
+              </Reveal>
             </div>
 
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Nutrition */}
-              <NutritionView nutrition={recipe?.nutrition} />
+              <Reveal>
+                <NutritionView nutrition={recipe?.nutrition} />
+              </Reveal>
 
-              <RecipeRating
-                user_id={user?.id ?? ""}
-                recipe_id={recipe.id ?? ""}
-                rating={
-                  recipe.rating.find((r) => r.user_id === user?.id)?.rating || 0
-                }
-              />
+              <Reveal delay={0.05}>
+                <RecipeRating
+                  user_id={user?.id ?? ""}
+                  recipe_id={recipe.id ?? ""}
+                  rating={
+                    recipe.rating.find((r) => r.user_id === user?.id)?.rating ||
+                    0
+                  }
+                />
+              </Reveal>
 
               {/* Comments */}
-              <Card className="p-6 bg-card border border-border rounded-lg">
-                <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
-                  <MessageRoundedDetail className="w-5 h-5 mr-2" />
-                  Comments ({recipe.comments.length})
-                </h3>
+              <Reveal delay={0.1}>
+                <Card className="p-6 bg-card border border-border rounded-lg">
+                  <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
+                    <MessageRoundedDetail className="w-5 h-5 mr-2" />
+                    Comments ({recipe.comments.length})
+                  </h3>
 
-                {/* Add Comment */}
-                <RecipeComment user_id={user?.id} recipe_id={recipe.id} />
+                  {/* Add Comment */}
+                  <RecipeComment user_id={user?.id} recipe_id={recipe.id} />
 
-                {/* Comments List */}
-                <RecipeCommentList
-                  user_id={user?.id || ""}
-                  comments={recipe.comments as PostComment[]}
-                />
-              </Card>
+                  {/* Comments List */}
+                  <RecipeCommentList
+                    user_id={user?.id || ""}
+                    comments={recipe.comments as PostComment[]}
+                  />
+                </Card>
+              </Reveal>
             </div>
           </div>
         </div>

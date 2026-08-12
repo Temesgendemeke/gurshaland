@@ -89,7 +89,7 @@ export default function InstructionsField({
   };
 
   return (
-    <Card>
+    <Card className="border-none">
       <CardHeader>
         <CardTitle>Instructions</CardTitle>
         <CardDescription>Step-by-step how to prepare the dish.</CardDescription>

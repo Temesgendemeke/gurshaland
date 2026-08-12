@@ -33,7 +33,7 @@ export default function HeroAiGenerator() {
     <>
       <div className="relative">
         <HeroImage />
-        <div className="absolute inset-x-0 bottom-4 sm:bottom-6 flex justify-center px-4">
+        {/* <div className="absolute inset-x-0 bottom-4 sm:bottom-6 flex justify-center px-4">
           <Button
             onClick={handleOpenGenerator}
             size="lg"
@@ -42,7 +42,7 @@ export default function HeroAiGenerator() {
             <Sparkles className="w-4 h-4 mr-2" />
             Generate Recipe with AI
           </Button>
-        </div>
+        </div> */}
       </div>
 
       <Sheet open={open} onOpenChange={setOpen}>

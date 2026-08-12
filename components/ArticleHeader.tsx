@@ -1,5 +1,11 @@
 import Image from "next/image";
-import { CalendarDays, Clock, Heart, MessageCircle, Share2 } from "lucide-react";
+import {
+  CalendarDays,
+  Clock,
+  Heart,
+  MessageCircle,
+  Share2,
+} from "lucide-react";
 import { format_date } from "@/utils/formatdate";
 import { Blog } from "@/utils/types/blog";
 
@@ -8,7 +14,7 @@ const ArticleHeader = ({ blogPost }: { blogPost: Blog }) => {
     blogPost.author?.full_name || blogPost.author?.username || "Anonymous";
 
   return (
-    <div className="mx-auto w-full max-w-4xl">
+    <div className="mx-auto w-full">
       <p className="mb-4 text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-primary">
         {blogPost?.category}
       </p>
@@ -71,11 +77,11 @@ const ArticleHeader = ({ blogPost }: { blogPost: Blog }) => {
       </div>
 
       {blogPost?.tags && blogPost.tags.length > 0 && (
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-5 flex flex-wrap gap-2 ">
           {blogPost.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-muted/80 px-3 py-1 text-xs font-medium text-muted-foreground"
+              className="rounded-full bg-muted/80 px-3 py-1 text-xs font-medium text-muted-foreground border border-transparent "
             >
               #{tag}
             </span>

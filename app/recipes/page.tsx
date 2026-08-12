@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
@@ -52,6 +52,7 @@ function RecipesPageContent() {
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const reduceMotion = useReducedMotion();
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const allRecipes = recipeStore((store) => store.recipes) || [];
   const trendingRecipes = recipeStore((store) => store.trendingRecipes) || [];
@@ -80,6 +81,15 @@ function RecipesPageContent() {
     else if (sort === "featured") fetchFeaturedRecipes();
     else fetchRecipes();
   }, [sort, fetchRecipes, fetchTrendingRecipes, fetchFeaturedRecipes]);
+
+  // Scroll to results when filters/search change
+  useEffect(() => {
+    if (resultsRef.current) {
+      const y =
+        resultsRef.current.getBoundingClientRect().top + window.scrollY - 280;
+      window.scrollTo({ top: y, behavior: reduceMotion ? "auto" : "smooth" });
+    }
+  }, [searchTerm, selectedCategory, selectedDifficulty, reduceMotion]);
 
   const handleSortChange = (value: string) => {
     setVisibleCount(POSTS_PER_PAGE);
@@ -131,10 +141,10 @@ function RecipesPageContent() {
       <Header />
 
       {/* Masthead */}
-      <header className="mx-auto w-full max-w-7xl px-4 pt-14 sm:px-6 md:pt-20">
-        <p className="mb-4 text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-primary">
+      <header className="mx-auto w-full max-w-7xl px-4 pt-14 sm:px-6 md:pt-10">
+        {/* <p className="mb-4 text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-primary">
           The Gurshaland Kitchen
-        </p>
+        </p> */}
         <h1 className="max-w-3xl text-5xl font-black leading-[1.04] tracking-tighter text-foreground sm:text-6xl lg:text-7xl">
           Recipes Worth Cooking
         </h1>
@@ -145,10 +155,10 @@ function RecipesPageContent() {
       </header>
 
       {/* Filters */}
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+      <div ref={resultsRef} className="mx-auto w-full max-w-7xl px-4 sm:px-6">
         <div className="mt-12 border-t border-border/70 pb-2">
           <div className="flex flex-col gap-3 py-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
-            <div className="scrollbar-hide -mb-1 flex gap-2 overflow-x-auto pb-1">
+            {/* <div className="scrollbar-hide  flex gap-2 overflow-x-auto pb-1">
               {SORTS.map((s) => {
                 const active = sort === s.value;
                 return (
@@ -156,7 +166,7 @@ function RecipesPageContent() {
                     key={s.value}
                     onClick={() => handleSortChange(s.value)}
                     className={cn(
-                      "shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97]",
+                      "shrink-0 rounded-full border px-4 py-2  font-medium transition-all duration-200 active:scale-[0.97] text-xs",
                       active
                         ? "border-primary bg-primary text-primary-foreground shadow-sm"
                         : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
@@ -166,6 +176,47 @@ function RecipesPageContent() {
                   </button>
                 );
               })}
+            </div> */}
+            <div>
+              <div className="scrollbar-hide  flex gap-2 overflow-x-auto pb-1">
+                {CATEGORIES.map((category) => {
+                  const active = selectedCategory === category;
+                  return (
+                    <button
+                      key={category}
+                      onClick={() => handleCategoryChange(category)}
+                      className={cn(
+                        "shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97] text-xs",
+                        active
+                          ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                          : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
+                      )}
+                    >
+                      {category === "all" ? "All categories" : category}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="scrollbar-hide mt-2 flex gap-2 overflow-x-auto pb-1">
+                {DIFFICULTIES.map((difficulty) => {
+                  const active = selectedDifficulty === difficulty;
+                  return (
+                    <button
+                      key={difficulty}
+                      onClick={() => handleDifficultyChange(difficulty)}
+                      className={cn(
+                        "shrink-0 rounded-full border px-4 py-1.5 text-xs font-semibold transition-all duration-200 active:scale-[0.97]",
+                        active
+                          ? "border-secondary bg-secondary text-secondary-foreground shadow-sm"
+                          : "border-border bg-transparent text-muted-foreground hover:border-secondary/40 hover:text-foreground",
+                      )}
+                    >
+                      {difficulty === "all" ? "All levels" : difficulty}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="relative lg:w-72">
@@ -178,46 +229,6 @@ function RecipesPageContent() {
               />
             </div>
           </div>
-
-          <div className="scrollbar-hide -mb-1 flex gap-2 overflow-x-auto pb-1">
-            {CATEGORIES.map((category) => {
-              const active = selectedCategory === category;
-              return (
-                <button
-                  key={category}
-                  onClick={() => handleCategoryChange(category)}
-                  className={cn(
-                    "shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97]",
-                    active
-                      ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                      : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
-                  )}
-                >
-                  {category === "all" ? "All categories" : category}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="scrollbar-hide -mb-1 flex gap-2 overflow-x-auto pb-1">
-            {DIFFICULTIES.map((difficulty) => {
-              const active = selectedDifficulty === difficulty;
-              return (
-                <button
-                  key={difficulty}
-                  onClick={() => handleDifficultyChange(difficulty)}
-                  className={cn(
-                    "shrink-0 rounded-full border px-4 py-1.5 text-xs font-semibold transition-all duration-200 active:scale-[0.97]",
-                    active
-                      ? "border-secondary bg-secondary text-secondary-foreground shadow-sm"
-                      : "border-border bg-transparent text-muted-foreground hover:border-secondary/40 hover:text-foreground",
-                  )}
-                >
-                  {difficulty === "all" ? "All levels" : difficulty}
-                </button>
-              );
-            })}
-          </div>
         </div>
       </div>
 
@@ -227,7 +238,7 @@ function RecipesPageContent() {
           <RecipeListSkeleton />
         ) : (
           <>
-            <div className="mt-16 mb-8 flex items-end justify-between gap-4 border-b border-border/70 pb-5">
+            <div className="mt-1 mb-8 flex items-end justify-between gap-4 border-b border-border/70 pb-5">
               <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
                 The Collection
               </h2>
@@ -240,7 +251,8 @@ function RecipesPageContent() {
             {filteredRecipes.length > 0 ? (
               <>
                 <motion.div
-                  className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                  ref={resultsRef}
+                  className="grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3"
                   initial={reduceMotion ? false : "hidden"}
                   animate="show"
                   variants={gridVariants}
@@ -250,6 +262,7 @@ function RecipesPageContent() {
                       key={recipe.id ?? recipe.slug}
                       variants={cardVariants}
                       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                      className="min-h-full"
                     >
                       <RecipeCard recipe={recipe} />
                     </motion.div>

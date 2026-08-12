@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import { Header } from "@/components/header";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -30,7 +31,7 @@ import {
 import { useReducedMotion } from "motion/react";
 
 const searchSchema = z.object({
-  query: z.string().min(1, "Please enter a search term"),
+  query: z.string(),
 });
 
 type SearchFormValues = z.infer<typeof searchSchema>;
@@ -153,14 +154,34 @@ const RestaurantsPageContent = () => {
   const pageParam = Number(searchParams.get("page")) || 1;
   const limit = 10;
   const reduceMotion = useReducedMotion();
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const queryValue = form.watch("query");
+
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(queryValue);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [queryValue]);
 
   const onSubmit = async (data: SearchFormValues) => {
-    // TODO: wire up server-side search when available
+    // Search happens automatically on input change
   };
 
+  // Scroll to search when query changes
+  useEffect(() => {
+    if (resultsRef.current && debouncedQuery) {
+      const y =
+        resultsRef.current.getBoundingClientRect().top + window.scrollY - 200;
+      window.scrollTo({ top: y, behavior: reduceMotion ? "auto" : "smooth" });
+    }
+  }, [debouncedQuery, reduceMotion]);
+
   const { data: restaurantsResponse, isLoading } = useQuery({
-    queryKey: ["restaurants", pageParam],
-    queryFn: () => getAllRestaurants(pageParam, limit),
+    queryKey: ["restaurants", pageParam, debouncedQuery],
+    queryFn: () => getAllRestaurants(pageParam, limit, debouncedQuery),
     placeholderData: keepPreviousData,
   });
 
@@ -187,38 +208,26 @@ const RestaurantsPageContent = () => {
         </div>
 
         {/* Search */}
-        <div className="mt-10 max-w-4xl">
+        <div ref={resultsRef} className="mt-10 max-w-4xl">
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4"
-            >
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="query"
-                  render={({ field }) => (
-                    <div className="relative">
-                      <Search
-                        className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground"
-                        strokeWidth={1.5}
-                      />
-                      <Input
-                        {...field}
-                        placeholder="Search for a restaurant, cuisine, or area"
-                        className="h-12 border-border bg-card pl-12"
-                      />
-                    </div>
-                  )}
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="h-12 w-full rounded-xl px-8 btn-primary-modern md:w-auto"
-              >
-                Search
-              </Button>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="query"
+                render={({ field }) => (
+                  <div className="relative">
+                    <Search
+                      className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground"
+                      strokeWidth={1.5}
+                    />
+                    <Input
+                      {...field}
+                      placeholder="Search for a restaurant, cuisine, or area"
+                      className="h-12 border-border bg-card pl-12"
+                    />
+                  </div>
+                )}
+              />
             </form>
           </Form>
         </div>

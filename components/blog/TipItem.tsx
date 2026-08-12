@@ -3,6 +3,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Plus, X } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 
 const TipItems = ({
   contentIndex,
@@ -21,44 +28,52 @@ const TipItems = ({
   });
 
   return (
-    <div className="mt-1 flex flex-col gap-2 border-l-2 border-primary/20 pl-4">
-      <Label
-        className={`${itemFields.length === 0 && "hidden"} text-xs text-muted-foreground`}
-      >
-        Items
-      </Label>
-      {itemFields.map((item, itemIndex) => (
-        <div key={item.id} className="flex items-center gap-2">
-          <Input
-            {...control.register(
-              `contents.${contentIndex}.tips.items.${itemIndex}`,
-            )}
-            placeholder="Tip item"
-            className="flex-1 h-9"
-          />
-          <Button
-            type="button"
-            onClick={() => removeItem(itemIndex)}
-            variant="ghost"
-            size="icon"
-            aria-label="Remove tip item"
-            className="h-8 w-8 shrink-0 text-error hover:text-error"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      ))}
-      <Button
-        type="button"
-        onClick={() => appendItem("")}
-        variant="outline"
-        size="sm"
-        className="w-fit"
-      >
-        <Plus className="h-4 w-4 mr-1.5" />
-        Add Item
-      </Button>
-    </div>
+    <Card className="border-none bg-muted/30">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base">Items</CardTitle>
+        <CardDescription>
+          Add individual tips and tricks
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {itemFields.map((item, itemIndex) => (
+          <div key={item.id} className="flex flex-col gap-2">
+            <div className="flex items-end gap-2">
+              <div className="flex flex-col gap-1 flex-1">
+                <Label>Tip {itemIndex + 1}</Label>
+                <Input
+                  {...control.register(
+                    `contents.${contentIndex}.tips.items.${itemIndex}`,
+                  )}
+                  placeholder="Tip item"
+                  className="flex-1 h-9"
+                />
+              </div>
+              <Button
+                type="button"
+                onClick={() => removeItem(itemIndex)}
+                variant="ghost"
+                size="icon"
+                aria-label="Remove tip item"
+                className="h-8 w-8 shrink-0 text-error hover:text-error mb-0.5"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        ))}
+        <Button
+          type="button"
+          onClick={() => appendItem("")}
+          variant="outline"
+          size="sm"
+          className="w-fit"
+        >
+          <Plus className="h-4 w-4 mr-1.5" />
+          Add Item
+        </Button>
+      </CardContent>
+    </Card>
   );
 };
 

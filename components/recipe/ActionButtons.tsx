@@ -8,6 +8,12 @@ import {
   HeartIcon as SolidHeart,
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  type MotionProps,
+} from "motion/react";
 import { Button } from "../ui/button";
 import { RecipeLike } from "@/utils/types/recipe";
 import { useRecipeDetailStore } from "@/store/Recipedetail";
@@ -27,6 +33,7 @@ const ActionButtons = ({ recipe_id, user_id }: ActionButtonsProps) => {
   const setIsBookmarked = useRecipeDetailStore((state) => state.setBookmarked);
   const isBookmarked = useRecipeDetailStore((state) => state.isBookmarked);
   const toggleBookmark = useRecipeDetailStore((state) => state.toggleBookmark);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     setIsliked(user_id);
@@ -48,48 +55,79 @@ const ActionButtons = ({ recipe_id, user_id }: ActionButtonsProps) => {
     toggleBookmark(user_id, recipe_id);
   };
 
+  const iconPop: MotionProps = {
+    initial: reduce ? false : { scale: 0.4, opacity: 0 },
+    animate: { scale: 1, opacity: 1 },
+    exit: reduce ? undefined : { scale: 0.4, opacity: 0 },
+    transition: { type: "spring", stiffness: 500, damping: 18 },
+  };
+
   return (
     <div className="flex flex-wrap gap-4 mb-6">
       <Button
         onClick={handleLike}
         variant={isLiked ? "default" : "outline"}
-        className={`group flex-1 sm:flex-none transition-none  ${isLiked ? "hover:bg-primary hover:text-primary-foreground" : "hover:bg-background hover:text-foreground"}`}
+        className={`group flex-1 sm:flex-none transition-[transform,background-color,border-color] duration-150 active:scale-[0.97]  ${isLiked ? "hover:bg-primary hover:text-primary-foreground" : "hover:bg-background hover:text-foreground"}`}
       >
-        {isLiked ? (
-          <SolidHeart className="w-4 h-4 mr-2" aria-hidden="true" />
-        ) : (
-          <>
-            <Heart
-              className="w-4 h-4 mr-2 group-hover:hidden"
-              aria-hidden="true"
-            />
-            <SolidHeart
-              className="w-4 h-4 mr-2 hidden group-hover:inline"
-              aria-hidden="true"
-            />
-          </>
-        )}
+        <AnimatePresence mode="wait" initial={false}>
+          {isLiked ? (
+            <motion.span
+              key="liked"
+              {...iconPop}
+              className="mr-2 inline-flex items-center"
+            >
+              <SolidHeart className="w-4 h-4" aria-hidden="true" />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="unliked"
+              {...iconPop}
+              className="mr-2 inline-flex items-center"
+            >
+              <Heart
+                className="w-4 h-4 group-hover:hidden"
+                aria-hidden="true"
+              />
+              <SolidHeart
+                className="w-4 h-4 hidden group-hover:inline"
+                aria-hidden="true"
+              />
+            </motion.span>
+          )}
+        </AnimatePresence>
         {isLiked ? "Liked" : "Like"} ({likes?.length})
       </Button>
       <Button
         onClick={handleBookmark}
         variant={isBookmarked ? "default" : "outline"}
-        className={`group flex-1 sm:flex-none transition-none ${isBookmarked ? "hover:bg-primary hover:text-primary-foreground" : "hover:bg-background hover:text-foreground"}`}
+        className={`group flex-1 sm:flex-none transition-[transform,background-color,border-color] duration-150 active:scale-[0.97] ${isBookmarked ? "hover:bg-primary hover:text-primary-foreground" : "hover:bg-background hover:text-foreground"}`}
       >
-        {isBookmarked ? (
-          <SolidBookmark className="w-4 h-4 mr-2" aria-hidden="true" />
-        ) : (
-          <>
-            <Bookmark
-              className="w-4 h-4 mr-2 group-hover:hidden"
-              aria-hidden="true"
-            />
-            <SolidBookmark
-              className="w-4 h-4 mr-2 hidden group-hover:inline"
-              aria-hidden="true"
-            />
-          </>
-        )}
+        <AnimatePresence mode="wait" initial={false}>
+          {isBookmarked ? (
+            <motion.span
+              key="bookmarked"
+              {...iconPop}
+              className="mr-2 inline-flex items-center"
+            >
+              <SolidBookmark className="w-4 h-4" aria-hidden="true" />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="not-bookmarked"
+              {...iconPop}
+              className="mr-2 inline-flex items-center"
+            >
+              <Bookmark
+                className="w-4 h-4 group-hover:hidden"
+                aria-hidden="true"
+              />
+              <SolidBookmark
+                className="w-4 h-4 hidden group-hover:inline"
+                aria-hidden="true"
+              />
+            </motion.span>
+          )}
+        </AnimatePresence>
         {isBookmarked ? "Saved" : "Save"}
       </Button>
       {/* <Button variant={`outline` }>

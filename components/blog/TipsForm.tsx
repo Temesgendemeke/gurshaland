@@ -17,32 +17,19 @@ const TipsForm = ({ form, index }: TipsFormProps) => {
   const tips_name = `contents.${index}.tips`;
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-border/70 bg-muted/20 p-4">
-      <Label className="flex items-center gap-2 font-semibold">
-        <NotebookPen className="h-4 w-4 text-primary" />
-        Tips Section
-      </Label>
+    <div className="flex flex-col gap-3 rounded-lg border border-border/70 p-4">
+      <div className="flex flex-col gap-1">
+        <Label className="flex items-center gap-2 font-semibold text-base">
+          {/* <NotebookPen className="h-4 w-4 text-primary" /> */}
+          Tips Section
+        </Label>
+        <p className="text-sm text-muted-foreground">
+          Add helpful tips and tricks for your readers
+        </p>
+      </div>
 
       {form.watch(tips_name) && (
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <Input
-              {...form.register(`${tips_name}.title`)}
-              placeholder="Tip title (e.g. Pro Tips for Perfect Injera)"
-              className="flex-1 font-medium"
-            />
-            <Button
-              type="button"
-              onClick={() => form.setValue(tips_name, undefined)}
-              variant="ghost"
-              size="icon"
-              aria-label="Clear tips"
-              className="h-9 w-9 shrink-0 text-error hover:text-error"
-            >
-              <Trash className="h-4 w-4" />
-            </Button>
-          </div>
-
+        <div className="flex flex-col gap-4">
           <TipItems contentIndex={index} control={form.control} />
         </div>
       )}

@@ -123,3 +123,16 @@ export const GoshFont = localFont({
   variable: "--font-gosh",
   display: "swap",
 });
+
+
+// export const benaiah = localFont({
+//   src: [
+//      {
+//       path: "../public/fonts/Benaiah.ttf",
+//       weight: "900",
+//       style: "normal",
+//      }
+//     ],
+//   variable: "--font-benaiah",
+//   display: "swap",
+//   })

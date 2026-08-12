@@ -26,7 +26,7 @@ const BackNavigation = ({ route, pagename }: Props) => {
     <Button
       asChild
       variant="ghost"
-      className=" cursor-pointer  justify-start"
+      className=" cursor-pointer "
       onClick={handleGoBack}
     >
       <span>

@@ -48,7 +48,7 @@ const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
       aria-label={`View ${restaurant.name}`}
     >
       {/* Image Section */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden">
+      <div className="relative aspect-[16/8] w-full overflow-hidden">
         <Image
           src={correctUrl(imageSrc)}
           alt={restaurant.name}

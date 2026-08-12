@@ -90,16 +90,23 @@ export const deleteRestaurant = async (
 export const getAllRestaurants = async (
     page: number = 1,
     limit: number = 10,
+    searchQuery?: string,
 ): Promise<{ data: GetRestaurentType[]; count: number } | null> => {
     const supabase = createClient();
 
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
-    const { data, error, count } = await supabase
+    let query = supabase
         .from("restaurant")
         .select("*", { count: "exact" })
         .range(from, to);
+
+    if (searchQuery && searchQuery.trim()) {
+        query = query.ilike("name", `%${searchQuery.trim()}%`);
+    }
+
+    const { data, error, count } = await query;
 
     if (error) {
         throw error;

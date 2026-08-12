@@ -21,12 +21,12 @@ interface NutritionFieldProps {
 export default function NutritionField({ form }: NutritionFieldProps) {
   return (
     <div className="space-y-4">
-      <div>
-        <h3 className="text-sm font-semibold text-foreground">Nutrition</h3>
+      {/* <div>
+        <h3 className="text-lg font-semibold text-foreground">Nutrition</h3>
         <p className="mt-0.5 text-xs text-muted-foreground">
           Estimated per serving.
         </p>
-      </div>
+      </div> */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <FormField
           control={form.control}

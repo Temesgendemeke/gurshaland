@@ -8,6 +8,7 @@ import ArticleHeader from "@/components/ArticleHeader";
 import ArticleContent from "@/components/ArticleContent";
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/actions/blog/blog";
+import { BackButton } from "@/components/back-button";
 
 type RelatedPost = {
   slug: string;
@@ -37,22 +38,22 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
     <div className="min-h-screen">
       <Header />
 
-      <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 md:py-14">
+      <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 md:py-6">
         <BackNavigation route="/blog" pagename="Blogs" />
 
-        <div className="mt-8">
+        <div className="mt-4">
           <ArticleHeader blogPost={blogPost} />
         </div>
 
         {/* Featured image */}
-        <div className="mx-auto mt-10 w-full max-w-4xl">
+        <div className="mx-auto mt-10 w-full ">
           <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-border/60 bg-muted md:aspect-[21/10]">
             <Image
               src={blogPost?.image?.url || "/placeholder.svg"}
               alt={blogPost?.title || "Blog featured image"}
               fill
               priority
-              sizes="(max-width: 896px) 100vw, 896px"
+              sizes="(max-width: 396px) 100vw, 396px"
               className="object-cover"
             />
           </div>
@@ -98,7 +99,7 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/60 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-border hover:shadow-[0_18px_40px_-16px_hsl(215_15%_10%/0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/60 bg-card transition-all duration-300  hover:border-primary  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   <div className="relative aspect-[16/10] overflow-hidden bg-muted">
                     <Image
@@ -106,7 +107,7 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
                       alt={post.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                      className="object-cover"
                     />
                   </div>
                   <div className="flex flex-1 flex-col p-5 sm:p-6">

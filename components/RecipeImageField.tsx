@@ -17,7 +17,7 @@ export default function RecipeImageField({
   return (
     <div
       className={cn(
-        "flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border/70 p-5 text-center transition-colors hover:border-primary/50",
+        "flex h-full w-full  cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border/70 p-5 text-center transition-colors hover:border-primary/50",
         className,
       )}
       onClick={() => document.getElementById("recipe-image-input")?.click()}

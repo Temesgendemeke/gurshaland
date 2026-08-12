@@ -31,16 +31,16 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
   return (
     <Link
       href={`/recipes/${recipe.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/60 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/60 bg-card transition-all duration-300  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:border-primary"
     >
       {/* Image */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+      <div className="relative aspect-[16/8] overflow-hidden bg-muted">
         <Image
           src={recipe.image?.url || "/placeholder.svg"}
           alt={recipe.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+          className="object-cover transition-transform duration-500 ease-out "
         />
         <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
 
@@ -68,10 +68,10 @@ const RecipeCard = ({ recipe, badge, icon }: RecipeCardProp) => {
       </div>
 
       {/* Body */}
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <p className="mb-3 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-primary">
+      <div className="flex flex-1 flex-col p-2 sm:p-4">
+        {/* <p className="mb-3 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-primary">
           {recipe.category?.name || "Ethiopian"}
-        </p>
+        </p> */}
 
         <h3 className="mb-2 line-clamp-2 text-lg font-bold leading-snug tracking-tight text-foreground transition-colors duration-200 group-hover:text-primary">
           {recipe.title}

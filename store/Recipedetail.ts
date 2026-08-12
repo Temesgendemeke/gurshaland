@@ -10,14 +10,17 @@ interface RecipeDetailStore {
     loading: boolean;
     error: string | null;
     isLiked: boolean | null;
-    isBookmarked: boolean | null
+    isBookmarked: boolean | null;
+    isPreview: boolean;
     fetchRecipe: (slug: string, user_id?: string) => Promise<void>;
+    setPreviewRecipe: (recipe: Recipe) => void;
+    clearPreview: () => void;
     addComment: (comment: RecipeComment) => Promise<void>;
     deleteComment: (commentId: string) => Promise<void>;
     toggleLike: (liked_by: string, recipe_id: string) => Promise<void>;
     setIsLiked: (user_id: string)=> void;
     toggleBookmark: (user_id: string, recipe_id: string) => Promise<void>;
-    setBookmarked: (user_id: string) => void
+    setBookmarked: (user_id: string) => void;
 }
 
 export const useRecipeDetailStore = create<RecipeDetailStore>((set, get) => ({
@@ -26,15 +29,24 @@ export const useRecipeDetailStore = create<RecipeDetailStore>((set, get) => ({
     error: null,
     isLiked: false,
     isBookmarked: false,
+    isPreview: false,
 
     fetchRecipe: async (slug: string, user_id?:string) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, isPreview: false });
         try {
             const data: Recipe = await getRecipebySlug(slug, user_id);
-            set({ recipe: data, loading: false });
+            set({ recipe: data, loading: false, isPreview: false });
         } catch (error: any) {
-            set({ error: error.message, loading: false });
+            set({ error: error.message, loading: false, isPreview: false });
         }
+    },
+
+    setPreviewRecipe: (recipe: Recipe) => {
+        set({ recipe, loading: false, isPreview: true });
+    },
+
+    clearPreview: () => {
+        set({ recipe: null, loading: false, isPreview: false });
     },
 
     addComment: async (comment: RecipeComment) => {

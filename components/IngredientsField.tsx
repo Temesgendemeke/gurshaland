@@ -49,7 +49,7 @@ export default function IngredientsField({
   removeIngredient,
 }: IngredientsFieldProps) {
   return (
-    <Card>
+    <Card className="border-none">
       <CardHeader>
         <CardTitle>Ingredients</CardTitle>
         <CardDescription>What you&apos;ll need to make it.</CardDescription>

@@ -347,7 +347,9 @@ export default function SubmitRecipeForm({
 
       updateRecipeInStore(updatedRecipeData);
 
-      toast.success("Recipe updated successfully. Your changes have been saved.");
+      toast.success(
+        "Recipe updated successfully. Your changes have been saved.",
+      );
 
       router.push(`/recipes/${newSlug}`);
     } catch (error) {
@@ -371,7 +373,10 @@ export default function SubmitRecipeForm({
 
   return (
     <Form {...form}>
-      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="space-y-2 bg-card pb-5 border border-primary/80"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <BasicInfoFields
           form={form}
           categories={categories}
@@ -391,38 +396,33 @@ export default function SubmitRecipeForm({
           removeInstruction={removeInstruction}
         />
 
-        <Card>
+        <Card className="border-none">
           <CardHeader>
-            <CardTitle>Final touches</CardTitle>
+            <CardTitle>Final touches: Nutrition</CardTitle>
             <CardDescription>
-              Details that help people find and trust your recipe.
+              Estimated per serving that help people find and trust your recipe.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="divide-y divide-border/70">
+            <div className="">
               <div className="pb-6">
                 <NutritionField form={form} />
-              </div>
-              <div className="py-6">
-                <TagsField
-                  tags={form.watch("recipe.tags")}
-                  newTag={newTag}
-                  setNewTag={setNewTag}
-                  addTag={addTag}
-                  removeTag={removeTag}
-                />
-              </div>
-              <div className="py-6">
-                <CulturalNoteField form={form} />
-              </div>
-              <div className="pt-6">
-                <StatusField form={form} />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <div className="flex justify-center pt-2">
+        <TagsField
+          tags={form.watch("recipe.tags")}
+          newTag={newTag}
+          setNewTag={setNewTag}
+          addTag={addTag}
+          removeTag={removeTag}
+        />
+        <CulturalNoteField form={form} />
+        <StatusField form={form} />
+
+        <div className="flex justify-center">
           <Button
             type="submit"
             size="lg"

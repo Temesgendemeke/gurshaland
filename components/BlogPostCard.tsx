@@ -14,7 +14,7 @@ export default function BlogPostCard({ post }: { post: Blog }) {
       className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/60 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
       {/* Image */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+      <div className="relative aspect-[16/8] overflow-hidden bg-muted">
         <Image
           src={post?.image?.url || "/placeholder.svg"}
           alt={post.title}

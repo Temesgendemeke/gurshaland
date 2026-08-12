@@ -1,21 +1,27 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { format_date } from "@/utils/formatdate";
 import { Blog } from "@/utils/types/blog";
+import { useRouter } from "next/navigation";
 
 type FeaturedPostProps = {
   post: Blog & { excerpt?: string };
 };
 
 export default function FeaturedPost({ post }: FeaturedPostProps) {
+  const router = useRouter();
   const authorName =
     post.author?.full_name || post.author?.username || "Anonymous";
 
   return (
-    <section className="group grid overflow-hidden rounded-xl border border-border/60 bg-card transition-colors duration-300 hover:border-primary/40 md:grid-cols-12">
+    <section
+      className="group grid overflow-hidden rounded-xl border border-border/60 bg-card transition-colors duration-300 hover:border-primary/40 md:grid-cols-12 cursor-pointer"
+      onClick={() => router.push(`/blog/${post.slug}`)}
+    >
       {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted md:col-span-7 md:aspect-auto md:min-h-[440px]">
+      <div className="relative aspect-[4/2] overflow-hidden bg-muted md:col-span-7 md:aspect-auto md:min-h-[340px]">
         <Image
           src={post.image?.url || "/placeholder.svg"}
           alt={post.title}
@@ -23,7 +29,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
           sizes="(max-width: 768px) 100vw, 58vw"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
       </div>
 
       {/* Content */}
@@ -56,7 +62,9 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
             )}
           </span>
           <div>
-            <p className="text-sm font-semibold text-foreground">{authorName}</p>
+            <p className="text-sm font-semibold text-foreground">
+              {authorName}
+            </p>
             <p className="text-xs text-muted-foreground">
               {format_date(post.created_at as string)} · {post.read_time} read
             </p>

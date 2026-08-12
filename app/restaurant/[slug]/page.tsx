@@ -29,9 +29,9 @@ function BackButton({ href, className }: { href: string; className?: string }) {
     <Link
       href={href}
       aria-label="Back to restaurants"
-      className={`${className} rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2`}
+      className={`${className} rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 `}
     >
-      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/30 text-white backdrop-blur-sm transition-colors hover:bg-black/40">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/30 text-white backdrop-blur-sm transition-colors hover:bg-black/40 hover:border-primary-foreground/60">
         <ChevronLeft className="h-5 w-5" strokeWidth={2} />
       </div>
     </Link>
@@ -64,11 +64,7 @@ function RestaurantJsonLd({ restaurant }: { restaurant: any }) {
 
   const rating = restaurant.rating;
   const reviewCount = restaurant.review;
-  if (
-    rating != null &&
-    reviewCount != null &&
-    Number(reviewCount) > 0
-  ) {
+  if (rating != null && reviewCount != null && Number(reviewCount) > 0) {
     jsonLd.aggregateRating = {
       "@type": "AggregateRating",
       ratingValue: Number(rating).toFixed(1),
@@ -172,24 +168,27 @@ export default async function RestaurantPage({
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center bg-muted">
-                <UtensilsCrossed className="h-14 w-14 opacity-10" strokeWidth={1.5} />
+                <UtensilsCrossed
+                  className="h-14 w-14 opacity-10"
+                  strokeWidth={1.5}
+                />
               </div>
             )}
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent pointer-events-none" />
           </div>
 
           {/* Hero Content - Left aligned, not bottom-centered */}
-          <div className="relative z-10 py-10 md:py-16 px-6 md:px-10 lg:max-w-2xl">
+          <div className="relative z-10 py-10 md:py-16 px-6 md:px-10 lg:max-w-4xl">
             <BackButton href="/restaurant" className="mb-6 inline-flex" />
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               {categories?.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {categories.map((cat: string, idx: number) => (
                     <Badge
                       key={`${cat}-${idx}`}
                       variant="outline"
-                      className="border-white/20 bg-black/30 text-white backdrop-blur-sm hover:bg-black/40"
+                      className="border-white/20 bg-black/20 text-primary-foreground font-normal backdrop-blur-sm hover:bg-black/40 cursor-pointer border  hover:border-primary-foreground/60"
                     >
                       {cat}
                     </Badge>
@@ -204,8 +203,12 @@ export default async function RestaurantPage({
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-white/90 md:text-base">
                 {restaurant.rating !== null &&
                   restaurant.rating !== undefined && (
-                    <div className="flex items-center gap-1.5">
-                      <Star className="w-5 h-5 fill-secondary text-secondary" strokeWidth={1.5} />
+                    <div className="flex items-center gap-1.5 text-sm font-bold">
+                      <Star
+                        className="w-5 h-5  text-primary-foreground fill-current"
+                        strokeWidth={1.5}
+                        fill="currentColor"
+                      />
                       <span>{Number(restaurant.rating).toFixed(1)}</span>
                       {(restaurant as any).review ? (
                         <span className="text-white/70">
@@ -216,8 +219,11 @@ export default async function RestaurantPage({
                   )}
 
                 {restaurant.address && (
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="w-5 h-5 text-secondary" strokeWidth={1.5} />
+                  <div className="flex items-center gap-1.5 text-sm font-bold">
+                    <MapPin
+                      className="w-5 h-5 text-primary-foreground"
+                      strokeWidth={1.5}
+                    />
                     <span>{restaurant.address}</span>
                   </div>
                 )}
@@ -284,7 +290,7 @@ export default async function RestaurantPage({
 
           {/* Menu Section */}
           {restaurant.menu && restaurant.menu.length > 0 && (
-            <section>
+            <section className="cursor-pointer">
               <div className="flex items-end justify-between gap-4">
                 <SectionHeading title="Menu" />
                 <span className="mb-1 hidden text-sm font-medium text-muted-foreground sm:block">

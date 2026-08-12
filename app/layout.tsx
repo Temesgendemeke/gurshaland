@@ -34,44 +34,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="light" suppressHydrationWarning>
       <body
-        className={`${SatoshiFont.variable} ${GoshFont.variable} min-h-screen flex flex-col`}
+        className={`${SatoshiFont.variable} ${GoshFont.variable}  min-h-screen flex flex-col`}
         suppressHydrationWarning
       >
-        {/* <div className="grain-overlay">
-          <svg
-            className="grain-svg"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <filter id="grain">
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.7"
-                numOctaves="3"
-                stitchTiles="stitch"
-                result="noise"
-              />
-              <feColorMatrix
-                in="noise"
-                type="matrix"
-                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
-                result="mono"
-              />
-              <feComponentTransfer in="mono" result="grainAlpha">
-                <feFuncA type="gamma" amplitude="1" exponent="1.4" offset="0" />
-              </feComponentTransfer>
-              <feComposite in="SourceGraphic" in2="grainAlpha" operator="in" />
-            </filter>
-
-            <rect
-              className="grain-rect"
-              width="100%"
-              height="100%"
-              filter="url(#grain)"
-            />
-          </svg>
-        </div> */}
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

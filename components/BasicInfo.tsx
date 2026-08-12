@@ -45,13 +45,13 @@ export default function BasicInfoFields({
   setImage,
 }: BasicInfoFieldsProps) {
   return (
-    <Card>
+    <Card className="border-none">
       <CardHeader>
         <CardTitle>Recipe details</CardTitle>
         <CardDescription>The core details of your dish.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
-        <div className="grid gap-5 lg:grid-cols-[16rem_minmax(0,1fr)]">
+        <div className="grid gap-5  grid-cols-1 lg:grid-cols-2">
           <RecipeImageField
             image={image}
             setImage={setImage}
@@ -143,11 +143,7 @@ export default function BasicInfoFields({
                 <FormLabel>Prep Time (min)</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Input
-                      type="number"
-                      className="h-11 pr-10"
-                      {...field}
-                    />
+                    <Input type="number" className="h-11 pr-10" {...field} />
                     <Clock className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   </div>
                 </FormControl>
@@ -163,11 +159,7 @@ export default function BasicInfoFields({
                 <FormLabel>Cook Time (min)</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Input
-                      type="number"
-                      className="h-11 pr-10"
-                      {...field}
-                    />
+                    <Input type="number" className="h-11 pr-10" {...field} />
                     <Clock className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   </div>
                 </FormControl>
@@ -204,10 +196,7 @@ export default function BasicInfoFields({
               <FormItem className="gap-2">
                 <FormLabel>Difficulty</FormLabel>
                 <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger className="h-11 w-full">
                       <SelectValue placeholder="Level" />
                     </SelectTrigger>

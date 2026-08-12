@@ -4,6 +4,13 @@ import { Label } from "../ui/label";
 import { ListOrdered, Plus, X } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "../ui/card";
 
 interface ContentRecipeInstructionProps {
   form: UseFormReturn<any>;
@@ -26,42 +33,55 @@ const ContentRecipeInstruction = ({
   });
 
   return (
-    <div className="flex flex-col gap-2.5 border-l-2 border-primary/20 pl-4">
-      <Label className="flex items-center gap-2 font-semibold">
-        <ListOrdered className="h-4 w-4 text-primary" />
-        Instructions
-      </Label>
-      {instructionsFields.map((instruction, instructionIndex) => (
-        <div className="flex items-center gap-2" key={instruction.id}>
-          <Input
-            {...form.register(
-              `contents.${index}.recipe.instructions.${instructionIndex}`,
-            )}
-            type="text"
-            placeholder="e.g. Mix the flour and water together."
-          />
-          <Button
-            variant="outline"
-            size="icon"
-            aria-label="Remove instruction"
-            onClick={() => removeInstruction(instructionIndex)}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      ))}
-      <Button
-        variant="outline"
-        size="sm"
-        className="w-fit"
-        type="button"
-        onClick={() => appendInstruction("")}
-      >
-        <Plus className="h-4 w-4 mr-1.5" />
-        Add Instruction
-      </Button>
-    </div>
+    <Card className="border-none bg-muted/30">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-base">
+          <ListOrdered className="h-4 w-4 text-primary" />
+          Instructions
+        </CardTitle>
+        <CardDescription>
+          Step-by-step instructions for preparing this recipe
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {instructionsFields.map((instruction, instructionIndex) => (
+          <div key={instruction.id} className="flex flex-col gap-2">
+            <div className="flex items-end gap-2">
+              <div className="flex flex-col gap-1 flex-1">
+                <Label>Step {instructionIndex + 1}</Label>
+                <Input
+                  {...form.register(
+                    `contents.${index}.recipe.instructions.${instructionIndex}`,
+                  )}
+                  type="text"
+                  placeholder="e.g. Mix the flour and water together."
+                />
+              </div>
+              <Button
+                variant="outline"
+                size="icon"
+                aria-label="Remove instruction"
+                onClick={() => removeInstruction(instructionIndex)}
+                type="button"
+                className="mb-0.5"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        ))}
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-fit"
+          type="button"
+          onClick={() => appendInstruction("")}
+        >
+          <Plus className="h-4 w-4 mr-1.5" />
+          Add Instruction
+        </Button>
+      </CardContent>
+    </Card>
   );
 };
 

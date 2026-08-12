@@ -1,17 +1,27 @@
 "use client";
 import React from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { IconChevronDown as ChevronDown, IconChevronRight as ChevronRight, IconMinus as Minus, IconGripVertical as GripVertical } from "@tabler/icons-react";
+import {
+  IconChevronDown as ChevronDown,
+  IconChevronRight as ChevronRight,
+  IconMinus as Minus,
+  IconGripVertical as GripVertical,
+} from "@tabler/icons-react";
 import ImageBox from "../ImageBox";
 import TipsForm from "./TipsForm";
 import RecipeForm from "./RecipeForm";
 import { deleteImageFromDb } from "@/actions/Image";
 import { motion, useReducedMotion } from "motion/react";
+import { Trash } from "lucide-react";
 
 interface ContentSectionProps {
   index: number;
@@ -52,7 +62,10 @@ export function ContentSection({
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
-                <ChevronRight className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+                <ChevronRight
+                  className="h-4 w-4 text-muted-foreground"
+                  strokeWidth={1.5}
+                />
               </motion.div>
             </div>
             <Button
@@ -66,7 +79,7 @@ export function ContentSection({
               aria-label={`Remove content section ${index + 1}`}
               className="h-8 w-8 text-error hover:bg-error/10 hover:text-error"
             >
-              <Minus className="h-4 w-4" strokeWidth={2} />
+              <Trash className="h-4 w-4" strokeWidth={2} />
             </Button>
           </div>
         </CollapsibleTrigger>
@@ -87,8 +100,11 @@ export function ContentSection({
               }}
             />
 
-            <div className="space-y-2">
-              <Label htmlFor={`section-title-${index}`} className="text-sm font-medium text-foreground">
+            <div className="flex flex-col gap-2">
+              <Label
+                htmlFor={`section-title-${index}`}
+                className="text-sm font-medium text-foreground"
+              >
                 Section Title
               </Label>
               <Input
@@ -98,8 +114,11 @@ export function ContentSection({
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor={`section-body-${index}`} className="text-sm font-medium text-foreground">
+            <div className="flex flex-col gap-2">
+              <Label
+                htmlFor={`section-body-${index}`}
+                className="text-sm font-medium text-foreground"
+              >
                 Content <span className="text-error">*</span>
               </Label>
               <Textarea

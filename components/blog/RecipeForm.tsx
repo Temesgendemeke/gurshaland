@@ -16,19 +16,32 @@ const RecipeForm = ({ form, index }: RecipeFormProps) => {
   const recipe_name = `contents.${index}.recipe`;
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-border/70 bg-muted/20 p-4">
-      <Label className="flex items-center gap-2 font-semibold">
-        <ChefHat className="h-4 w-4 text-primary" />
-        Recipe
-      </Label>
+    <div className="flex flex-col gap-3 rounded-lg border border-border/70 p-4">
+      <div className="flex flex-col gap-1">
+        <Label className="flex items-center gap-2 font-semibold text-base">
+          {/* <ChefHat className="h-4 w-4 text-primary" /> */}
+          Recipe
+        </Label>
+        <p className="text-sm text-muted-foreground">
+          Add a recipe with ingredients and step-by-step instructions
+        </p>
+      </div>
 
       {form.watch(recipe_name) && (
-        <div className="flex flex-col gap-3">
-          <Input
-            {...form.register(`${recipe_name}.title`)}
-            placeholder="Recipe title (e.g. Spiced Doro Wat)"
-            type="text"
-          />
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <Label
+              htmlFor={`recipe-title-${index}`}
+              className="text-sm font-medium text-foreground"
+            >
+              Title
+            </Label>
+            <Input
+              {...form.register(`${recipe_name}.title`)}
+              placeholder="Recipe title (e.g. Spiced Doro Wat)"
+              type="text"
+            />
+          </div>
 
           {/* ingredients */}
           <RecipeIngredient form={form} control={form.control} index={index} />
