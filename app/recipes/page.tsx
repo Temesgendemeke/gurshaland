@@ -53,6 +53,7 @@ function RecipesPageContent() {
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const reduceMotion = useReducedMotion();
   const resultsRef = useRef<HTMLDivElement>(null);
+  const hasUserInteracted = useRef(false);
 
   const allRecipes = recipeStore((store) => store.recipes) || [];
   const trendingRecipes = recipeStore((store) => store.trendingRecipes) || [];
@@ -84,6 +85,8 @@ function RecipesPageContent() {
 
   // Scroll to results when filters/search change
   useEffect(() => {
+    if (!hasUserInteracted.current) return;
+
     if (resultsRef.current) {
       const y =
         resultsRef.current.getBoundingClientRect().top + window.scrollY - 280;
@@ -92,6 +95,7 @@ function RecipesPageContent() {
   }, [searchTerm, selectedCategory, selectedDifficulty, reduceMotion]);
 
   const handleSortChange = (value: string) => {
+    hasUserInteracted.current = true;
     setVisibleCount(POSTS_PER_PAGE);
     const params = new URLSearchParams(searchParams.toString());
     if (value === "latest") params.delete("sorted_by");
@@ -101,16 +105,19 @@ function RecipesPageContent() {
   };
 
   const handleCategoryChange = (value: string) => {
+    hasUserInteracted.current = true;
     setSelectedCategory(value);
     setVisibleCount(POSTS_PER_PAGE);
   };
 
   const handleDifficultyChange = (value: string) => {
+    hasUserInteracted.current = true;
     setSelectedDifficulty(value);
     setVisibleCount(POSTS_PER_PAGE);
   };
 
   const handleSearchChange = (value: string) => {
+    hasUserInteracted.current = true;
     setSearchTerm(value);
     setVisibleCount(POSTS_PER_PAGE);
   };

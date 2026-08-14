@@ -6,6 +6,7 @@ import format_calories from "@/utils/formatcalories";
 type ContentSectionItem = {
   body?: string;
   title?: string;
+  description?: string;
   ingredients?: { amount: number; name: string }[];
   instructions?: string[];
   items?: string[];
@@ -92,14 +93,19 @@ const ArticleContent = ({ blogPost }: { blogPost: Blog }) => {
             return (
               <div
                 key={index}
-                className="my-10 rounded-xl border-l-2 border-primary bg-primary/5 p-6 sm:p-8"
+                className="my-10 rounded-xl border border-border/70 bg-card p-6 sm:p-8"
               >
-                <div className="mb-5 flex items-center gap-3">
-                  <NotebookPen className="h-5 w-5 shrink-0 text-primary" />
-                  <h3 className="text-lg font-bold tracking-tight text-foreground">
-                    {content.title}
-                  </h3>
-                </div>
+                {content.title && (
+                  <div className="mb-4 flex items-center gap-3">
+                    <NotebookPen className="h-5 w-5 shrink-0 text-primary" />
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">
+                      {content.title}
+                    </h3>
+                  </div>
+                )}
+                {content.description && (
+                  <p className="mb-5 text-muted-foreground">{content.description}</p>
+                )}
                 <ul className="space-y-3">
                   {content.items?.map((tip, i) => (
                     <li key={i} className="flex gap-3 text-sm leading-relaxed">

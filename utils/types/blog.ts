@@ -38,7 +38,8 @@ export interface Content{
 }
 
 interface Tips{
-    title: string;
+    title?: string;
+    description?: string;
     items?: string[];
 }
 

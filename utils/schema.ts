@@ -142,7 +142,8 @@ const IngredientSchema = z
   .optional();
 
 const TipsSchema = z.object({
-  title: z.string(),
+  title: z.string().optional(),
+  description: z.string().optional(),
   items: z.array(z.string()).optional(),
 });
 

@@ -1,18 +1,9 @@
 "use client";
-import { useState } from "react";
 import { ArrowRight, Camera, Check } from "lucide-react";
 import aiFeatures from "@/constants/aiFeatures";
 import { useRouter } from "next/navigation";
 import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
 import { cn } from "@/lib/utils";
-import AIRecipeGenerator from "@/components/AIRecipeGenerator";
-import { getPendingAIGeneration } from "@/lib/auth-gate";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetTitle,
-} from "@/components/ui/sheet";
 import { useAppStore } from "@/lib/store";
 
 function IngredientsBackground() {
@@ -141,11 +132,6 @@ function AIFeaturesGrid({
   onSelect: (id: string) => void;
 }) {
   const router = useRouter();
-  const [generatorOpen, setGeneratorOpen] = useState(() => {
-    if (typeof window === "undefined") return false;
-    const pending = getPendingAIGeneration();
-    return !!pending && pending.action === "recipe-generator";
-  });
   const SetCookingAssistantOpen = useAppStore(
     (store) => store.SetCookingAssistantOpen,
   );
@@ -159,7 +145,7 @@ function AIFeaturesGrid({
     e.preventDefault();
     onSelect(featureId);
     if (featureId === "recipe-generator") {
-      setGeneratorOpen(true);
+      router.push("/ai-features/generate-recipe");
     } else if (featureId === "/meal-planner") {
       router.push("/meal-planner");
     } else if (featureId === "cooking-assistant") {
@@ -211,7 +197,11 @@ function AIFeaturesGrid({
               background={backgroundFor(feature.id)}
               Icon={feature.icon}
               description={feature.description}
-              href="#"
+              href={
+                feature.id === "recipe-generator"
+                  ? "/ai-features/generate-recipe"
+                  : "#"
+              }
               cta={
                 comingSoon
                   ? "Coming Soon"
@@ -224,22 +214,6 @@ function AIFeaturesGrid({
           );
         })}
       </BentoGrid>
-
-      <Sheet open={generatorOpen} onOpenChange={setGeneratorOpen}>
-        <SheetContent
-          side="right"
-          className="w-full overflow-y-auto sm:max-w-4xl"
-        >
-          <SheetTitle className="sr-only">Generate a Recipe with AI</SheetTitle>
-          <SheetDescription className="sr-only">
-            Describe your ingredients to generate a personalized Ethiopian
-            recipe.
-          </SheetDescription>
-          <div className="mt-4">
-            <AIRecipeGenerator />
-          </div>
-        </SheetContent>
-      </Sheet>
     </>
   );
 }

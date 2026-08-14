@@ -55,6 +55,28 @@ export const spendCredits = async (
   return { success: true, balance: data as number };
 };
 
+export const refundCredits = async (
+  amount: number,
+): Promise<{ success: boolean; balance: number | null }> => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { success: false, balance: null };
+
+  const { data, error } = await supabase.rpc("refund_credit", {
+    _amount: amount,
+  });
+
+  if (error) {
+    console.error("refund_credit error:", error);
+    return { success: false, balance: null };
+  }
+
+  return { success: true, balance: data as number };
+};
+
 export const createCreditCheckout = async (
   packId: string,
 ): Promise<{ success: boolean; url?: string; error?: string }> => {

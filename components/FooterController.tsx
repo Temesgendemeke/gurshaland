@@ -14,6 +14,7 @@ const HIDDEN_PREFIXES = [
   "/meal-planner/my-meal-plans",
   "/recipes/create",
   "/blog/create",
+  "/ai-features/generate-recipe",
 ];
 
 export default function FooterController() {

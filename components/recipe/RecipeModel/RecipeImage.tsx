@@ -39,9 +39,12 @@ export default function RecipeImage({
       )}
       {isDataUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           src={resolvedSrc}
           alt={alt}
+          width={200}
+          height={200}
+          priority={priority}
           onLoad={() => setLoaded(true)}
           className={cn(
             "h-full w-full object-cover transition-opacity duration-500",

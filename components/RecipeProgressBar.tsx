@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChefHat, Brain, Image, CheckCircle } from "lucide-react";
 import { Progress } from "./ui/progress";
+import { cn } from "@/lib/utils";
 
 interface RecipeProgressBarProps {
   isGenerating: boolean;
@@ -37,21 +38,18 @@ export default function RecipeProgressBar({
       if (stepIndex < generationSteps.length) {
         setCurrentStep(stepIndex);
 
-        // Calculate progress based on time elapsed
         const stepProgress = Math.min(
           100,
           (accumulatedTime / totalDuration) * 100,
         );
         setProgress(stepProgress);
 
-        accumulatedTime += 100; // Update every 100ms
+        accumulatedTime += 100;
 
-        // Move to next step when current step duration is complete
         if (accumulatedTime >= generationSteps[stepIndex].duration) {
           stepIndex++;
         }
       } else {
-        // All steps complete
         setProgress(100);
         clearInterval(interval);
       }
@@ -63,66 +61,69 @@ export default function RecipeProgressBar({
   if (!isGenerating) return null;
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-6 p-6">
-      <div>
-        <h3 className="text-lg font-semibold text-foreground">
-          Creating your recipe
-        </h3>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="space-y-3">
-        <div className="flex justify-between text-sm text-muted-foreground">
-          <span>Progress</span>
-          <span>{Math.round(progress)}%</span>
+    <div className="mx-auto w-full max-w-md space-y-7 rounded-2xl border border-border bg-card p-6 sm:p-8">
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <p className="text-[0.6875rem] font-medium uppercase tracking-wider text-muted-foreground">
+            In progress
+          </p>
+          <h3 className="mt-1 font-gosh text-lg font-bold tracking-tight text-foreground">
+            Creating your recipe
+          </h3>
         </div>
-        <Progress value={progress} className="h-3 bg-muted" />
+        <span className="text-sm font-semibold tabular-nums text-primary">
+          {Math.round(progress)}%
+        </span>
       </div>
 
-      {/* Steps */}
-      <div className="space-y-3">
+      <Progress value={progress} className="h-1.5 bg-muted" />
+
+      <ol className="space-y-0">
         {generationSteps.map((step, index) => {
           const Icon = step.icon;
           const isActive = index === currentStep;
           const isCompleted = index < currentStep;
 
           return (
-            <div
-              key={step.id}
-              className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                isActive
-                  ? "bg-primary/10 border border-primary/20"
-                  : isCompleted
-                    ? "bg-success/10 border border-success/20"
-                    : "bg-card border border-border/60"
-              }`}
-            >
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                  isActive
-                    ? "bg-primary text-primary-foreground"
-                    : isCompleted
-                      ? "bg-success/15 text-success ring-1 ring-success/20"
-                      : "bg-muted text-muted-foreground"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
+            <li key={step.id} className="flex">
+              <div className="flex flex-col items-center">
+                <span
+                  className={cn(
+                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors",
+                    isActive
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : isCompleted
+                        ? "border-primary/40 bg-primary/10 text-primary"
+                        : "border-border bg-background text-muted-foreground",
+                  )}
+                >
+                  <Icon className="h-4 w-4" strokeWidth={1.75} />
+                </span>
+                {index < generationSteps.length - 1 && (
+                  <span
+                    className={cn(
+                      "w-px flex-1 min-h-5",
+                      isCompleted ? "bg-primary/30" : "bg-border",
+                    )}
+                  />
+                )}
               </div>
               <span
-                className={`text-sm font-medium transition-colors ${
+                className={cn(
+                  "pb-4 pl-4 text-sm font-medium leading-8 transition-colors",
                   isActive
-                    ? "text-primary"
+                    ? "text-foreground"
                     : isCompleted
-                      ? "text-success"
-                      : "text-muted-foreground"
-                }`}
+                      ? "text-muted-foreground"
+                      : "text-muted-foreground/60",
+                )}
               >
                 {step.label}
               </span>
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ol>
     </div>
   );
 }

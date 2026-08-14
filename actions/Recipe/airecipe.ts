@@ -8,7 +8,7 @@ import Recipe from "@/utils/types/recipe";
 import categories from "@/constants/categories";
 import measurements from "@/constants/measurements";
 import { findYoutubeVideo } from "../youtube";
-import { spendCredits } from "../credits";
+import { spendCredits, refundCredits } from "../credits";
 
 function extractJSON(text: string): string {
   const start = text.indexOf("{");
@@ -19,10 +19,54 @@ function extractJSON(text: string): string {
   return text.slice(start, end + 1);
 }
 
+function classifyGenerationError(error: any): string {
+  const raw = String(error?.message ?? "");
+
+  let code: string | number | null = null;
+  let status = "";
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed?.error) {
+      code = parsed.error.code;
+      status = String(parsed.error.status ?? "");
+    }
+  } catch {
+    // Not a JSON error payload.
+  }
+
+  if (
+    code === 429 ||
+    code === 503 ||
+    status === "UNAVAILABLE" ||
+    status === "RESOURCE_EXHAUSTED"
+  ) {
+    return "The AI is busy right now. Please try again in a moment.";
+  }
+  if (code === 500 || status === "INTERNAL") {
+    return "The AI hit a snag. Please try again in a moment.";
+  }
+  if (
+    raw.includes("fetch failed") ||
+    raw.includes("ENOTFOUND") ||
+    raw.includes("ECONNREFUSED") ||
+    raw.includes("ETIMEDOUT")
+  ) {
+    return "We couldn't reach the AI service. Check your internet connection and try again.";
+  }
+  if (raw.includes("API key")) {
+    return "The AI service isn't configured right now. Please contact support.";
+  }
+  if (raw.includes("[ERROR")) {
+    return "The AI returned an empty response. Please try again.";
+  }
+  return "Something went wrong while generating your recipe. Please try again.";
+}
+
 export async function generateAIRecipe(
   ingredients: string,
   preferences: string,
 ) {
+  let creditSpent = false;
   try {
     // Charge 1 credit for each AI recipe generation
     const creditResult = await spendCredits(1);
@@ -32,6 +76,7 @@ export async function generateAIRecipe(
         error: creditResult.error || "Not enough credits.",
       };
     }
+    creditSpent = true;
 
     // Check if API key is available FIRST
     if (!process.env.GEMINI_API_KEY) {
@@ -120,23 +165,10 @@ Example shape:
       });
     } catch (apiError: any) {
       console.error("Gemini API call failed:", apiError);
-      if (apiError.message?.includes("fetch failed")) {
-        throw new Error(
-          "Network error: Unable to connect to Gemini API. Please check your internet connection and try again.",
-        );
-      } else if (apiError.message?.includes("API key")) {
-        throw new Error(
-          "Authentication error: Invalid or expired API key. Please check your GEMINI_API_KEY.",
-        );
-      } else if (apiError.message?.includes("timeout")) {
-        throw new Error(
-          "Request timeout: The API request took too long. Please try again.",
-        );
-      } else {
-        throw new Error(
-          `API error: ${apiError.message || "Unknown error occurred"}`,
-        );
-      }
+      const friendly = classifyGenerationError(apiError);
+      const friendlyError = new Error(friendly);
+      (friendlyError as any).isFriendly = true;
+      throw friendlyError;
     }
 
     console.log("Raw Gemini response:", JSON.stringify(response, null, 2));
@@ -155,7 +187,9 @@ Example shape:
     console.log("Extracted response text:", responseText);
 
     if (!responseText || responseText.startsWith("[ERROR")) {
-      throw new Error(responseText || "Empty model response");
+      const friendlyError = new Error(classifyGenerationError("[ERROR"));
+      (friendlyError as any).isFriendly = true;
+      throw friendlyError;
     }
 
     // Parse JSON robustly (strip anything outside the JSON object)
@@ -266,9 +300,20 @@ Example shape:
     console.error("Error generating recipe:", error);
     console.error("Error stack:", error.stack);
 
+    // Don't charge the user for a failed generation.
+    if (creditSpent) {
+      try {
+        await refundCredits(1);
+      } catch (refundError) {
+        console.error("Failed to refund credits:", refundError);
+      }
+    }
+
     return {
       success: false,
-      error: error?.message || "Failed to generate recipe",
+      error: error?.isFriendly
+        ? String(error.message)
+        : classifyGenerationError(error),
     };
   }
 }

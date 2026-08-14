@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Loader2, Save, Sparkles, X } from "lucide-react";
+import { Eye, Loader2, Save, X } from "lucide-react";
 import { insertRecipe } from "@/actions/Recipe/recipe";
 import { toast } from "sonner";
 import { useAuth } from "@/store/useAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import NutritionSection from "./RecipeModel/NutritionSection";
 import InstructionsSection from "./RecipeModel/InstructionsSection";
@@ -24,14 +24,30 @@ import YoutubeVideoSection from "./YoutubeVideoSection";
 import RecipeImage from "./RecipeModel/RecipeImage";
 import { generateUniqueSlug, generateUniqueTitle } from "@/utils/slugify";
 import { uploadAIImageToStorage } from "@/utils/genAI";
+import { cn } from "@/lib/utils";
 
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-const FullRecipeModel = ({ recipe }: { recipe: any }) => {
+const FullRecipeModel = ({
+  recipe,
+  variant = "dialog",
+}: {
+  recipe: any;
+  variant?: "dialog" | "inline";
+}) => {
   const user = useAuth((store) => store.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [activeImageUrl, setActiveImageUrl] = useState<string | undefined>(
+    recipe.image?.url,
+  );
   const reduce = useReducedMotion();
+
+  useEffect(() => {
+    setActiveImageUrl(recipe.image?.url);
+  }, [recipe.image?.url]);
+
+  const isInline = variant === "inline";
 
   const isStoredImage = (img?: { url?: string; path?: string }) =>
     !!img?.url && !String(img.url).startsWith("data:") && !!img.path;
@@ -104,8 +120,181 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
 
   const galleryImages = [
     ...(recipe.image?.url ? [recipe.image] : []),
-    ...(recipe.instructions?.map((i: any) => i?.image).filter((i: any) => i?.url) ?? []),
-  ];
+    ...(recipe.instructions
+      ?.map((i: any) => i?.image)
+      .filter((i: any) => i?.url) ?? []),
+  ].filter(
+    (img, idx, arr) =>
+      arr.findIndex((other) => other?.url === img?.url) === idx,
+  );
+
+  const content = (
+    <div className="relative flex h-full flex-col">
+      {/* Header */}
+      <div className="shrink-0 border-b border-border px-6 pb-5 pt-6 sm:px-8 sm:pb-6 sm:pt-8">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs">
+          {categoryName && (
+            <Badge
+              variant="outline"
+              className="rounded-full border-border/80 bg-transparent font-medium text-muted-foreground"
+            >
+              {categoryName}
+            </Badge>
+          )}
+          <span className="text-muted-foreground">AI-generated recipe</span>
+        </div>
+
+        <h2 className="mt-3 font-gosh text-2xl font-bold leading-tight tracking-tight text-foreground sm:text-3xl md:text-[2.5rem] md:leading-[1.1]">
+          {recipe.title}
+        </h2>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-[0.9375rem]">
+          {recipe.description}
+        </p>
+
+        <div className="mt-5 border-t border-border">
+          <RecipeStats
+            stats={{
+              prepTime: recipe.preptime,
+              cooktime: recipe.cooktime,
+              servings: recipe.servings,
+              difficulty: recipe.difficulty,
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Saving overlay */}
+      {isSaving && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed inset-0 z-30 flex items-center justify-center bg-background/70 p-4 backdrop-blur-sm"
+        >
+          <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-4 shadow-lg">
+            <Loader2 className="h-5 w-5 animate-spin text-primary" />
+            <span className="text-sm font-medium text-foreground">
+              Saving recipe...
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Body */}
+      <div
+        className={cn(
+          "flex-1",
+          !isInline && "overflow-y-auto overscroll-contain",
+        )}
+      >
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease }}
+          className=" px-2 md:px-6 py-6 sm:px-8 sm:py-8"
+        >
+          {/* Framed photo */}
+          <div className="overflow-hidden rounded-2xl ring-1 ring-border/60  ">
+            <RecipeImage
+              src={activeImageUrl}
+              alt={recipe.title}
+              priority
+              className="aspect-video md:aspect-21/9 "
+            />
+          </div>
+
+          {/* Gallery */}
+          {galleryImages.length > 1 && (
+            <div className="mt-8 border-t border-border/70 pt-5 mx-2">
+              <div className="scrollbar-hide -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-1 pt-2 sm:-mx-8 sm:px-8">
+                {galleryImages.map((img, idx) => {
+                  const isActive = img.url === activeImageUrl;
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        setActiveImageUrl(img.url);
+                        recipe.image = img;
+                      }}
+                      aria-label={`Show ${recipe.title} image ${idx + 1}`}
+                      className={cn(
+                        "group relative h-20 w-28 shrink-0 snap-start overflow-hidden rounded-lg ring-1 transition-all active:scale-[0.97]",
+                        isActive
+                          ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
+                          : "ring-border/50 hover:ring-primary/60",
+                      )}
+                    >
+                      <RecipeImage
+                        src={img.url}
+                        alt={`${recipe.title} gallery ${idx + 1}`}
+                        sizes="112px"
+                        imgClassName="transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Content */}
+          <div className="mt-10 grid grid-cols-1 gap-10 xl:grid-cols-[minmax(0,320px)_minmax(0,1fr)] xl:gap-12">
+            <div className="space-y-10">
+              <IngredientsSection ingredients={recipe.ingredients} />
+              <NutritionSection nutrition={recipe.nutrition} />
+            </div>
+            <div className="space-y-10">
+              <InstructionsSection instructions={recipe.instructions} />
+              <YoutubeVideoSection
+                videoId={recipe.youtube_video_id}
+                videoQuery={recipe.youtube_search_query}
+              />
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Footer */}
+      <DialogFooter className="shrink-0 gap-2 border-t border-border bg-card px-6 py-4 sm:space-x-0 sm:px-8">
+        {!isInline && (
+          <DialogClose asChild>
+            <Button
+              variant="outline"
+              disabled={isSaving}
+              className="w-full active:scale-[0.97] sm:w-auto"
+            >
+              Close
+            </Button>
+          </DialogClose>
+        )}
+        <Button
+          onClick={handleSaveRecipe}
+          disabled={isSaving}
+          className="w-full active:scale-[0.97] sm:w-auto"
+        >
+          {isSaving ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <Save className="mr-2 h-4 w-4" />
+              Save Recipe
+            </>
+          )}
+        </Button>
+      </DialogFooter>
+    </div>
+  );
+
+  if (isInline) {
+    return (
+      <div className="overflow-hidden rounded-2xl border border-border bg-background">
+        {content}
+      </div>
+    );
+  }
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -123,153 +312,11 @@ const FullRecipeModel = ({ recipe }: { recipe: any }) => {
         <DialogDescription className="sr-only">
           {recipe.description || recipe.title}
         </DialogDescription>
-        <DialogClose className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-all duration-200 hover:bg-black/60 active:scale-90">
-          <X className="h-5 w-5" />
+        <DialogClose className="absolute right-5 top-5 z-20 flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-card/90 text-muted-foreground backdrop-blur transition-colors hover:text-foreground active:scale-90">
+          <X className="h-4.5 w-4.5" />
         </DialogClose>
 
-        <div className="relative flex h-full flex-col">
-          {/* Hero */}
-          <div className="relative h-[40dvh] min-h-56 w-full shrink-0 sm:h-64 md:h-72">
-            <RecipeImage
-              src={recipe.image?.url}
-              alt={recipe.title}
-              priority
-              sizes="100vw"
-              className="h-full w-full"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
-
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.15, ease }}
-              className="absolute inset-x-0 bottom-0 flex flex-col gap-2.5 p-5 sm:gap-3 sm:p-7"
-            >
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge className="bg-primary text-white">
-                  <Sparkles className="mr-1 h-3 w-3" />
-                  AI Generated
-                </Badge>
-                {categoryName && (
-                  <Badge
-                    variant="outline"
-                    className="border-white/40 bg-black/30 text-white backdrop-blur-sm"
-                  >
-                    {categoryName}
-                  </Badge>
-                )}
-              </div>
-              <h2 className="heading-primary text-xl font-bold leading-tight text-white sm:text-2xl md:text-3xl">
-                {recipe.title}
-              </h2>
-              <p className="line-clamp-2 max-w-2xl text-xs leading-relaxed text-white/85 sm:line-clamp-3 sm:text-sm">
-                {recipe.description}
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Saving overlay */}
-          {isSaving && (
-            <div
-              role="status"
-              aria-live="polite"
-              className="absolute inset-0 z-30 flex items-center justify-center bg-background/70 backdrop-blur-sm"
-            >
-              <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-4">
-                <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                <span className="text-sm font-medium text-foreground">
-                  Saving recipe...
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Scrollable body */}
-          <div className="flex-1 overflow-y-auto overscroll-contain">
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.45, ease }}
-              className="p-5 pb-8 sm:p-7 sm:pb-10"
-            >
-              <RecipeStats
-                stats={{
-                  prepTime: recipe.preptime,
-                  cooktime: recipe.cooktime,
-                  servings: recipe.servings,
-                  difficulty: recipe.difficulty,
-                }}
-              />
-
-              {galleryImages.length > 1 && (
-                <div className="mt-6">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Gallery
-                  </p>
-                  <div className="scrollbar-hide -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 sm:mx-0 sm:px-0">
-                    {galleryImages.map((img, idx) => (
-                      <div
-                        key={idx}
-                        className="group relative h-20 w-28 shrink-0 snap-start overflow-hidden rounded-lg ring-1 ring-border/40 transition-shadow duration-200 hover:shadow-[0_8px_24px_-12px_hsl(var(--primary)/0.35)]"
-                      >
-                        <RecipeImage
-                          src={img.url}
-                          alt={`${recipe.title} gallery ${idx + 1}`}
-                          sizes="112px"
-                          imgClassName="transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[340px_1fr] lg:gap-10">
-                <div className="space-y-8">
-                  <IngredientsSection ingredients={recipe.ingredients} />
-                  <NutritionSection nutrition={recipe.nutrition} />
-                </div>
-                <div className="space-y-8">
-                  <InstructionsSection instructions={recipe.instructions} />
-                  <YoutubeVideoSection
-                    videoId={recipe.youtube_video_id}
-                    videoQuery={recipe.youtube_search_query}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Footer */}
-          <DialogFooter className="shrink-0 gap-2 border-t border-border bg-background px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 sm:space-x-0 sm:px-7 sm:pb-5">
-            <DialogClose asChild>
-              <Button
-                variant="outline"
-                disabled={isSaving}
-                className="w-full active:scale-[0.97] sm:w-auto"
-              >
-                Close
-              </Button>
-            </DialogClose>
-            <Button
-              onClick={handleSaveRecipe}
-              disabled={isSaving}
-              className="w-full active:scale-[0.97] sm:w-auto"
-            >
-              {isSaving ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Recipe
-                </>
-              )}
-            </Button>
-          </DialogFooter>
-        </div>
+        {content}
       </DialogContent>
     </Dialog>
   );

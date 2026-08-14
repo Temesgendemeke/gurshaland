@@ -56,6 +56,7 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
     if (data) {
       setUserName(data.username);
     }
+    console.log("username ", data);
   };
 
   useEffect(() => {
@@ -92,7 +93,7 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild >
+      <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           size="icon"

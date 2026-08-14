@@ -1,11 +1,18 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Loader2, Coins } from "lucide-react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import { AlertCircle, Coins, Loader2, RefreshCw } from "lucide-react";
+import Link from "next/link";
 import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
-import GeneratedRecipeCard from "./GeneratedRecipeCard";
-import EmptyRecipePrompt from "./EmptyRecipePrompt";
+import TypedTextarea, { TYPED_PROMPTS } from "./TypedTextarea";
+import FullRecipeModel from "./recipe/FullRecipeModel";
 import RecipeProgressBar from "./RecipeProgressBar";
+import { cn } from "@/lib/utils";
 import { generateAIRecipe } from "@/actions/Recipe/airecipe";
 import { getCredits } from "@/actions/credits";
 import { useAuth } from "@/store/useAuth";
@@ -16,17 +23,43 @@ import {
   savePendingAIGeneration,
 } from "@/lib/auth-gate";
 import { toast } from "sonner";
-
-const QUICK_PROMPTS = [
-  "Chickpea flour, onion, garlic, berbere",
-  "Chicken, onion, eggs, spiced butter",
-  "Red lentils, carrots, turmeric",
-];
+import { IconSparkles2Filled } from "@tabler/icons-react";
+import { useReducedMotion } from "motion/react";
 
 const RECIPE_CREDIT_COST = 1;
 
-export default function AIRecipeGenerator() {
+interface AIRecipeGeneratorContextValue {
+  user: any;
+  prompt: string;
+  setPrompt: (value: string) => void;
+  isGenerating: boolean;
+  generatedRecipe: any;
+  error: string | null;
+  credits: number | null;
+  needsLogin: boolean;
+  outOfCredits: boolean;
+  handleGenerate: () => void;
+  handleLoginRedirect: () => void;
+}
+
+const AIRecipeGeneratorContext =
+  createContext<AIRecipeGeneratorContextValue | null>(null);
+
+function useAIRecipeGenerator() {
+  const ctx = useContext(AIRecipeGeneratorContext);
+  if (!ctx) throw new Error("Missing AIRecipeGeneratorProvider");
+  return ctx;
+}
+
+export function AIRecipeGeneratorProvider({
+  children,
+  scrollOnGenerate = false,
+}: {
+  children: ReactNode;
+  scrollOnGenerate?: boolean;
+}) {
   const user = useAuth((store) => store.user);
+  const reduceMotion = useReducedMotion();
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedRecipe, setGeneratedRecipe] = useState<any>(null);
@@ -53,7 +86,21 @@ export default function AIRecipeGenerator() {
   }, [user]);
 
   const needsLogin = !user;
-  const outOfCredits = !!user && credits !== null && credits < RECIPE_CREDIT_COST;
+  const outOfCredits =
+    !!user && credits !== null && credits < RECIPE_CREDIT_COST;
+
+  const scrollToResult = () => {
+    const el = document.getElementById("ai-generator-result");
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top: y, behavior: reduceMotion ? "auto" : "smooth" });
+  };
+
+  const scrollToResultAfterRender = () => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(scrollToResult);
+    });
+  };
 
   const handleLoginRedirect = () => {
     savePendingAIGeneration({ action: "recipe-generator", prompt });
@@ -69,6 +116,10 @@ export default function AIRecipeGenerator() {
     }
     setIsGenerating(true);
     setError(null);
+
+    if (scrollOnGenerate) {
+      scrollToResultAfterRender();
+    }
 
     try {
       const result = await generateAIRecipe(prompt, "");
@@ -87,107 +138,208 @@ export default function AIRecipeGenerator() {
     }
   };
 
+  const value: AIRecipeGeneratorContextValue = {
+    user,
+    prompt,
+    setPrompt,
+    isGenerating,
+    generatedRecipe,
+    error,
+    credits,
+    needsLogin,
+    outOfCredits,
+    handleGenerate,
+    handleLoginRedirect,
+  };
+
   return (
-    <div className={`rounded-2xl border border-border bg-card p-5 sm:p-6 `}>
-      <div>
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h2 className="text-lg font-semibold text-foreground">
-              Generate a recipe
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Describe what you have or what you&apos;d like to cook.
-            </p>
-          </div>
-          <div className="flex items-center gap-1.5 rounded-full border border-border bg-muted px-3 py-1.5 text-sm text-muted-foreground">
-            <Coins className="h-4 w-4 text-primary" />
-            {user
-              ? credits === null
-                ? "— credits"
-                : `${credits} credits`
-              : "Log in required"}
-          </div>
+    <AIRecipeGeneratorContext.Provider value={value}>
+      {children}
+    </AIRecipeGeneratorContext.Provider>
+  );
+}
+
+export function AIRecipeGeneratorForm() {
+  const {
+    user,
+    prompt,
+    setPrompt,
+    isGenerating,
+    credits,
+    needsLogin,
+    outOfCredits,
+    handleGenerate,
+    handleLoginRedirect,
+  } = useAIRecipeGenerator();
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleGenerate();
+      }}
+      className="rounded-2xl border border-border bg-card p-4 sm:p-5"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h2 className="font-gosh text-lg font-bold tracking-tight text-foreground">
+            Generate a recipe
+          </h2>
+          <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+            Describe what you have or what you&apos;d like to cook.
+          </p>
         </div>
+        <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1 text-[0.6875rem] font-medium text-muted-foreground">
+          <Coins className="h-3.5 w-3.5 text-primary" strokeWidth={1.75} />
+          {user
+            ? credits === null
+              ? "…"
+              : `${credits} credits`
+            : "100 free credits"}
+        </div>
+      </div>
 
-        <div className="mt-4 space-y-3">
-          <Textarea
-            placeholder="e.g. chickpea flour, onions, garlic, berbere — vegetarian"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            rows={3}
-            className="resize-none"
-          />
+      <div className="mt-4 space-y-1.5">
+        <label
+          htmlFor="recipe-prompt"
+          className="block text-xs font-medium text-foreground"
+        >
+          What do you want to cook?
+        </label>
+        <TypedTextarea
+          id="recipe-prompt"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          rows={2}
+        />
+      </div>
 
-          <div className="flex flex-wrap gap-1.5">
-            {QUICK_PROMPTS.map((p) => (
-              <button
-                key={p}
-                type="button"
-                onClick={() => setPrompt(p)}
-                className="rounded-full border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-              >
-                {p}
-              </button>
-            ))}
-          </div>
+      <div className="mt-4">
+        <div className="flex flex-wrap gap-1.5">
+          {TYPED_PROMPTS.map((p) => (
+            <button
+              key={p}
+              type="button"
+              onClick={() => setPrompt(p)}
+              className="rounded-full border border-border bg-background px-2.5 py-1 text-[0.6875rem] text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground active:scale-[0.98]"
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      </div>
 
-          {needsLogin ? (
-            <p className="rounded-lg border border-border bg-muted px-3 py-2.5 text-sm text-muted-foreground">
-              <button
-                type="button"
-                onClick={handleLoginRedirect}
-                className="font-medium text-primary underline"
-              >
-                Log in
-              </button>{" "}
-              to generate recipes. New users get 100 free credits.
-            </p>
-          ) : outOfCredits ? (
-            <p className="rounded-lg border border-border bg-muted px-3 py-2.5 text-sm text-muted-foreground">
-              You&apos;re out of credits. Each recipe generation costs{" "}
-              {RECIPE_CREDIT_COST} credit.{" "}
-              <a href="/credits" className="font-medium text-primary underline">
-                Buy more credits
-              </a>
-              .
-            </p>
-          ) : (
-            <p className="text-xs text-muted-foreground">
-              Costs {RECIPE_CREDIT_COST} credit per generation.
-            </p>
-          )}
-
-          <Button
-            onClick={handleGenerate}
-            disabled={isGenerating || !prompt.trim() || outOfCredits}
-            className="w-full sm:w-auto"
+      {needsLogin ? (
+        <p className="mt-4 rounded-lg border border-border bg-muted px-3 py-2.5 text-xs leading-relaxed text-muted-foreground">
+          <button
+            type="button"
+            onClick={handleLoginRedirect}
+            className="font-medium text-primary underline underline-offset-2"
           >
-            {isGenerating ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Generating...
-              </>
-            ) : (
-              "Generate Recipe"
-            )}
+            Log in
+          </button>{" "}
+          to generate recipes. New users get 100 free credits.
+        </p>
+      ) : outOfCredits ? (
+        <p className="mt-4 rounded-lg border border-error/25 bg-error/5 px-3 py-2.5 text-xs leading-relaxed text-muted-foreground">
+          You&apos;re out of credits. Each recipe generation costs{" "}
+          {RECIPE_CREDIT_COST} credit.{" "}
+          <Link
+            href="/credits"
+            className="font-medium text-primary underline underline-offset-2"
+          >
+            Buy more credits
+          </Link>
+          .
+        </p>
+      ) : (
+        <p className="mt-3 text-xs text-muted-foreground">
+          Costs {RECIPE_CREDIT_COST} credit per generation.
+        </p>
+      )}
+
+      <Button
+        type="submit"
+        disabled={isGenerating || !prompt.trim() || outOfCredits}
+        className="mt-4 w-full"
+      >
+        {isGenerating ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Generating…
+          </>
+        ) : (
+          <>
+            <IconSparkles2Filled />
+            Generate Recipe
+          </>
+        )}
+      </Button>
+    </form>
+  );
+}
+
+export function AIRecipeGeneratorResult({ className }: { className?: string }) {
+  const { isGenerating, generatedRecipe, error, handleGenerate } =
+    useAIRecipeGenerator();
+
+  if (!isGenerating && !generatedRecipe && !error) return null;
+
+  return (
+    <div id="ai-generator-result" className={cn("min-w-0", className)}>
+      {isGenerating ? (
+        <RecipeProgressBar isGenerating={isGenerating} />
+      ) : generatedRecipe ? (
+        <FullRecipeModel recipe={generatedRecipe} variant="inline" />
+      ) : (
+        <div className="flex flex-col items-center rounded-2xl border border-border bg-card px-6 py-12 text-center">
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-error/10">
+            <AlertCircle className="h-5 w-5 text-error" strokeWidth={1.75} />
+          </div>
+          <h3 className="mt-4 font-gosh text-lg font-bold tracking-tight text-foreground">
+            Couldn&apos;t generate your recipe
+          </h3>
+          <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
+            {error}
+          </p>
+          <Button onClick={handleGenerate} variant="outline" className="mt-6">
+            <RefreshCw className="h-4 w-4" />
+            Try again
           </Button>
         </div>
+      )}
+    </div>
+  );
+}
+
+function AIRecipeGeneratorCombined() {
+  const { isGenerating, generatedRecipe, error } = useAIRecipeGenerator();
+  const showResult = isGenerating || !!generatedRecipe || !!error;
+
+  return (
+    <div
+      className={cn(
+        "grid items-start gap-10",
+        showResult && "lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:gap-12",
+      )}
+    >
+      <div className={cn(showResult && "lg:sticky lg:top-18")}>
+        <AIRecipeGeneratorForm />
       </div>
 
-      <div className="mt-5">
-        {
-          isGenerating ? (
-            <RecipeProgressBar isGenerating={isGenerating} />
-          ) : generatedRecipe ? (
-            <GeneratedRecipeCard recipe={generatedRecipe} />
-          ) : error ? (
-            <p className="rounded-lg border border-error/20 bg-error/5 p-3 text-sm text-error">
-              {error}
-            </p>
-          ) : null
-          // <EmptyRecipePrompt />
-        }
-      </div>
+      {showResult && (
+        <div className="min-w-0">
+          <AIRecipeGeneratorResult />
+        </div>
+      )}
     </div>
+  );
+}
+
+export default function AIRecipeGenerator() {
+  return (
+    <AIRecipeGeneratorProvider>
+      <AIRecipeGeneratorCombined />
+    </AIRecipeGeneratorProvider>
   );
 }

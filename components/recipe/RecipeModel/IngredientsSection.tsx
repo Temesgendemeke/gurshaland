@@ -1,36 +1,43 @@
-import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const IngredientsSection = ({ ingredients }: { ingredients: any[] }) => {
+const IngredientsSection = ({
+  ingredients,
+}: {
+  ingredients: { amount?: number; unit?: string; item?: string }[];
+}) => {
+  const list = ingredients ?? [];
+
   return (
-    <div className="space-y-4">
-      <h3 className="heading-secondary text-xl md:text-2xl border-b border-border pb-3">
-        Ingredients
-      </h3>
-      <div className="space-y-2">
-        {ingredients?.map((ingredient, idx: number) => (
-          <div
-            key={idx}
-            className="flex items-start gap-3 rounded-lg border border-border/60 bg-card px-3.5 py-2.5"
-          >
-            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <Check className="h-3 w-3" />
+    <div className="space-y-3">
+      <div className="flex items-baseline justify-between">
+        <h3 className="text-lg font-bold tracking-tight text-foreground">
+          Ingredients
+        </h3>
+        <span className="text-sm tabular-nums text-muted-foreground">
+          {list.length} items
+        </span>
+      </div>
+
+      <ul className="divide-y divide-border/80 overflow-hidden rounded-xl border border-border/80">
+        {list.map((ingredient, idx) => (
+          <li key={idx} className="flex items-baseline gap-4 bg-card px-4 py-3">
+            <span className="w-20 shrink-0 text-sm font-medium tabular-nums text-muted-foreground">
+              {ingredient.amount !== undefined && ingredient.amount !== null
+                ? ingredient.amount
+                : ""}
+              {ingredient.unit ? ` ${ingredient.unit}` : ""}
             </span>
-            <span className="text-sm leading-relaxed text-muted-foreground">
-              {ingredient.amount ? (
-                <span className="font-semibold text-foreground">
-                  {ingredient.amount}
-                </span>
-              ) : null}{" "}
-              {ingredient.unit ? (
-                <span className="font-medium text-foreground">
-                  {ingredient.unit}
-                </span>
-              ) : null}{" "}
+            <span
+              className={cn(
+                "text-sm leading-snug",
+                ingredient.item ? "text-foreground" : "text-muted-foreground",
+              )}
+            >
               {ingredient.item}
             </span>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

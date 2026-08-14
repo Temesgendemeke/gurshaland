@@ -29,6 +29,7 @@ export default function BlogPage() {
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const reduceMotion = useReducedMotion();
   const resultsRef = useRef<HTMLDivElement>(null);
+  const hasUserInteracted = useRef(false);
 
   const blogPosts = blogStore((store) => store.blogs) || [];
   const featuredPost = blogPosts.find((post) => post.featured);
@@ -42,6 +43,8 @@ export default function BlogPage() {
 
   // Scroll to results when filters/search change
   useEffect(() => {
+    if (!hasUserInteracted.current) return;
+
     if (resultsRef.current) {
       const y =
         resultsRef.current.getBoundingClientRect().top + window.scrollY - 70;
@@ -50,11 +53,13 @@ export default function BlogPage() {
   }, [searchTerm, selectedCategory, reduceMotion]);
 
   const handleCategoryChange = (category: string) => {
+    hasUserInteracted.current = true;
     setSelectedCategory(category);
     setVisibleCount(POSTS_PER_PAGE);
   };
 
   const handleSearchChange = (value: string) => {
+    hasUserInteracted.current = true;
     setSearchTerm(value);
     setVisibleCount(POSTS_PER_PAGE);
   };

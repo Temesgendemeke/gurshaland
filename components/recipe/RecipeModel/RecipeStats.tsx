@@ -1,4 +1,4 @@
-import { CookingPot, Gauge, Timer, Users } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface Stats {
   prepTime?: number;
@@ -10,45 +10,51 @@ interface Stats {
 const RecipeStats = ({ stats }: { stats: Stats }) => {
   const items = [
     {
-      icon: Timer,
       label: "Prep",
-      value: stats.prepTime !== undefined ? `${stats.prepTime}m` : null,
+      value:
+        stats.prepTime !== undefined && stats.prepTime !== null
+          ? `${stats.prepTime} min`
+          : null,
     },
     {
-      icon: CookingPot,
       label: "Cook",
-      value: stats.cooktime !== undefined ? `${stats.cooktime}m` : null,
+      value:
+        stats.cooktime !== undefined && stats.cooktime !== null
+          ? `${stats.cooktime} min`
+          : null,
     },
     {
-      icon: Users,
-      label: "Servings",
-      value: stats.servings !== undefined ? stats.servings : null,
+      label: "Serves",
+      value: stats.servings !== undefined && stats.servings !== null
+        ? stats.servings
+        : null,
     },
     {
-      icon: Gauge,
       label: "Difficulty",
       value: stats.difficulty || null,
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-      {items.map((item) => {
-        const Icon = item.icon;
-        return (
-          <div
-            key={item.label}
-            className="flex flex-col items-center gap-1 rounded-xl border border-border/60 bg-card px-3 py-4 text-center"
-          >
-            <Icon className="h-5 w-5 text-primary" />
-            <p className="text-lg font-bold text-foreground">
-              {item.value ?? "—"}
-            </p>
-            <p className="text-xs text-muted-foreground">{item.label}</p>
-          </div>
-        );
-      })}
-    </div>
+    <dl className="grid grid-cols-2 sm:grid-cols-4">
+      {items.map((item, idx) => (
+        <div
+          key={item.label}
+          className={cn(
+            "py-3.5 sm:px-5 sm:first:pl-0 sm:last:pr-0",
+            idx % 2 === 1 && "border-l border-border pl-5",
+            idx > 1 && "border-t border-border sm:border-t-0",
+          )}
+        >
+          <dt className="text-[0.6875rem] font-medium uppercase tracking-wider text-muted-foreground">
+            {item.label}
+          </dt>
+          <dd className="mt-1 text-base font-semibold tracking-tight text-foreground">
+            {item.value ?? "—"}
+          </dd>
+        </div>
+      ))}
+    </dl>
   );
 };
 
