@@ -5,7 +5,7 @@ import { Textarea } from "./ui/textarea";
 import { cn } from "@/lib/utils";
 
 export const TYPED_PROMPTS = [
-  "I want to make shiro. I have chickpeas, onions, and some chicken.",
+  "I want to make shiro. I have chicken and onions.",
   "I have chicken and eggs. I'd love a rich stew.",
   "Make me a vegetarian dish from red lentils and carrots.",
 ];

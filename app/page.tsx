@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Header } from "@/components/header";
 import { FeaturedCards } from "@/components/featured-cards";
 import Link from "next/link";
@@ -8,10 +7,18 @@ import WhyCard from "@/components/WhyCard";
 import why_gurshaland from "@/constants/homepage";
 import { getCategories } from "@/actions/Recipe/category";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 import { Marquee } from "@/components/magicui/marquee";
 import SectionText from "@/components/SectionText";
 import Reveal from "@/components/Reveal";
+import {
+  HeartHandshake,
+  Utensils,
+  ArrowRight,
+  Plus,
+  BookOpen,
+  Sparkles,
+  Users,
+} from "lucide-react";
 
 export default async function HomePage() {
   const categories = await getCategories();
@@ -19,7 +26,7 @@ export default async function HomePage() {
     <div className="relative z-10">
       <Header />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 space-y-16 sm:space-y-20">
+      <main className="mx-auto max-w-7xl space-y-16 px-4 sm:space-y-20 sm:px-6">
         {/* Hero Section */}
         <HeroSection />
 
@@ -91,37 +98,87 @@ export default async function HomePage() {
 
         {/* CTA Section */}
         <Reveal>
-          <Card className="relative overflow-hidden border-border bg-card p-10 text-center text-foreground sm:p-14">
-            <div className="mx-auto max-w-2xl text-center">
-              {/* <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-                Gursha · <span className="font-benaiah">ጉርሻ</span>
-              </p> */}
-              <h2 className="heading-primary mb-4 text-3xl font-bold sm:text-4xl">
-                Pull up a chair.
+          <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-b from-card/90 via-card/50 to-muted/20 px-6 py-14 sm:px-12 sm:py-16 lg:py-20 text-center shadow-lg shadow-black/[0.02] backdrop-blur-xs">
+            {/* Ambient Lighting Gradients */}
+            <div
+              className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-96 rounded-full bg-primary/10 blur-3xl"
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute -bottom-24 right-1/4 h-64 w-64 rounded-full bg-ethiopian-green/10 blur-3xl"
+              aria-hidden="true"
+            />
+
+            {/* Subtle Ethiopian Mesob Woven Rings Motif */}
+            <svg
+              className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 stroke-primary/10 opacity-70 sm:h-96 sm:w-96"
+              viewBox="0 0 200 200"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <circle cx="100" cy="100" r="20" strokeWidth="1" strokeDasharray="3 3" />
+              <circle cx="100" cy="100" r="40" strokeWidth="1" strokeDasharray="4 4" />
+              <circle cx="100" cy="100" r="60" strokeWidth="1.2" strokeDasharray="3 5" />
+              <circle cx="100" cy="100" r="80" strokeWidth="1" strokeDasharray="6 6" />
+              <circle cx="100" cy="100" r="98" strokeWidth="1.5" strokeDasharray="4 4" />
+            </svg>
+            <svg
+              className="pointer-events-none absolute -bottom-16 -left-16 h-72 w-72 stroke-primary/10 opacity-40 sm:h-96 sm:w-96"
+              viewBox="0 0 200 200"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <circle cx="100" cy="100" r="30" strokeWidth="1" strokeDasharray="4 4" />
+              <circle cx="100" cy="100" r="60" strokeWidth="1" strokeDasharray="3 4" />
+              <circle cx="100" cy="100" r="90" strokeWidth="1.2" strokeDasharray="5 5" />
+            </svg>
+
+           
+
+            <div className="relative z-10 mx-auto max-w-2xl">
+
+              {/* Heading */}
+              <h2 className="font-gosh text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+                Pull up a chair. <span className="text-primary">Eat together.</span>
               </h2>
-              <p className="mb-8 text-lg text-body">
-                In Amharic, gursha is feeding a loved one with your own hands.
-                Save recipes, share your own, and eat together.
+
+              {/* Narrative Copy */}
+              <p className="mx-auto mt-4 max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground">
+                In Amharic, <span className="font-medium text-foreground">gursha</span> is feeding a loved one with your own hands an act of shared love and respect. Discover authentic heirlooms, contribute your family recipes, and gather around the mesob.
               </p>
-              <div className="flex flex-col justify-center gap-4 sm:flex-row">
-                <Button asChild size="lg" className="btn-primary-modern px-8">
-                  <Link href="/recipes">Explore Recipes</Link>
+
+              {/* Action Buttons */}
+              <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row sm:gap-4">
+                <Button
+                  asChild
+                  size="lg"
+                  className="btn-primary-modern group h-12 w-full px-8 text-base shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all sm:w-auto"
+                >
+                  <Link href="/recipes" className="inline-flex items-center justify-center gap-2.5">
+                    <Utensils className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
+                    <span>Explore Recipes</span>
+                    <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  </Link>
                 </Button>
+
                 <Button
                   asChild
                   variant="outline"
                   size="lg"
-                  className="px-8 text-primary"
+                  className="h-12 w-full border-border/80 bg-background/60 px-8 text-base font-semibold text-foreground backdrop-blur-xs transition-all hover:border-primary/50 hover:bg-card hover:text-primary sm:w-auto"
                 >
-                  <Link href="/recipes/create">Share Your Recipe</Link>
+                  <Link href="/recipes/create" className="inline-flex items-center justify-center gap-2">
+                    <Plus className="h-4 w-4 text-primary" />
+                    <span>Share Your Recipe</span>
+                  </Link>
                 </Button>
               </div>
             </div>
-          </Card>
+          </section>
         </Reveal>
-
-        {/* Footer is rendered globally in RootLayout */}
-      </div>
+      </main>
     </div>
   );
 }

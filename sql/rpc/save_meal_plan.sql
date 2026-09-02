@@ -48,7 +48,7 @@ BEGIN
         _meal_plan ->> 'goal',
         _meal_plan ->> 'diet',
         (_meal_plan ->> 'meals_per_day')::int,
-        (_meal_plan ->> 'calories')::int,
+        COALESCE((_meal_plan ->> 'calories')::int, 2000),
         _meal_plan ->> 'notes',
         _meal_plan -> 'pro_tips',
         _meal_plan -> 'shopping_list',

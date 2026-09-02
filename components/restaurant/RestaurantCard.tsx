@@ -1,14 +1,12 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Card } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 import { IconMapPin as MapPin, IconStar as Star } from "@tabler/icons-react";
 import { GetRestaurentType } from "@/schema/restaurent";
 import { useReducedMotion } from "motion/react";
 
 const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
-  const router = useRouter();
   const reduceMotion = useReducedMotion();
   const [imageSrc, setImageSrc] = useState(
     restaurant?.image?.url || "/placeholder.svg",
@@ -27,58 +25,40 @@ const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
   const location = restaurant.city || restaurant.address || "Addis Ababa";
   const primaryCuisine = restaurant.cuisines?.[0];
 
-  const handleClick = () => {
-    router.push(`/restaurant/${restaurant.slug}`);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      handleClick();
-    }
-  };
-
   return (
-    <Card
-      className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-xl border-border/60 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40"
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-      role="button"
+    <Link
+      href={`/restaurant/${restaurant.slug}`}
+      className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border/70 bg-card transition-colors duration-200 hover:border-foreground/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
       aria-label={`View ${restaurant.name}`}
     >
       {/* Image Section */}
-      <div className="relative aspect-[16/8] w-full overflow-hidden">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
         <Image
           src={correctUrl(imageSrc)}
           alt={restaurant.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className={`object-cover transition-transform duration-500 ${
-            reduceMotion ? "" : "group-hover:scale-105"
+            reduceMotion ? "" : "group-hover:scale-[1.025]"
           }`}
           onError={() => setImageSrc("/placeholder.svg")}
         />
 
-        {/* Cuisine Tag */}
-        {primaryCuisine && (
-          <span className="absolute left-3 top-3 rounded-full bg-foreground/85 px-2.5 py-1 text-[0.625rem] font-semibold uppercase tracking-wider text-background">
-            {primaryCuisine}
-          </span>
-        )}
-
-        {/* Rating */}
-        {restaurant.rating !== null && restaurant.rating !== undefined && (
-          <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-background/90 px-2.5 py-1 text-foreground">
-            <Star className="h-3.5 w-3.5 fill-primary text-primary" strokeWidth={1.5} />
-            <span className="text-xs font-bold">{Number(restaurant.rating).toFixed(1)}</span>
-          </div>
-        )}
       </div>
 
       {/* Content Section */}
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="line-clamp-1 font-gosh text-xl font-bold tracking-tight text-foreground transition-colors duration-200 group-hover:text-primary">
+        <div className="mb-3 flex items-center justify-between gap-3 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          <span className="truncate">{primaryCuisine || "Restaurant"}</span>
+          {restaurant.rating !== null && restaurant.rating !== undefined && (
+            <span className="inline-flex shrink-0 items-center gap-1 text-foreground normal-case tracking-normal">
+              <Star className="h-3.5 w-3.5 fill-primary text-primary" strokeWidth={1.5} />
+              {Number(restaurant.rating).toFixed(1)}
+            </span>
+          )}
+        </div>
+
+        <h3 className="line-clamp-1 font-gosh text-xl font-semibold tracking-tight text-foreground transition-colors duration-200 group-hover:text-primary">
           {restaurant.name}
         </h3>
 
@@ -95,7 +75,7 @@ const RestaurantCard = ({ restaurant }: { restaurant: GetRestaurentType }) => {
           </span>
         </div>
       </div>
-    </Card>
+    </Link>
   );
 };
 

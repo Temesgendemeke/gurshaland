@@ -1,0 +1,205 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { Header } from "@/components/header";
+import { Input } from "@/components/ui/input";
+import { Heart, Search, ArrowDown } from "lucide-react";
+import { favoritesStore } from "@/store/Favorites";
+import { useAuth } from "@/store/useAuth";
+import RecipeListSkeleton from "@/components/skeleton/RecipeList";
+import RecipeCard from "@/components/recipe/RecipeCard";
+import { useRouter } from "next/navigation";
+
+const POSTS_PER_PAGE = 6;
+
+const gridVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0 },
+};
+
+export default function FavoritesPage() {
+  const user = useAuth((store) => store.user);
+  const router = useRouter();
+  const reduceMotion = useReducedMotion();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
+
+  const recipes = favoritesStore((store) => store.recipes);
+  const loading = favoritesStore((store) => store.loading);
+  const fetched = favoritesStore((store) => store.fetched);
+  const fetchBookmarks = favoritesStore((store) => store.fetchBookmarks);
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchBookmarks(user.id);
+    }
+  }, [user?.id, fetchBookmarks]);
+
+  const filteredRecipes = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    return recipes.filter((recipe) => {
+      if (term === "") return true;
+      return (
+        recipe.title.toLowerCase().includes(term) ||
+        recipe.description.toLowerCase().includes(term) ||
+        (recipe.tags || []).some((tag) => tag.toLowerCase().includes(term))
+      );
+    });
+  }, [recipes, searchTerm]);
+
+  const visibleRecipes = filteredRecipes.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredRecipes.length;
+
+  if (!user) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <div className="mx-auto flex min-h-[60vh] max-w-7xl flex-col items-center justify-center px-4 text-center sm:px-6">
+          <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+            <Heart className="h-7 w-7 text-primary" />
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Your Favorites
+          </h1>
+          <p className="mt-3 max-w-md text-muted-foreground">
+            Sign in to see the recipes you&apos;ve saved. Bookmark any recipe to
+            find it here later.
+          </p>
+          <button
+            onClick={() => router.push("/login")}
+            className="btn-primary-modern mt-8 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
+          >
+            Sign in
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen">
+      <Header />
+
+      {/* Masthead */}
+      <header className="mx-auto w-full max-w-7xl px-4 pt-14 sm:px-6 md:pt-10">
+        <h1 className="max-w-3xl text-5xl font-black leading-[1.04] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          Your Favorites
+        </h1>
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+          Recipes you&apos;ve bookmarked to cook later. All in one place.
+        </p>
+      </header>
+
+      {/* Search + Count */}
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+        <div className="mt-12 border-t border-border/70 pb-2">
+          <div className="flex flex-col gap-3 py-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+            <div className="relative lg:w-72">
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search favorites..."
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setVisibleCount(POSTS_PER_PAGE);
+                }}
+                className="h-11 rounded-full border-border bg-card pl-10"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6">
+        {loading ? (
+          <RecipeListSkeleton />
+        ) : (
+          <>
+            <div className="mt-1 mb-8 flex items-end justify-between gap-4 border-b border-border/70 pb-5">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                Saved Recipes
+              </h2>
+              <p className="shrink-0 text-sm text-muted-foreground">
+                {filteredRecipes.length}{" "}
+                {filteredRecipes.length === 1 ? "recipe" : "recipes"}
+              </p>
+            </div>
+
+            {fetched && filteredRecipes.length === 0 && !loading ? (
+              <div className="rounded-xl border border-dashed border-border bg-card/50 py-20 text-center">
+                <div className="mb-4 flex justify-center">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                    <Heart className="h-5 w-5 text-primary" />
+                  </div>
+                </div>
+                <p className="text-lg font-semibold text-foreground">
+                  {recipes.length === 0
+                    ? "No favorites yet"
+                    : "No matches found"}
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {recipes.length === 0
+                    ? "Browse recipes and tap the bookmark icon to save your favorites."
+                    : "Try a different search term."}
+                </p>
+                {recipes.length === 0 && (
+                  <button
+                    onClick={() => router.push("/recipes")}
+                    className="btn-primary-modern mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold"
+                  >
+                    Browse recipes
+                  </button>
+                )}
+              </div>
+            ) : (
+              <>
+                <motion.div
+                  className="grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                  initial={reduceMotion ? false : "hidden"}
+                  animate="show"
+                  variants={gridVariants}
+                >
+                  {visibleRecipes.map((recipe) => (
+                    <motion.div
+                      key={recipe.id ?? recipe.slug}
+                      variants={cardVariants}
+                      transition={{
+                        duration: 0.5,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                      className="min-h-full"
+                    >
+                      <RecipeCard recipe={recipe} />
+                    </motion.div>
+                  ))}
+                </motion.div>
+
+                {hasMore && (
+                  <div className="mt-12 flex justify-center">
+                    <button
+                      onClick={() =>
+                        setVisibleCount((count) => count + POSTS_PER_PAGE)
+                      }
+                      className="group inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground transition-all duration-200 hover:border-primary/40 hover:text-primary active:scale-[0.98]"
+                    >
+                      Load more
+                      <ArrowDown className="h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5" />
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

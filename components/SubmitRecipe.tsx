@@ -38,7 +38,6 @@ import { generateUniqueSlug } from "@/utils/slugify";
 import NutritionField from "./NutritionField";
 import { uploadInstructionImage } from "@/actions/Recipe/instruction";
 import { getCategories } from "@/actions/Recipe/category";
-import useRecipe from "@/store/DashboardRecipe";
 import { shouldUploadRecipeImage } from "@/utils/recipeSubmission";
 
 type FormValues = z.infer<typeof formSchema>;
@@ -57,7 +56,6 @@ export default function SubmitRecipeForm({
     [],
   );
   const router = useRouter();
-  const updateRecipeInStore = useRecipe((store) => store.updateRecipeInStore);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -344,8 +342,6 @@ export default function SubmitRecipeForm({
           }),
         );
       }
-
-      updateRecipeInStore(updatedRecipeData);
 
       toast.success(
         "Recipe updated successfully. Your changes have been saved.",

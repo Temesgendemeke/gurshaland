@@ -2,21 +2,21 @@
 
 import { getMealplanById } from "@/actions/meal/crud";
 import { useQuery } from "@tanstack/react-query";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { ChevronLeft, Download, Info, Wand2 } from "lucide-react";
+import {
+  ChevronLeft,
+  NotebookPen,
+  ShoppingCart,
+} from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import type { ReactNode } from "react";
 import { GetMealPannerTyp } from "@/schema/meal-planner";
 import MealPlanSkeleton from "../skeleton/MealPlanSkeleton";
+import DownloadPdfButton from "@/components/pdf/DownloadPdfButton";
+import { generateMealPlanPdf } from "@/actions/pdf";
+import { MEAL_PLAN_PDF_CREDIT_COST } from "@/constants/creditCosts";
 
 interface MealItem {
   id?: string;
@@ -36,25 +36,36 @@ interface DayItem {
   meals: MealItem[];
 }
 
-const Dot = () => (
-  <span className="h-1 w-1 shrink-0 rounded-full bg-muted-foreground/40" />
-);
-
 const Macros = ({ meal }: { meal: MealItem }) => {
   const macros = [
-    meal.protein ? `Protein ${meal.protein}g` : null,
-    meal.carbs ? `Carbs ${meal.carbs}g` : null,
-    meal.fat ? `Fat ${meal.fat}g` : null,
+    meal.protein ? `P ${meal.protein}g` : null,
+    meal.carbs ? `C ${meal.carbs}g` : null,
+    meal.fat ? `F ${meal.fat}g` : null,
   ].filter(Boolean);
 
   if (macros.length === 0) return null;
 
   return (
-    <p className="mt-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-      {macros.join("  ·  ")}
+    <p className="mt-1 text-xs tabular-nums text-muted-foreground/80">
+      {macros.join(" · ")}
     </p>
   );
 };
+
+const StripTitle = ({
+  icon,
+  children,
+}: {
+  icon: ReactNode;
+  children: ReactNode;
+}) => (
+  <div className="flex items-center gap-2 border-b border-border/80 pb-2">
+    {icon}
+    <h3 className="text-[0.6875rem] font-semibold uppercase tracking-widest text-foreground">
+      {children}
+    </h3>
+  </div>
+);
 
 const MealPlanView = ({ id }: { id: string }) => {
   const { data, isLoading } = useQuery({
@@ -81,85 +92,52 @@ const MealPlanView = ({ id }: { id: string }) => {
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
+    <div className="mx-auto w-full px-4 py-8 sm:px-6">
       <div className="space-y-8">
         {/* Header */}
-        <div>
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div className="flex min-w-0 items-start gap-3">
-              <Button
-                variant="ghost"
-                size="icon"
-                asChild
-                aria-label="Back to my meal plans"
-                className="shrink-0 rounded-lg hover:bg-muted"
-              >
-                <Link href="/meal-planner/my-meal-plans">
-                  <ChevronLeft className="h-5 w-5" />
-                </Link>
-              </Button>
-              <div className="min-w-0 space-y-1.5">
-                <h1 className="line-clamp-1 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                  {plan.name}
-                </h1>
-                <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-                  <span className="font-medium capitalize text-primary">
-                    {plan.goal?.replace(/_/g, " ")}
-                  </span>
-                  <Dot />
-                  <span className="capitalize">{plan.timeframe} plan</span>
-                  <Dot />
-                  <span>{days.length} days</span>
-                  <Dot />
-                  <span>{plan.meals_per_day} meals/day</span>
-                  {plan.calories ? (
-                    <>
-                      <Dot />
-                      <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
-                        {plan.calories} kcal/day
-                      </span>
-                    </>
-                  ) : null}
-                </p>
-              </div>
-            </div>
-            <div className="flex shrink-0 items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2 text-primary"
-              >
-                <Download className="h-4 w-4" />
-                Download PDF
-              </Button>
-              {hasTips && (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <Wand2 className="h-4 w-4" />
-                      Tips
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent align="end" className="w-80">
-                    <p className="text-sm font-semibold text-foreground">
-                      Pro Tips
-                    </p>
-                    <div className="mt-3 space-y-4">
-                      {plan.pro_tips?.map((tip, i) => (
-                        <div
-                          key={i}
-                          className="text-sm leading-relaxed text-muted-foreground [&_p]:m-0 [&_p]:leading-relaxed [&_strong]:text-foreground"
-                        >
-                          <ReactMarkdown>{tip}</ReactMarkdown>
-                        </div>
-                      ))}
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              )}
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="flex min-w-0 items-start gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              asChild
+              aria-label="Back to my meal plans"
+              className="shrink-0 rounded-lg hover:bg-muted"
+            >
+              <Link href="/meal-planner/my-meal-plans">
+                <ChevronLeft className="h-5 w-5" />
+              </Link>
+            </Button>
+            <div className="min-w-0 space-y-1.5">
+              <h1 className="line-clamp-1 font-gosh text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                {plan.name}
+              </h1>
+              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+                <span className="font-medium capitalize text-primary">
+                  {plan.goal?.replace(/_/g, " ")}
+                </span>
+                <span aria-hidden>·</span>
+                <span className="capitalize">{plan.timeframe} plan</span>
+                <span aria-hidden>·</span>
+                <span>{days.length} days</span>
+                <span aria-hidden>·</span>
+                <span>{plan.meals_per_day} meals/day</span>
+                {plan.calories ? (
+                  <>
+                    <span aria-hidden>·</span>
+                    <span>{plan.calories} kcal/day</span>
+                  </>
+                ) : null}
+              </p>
             </div>
           </div>
-          <Separator className="mt-6 opacity-60" />
+          <DownloadPdfButton
+            generate={() => generateMealPlanPdf(plan)}
+            cost={MEAL_PLAN_PDF_CREDIT_COST}
+            variant="outline"
+            size="sm"
+            className="text-primary"
+          />
         </div>
 
         {/* Jump nav for multi-day plans */}
@@ -172,7 +150,7 @@ const MealPlanView = ({ id }: { id: string }) => {
               <a
                 key={d.id ?? idx}
                 href={`#day-${idx + 1}`}
-                className="shrink-0 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+                className="shrink-0 rounded-full border border-border/80 bg-card px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {String(idx + 1).padStart(2, "0")} · {d.day}
               </a>
@@ -181,8 +159,8 @@ const MealPlanView = ({ id }: { id: string }) => {
         )}
 
         {plan.notes ? (
-          <div className="flex items-start gap-3 rounded-lg border border-border/50 bg-muted/30 px-4 py-3">
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+          <div className="flex items-start gap-3 rounded-xl border border-border/80 px-4 py-3">
+            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
             <div className="text-sm leading-relaxed">
               <p className="font-medium text-foreground">Notes</p>
               <p className="mt-0.5 text-muted-foreground">{plan.notes}</p>
@@ -201,31 +179,28 @@ const MealPlanView = ({ id }: { id: string }) => {
             className={hasShopping ? "space-y-6 lg:col-span-8" : "space-y-6"}
           >
             {days.map((day, index) => (
-              <Card
+              <section
                 key={day.id ?? index}
                 id={`day-${index + 1}`}
-                className="scroll-mt-24"
+                className="scroll-mt-24 rounded-xl border border-border/80 bg-card"
               >
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 py-4">
-                  <CardTitle className="flex items-center gap-3 text-base font-bold sm:text-lg">
-                    <span className="font-mono text-sm text-muted-foreground">
-                      Day {String(index + 1).padStart(2, "0")}
+                <header className="flex items-center justify-between gap-3 border-b border-border/80 px-5 py-4">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
+                      {index + 1}
                     </span>
-                    <span className="capitalize">{day.day}</span>
-                  </CardTitle>
+                    <h2 className="text-lg font-bold tracking-tight capitalize text-foreground">
+                      {day.day}
+                    </h2>
+                  </div>
                   {day.total_calories ? (
-                    // <Badge variant="secondary" className="font-mono">
-                    //   {day.total_calories} kcal
-                    // </Badge>
-                    <>
-                      <Dot />
-                      <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
-                        {day.total_calories} kcal
-                      </span>
-                    </>
+                    <span className="text-sm tabular-nums text-muted-foreground">
+                      {day.total_calories} kcal
+                    </span>
                   ) : null}
-                </CardHeader>
-                <CardContent className="divide-y divide-border/60 border-t border-border/60 pt-4">
+                </header>
+
+                <div className="divide-y divide-border/80 px-5">
                   {day.meals?.map((meal) => (
                     <div key={meal.id ?? meal.name} className="py-4">
                       <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
@@ -233,7 +208,7 @@ const MealPlanView = ({ id }: { id: string }) => {
                           {meal.name}
                         </h4>
                         {meal.calories ? (
-                          <span className="font-mono text-xs text-muted-foreground">
+                          <span className="text-sm tabular-nums text-muted-foreground">
                             {meal.calories} kcal
                           </span>
                         ) : null}
@@ -246,32 +221,50 @@ const MealPlanView = ({ id }: { id: string }) => {
                       <Macros meal={meal} />
                     </div>
                   ))}
-                </CardContent>
-              </Card>
+                </div>
+              </section>
             ))}
           </div>
 
           {hasShopping && (
-            <div className="flex flex-col lg:col-span-4">
-              <Card className="flex flex-col">
-                <CardHeader className="py-4">
-                  <CardTitle className="text-sm font-semibold">
-                    Shopping List
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1 pt-0">
-                  <ul className="divide-y divide-border/60">
-                    {plan.shopping_list?.map((item, i) => (
-                      <li
-                        key={i}
-                        className="py-2 text-sm text-muted-foreground"
-                      >
+            <div className="flex flex-col gap-8 lg:col-span-4">
+              <div>
+                <StripTitle
+                  icon={<ShoppingCart className="h-4 w-4 text-primary" />}
+                >
+                  Shopping list
+                </StripTitle>
+                <ul className="divide-y divide-border/80">
+                  {plan.shopping_list?.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 py-2.5">
+                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary" />
+                      <span className="text-sm leading-snug text-foreground/90">
                         {item}
-                      </li>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {hasTips && (
+                <div>
+                  <StripTitle
+                    icon={<NotebookPen className="h-4 w-4 text-primary" />}
+                  >
+                    Chef&apos;s notes
+                  </StripTitle>
+                  <div className="space-y-3 pt-4">
+                    {plan.pro_tips?.map((tip, i) => (
+                      <div
+                        key={i}
+                        className="rounded-xl border border-border/80 px-4 py-3 text-sm leading-relaxed text-foreground/90 [&_p]:m-0"
+                      >
+                        <ReactMarkdown>{tip}</ReactMarkdown>
+                      </div>
                     ))}
-                  </ul>
-                </CardContent>
-              </Card>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

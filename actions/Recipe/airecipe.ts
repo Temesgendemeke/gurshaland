@@ -9,58 +9,12 @@ import categories from "@/constants/categories";
 import measurements from "@/constants/measurements";
 import { findYoutubeVideo } from "../youtube";
 import { spendCredits, refundCredits } from "../credits";
-
-function extractJSON(text: string): string {
-  const start = text.indexOf("{");
-  const end = text.lastIndexOf("}");
-  if (start === -1 || end === -1 || end < start) {
-    throw new Error("No JSON found in model response.");
-  }
-  return text.slice(start, end + 1);
-}
-
-function classifyGenerationError(error: any): string {
-  const raw = String(error?.message ?? "");
-
-  let code: string | number | null = null;
-  let status = "";
-  try {
-    const parsed = JSON.parse(raw);
-    if (parsed?.error) {
-      code = parsed.error.code;
-      status = String(parsed.error.status ?? "");
-    }
-  } catch {
-    // Not a JSON error payload.
-  }
-
-  if (
-    code === 429 ||
-    code === 503 ||
-    status === "UNAVAILABLE" ||
-    status === "RESOURCE_EXHAUSTED"
-  ) {
-    return "The AI is busy right now. Please try again in a moment.";
-  }
-  if (code === 500 || status === "INTERNAL") {
-    return "The AI hit a snag. Please try again in a moment.";
-  }
-  if (
-    raw.includes("fetch failed") ||
-    raw.includes("ENOTFOUND") ||
-    raw.includes("ECONNREFUSED") ||
-    raw.includes("ETIMEDOUT")
-  ) {
-    return "We couldn't reach the AI service. Check your internet connection and try again.";
-  }
-  if (raw.includes("API key")) {
-    return "The AI service isn't configured right now. Please contact support.";
-  }
-  if (raw.includes("[ERROR")) {
-    return "The AI returned an empty response. Please try again.";
-  }
-  return "Something went wrong while generating your recipe. Please try again.";
-}
+import { RECIPE_CREDIT_COST } from "@/constants/creditCosts";
+import { ETHIOPIAN_DISHES } from "@/constants/ethiopianDishes";
+import {
+  classifyGenerationError,
+  extractJSON,
+} from "@/utils/recipe-ai";
 
 export async function generateAIRecipe(
   ingredients: string,
@@ -69,7 +23,7 @@ export async function generateAIRecipe(
   let creditSpent = false;
   try {
     // Charge 1 credit for each AI recipe generation
-    const creditResult = await spendCredits(1);
+    const creditResult = await spendCredits(RECIPE_CREDIT_COST);
     if (!creditResult.success) {
       return {
         success: false,
@@ -115,7 +69,7 @@ Constraints:
   instructions (array of { step: number, title: string, description: string, imagePrompt: string, tips?: string }),
   nutrition ({ calories:number, protein:number, carbs:number, fat:number, fiber:number }),
   preptime (number), cooktime (number), difficulty (string), servings (number).
-- imagePrompt must be a short, descriptive phrase for image generation (no URLs, no base64).
+- imagePrompt must be a short, descriptive phrase for image generation (no URLs, no base64). The imagePrompt MUST describe ONLY the food, dish, or ingredients in the scene — do NOT include people, faces, hands, or human figures.
  - category (string) must be ONE OF: ${allowedCategories.join(", ")}
  - Each ingredient.unit must be ONE OF: ${
       allowedUnits.join(", ")
@@ -128,7 +82,11 @@ Constraints:
 - youtube_search_query: A search query string to find a relevant YouTube video for this recipe.
 - instructions description must be very clear and easy to follow for home cooks.
 - use 0 if ingredient amount if Unknown
-- instructions time should be in minutes (number) and use 0 if unknown
+ - instructions time should be in minutes (number) and use 0 if unknown
+- STRICT AUTHENTICITY: The recipe title, description, and content MUST correspond to an existing, real Ethiopian dish. Do NOT invent dishes, do NOT combine dish names (for example "Doro Shiro Wat" is NOT a real dish), and do NOT introduce dishes from other cuisines. Only cook authentic dishes such as: ${ETHIOPIAN_DISHES.join(
+  ", ",
+)}.
+- If the user's ingredients cannot produce a real Ethiopian dish, pick the closest authentic dish from the list and adjust with authentic substitutions instead of inventing one.
 
 User ingredients: ${ingredients}
 User preferences: ${preferences}
@@ -245,9 +203,14 @@ Example shape:
 
     // Generate main recipe image professionally
     try {
-      const mainPrompt = recipeData?.title
-        ? `${recipeData.title} Ethiopian cuisine`
-        : "Ethiopian traditional cuisine, colorful food";
+      // Strip AI prefixes and use the actual dish name for Pexels search
+      const cleanTitle = (recipeData?.title || "")
+        .replace(/^AI[- ](Generated|Made|Created)[–:\s-]*/i, "")
+        .replace(/Ethiopian\s+/i, "")
+        .trim();
+      const mainPrompt = cleanTitle
+        ? `${cleanTitle} Ethiopian food`
+        : "Ethiopian food dish";
 
       const mainImage = await generateRecipeImage(mainPrompt);
 
@@ -303,7 +266,7 @@ Example shape:
     // Don't charge the user for a failed generation.
     if (creditSpent) {
       try {
-        await refundCredits(1);
+        await refundCredits(RECIPE_CREDIT_COST);
       } catch (refundError) {
         console.error("Failed to refund credits:", refundError);
       }

@@ -18,12 +18,11 @@ export const config = {
      * - favicon.ico (favicon file)
      * Feel free to modify this pattern to include more paths.
      */
-    '/dashboard/:path*',
     '/recipes/create',
     '/blog/create',
     '/blogs/edit/:path*',
     '/settings/:path*',
     '/admin/:path*',
-    "/meal-planner/:path*",
+    "/meal-planner/:path*"
   ],
 }

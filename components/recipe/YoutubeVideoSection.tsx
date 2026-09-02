@@ -13,13 +13,13 @@ const YoutubeVideoSection = ({
   }
 
   return (
-    <div className="space-y-4 mt-4">
-      <h3 className="heading-secondary text-2xl md:text-2xl border-b border-border pb-3">
+    <div className="space-y-3">
+      <h3 className="text-lg font-bold tracking-tight text-foreground">
         Watch {videoQuery || "this recipe"} tutorial video
       </h3>
-      <div className="relative w-full h-0 pb-[56.25%] mt-4">
+      <div className="relative w-full h-0 pb-[56.25%]">
         <iframe
-          className="absolute top-0 left-0 w-full h-full rounded-lg"
+          className="absolute top-0 left-0 w-full h-full rounded-xl"
           src={`https://www.youtube.com/embed/${videoId}`}
           title="YouTube video player"
           frameBorder="0"

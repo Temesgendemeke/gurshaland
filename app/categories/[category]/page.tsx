@@ -16,6 +16,7 @@ import BackNavigation from "@/components/BackNavigation";
 import CategoryHeader from "@/components/CategoryHeader";
 import { getRecipesByCategory } from "@/actions/Recipe/category";
 import Recipe from "@/utils/types/recipe";
+import RecipeCard from "@/components/recipe/RecipeCard";
 
 type CategoryPageProps = {
   params: { category: string };
@@ -28,156 +29,17 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 }) => {
   const { id } = await searchParams;
   const { category } = await params;
-  console.log(id);
+
+  let recipes: Recipe[] = [];
+  let fetchError: unknown = null;
   try {
-    const recipes = await getRecipesByCategory(id);
-
-    if (!recipes || recipes.length === 0) {
-      return (
-        <div>
-          <Header />
-          <div className="max-w-7xl mx-auto px-6 py-12">
-            <div className="text-center py-12">
-              <h1 className="text-2xl font-bold text-foreground mb-4">
-                No recipes found in this category
-              </h1>
-              <p className="text-muted-foreground mb-6">
-                This category doesn&apos;t have any recipes yet.
-              </p>
-              <Button asChild>
-                <Link href="/categories">Back to Categories</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    const currentCategory = recipes[0]?.category || category;
-
-    return (
-      <div className="bg-background">
-        <Header />
-
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          {/* Back Navigation */}
-          <Suspense fallback={<div>Loading...</div>}>
-            <BackNavigation route={"/categories"} pagename={"Categories"} />
-          </Suspense>
-
-          {/* Category Header */}
-          <CategoryHeader currentCategory={currentCategory} />
-
-          {/* Filters and Sorting */}
-          <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-            <div className="text-muted-foreground">
-              Showing {recipes.length} recipes in {currentCategory}
-            </div>
-
-            <Select defaultValue="popular">
-              <SelectTrigger className="w-48 border-border bg-background">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="popular">Most Popular</SelectItem>
-                <SelectItem value="rating">Highest Rated</SelectItem>
-                <SelectItem value="newest">Newest First</SelectItem>
-                <SelectItem value="time">Cooking Time</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Recipe Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {recipes.map((recipe: any) => (
-              <Card
-                key={recipe.id}
-                className="overflow-hidden group bg-card border border-border"
-              >
-                <div className="relative">
-                  <img
-                    src={recipe.image?.url || "/placeholder.svg"}
-                    alt={recipe.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="absolute top-4 right-4 bg-background border border-border rounded-full px-3 py-1 flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-warning fill-warning" />
-                    <span className="text-sm font-medium text-foreground">
-                      {recipe.rating || 0}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <div className="flex flex-wrap gap-1">
-                      {recipe.tags?.map((tag: any, index: number) => (
-                        <Badge
-                          key={index}
-                          variant="secondary"
-                          className="text-xs bg-background border border-border text-foreground hover:bg-muted"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {recipe.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
-                    {recipe.description}
-                  </p>
-
-                  <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-1">
-                        <ChefHat className="w-4 h-4" />
-                        <span>{recipe.difficulty}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Users className="w-4 h-4" />
-                        <span>{recipe.servings} servings</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-sm text-muted-foreground">
-                      by {recipe.author?.username || "Unknown"}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {recipe.rating_count || 0} reviews
-                    </div>
-                  </div>
-
-                  <Button
-                    asChild
-                    className="w-full btn-primary-modern"
-                  >
-                    <Link href={`/recipes/${recipe.slug}`}>View Recipe</Link>
-                  </Button>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          {/* Load More */}
-          <div className="text-center mt-12">
-            <Button
-              variant="outline"
-              size="lg"
-              className="px-8 text-primary"
-            >
-              Load More Recipes
-            </Button>
-          </div>
-        </div>
-
-      </div>
-    );
+    recipes = await getRecipesByCategory(id);
   } catch (error) {
     console.error("Error fetching category recipes:", error);
+    fetchError = error;
+  }
+
+  if (fetchError) {
     return (
       <div className="">
         <Header />
@@ -200,6 +62,152 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
       </div>
     );
   }
+
+  if (!recipes || recipes.length === 0) {
+    return (
+      <div>
+        <Header />
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          <div className="text-center py-12">
+            <h1 className="text-2xl font-bold text-foreground mb-4">
+              No recipes found in this category
+            </h1>
+            <p className="text-muted-foreground mb-6">
+              This category doesn&apos;t have any recipes yet.
+            </p>
+            <Button asChild>
+              <Link href="/categories">Back to Categories</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const currentCategory = category.replace(/-/g, " ");
+
+  return (
+    <div className="bg-background">
+      <Header />
+
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        {/* Back Navigation */}
+        {/* <Suspense fallback={<div>Loading...</div>}>
+            <BackNavigation route={"/categories"} pagename={"Categories"} />
+          </Suspense> */}
+
+        {/* Category Header */}
+        <CategoryHeader />
+
+        {/* Filters and Sorting */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+          <div className="text-muted-foreground">
+            Showing {recipes.length} recipes in {currentCategory}
+          </div>
+
+          <Select defaultValue="popular">
+            <SelectTrigger className="w-48 border-border bg-background">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="popular">Most Popular</SelectItem>
+              <SelectItem value="rating">Highest Rated</SelectItem>
+              <SelectItem value="newest">Newest First</SelectItem>
+              <SelectItem value="time">Cooking Time</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Recipe Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {recipes.map((recipe: any) => (
+            //   <Card
+            //     key={recipe.id}
+            //     className="overflow-hidden group bg-card border border-border"
+            //   >
+            //     <div className="relative">
+            //       <img
+            //         src={recipe.image?.url || "/placeholder.svg"}
+            //         alt={recipe.title}
+            //         className="w-full h-48 object-cover"
+            //       />
+            //       <div className="absolute top-4 right-4 bg-background border border-border rounded-full px-3 py-1 flex items-center space-x-1">
+            //         <Star className="w-4 h-4 text-warning fill-warning" />
+            //         <span className="text-sm font-medium text-foreground">
+            //           {recipe.rating || 0}
+            //         </span>
+            //       </div>
+            //       <div className="absolute bottom-4 left-4 right-4">
+            //         <div className="flex flex-wrap gap-1">
+            //           {recipe.tags?.map((tag: any, index: number) => (
+            //             <Badge
+            //               key={index}
+            //               variant="secondary"
+            //               className="text-xs bg-background border border-border text-foreground hover:bg-muted"
+            //             >
+            //               {tag}
+            //             </Badge>
+            //           ))}
+            //         </div>
+            //       </div>
+            //     </div>
+
+            //     <div className="p-6">
+            //       <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+            //         {recipe.title}
+            //       </h3>
+            //       <p className="text-muted-foreground mb-4">
+            //         {recipe.description}
+            //       </p>
+
+            //       <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+            //         <div className="flex items-center space-x-4">
+            //           <div className="flex items-center space-x-1">
+            //             <ChefHat className="w-4 h-4" />
+            //             <span>{recipe.difficulty}</span>
+            //           </div>
+            //           <div className="flex items-center space-x-1">
+            //             <Users className="w-4 h-4" />
+            //             <span>{recipe.servings} servings</span>
+            //           </div>
+            //         </div>
+            //       </div>
+
+            //       <div className="flex items-center justify-between mb-4">
+            //         <div className="text-sm text-muted-foreground">
+            //           by {recipe.author?.username || "Unknown"}
+            //         </div>
+            //         <div className="text-sm text-muted-foreground">
+            //           {recipe.rating_count || 0} reviews
+            //         </div>
+            //       </div>
+
+            //       <Button
+            //         asChild
+            //         className="w-full btn-primary-modern"
+            //       >
+            //         <Link href={`/recipes/${recipe.slug}`}>View Recipe</Link>
+            //       </Button>
+            //     </div>
+            //   </Card>
+            <RecipeCard recipe={recipe} key={recipe.id} />
+          ))}
+
+        </div>
+
+        {/* Load More */}
+        {/* {recipes.length > 4 && <div className="text-center mt-12">
+          <Button
+            variant="outline"
+            size="lg"
+            className="px-8 text-primary cursor-pointer"
+          >
+            Load More Recipes
+          </Button>
+        </div>} */}
+      </div>
+    </div>
+  );
 };
 
 export default CategoryPage;

@@ -1,4 +1,5 @@
 import Recipe, { Follower } from "./recipe";
+import { Blog } from "./blog";
 
 export interface Profile {
     recipes: Recipe[];
@@ -9,4 +10,6 @@ export interface Profile {
     bio?: string;
     avatar_url: string;
     id: string;
+    blogs?: Blog[];
+    is_following?: boolean;
 }

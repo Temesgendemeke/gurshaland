@@ -27,29 +27,31 @@ const MealPlanList = () => {
     }
 
     return (
-        <div className="container mx-auto py-10 px-4">
-            <div className="flex flex-col items-center mb-12 space-y-2">
-                <h1 className="text-3xl font-bold font-gosh tracking-tight md:text-4xl lg:text-5xl text-foreground">
+        <div className="mx-auto w-full  px-4 py-10 sm:px-6">
+            <div className="mb-8  pb-6 border-b ">
+                <h1 className="font-gosh text-3xl font-bold tracking-tight text-foreground  sm:text-6xl lg:text-7xl leading-[1.04] tracking-tighter">
                     My Meal Plans
                 </h1>
-                <p className="text-muted-foreground text-lg max-w-2xl text-center">
+                <p className=" text-sm text-muted-foreground mt-2 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
                     Your saved plans, ready when you are.
                 </p>
             </div>
 
             {!isLoading && plans?.length === 0 ? (
-                <div className="text-center py-20 bg-muted/30 rounded-lg border border-dashed border-muted-foreground/25">
-                    <div className="bg-primary/10 p-4 rounded-full w-fit mx-auto mb-4">
-                        <Utensils className="w-8 h-8 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">No meal plans yet</h3>
-                    <p className="text-muted-foreground mb-6">Create your first meal plan to get started on your health journey.</p>
+                <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border py-20 text-center">
+                    <Utensils className="mb-4 h-6 w-6 text-muted-foreground/40" />
+                    <h3 className="text-lg font-semibold tracking-tight text-foreground">
+                        No meal plans yet
+                    </h3>
+                    <p className="mb-6 mt-1 max-w-sm text-sm text-muted-foreground">
+                        Create your first meal plan to get started on your health journey.
+                    </p>
                     <Button asChild>
                         <Link href="/meal-planner">Create Meal Plan</Link>
                     </Button>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {plans?.map((plan: any) => (
                         <MealPlanCard key={'plan-list-' + plan.id} plan={plan} />
                     ))}

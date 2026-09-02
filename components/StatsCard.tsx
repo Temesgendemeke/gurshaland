@@ -26,7 +26,7 @@ const StatsCard = ({
   Icon,
   className,
   loading,
-  href = `/dashboard/${name}`,
+  href = "/",
   subtitle,
 }: StatsCardProps) => {
   if (loading) {

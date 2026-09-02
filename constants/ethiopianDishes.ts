@@ -1,0 +1,61 @@
+// Curated list of authentic Ethiopian dishes the AI is allowed to generate.
+// The AI must not invent dishes or combine names (e.g. "Doro Shiro Wat" is not a dish).
+export const ETHIOPIAN_DISHES = [
+  // Stews (Wat)
+  "Doro Wat",
+  "Doro Alicha",
+  "Siga Wat",
+  "Misir Wat",
+  "Shiro Wat",
+  "Kik Alicha",
+  "Atkilt Wat",
+  "Sehi Derho",
+  "Fasolia",
+  "Gomen",
+  "Tikil Gomen",
+  // Tibs & meat dishes
+  "Siga Tibs",
+  "Doro Tibs",
+  "Zilzil Tibs",
+  "Awaze Tibs",
+  "Asa Tibs",
+  "Lamb Tibs",
+  "Kitfo",
+  "Gored Gored",
+  "Dulet",
+  "Asa Wat",
+  // Breads, porridges & injera dishes
+  "Injera",
+  "Kicha",
+  "Ambasha",
+  "Dabo",
+  "Dabo Kolo",
+  "Genfo",
+  "Kinche",
+  "Chechebsa",
+  "Firfir",
+  "Doro Firfir",
+  "Shiro Firfir",
+  "Fitfit",
+  "Kurkufa",
+  "Besso",
+  // Beans & legumes
+  "Shahan Ful",
+  "Ful Medames",
+  "Azifa",
+  "Buticha",
+  // Vegetables & salads
+  "Salata",
+  "Mesir Salata",
+  "Beyainatu",
+  // Snacks & condiments
+  "Sambusa",
+  "Ayib",
+  "Niter Kibbeh",
+  "Berbere",
+  "Mitmita",
+  // Beverages
+  "Tella",
+  "Tej",
+  "Buna (Ethiopian Coffee)",
+];

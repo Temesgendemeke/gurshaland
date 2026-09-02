@@ -11,6 +11,7 @@ BEGIN
     SELECT jsonb_build_object(
         'id', r.id,
         'title', r.title,
+        'author_id', r.author_id,
         'description', r.description,
         'difficulty', r.difficulty,
         'servings', r.servings,
@@ -31,7 +32,13 @@ BEGIN
                     'id', p.id,
                     'username', p.username,
                     'full_name', p.full_name,
-                    'avatar', p.avatar_url,
+                    'avatar_url', (
+                        SELECT pi.url
+                        FROM profile_image pi
+                        WHERE pi.profile_id = p.id
+                        ORDER BY pi.id DESC
+                        LIMIT 1
+                    ),
                     'bio', p.bio,
                     'recipes', (
                         SELECT count(*) FROM recipe
@@ -52,6 +59,11 @@ BEGIN
         'preptime', r.preptime,
         'cooktime', r.cooktime,
         'status', r.status,
+        'view_count', (
+            SELECT count(*)::bigint
+            FROM recipe_view
+            WHERE recipe_view.recipe_id = r.id
+        ),
         'ingredients', (
             SELECT COALESCE(jsonb_agg(i), '[]'::jsonb)
             FROM ingredient i

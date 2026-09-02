@@ -18,10 +18,10 @@ const NAV_LINKS = [
     route: "/recipes",
     page: "Recipes",
   },
-  // {
-  //   route: "/categories",
-  //   page: "Categories",
-  // },
+  {
+    route: "/categories",
+    page: "Categories",
+  },
   {
     route: "/blog",
     page: "Blog",
@@ -44,7 +44,7 @@ export function Header() {
   const linkClass = (route: string) =>
     cn(
       "relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
-      "after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:rounded-full after:bg-primary after:transition-transform after:duration-300 after:ease-out",
+      "after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-200",
       isActive(route)
         ? "text-primary after:scale-x-100"
         : "hover:text-primary hover:after:scale-x-100",
@@ -59,7 +59,7 @@ export function Header() {
     );
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/95">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
         <Logo />
 
@@ -117,7 +117,7 @@ export function Header() {
             }}
             className="overflow-hidden lg:hidden"
           >
-            <div className="space-y-1 border-t border-border/60 bg-background px-4 py-4">
+            <div className="space-y-1 border-t border-border/70 bg-background px-4 py-4">
               {NAV_LINKS.map((navigation) => (
                 <Link
                   key={navigation.route}
@@ -136,7 +136,7 @@ export function Header() {
                 <Sparkles className="h-4 w-4" strokeWidth={1.5} />
                 AI Features
               </Link>
-              <div className="pt-2">
+              <div className="">
                 <CreateAPost
                   align="start"
                   cls="w-[var(--radix-dropdown-menu-trigger-width)]"

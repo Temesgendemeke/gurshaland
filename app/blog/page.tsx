@@ -94,7 +94,7 @@ export default function BlogPage() {
         {/* <p className="mb-4 text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-primary">
           The Gurshaland Journal
         </p> */}
-        <h1 className="max-w-3xl text-5xl font-black leading-[1.04] tracking-tighter text-foreground sm:text-6xl lg:text-7xl">
+        <h1 className="max-w-3xl font-gosh text-5xl font-semibold leading-[1.04] tracking-tighter text-foreground sm:text-6xl lg:text-7xl">
           Ethiopian Food Blog
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
@@ -115,10 +115,10 @@ export default function BlogPage() {
                     key={category}
                     onClick={() => handleCategoryChange(category)}
                     className={cn(
-                      "shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97]",
+                      "shrink-0 rounded-md border px-4 py-2 text-sm font-medium transition-colors duration-200 active:translate-y-px",
                       active
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                        : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border bg-card text-muted-foreground hover:border-foreground/35 hover:text-foreground",
                     )}
                   >
                     {category === "all" ? "All stories" : category}
@@ -133,7 +133,7 @@ export default function BlogPage() {
                 placeholder="Search stories..."
                 value={searchTerm}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="h-11 rounded-full border-border bg-card pl-10"
+                className="h-11 rounded-md border-border bg-card pl-10"
               />
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function BlogPage() {
                           onClick={() =>
                             setVisibleCount((count) => count + POSTS_PER_PAGE)
                           }
-                          className="group inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground transition-all duration-200 hover:border-primary/40 hover:text-primary active:scale-[0.98]"
+                          className="group inline-flex items-center gap-2 rounded-md border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-foreground/35 hover:text-primary active:translate-y-px"
                         >
                           Load more stories
                           <ArrowDown className="h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5" />
@@ -193,7 +193,7 @@ export default function BlogPage() {
                     )}
                   </>
                 ) : (
-                  <div className="rounded-xl border border-dashed border-border bg-card/50 py-20 text-center">
+                  <div className="border-y border-dashed border-border py-20 text-center">
                     <p className="text-lg font-semibold text-foreground">
                       No stories found
                     </p>
@@ -247,7 +247,7 @@ export default function BlogPage() {
                           onClick={() =>
                             setVisibleCount((count) => count + POSTS_PER_PAGE)
                           }
-                          className="group inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground transition-all duration-200 hover:border-primary/40 hover:text-primary active:scale-[0.98]"
+                          className="group inline-flex items-center gap-2 rounded-md border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-foreground/35 hover:text-primary active:translate-y-px"
                         >
                           Load more stories
                           <ArrowDown className="h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5" />
@@ -256,7 +256,7 @@ export default function BlogPage() {
                     )}
                   </>
                 ) : (
-                  <div className="rounded-xl border border-dashed border-border bg-card/50 py-20 text-center">
+                  <div className="border-y border-dashed border-border py-20 text-center">
                     <p className="text-lg font-semibold text-foreground">
                       No stories found
                     </p>

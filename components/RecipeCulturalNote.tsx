@@ -1,20 +1,21 @@
 import React from "react";
-import { Card } from "./ui/card";
 
 const RecipeCulturalNote = ({ culturalNote }: { culturalNote: string }) => {
+  if (!culturalNote) return null;
+
   return (
-    <>
-      {culturalNote && (
-        <Card className="p-6 border-l-4 border-l-primary">
-          <h2 className="text-2xl font-bold text-foreground mb-4">
-            Cultural Significance
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            {culturalNote}
-          </p>
-        </Card>
-      )}
-    </>
+    <div className="overflow-hidden rounded-xl border border-border/80">
+      <div className="border-b border-border/80 bg-card px-4 py-3">
+        <h3 className="text-[0.6875rem] font-semibold uppercase tracking-widest text-foreground">
+          Cultural significance
+        </h3>
+      </div>
+      <div className="bg-card px-4 py-3">
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          {culturalNote}
+        </p>
+      </div>
+    </div>
   );
 };
 

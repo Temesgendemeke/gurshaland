@@ -13,13 +13,12 @@ export const getProfilebyUsername = async (username: string) => {
   return data;
 };
 
-export const getProfileByID = async (id: string)=>{
+export const getProfileByID = async (id: string) => {
   const supabase = await createClient();
   // const {data, error} = await supabase.from('profile').select('*').eq('id', id)
-  const {data, error}  = await supabase.rpc('get_setting_profile', {
-    _profile_id: id
-  })
-  console.log('getProfileByID data:', data, 'error:', error);
-  if(error) throw error;
+  const { data, error } = await supabase.rpc("get_setting_profile", {
+    _profile_id: id,
+  });
+  if (error) throw error;
   return data;
 }

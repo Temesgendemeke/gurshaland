@@ -14,7 +14,7 @@ export default function AIFeaturesPage() {
     <div className="">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-6 py-12 mt-6 md:mt-12">
+      <main className="max-w-7xl mx-auto px-6 py-12  md:mt-4">
         <PageHeader />
 
         <AIFeaturesGrid

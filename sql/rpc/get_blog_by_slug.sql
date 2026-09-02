@@ -74,6 +74,11 @@ BEGIN
         'tags', b.tags,
         'slug', b.slug,
         'status', b.status,
+        'view_count', (
+            SELECT count(*)::bigint
+            FROM blog_view
+            WHERE blog_view.blog_id = b.id
+        ),
         'relatives_posts', (
             SELECT COALESCE(jsonb_agg(
                 jsonb_build_object(

@@ -23,7 +23,13 @@ BEGIN
                     'id', p.id,
                     'username', p.username,
                     'full_name', p.full_name,
-                    'avatar', p.avatar_url,
+                    'avatar_url', (
+                        SELECT pi.url
+                        FROM profile_image pi
+                        WHERE pi.profile_id = p.id
+                        ORDER BY pi.id DESC
+                        LIMIT 1
+                    ),
                     'bio', p.bio,
                     'recipes', (
                       SELECT count(*) FROM recipe

@@ -285,12 +285,6 @@ html body[data-scroll-locked][data-scroll-locked] {
   }
   body {
     background-color: hsl(var(--background));
-    background: linear-gradient(
-      160deg,
-      hsl(var(--gradient-from)),
-      hsl(var(--gradient-via)),
-      hsl(var(--gradient-to))
-    );
     color: hsl(var(--foreground));
     min-height: 100vh;
     min-height: 100dvh;
@@ -334,12 +328,7 @@ html body[data-scroll-locked][data-scroll-locked] {
 }
 
 .modern-gradient-bg {
-  background: linear-gradient(
-    160deg,
-    hsl(var(--gradient-from)) 0%,
-    hsl(var(--gradient-via)) 50%,
-    hsl(var(--gradient-to)) 100%
-  );
+  background: hsl(var(--background));
 }
 
 /* Berbere red primary — now solid+saturated enough not to need a gradient
@@ -428,7 +417,7 @@ html body[data-scroll-locked][data-scroll-locked] {
   }
 
   .modern-card {
-    @apply bg-card border border-border/50 transition-colors;
+    @apply rounded-lg border border-border/70 bg-card transition-colors;
   }
 
   .modern-card-hover {
@@ -436,7 +425,7 @@ html body[data-scroll-locked][data-scroll-locked] {
   }
 
   .btn-primary-modern {
-    @apply bg-primary hover:opacity-90 text-primary-foreground font-semibold transition-all duration-200;
+    @apply bg-primary text-primary-foreground font-semibold transition-colors duration-200 hover:bg-primary/90 active:translate-y-px;
   }
 
   .modern-bckground-gradient {
@@ -450,7 +439,7 @@ html body[data-scroll-locked][data-scroll-locked] {
   /* Secondary button now uses the gold flag-color directly instead of a
      warning/popular gradient blend that had no thematic reasoning */
   .btn-secondary-modern {
-    @apply bg-secondary hover:opacity-90 text-secondary-foreground font-semibold transition-all duration-200;
+    @apply bg-secondary text-secondary-foreground font-semibold transition-colors duration-200 hover:bg-secondary/90 active:translate-y-px;
   }
 
   .heading-primary {
@@ -471,14 +460,7 @@ html body[data-scroll-locked][data-scroll-locked] {
 }
 
 .gradient-text-primary {
-  background: linear-gradient(
-    100deg,
-    hsl(var(--primary)) 0%,
-    hsl(var(--secondary)) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: hsl(var(--primary));
   font-weight: 700;
 }
 

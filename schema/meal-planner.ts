@@ -8,6 +8,7 @@ export const mealSchema = z.object({
   carbs: z.number().optional(),
   fat: z.number().optional(),
   type: z.string().optional(),
+  pexels_search_term: z.string().optional(),
 });
 
 export const dayPlanSchema = z.object({

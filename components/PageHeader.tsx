@@ -1,19 +1,15 @@
 export default function PageHeader() {
   return (
-    <div className="text-center mb-16 ">
-      <div className="flex  justify-center">
-        <p className="text-sm bg-primary  text-primary-foreground w-40 font-medium uppercase tracking-widest mb-4">
-          AI Features
-        </p>
-      </div>
-      <h1 className="text-4xl md:text-5xl font-bold heading-primary mb-6">
-        AI-Powered Cooking Experience
+    <header className="mb-10 md:mb-16 text-center flex flex-col items-center ">
+      <h1 className="font-gosh sm:max-w-4xl text-4xl  font-semibold leading-[1.06] tracking-tighter text-foreground sm:text-4xl sm:leading-[1.04] md:text-6xl lg:text-7xl">
+        Ethiopian cooking,{" "}
+        <span className="text-primary block sm:inline">meet AI.</span>
       </h1>
-      <p className="text-lg text-body max-w-3xl mx-auto leading-relaxed">
-        Discover the future of Ethiopian cooking with our intelligent features
-        that help you create, learn, and master traditional recipes with modern
-        AI assistance.
+
+      <p className="mt-4 max-w-2xl text-xs leading-relaxed text-muted-foreground  sm:mt-4 sm:text-lg md:text-xl">
+        Generate authentic Ethiopian recipes, get instant substitutions, and
+        build meal plans tailored to what you actually have.
       </p>
-    </div>
+    </header>
   );
 }

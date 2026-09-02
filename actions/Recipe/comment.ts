@@ -3,12 +3,24 @@ import { RecipeComment } from "@/utils/types/recipe";
 
 export const postComment = async (comment: RecipeComment) => {
   const supabase = createClient();
+
+  const { data: recipe, error: recipeError } = await supabase
+    .from("recipe")
+    .select("author_id")
+    .eq("id", comment.recipe_id)
+    .single();
+
+  if (recipeError) throw recipeError;
+
+  if (recipe?.author_id === comment.author_id) {
+    throw new Error("You can't comment on your own recipe.");
+  }
+
   const { data, error } = await supabase.rpc("post_recipe_comment", {
     _comment: comment,
   });
 
   if (error) throw error;
-  console.log("from error ", error);
   return data;
 };
 

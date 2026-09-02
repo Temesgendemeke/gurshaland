@@ -65,26 +65,14 @@ export function DataTable<TData extends DataTableRow, TValue>({
     pageSize: 10,
   });
   const [rowSelection, setRowSelection] = React.useState({});
-  const [isMobile, setIsMobile] = React.useState(false);
-
-  // Responsive breakpoint detection
-  React.useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   const table = useReactTable({
     data,
     columns: [
-      // Responsive selection column
+      // Selection column
       {
         id: "select",
-        size: isMobile ? 40 : 60,
+        size: 44,
         enableSorting: false,
         enableHiding: false,
         header: ({ table }) => (
@@ -121,222 +109,178 @@ export function DataTable<TData extends DataTableRow, TValue>({
   });
 
   const selectedRows = table.getSelectedRowModel().rows.map((r) => r.original);
+  const totalRows = table.getFilteredRowModel().rows.length;
 
   const handleDelete = (rows: TData[]) => {
     if (onDeleteSelected) onDeleteSelected(rows);
     setRowSelection({});
   };
 
-  if (loading)
-    return (
-      <div className="mt-4">
-        <TableSkeleton />
-      </div>
-    );
+  if (loading) return <TableSkeleton />;
 
   return (
-    <div className="space-y-4 max-w-full overflow-hidden">
-      {/* Responsive Toolbar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 px-4 sm:px-0">
-        {selectedRows.length > 0 && (
+    <div className="space-y-3">
+      {selectedRows.length > 0 && (
+        <div className="flex items-center justify-between gap-3">
           <Button
-            variant="destructive"
+            variant="outline"
             size="sm"
             onClick={() => handleDelete(selectedRows)}
-            className="gap-2 w-full sm:w-auto"
+            className="gap-2 border-error/30 bg-error/5 text-error hover:bg-error/10 hover:text-error"
           >
             <Trash2 className="h-4 w-4" />
-            <span className="hidden sm:inline">
-              Delete ({selectedRows.length})
-            </span>
-            <span className="sm:hidden">Delete {selectedRows.length}</span>
+            Delete selected ({selectedRows.length})
           </Button>
-        )}
-        <div className="text-xs text-muted-foreground w-full sm:w-auto text-center sm:text-left">
-          {table.getFilteredSelectedRowModel().rows.length > 0
-            ? `${table.getFilteredSelectedRowModel().rows.length} of ${
-                table.getFilteredRowModel().rows.length
-              } row(s) selected.`
-            : `${table.getFilteredRowModel().rows.length} total rows`}
         </div>
-      </div>
+      )}
 
-      {/* Responsive Table Container */}
-      <div className="rounded-xl border bg-card overflow-hidden">
-        {/* Mobile Scroll Indicator */}
-        {isMobile && (
-          <div className="p-3 text-center text-xs text-muted-foreground bg-muted/20 border-b">
-            <div className="flex items-center justify-center gap-2">
-              <span>← Swipe to see more columns →</span>
-            </div>
-          </div>
-        )}
-
-        <div className="max-h-[37.5rem] sm:max-h-[51.25rem] max-w-[28.5rem] sm:max-w-[100%] overflow-y-auto overflow-x-auto">
-          <div className="overflow-x-auto max-w-full w-full">
-            <Table
-              className={`w-full text-sm ${
-                isMobile ? "min-w-[37.5rem]" : "min-w-[50rem]"
-              }`}
-            >
-              <TableHeader className="sticky top-0 bg-card z-10">
-                {table.getHeaderGroups().map((headerGroup) => (
+      <div className="overflow-hidden rounded-2xl border border-border/80 bg-card">
+        <div className="max-w-full overflow-x-auto">
+          <Table className="min-w-[44rem]">
+            <TableHeader className="sticky top-0 z-10 border-b border-border/80 bg-card/95 backdrop-blur">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id} className="hover:bg-transparent">
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} className="align-middle">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
                   <TableRow
-                    key={headerGroup.id}
-                    className="hover:bg-transparent"
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className="group"
                   >
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        key={header.id}
-                        className="truncate cursor-pointer align-middle font-medium"
-                        style={{
-                          padding: isMobile ? "0.75rem 0.5rem" : "1rem",
-                          fontSize: isMobile ? "0.6875rem" : "0.875rem",
-                        }}
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        className="truncate align-middle"
                       >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
+                        <div
+                          className={`flex items-center gap-1 ${
+                            (cell.column.id === "title" ||
+                              cell.column.id === "username") &&
+                            "font-medium"
+                          }`}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                          {(cell.column.id === "title" ||
+                            cell.column.id === "username") && (
+                            <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-70" />
+                          )}
+                        </div>
+                      </TableCell>
                     ))}
                   </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody className="bg-card">
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                      className="group transition-colors hover:bg-muted/40"
-                      style={{
-                        backgroundColor: row.getIsSelected()
-                          ? "hsl(var(--primary) / 0.1)"
-                          : "transparent",
-                      }}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell
-                          key={cell.id}
-                          className="truncate align-middle"
-                          style={{
-                            padding: isMobile ? "0.75rem 0.5rem" : "1rem",
-                            fontSize: isMobile ? "0.6875rem" : "0.875rem",
-                          }}
-                        >
-                          <div
-                            className={`flex items-center gap-1 cursor-pointer ${
-                              (cell.column.id === "title" ||
-                                cell.column.id === "username") &&
-                              "font-medium sm:font-bold"
-                            }`}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
-                            {(cell.column.id === "title" ||
-                              cell.column.id === "username") && (
-                              <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-70 transition" />
-                            )}
-                          </div>
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length + 1}
-                      className="h-24 text-center"
-                    >
-                      <div className="flex flex-col items-center justify-center gap-2 py-6 text-muted-foreground">
-                        <Inbox className="h-8 w-8 opacity-60" />
-                        <span>No results.</span>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
+                ))
+              ) : (
+                <TableRow className="hover:bg-transparent">
+                  <TableCell
+                    colSpan={columns.length + 1}
+                    className="h-40 text-center"
+                  >
+                    <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                      <Inbox className="h-6 w-6 opacity-50" strokeWidth={1.5} />
+                      <span className="text-sm">No results yet.</span>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </div>
-        <div className="flex items-center justify-end gap-4 px-5 py-3 border-t text-xs text-muted-foreground">
-          Showing {table.getRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} rows
-        </div>
+        <DataTablePagination
+          table={table}
+          totalRows={totalRows}
+          selectedCount={selectedRows.length}
+        />
       </div>
-      <DataTablePagination table={table} />
     </div>
   );
 }
 
 interface DataTablePaginationProps<TData> {
   table: TanstackTable<TData>;
+  totalRows: number;
+  selectedCount: number;
 }
 
 function DataTablePagination<TData>({
   table,
+  totalRows,
+  selectedCount,
 }: DataTablePaginationProps<TData>) {
-  const [isMobile, setIsMobile] = React.useState(false);
-
-  React.useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
   const pageCount = table.getPageCount();
 
   if (pageCount === 0) return null;
 
+  const { pageIndex, pageSize } = table.getState().pagination;
+  const from = totalRows === 0 ? 0 : pageIndex * pageSize + 1;
+  const to = Math.min(totalRows, (pageIndex + 1) * pageSize);
+
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 sm:px-2">
-      <div className="flex-1 text-sm text-muted-foreground text-center sm:text-left">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div>
-      <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 sm:space-x-6 lg:space-x-8 w-full sm:w-auto">
-        <div className="flex items-center space-x-2 w-full sm:w-auto justify-center sm:justify-start">
-          <p className="text-sm font-medium hidden sm:block">Rows per page</p>
-          <p className="text-sm font-medium sm:hidden">Per page</p>
+    <div className="flex flex-col gap-3 border-t border-border/80 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <p className="text-xs tabular-nums text-muted-foreground">
+        {selectedCount > 0 ? (
+          <>
+            {selectedCount} of {totalRows} selected
+          </>
+        ) : (
+          <>
+            {totalRows} {totalRows === 1 ? "result" : "results"}
+          </>
+        )}
+      </p>
+
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span className="hidden text-xs text-muted-foreground sm:inline">
+            Rows
+          </span>
           <Select
-            value={`${table.getState().pagination.pageSize}`}
+            value={`${pageSize}`}
             onValueChange={(value) => {
               table.setPageSize(Number(value));
             }}
           >
             <SelectTrigger className="h-8 w-[4.375rem]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
+              <SelectValue placeholder={pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
+              {[10, 20, 30, 40, 50].map((size) => (
+                <SelectItem key={size} value={`${size}`}>
+                  {size}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-full sm:w-[6.25rem] items-center justify-center text-sm font-medium">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
-        </div>
-        <div className="flex items-center space-x-2 w-full sm:w-auto justify-center sm:justify-start">
+
+        <span className="text-xs tabular-nums text-muted-foreground">
+          {from}–{to} of {totalRows}
+        </span>
+
+        <div className="flex items-center gap-1">
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="hidden h-8 w-8 p-0 lg:inline-flex"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
+            aria-label="Go to first page"
           >
-            <span className="sr-only">Go to first page</span>
             <ChevronsLeft className="h-4 w-4" />
           </Button>
           <Button
@@ -344,8 +288,8 @@ function DataTablePagination<TData>({
             className="h-8 w-8 p-0"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            aria-label="Go to previous page"
           >
-            <span className="sr-only">Go to previous page</span>
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <Button
@@ -353,17 +297,17 @@ function DataTablePagination<TData>({
             className="h-8 w-8 p-0"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            aria-label="Go to next page"
           >
-            <span className="sr-only">Go to next page</span>
             <ChevronRight className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            className="hidden h-8 w-8 p-0 lg:inline-flex"
+            onClick={() => table.setPageIndex(pageCount - 1)}
             disabled={!table.getCanNextPage()}
+            aria-label="Go to last page"
           >
-            <span className="sr-only">Go to last page</span>
             <ChevronsRight className="h-4 w-4" />
           </Button>
         </div>

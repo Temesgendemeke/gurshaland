@@ -3,6 +3,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -16,17 +17,13 @@ import { cn } from "@/lib/utils";
 import { generateAIRecipe } from "@/actions/Recipe/airecipe";
 import { getCredits } from "@/actions/credits";
 import { useAuth } from "@/store/useAuth";
-import {
-  clearPendingAIGeneration,
-  getPendingAIGeneration,
-  requireLogin,
-  savePendingAIGeneration,
-} from "@/lib/auth-gate";
+import { requireLogin, savePendingAIGeneration } from "@/lib/auth-gate";
+import { useAutonomousAction } from "@/components/chat/use-autonomous";
+import AutonomousBanner from "@/components/chat/AutonomousBanner";
 import { toast } from "sonner";
 import { IconSparkles2Filled } from "@tabler/icons-react";
 import { useReducedMotion } from "motion/react";
-
-const RECIPE_CREDIT_COST = 1;
+import { RECIPE_CREDIT_COST } from "@/constants/creditCosts";
 
 interface AIRecipeGeneratorContextValue {
   user: any;
@@ -54,17 +51,22 @@ function useAIRecipeGenerator() {
 export function AIRecipeGeneratorProvider({
   children,
   scrollOnGenerate = false,
+  initialPrompt = "",
 }: {
   children: ReactNode;
   scrollOnGenerate?: boolean;
+  initialPrompt?: string;
 }) {
   const user = useAuth((store) => store.user);
   const reduceMotion = useReducedMotion();
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState(initialPrompt);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedRecipe, setGeneratedRecipe] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [credits, setCredits] = useState<number | null>(null);
+  const handleGenerateRef = useRef<(overridePrompt?: string) => void>(
+    () => {},
+  );
 
   const loadCredits = async () => {
     const balance = await getCredits();
@@ -76,14 +78,17 @@ export function AIRecipeGeneratorProvider({
     else setCredits(null);
   }, [user]);
 
-  useEffect(() => {
-    if (!user) return;
-    const pending = getPendingAIGeneration();
-    if (pending?.action === "recipe-generator") {
+  const autonomous = useAutonomousAction(
+    "recipe-generator",
+    !!user,
+    (pending) => {
+      if (pending.prompt) handleGenerateRef.current(pending.prompt);
+    },
+    (pending) => {
       if (pending.prompt) setPrompt(pending.prompt);
-      clearPendingAIGeneration();
-    }
-  }, [user]);
+    },
+    5000,
+  );
 
   const needsLogin = !user;
   const outOfCredits =
@@ -107,8 +112,9 @@ export function AIRecipeGeneratorProvider({
     requireLogin();
   };
 
-  const handleGenerate = async () => {
-    if (!prompt.trim() || isGenerating) return;
+  const handleGenerate = async (overridePrompt?: string) => {
+    const finalPrompt = (overridePrompt ?? prompt).trim();
+    if (!finalPrompt || isGenerating) return;
 
     if (needsLogin) {
       handleLoginRedirect();
@@ -122,7 +128,7 @@ export function AIRecipeGeneratorProvider({
     }
 
     try {
-      const result = await generateAIRecipe(prompt, "");
+      const result = await generateAIRecipe(finalPrompt, "");
       if (result.success) {
         setGeneratedRecipe(result.recipe);
       } else {
@@ -137,6 +143,10 @@ export function AIRecipeGeneratorProvider({
       setIsGenerating(false);
     }
   };
+
+  useEffect(() => {
+    handleGenerateRef.current = handleGenerate;
+  });
 
   const value: AIRecipeGeneratorContextValue = {
     user,
@@ -155,6 +165,16 @@ export function AIRecipeGeneratorProvider({
   return (
     <AIRecipeGeneratorContext.Provider value={value}>
       {children}
+      {autonomous.active && (
+        <AutonomousBanner
+          label="Recipe"
+          description="GurshaAI is drafting your recipe request and will press Generate automatically."
+          remainingMs={autonomous.remainingMs}
+          totalMs={autonomous.totalMs}
+          onCancel={autonomous.cancel}
+          onRunNow={autonomous.runNow}
+        />
+      )}
     </AIRecipeGeneratorContext.Provider>
   );
 }

@@ -34,10 +34,6 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
 
       {/* Content */}
       <div className="flex flex-col justify-center p-6 sm:p-10 md:col-span-5 lg:p-12">
-        <p className="mb-4 inline-flex items-center gap-2 text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-primary">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          Featured Story
-        </p>
 
         <h3 className="mb-4 text-2xl font-bold leading-tight tracking-tight text-foreground transition-colors duration-200 group-hover:text-primary sm:text-3xl">
           {post.title}

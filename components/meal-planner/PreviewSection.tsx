@@ -1,184 +1,172 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ChefHat, ShoppingCart, Sparkles } from "lucide-react";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
-import { mealPlannerType } from "@/schema/meal-planner";
+import { MealType, mealPlannerType } from "@/schema/meal-planner";
+import MealImage from "./MealImage";
+
+const recipePromptFor = (plan: mealPlannerType, meal: MealType) => {
+  const nutrition = [
+    typeof meal.calories === "number" ? `about ${meal.calories} kcal` : null,
+    typeof meal.protein === "number" ? `${meal.protein}g protein` : null,
+  ]
+    .filter(Boolean)
+    .join(", ");
+
+  return [
+    `Create an Ethiopian-inspired recipe for ${meal.name}.`,
+    meal.description,
+    nutrition ? `Aim for ${nutrition}.` : null,
+    `Keep it suitable for a ${plan.diet} diet and a ${plan.goal.replace("_", " ")} goal.`,
+    "Include practical ingredients, serving size, and clear cooking steps.",
+  ]
+    .filter(Boolean)
+    .join(" ");
+};
 
 const PreviewSection = ({ plan }: { plan: mealPlannerType }) => {
+  const meta = [
+    plan.timeframe === "today" ? "Today" : "Full Week",
+    plan.goal.replace("_", " "),
+    plan.diet,
+    plan.calories ? `${plan.calories} kcal/day` : null,
+  ].filter(Boolean);
+
   return (
-    <div className="grid gap-8 max-h-[calc(100vh-10rem)] overflow-y-auto">
-      {/* Main Plan */}
-      <div className="lg:col-span-2 space-y-6">
-        <Card className="border bg-card">
-          <CardHeader className="pb-4">
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              <Badge className="bg-primary text-primary-foreground px-3 py-1">
-                {plan.timeframe === "today" ? "Today" : "Full Week"}
-              </Badge>
-              <Badge variant="outline" className="capitalize px-3 py-1">
-                {plan.goal.replace("_", " ")}
-              </Badge>
-              <Badge variant="secondary" className="capitalize px-3 py-1">
-                {plan.diet}
-              </Badge>
-              {plan.calories && (
-                <Badge variant="outline" className="px-3 py-1">
-                  {plan.calories} kcal/day
-                </Badge>
-              )}
-            </div>
-            <CardTitle className="text-2xl font-bold">
-              {plan.name ?? "Your Meal Plan"}
-            </CardTitle>
-            {plan.notes && (
-              <CardDescription className="text-base">
-                {plan.notes}
-              </CardDescription>
-            )}
-          </CardHeader>
-          <CardContent className="space-y-4 p-0 bg-transparent">
-            {plan.days.map((d, dayIdx) => (
-              <Card key={d.day} className="bg-transparent border-none">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-xl font-bold flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
-                      {dayIdx + 1}
-                    </div>
-                    {d.day}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {d.meals.map((m, idx) => (
-                    <div
-                      key={idx}
-                      className="p-4 rounded-xl bg-muted/30 border border-border"
-                    >
-                      <div className="flex items-start justify-between gap-4 mb-2">
-                        <div className="flex-1">
-                          <div className="font-bold text-lg mb-1">{m.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {m.description}
-                          </div>
-                        </div>
-                        {typeof m.calories === "number" && (
-                          <Badge variant="outline" className="border-border">
-                            {m.calories} kcal
-                          </Badge>
-                        )}
-                      </div>
-                      {(m.protein || m.carbs || m.fat) && (
-                        <div className="flex flex-wrap gap-2 mt-3">
-                          {typeof m.protein === "number" && (
-                            <Badge
-                              variant="outline"
-                              className="border-border text-muted-foreground"
-                            >
-                              Protein {m.protein}g
-                            </Badge>
-                          )}
-                          {typeof m.carbs === "number" && (
-                            <Badge
-                              variant="outline"
-                              className="border-border text-muted-foreground"
-                            >
-                              Carbs {m.carbs}g
-                            </Badge>
-                          )}
-                          {typeof m.fat === "number" && (
-                            <Badge
-                              variant="outline"
-                              className="border-border text-muted-foreground"
-                            >
-                              Fat {m.fat}g
-                            </Badge>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  {typeof d.totalCalories === "number" && (
-                    <div className="pt-3 border-t border-border">
-                      <div className="flex items-center justify-between font-semibold">
-                        <span>Day Total</span>
-                        <Badge variant="outline" className="border-border">
-                          {d.totalCalories} kcal
-                        </Badge>
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </CardContent>
-        </Card>
+    <div className="space-y-12 ">
+      {/* Plan header */}
+      <div>
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+          {meta.map((m, i) => (
+            <span key={m} className="inline-flex items-center gap-2">
+              {i > 0 && <span className="text-border">·</span>}
+              <span className={i === 0 ? "font-semibold text-foreground" : "capitalize"}>
+                {m}
+              </span>
+            </span>
+          ))}
+        </p>
+        <h2 className="mt-3 font-gosh text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          {plan.name ?? "Your Meal Plan"}
+        </h2>
+        {plan.notes && (
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+            {plan.notes}
+          </p>
+        )}
       </div>
 
-      {/* Sidebar */}
-      <div className="space-y-6 w-full">
-        {/* Shopping List */}
-        {plan.shopping_list?.length ? (
-          <Card className="border bg-card sticky top-4">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-bold flex items-center gap-2">
-                <div className="p-2 rounded-lg bg-primary">
-                  <ShoppingCart className="h-5 w-5 text-primary-foreground" />
-                </div>
-                Shopping List
-              </CardTitle>
-              <CardDescription>
-                Everything you need for your plan
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
-                {plan.shopping_list.map((item, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-start gap-3 p-2 rounded-lg hover:bg-muted transition-colors"
+      {/* Days */}
+      {plan.days.map((d, dayIdx) => (
+        <section key={d.day}>
+          <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-border pb-3">
+            <div className="flex items-baseline gap-3">
+              <span className="text-xs font-bold uppercase tracking-widest text-primary">
+                Day {String(dayIdx + 1).padStart(2, "0")}
+              </span>
+              <h3 className="text-xl font-bold capitalize text-foreground">
+                {d.day}
+              </h3>
+            </div>
+            {typeof d.totalCalories === "number" && (
+              <span className="shrink-0 text-sm tabular-nums text-muted-foreground">
+                {d.totalCalories} kcal
+              </span>
+            )}
+          </div>
+
+          {/* Meals */}
+          <div className="space-y-12">
+            {d.meals.map((m, idx) => (
+              <div key={idx}>
+                {m.pexels_search_term && (
+                  <MealImage searchTerm={m.pexels_search_term} alt={m.name} />
+                )}
+
+                <div className="pt-4">
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <h4 className="text-xl font-bold text-foreground">
+                      {m.name}
+                    </h4>
+                    {typeof m.calories === "number" && (
+                      <span className="text-sm tabular-nums text-muted-foreground">
+                        {m.calories} kcal
+                      </span>
+                    )}
+                  </div>
+
+                  {m.description && (
+                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                      {m.description}
+                    </p>
+                  )}
+
+                  {(typeof m.protein === "number" ||
+                    typeof m.carbs === "number" ||
+                    typeof m.fat === "number") && (
+                    <p className="mt-3 text-sm tabular-nums text-muted-foreground">
+                      {[
+                        m.protein ? `Protein ${m.protein}g` : null,
+                        m.carbs ? `Carbs ${m.carbs}g` : null,
+                        m.fat ? `Fat ${m.fat}g` : null,
+                      ]
+                        .filter(Boolean)
+                        .join("  ·  ")}
+                    </p>
+                  )}
+
+                  <Link
+                    href={{
+                      pathname: "/ai-features/generate-recipe",
+                      query: { prompt: recipePromptFor(plan, m) },
+                    }}
+                    className="mt-3 inline-block text-sm font-medium text-primary underline decoration-primary/30 underline-offset-4 transition-colors hover:decoration-primary"
                   >
-                    <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <div className="h-2 w-2 rounded-full bg-primary" />
-                    </div>
-                    <span className="text-sm">{item}</span>
+                    Generate recipe
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      {/* Shopping list + Pro tips */}
+      {(plan.shopping_list?.length || plan.pro_tips?.length) && (
+        <div className="grid gap-10 lg:grid-cols-2">
+          {plan.shopping_list?.length ? (
+            <section>
+              <h3 className="mb-3 text-lg font-bold text-foreground">
+                Shopping list
+              </h3>
+              <ul className="divide-y divide-border">
+                {plan.shopping_list.map((item, idx) => (
+                  <li key={idx} className="py-2.5 text-sm text-foreground">
+                    {item}
                   </li>
                 ))}
               </ul>
-            </CardContent>
-          </Card>
-        ) : null}
+            </section>
+          ) : null}
 
-        {/* Tips Card */}
-        {plan.pro_tips?.length ? (
-          <Card className="border bg-card">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-bold flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
-                Pro Tips
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {plan.pro_tips.map((tip, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-start gap-3 p-3 rounded-lg bg-muted/30"
-                >
-                  <ChefHat className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                  <div className="text-sm leading-relaxed [&_p]:m-0">
+          {plan.pro_tips?.length ? (
+            <section>
+              <h3 className="mb-3 text-lg font-bold text-foreground">
+                Chef&apos;s notes
+              </h3>
+              <div className="divide-y divide-border">
+                {plan.pro_tips.map((tip, idx) => (
+                  <div
+                    key={idx}
+                    className="py-3 text-sm leading-relaxed text-foreground [&_p]:m-0"
+                  >
                     <ReactMarkdown>{tip}</ReactMarkdown>
                   </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        ) : null}
-      </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };

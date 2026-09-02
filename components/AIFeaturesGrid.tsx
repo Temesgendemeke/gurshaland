@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRight, Camera, Check } from "lucide-react";
+import { ArrowRight, Camera, Check, ImagePlus } from "lucide-react";
 import aiFeatures from "@/constants/aiFeatures";
 import { useRouter } from "next/navigation";
 import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
@@ -42,7 +42,7 @@ function MealPlannerBackground() {
             className="flex w-12 flex-col items-center gap-2"
           >
             <div
-              className="w-full rounded-t-md bg-gradient-to-t from-primary/40 to-primary/20"
+              className="w-full rounded-t-md bg-primary/30"
               style={{ height: day.h }}
             />
             <span className="text-xs text-muted-foreground">{day.label}</span>
@@ -56,7 +56,7 @@ function MealPlannerBackground() {
 function FoodRecognitionBackground() {
   return (
     <div className="flex h-full items-center justify-center">
-      <div className="relative h-28 w-36 overflow-hidden rounded-xl border border-border bg-gradient-to-br from-primary/15 via-primary/5 to-transparent">
+      <div className="relative h-28 w-36 overflow-hidden rounded-lg border border-border bg-primary/10">
         <div className="absolute inset-0 grid place-items-center">
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-background">
             <Camera className="h-5 w-5 text-primary" />
@@ -79,25 +79,17 @@ function CookingAssistantBackground() {
   );
 }
 
-function NutritionBackground() {
-  const bars = [
-    { label: "P", h: "2.5rem" },
-    { label: "C", h: "4.5rem" },
-    { label: "F", h: "3.5rem" },
-    { label: "Fi", h: "5.5rem" },
-  ];
+function PhotoToRecipeBackground() {
   return (
-    <div className="flex h-full items-end justify-center gap-4 px-6 pb-6">
-      <div className="flex items-end gap-3 rounded-xl border border-border/60 bg-background/70 px-5 pt-5 pb-3">
-        {bars.map((bar) => (
-          <div key={bar.label} className="flex w-9 flex-col items-center gap-2">
-            <div
-              className="w-full rounded-t-md bg-gradient-to-t from-primary/40 to-primary/20"
-              style={{ height: bar.h }}
-            />
-            <span className="text-xs text-muted-foreground">{bar.label}</span>
-          </div>
-        ))}
+    <div className="flex h-full items-center justify-center px-6">
+      <div className="relative h-28 w-40 overflow-hidden rounded-lg border border-border bg-primary/10">
+        <div className="absolute inset-0 grid place-items-center">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-background">
+            <ImagePlus className="h-5 w-5 text-primary" />
+          </span>
+        </div>
+        <div className="absolute bottom-2 left-2 h-1.5 w-1/3 rounded-full bg-background/70" />
+        <div className="absolute right-2 bottom-2 h-1.5 w-1/4 rounded-full bg-background/40" />
       </div>
     </div>
   );
@@ -148,6 +140,8 @@ function AIFeaturesGrid({
       router.push("/ai-features/generate-recipe");
     } else if (featureId === "/meal-planner") {
       router.push("/meal-planner");
+    } else if (featureId === "photo-to-recipe") {
+      router.push("/ai-features/food-photo");
     } else if (featureId === "cooking-assistant") {
       SetCookingAssistantOpen(!isCookingAssistantOpen);
     }
@@ -163,8 +157,8 @@ function AIFeaturesGrid({
         return <CookingAssistantBackground />;
       case "/meal-planner":
         return <MealPlannerBackground />;
-      case "nutrition-analyzer":
-        return <NutritionBackground />;
+      case "photo-to-recipe":
+        return <PhotoToRecipeBackground />;
       case "recipe-translator":
         return <TranslatorBackground />;
       default:
@@ -177,7 +171,7 @@ function AIFeaturesGrid({
     "/meal-planner": "sm:col-span-1",
     "food-recognition": "sm:col-span-1",
     "cooking-assistant": "sm:col-span-1",
-    "nutrition-analyzer": "sm:col-span-1",
+    "photo-to-recipe": "sm:col-span-1",
     "recipe-translator": "sm:col-span-3",
   };
 
@@ -200,7 +194,9 @@ function AIFeaturesGrid({
               href={
                 feature.id === "recipe-generator"
                   ? "/ai-features/generate-recipe"
-                  : "#"
+                  : feature.id === "photo-to-recipe"
+                    ? "/ai-features/food-photo"
+                    : "#"
               }
               cta={
                 comingSoon

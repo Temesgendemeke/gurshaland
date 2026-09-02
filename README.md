@@ -1,99 +1,79 @@
-# 🥘 Gurshaland
+# Gurshaland
 
-<!-- ![Home page screenshot](./public/screenshot.png) -->
+A platform for discovering and sharing Ethiopian recipes. Built with Next.js, Supabase, and shadcn/ui.
 
-**Gurshaland** is a modern web platform for discovering, sharing, and preserving authentic Ethiopian recipes and culinary traditions. Built with Next.js, Supabase, and shadcn/ui, Gurshaland empowers the community to contribute family recipes, explore diverse dishes, and celebrate Ethiopia’s rich food heritage.
+## Features
 
----
+- Recipe browsing with search, category, and difficulty filters
+- User accounts and saved recipe collections
+- AI recipe generator that builds an Ethiopian dish from a prompt (costs credits)
+- Blog with articles and tips
+- Restaurant directory
 
-## ✨ Features
+## Tech Stack
 
-- **Recipe Sharing:** Submit your own recipes with images, ingredients, instructions, and cultural notes.
-- **Modern UI:** Beautiful, responsive design with light/dark mode support.
-- **Search & Filter:** Quickly find recipes by category, tags, or keywords.
-- **Personal Accounts:** Sign up, log in, and manage your own recipe collection.
-- **Favorites:** Save your favorite recipes for easy access.
-- **AI-Powered:** Discover AI-generated suggestions and features (coming soon).
-- **Cultural Notes:** Learn about the history and significance of each dish.
+- Next.js (App Router), React
+- Supabase (auth, database, storage)
+- Tailwind CSS, shadcn/ui
+- Zustand
+- React Hook Form + Zod
+- Vercel AI SDK / Google Generative AI
+- pnpm
 
----
+## Getting Started
 
-## 🚀 Getting Started
+1. Install dependencies:
 
-### 1. Clone the repository
+   ```sh
+   pnpm install
+   ```
 
-```sh
-git clone https://github.com/yourusername/gurshaland.git
-cd gurshaland
-```
+2. Create `.env.local` with the required variables:
 
-### 2. Install dependencies
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=...
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+   NEXT_PUBLIC_URL=...
+   SUPABASE_SERVICE_ROLE_KEY=...
+   GOOGLE_GENERATIVE_AI_API_KEY=...
+   YOUTUBE_API_KEY=...
+   ```
 
-```sh
-npm install
-# or
-yarn install
-```
+   `POLAR_ACCESS_TOKEN`, `POLAR_WEBHOOK_SECRET`, `POLAR_PRODUCT_ID`, and `POLAR_SERVER` are optional and used for credit purchases.
 
-#### 3. Environment Variables
+3. Run the development server:
 
-Create a `.env.local` file in the root of your project and add the following variables:
+   ```sh
+   pnpm dev
+   ```
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-```
+## Scripts
 
-Replace `your-supabase-url` and `your-supabase-anon-key` with your actual [Supabase](https://supabase.com/) project credentials.
+- `pnpm dev` - development server
+- `pnpm build` - production build
+- `pnpm start` - start production server
+- `pnpm lint` - lint dashboard and dashboard components
+- `pnpm lint:all` - lint everything
+- `pnpm test` - run tests (vitest)
 
-### 4. Run the development server
-```sh
-npm run dev
-# or
-yarn dev
-```
-
-
-## 🛠️ Tech Stack
-
-- **Next.js 14** – React framework for server-side rendering and routing
-- **Supabase** – Authentication & database as a service
-- **shadcn/ui** – Accessible, customizable UI components
-- **Tailwind CSS** – Utility-first CSS framework for rapid styling
-- **Zustand** – Simple, fast state management for React
-- **React Hook Form + Zod** – Form handling and schema validation
-- **Lucide Icons** – Beautiful, open-source icon set
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-gurshaland/
-├── app/         # Next.js app directory (routes, layouts, pages)
-├── components/  # Reusable React components
-├── constants/   # Static data and configuration
-├── store/       # Zustand state stores
-├── utils/       # Utility functions and TypeScript types
-├── public/      # Static assets (images, icons, etc.)
-├── styles/      # Global styles (CSS, Tailwind)
-└── ...          # Additional files and folders
+app/         # Next.js app router (pages, layouts, routes)
+components/  # React components
+actions/     # Server actions
+store/       # Zustand stores
+hooks/       # React hooks
+lib/         # Shared libraries
+utils/       # Helpers and types
+constants/   # Static data
+ai/          # AI providers and prompts
+sql/         # SQL migrations and RPC functions
+supabase/    # Supabase functions and config
+styles/      # Global styles
+public/      # Static assets
 ```
 
-## 🤝 Contributing
+## Contributing
 
-We welcome contributions from the community!  
-If you have ideas, find a bug, or want to add a new feature, please [open an issue](https://github.com/yourusername/gurshaland/issues) or submit a pull request.
-
----
-
-## 📜 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## 🌍 About
-
-**Gurshaland** is dedicated to preserving and sharing the vibrant flavors of Ethiopia.  
-Share your family’s recipes, discover new favorites, and help keep culinary traditions alive!
-
-Enjoy cooking and sharing! 🇪🇹
+Open an issue or submit a pull request.

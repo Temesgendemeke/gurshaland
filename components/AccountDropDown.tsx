@@ -1,20 +1,20 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 import {
   BookAIcon,
-  ForkKnifeIcon,
   Heart,
-  LayoutDashboard,
   LogInIcon,
   LogOutIcon,
+  Settings,
   User as UserIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -23,7 +23,7 @@ import { logout } from "@/actions/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/store/useAuth";
-import { createClient } from "@/utils/supabase/client";
+import useProfile from "@/store/Profile";
 
 interface AccountDropDownProps {
   user: User | null;
@@ -31,8 +31,10 @@ interface AccountDropDownProps {
 
 const AccountDropDown = ({ user }: AccountDropDownProps) => {
   const router = useRouter();
-  const setUserName = useAuth((state) => state.setUserName);
-  const username = useAuth((state) => state.username);
+  const profile = useProfile((state) => state.profile);
+
+  const username = profile?.username || user?.user_metadata?.username || "";
+  const displayName = profile?.full_name || username || "Profile";
 
   const handleLogout = async () => {
     try {
@@ -45,34 +47,11 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
     }
   };
 
-  const fetchUsername = async () => {
-    if (!user?.id) return;
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user?.id)
-      .maybeSingle();
-    if (data) {
-      setUserName(data.username);
-    }
-    console.log("username ", data);
-  };
-
-  useEffect(() => {
-    fetchUsername();
-  }, [user?.id]);
-
   const dropdownList = [
     {
-      route: `/profile/${username}`,
+      route: username ? `/profile/${username}` : "/",
       page: "Profile",
       icon: UserIcon,
-    },
-    {
-      route: "/my-recipes",
-      page: "My Recipes",
-      icon: ForkKnifeIcon,
     },
     {
       route: "/meal-planner/my-meal-plans",
@@ -80,14 +59,14 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
       icon: BookAIcon,
     },
     {
-      route: "/dashboard",
-      page: "Dashboard",
-      icon: LayoutDashboard,
-    },
-    {
       route: "/favorites",
       page: "Favorites",
       icon: Heart,
+    },
+    {
+      route: username ? `/profile/${username}/settings` : "/",
+      page: "Settings",
+      icon: Settings,
     },
   ];
 
@@ -100,49 +79,69 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
           aria-label="Account menu"
           className="rounded-full border border-border/70 bg-background hover:border-primary/40 hover:bg-muted"
         >
-          <UserIcon className="w-5 h-5" />
+          <UserIcon className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-background w-40 z-50">
-        {user &&
-          dropdownList.map((element) => (
-            <DropdownMenuItem
-              asChild
-              className="w-full p-0"
-              key={element.route}
-            >
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-2 px-4 hover:outline-none hover:border-none"
-                onClick={() => router.push(element.route)}
-              >
-                <element.icon className="w-4 h-4" />
-                <span>{element.page}</span>
-              </Button>
-            </DropdownMenuItem>
-          ))}
+      <DropdownMenuContent align="end" className="bg-background w-56 p-1.5">
+        {user ? (
+          <>
+            <div className="mb-1 flex items-center gap-3 border-b border-border/70 px-2.5 py-2.5">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                {profile?.image?.url ? (
+                  <img
+                    src={profile.image.url}
+                    alt="Profile"
+                    className="h-full w-full rounded-full object-cover"
+                  />
+                ) : (
+                  <UserIcon className="h-4.5 w-4.5" />
+                )}
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-foreground">
+                  {displayName}
+                </p>
+                {user.email && (
+                  <p className="truncate text-xs text-muted-foreground">
+                    {user.email}
+                  </p>
+                )}
+              </div>
+            </div>
 
-        <DropdownMenuItem asChild className="w-full p-0">
-          {user ? (
-            <Button
-              variant="ghost"
-              className="w-full flex items-center justify-start gap-2 px-4 hover:outline-none hover:border-none focus:outline-none"
-              onClick={handleLogout}
+            {dropdownList.map((element) => (
+              <DropdownMenuItem key={element.route} asChild>
+                <Link
+                  href={element.route}
+                  className="gap-2.5 text-muted-foreground focus:text-foreground"
+                >
+                  <element.icon className="text-muted-foreground" />
+                  <span>{element.page}</span>
+                </Link>
+              </DropdownMenuItem>
+            ))}
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              onSelect={handleLogout}
+              className="gap-2.5 text-error focus:text-error"
             >
-              <LogOutIcon className="w-4 h-4" />
+              <LogOutIcon />
               <span>Logout</span>
-            </Button>
-          ) : (
-            <Button
-              variant="ghost"
-              className="w-full flex items-center justify-start gap-2 px-4 hover:outline-none hover:border-none"
-              onClick={() => router.push("/login")}
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <DropdownMenuItem asChild>
+            <Link
+              href="/login"
+              className="gap-2.5 text-muted-foreground focus:text-foreground"
             >
-              <LogInIcon className="w-4 h-4" />
+              <LogInIcon className="text-muted-foreground" />
               <span>Login</span>
-            </Button>
-          )}
-        </DropdownMenuItem>
+            </Link>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

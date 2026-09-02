@@ -6,6 +6,8 @@ export interface PendingAIGeneration {
   action: PendingAIAction;
   prompt?: string;
   values?: Record<string, unknown>;
+  /** When true, the target page auto-starts generation after pre-filling. */
+  autoRun?: boolean;
 }
 
 const PENDING_AI_KEY = "gurshaland:pending-ai";

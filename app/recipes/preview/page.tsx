@@ -78,7 +78,11 @@ export default function RecipePreviewPage() {
         {/* Preview Banner */}
         <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm text-primary">
           Preview mode — this recipe hasn&apos;t been saved yet.{" "}
-          <ActionButtons recipe_id={recipe.id ?? ""} user_id={user?.id ?? ""} />
+          <ActionButtons
+            recipe_id={recipe.id ?? ""}
+            user_id={user?.id ?? ""}
+            isOwner={!!user?.id}
+          />
         </div>
 
         {/* Recipe Header */}
@@ -176,9 +180,6 @@ export default function RecipePreviewPage() {
               <InstructionsView instructions={recipe?.instructions} />
             </Reveal>
             <Reveal delay={0.05}>
-              <IngredientsView ingredients={recipe?.ingredients} />
-            </Reveal>
-            <Reveal delay={0.1}>
               <RecipeCulturalNote culturalNote={recipe?.culturalNote} />
             </Reveal>
             <Reveal delay={0.1}>
@@ -194,22 +195,30 @@ export default function RecipePreviewPage() {
           {/* Sidebar */}
           <div className="space-y-6">
             <Reveal>
-              <NutritionView nutrition={recipe?.nutrition} />
+              <IngredientsView ingredients={recipe?.ingredients} />
             </Reveal>
             <Reveal delay={0.05}>
+              <NutritionView nutrition={recipe?.nutrition} />
+            </Reveal>
+            <Reveal delay={0.1}>
               <RecipeRating
                 user_id={user?.id ?? ""}
                 recipe_id={recipe.id ?? ""}
                 rating={recipe.rating.find((r) => r.user_id === user?.id)?.rating || 0}
+                isOwner={!!user?.id}
               />
             </Reveal>
-            <Reveal delay={0.1}>
+            <Reveal delay={0.15}>
               <Card className="p-6 bg-card border border-border rounded-lg">
                 <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
                   <MessageRoundedDetail className="w-5 h-5 mr-2" />
                   Comments ({recipe.comments.length})
                 </h3>
-                <RecipeComment user_id={user?.id} recipe_id={recipe.id} />
+                <RecipeComment
+                  user_id={user?.id}
+                  recipe_id={recipe.id}
+                  isOwner={!!user?.id}
+                />
                 <RecipeCommentList
                   user_id={user?.id || ""}
                   comments={recipe.comments as PostComment[]}

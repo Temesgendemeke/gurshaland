@@ -1,14 +1,5 @@
 import { GetMealPannerTyp } from "@/schema/meal-planner";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, CalendarDays, Flame } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import DeleteMealAlertDialog from "./DeleteMealAlertDialog";
@@ -41,42 +32,27 @@ const MealPlanCard = ({ plan }: { plan: GetMealPannerTyp }) => {
   const meta = [plan.goal, plan.diet].filter(Boolean).join(" · ");
 
   return (
-    <Card className="group flex h-full flex-col bg-card transition-colors hover:border-primary/40">
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 space-y-1">
-            <CardTitle className="line-clamp-1 text-lg font-bold transition-colors group-hover:text-primary">
-              {plan.name}
-            </CardTitle>
-            <CardDescription className="line-clamp-1">
-              {plan.timeframe} Plan
-            </CardDescription>
-          </div>
-          {plan.calories && (
-            <Badge variant="secondary" className="shrink-0 font-mono">
-              {plan.calories} kcal
-            </Badge>
-          )}
-        </div>
-      </CardHeader>
+    <div className="flex h-full flex-col rounded-xl border border-border/80 bg-card">
+      <div className="border-b border-border/80 p-5">
+        <h3 className="line-clamp-1 text-lg font-bold tracking-tight text-foreground">
+          {plan.name}
+        </h3>
+        <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
+          {plan.timeframe} plan
+        </p>
+      </div>
 
-      <CardContent className="grow space-y-3">
-        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5">
-            <CalendarDays className="h-4 w-4 text-primary" />
-            {plan.days?.length || 0} days
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Flame className="h-4 w-4 text-primary" />
-            {plan.meals_per_day} meals/day
-          </span>
-        </div>
+      <div className="flex grow flex-col gap-2 p-5">
+        <p className="text-sm text-muted-foreground">
+          {plan.days?.length || 0} days · {plan.meals_per_day} meals/day
+          {plan.calories ? ` · ${plan.calories} kcal` : ""}
+        </p>
         {meta && (
           <p className="line-clamp-1 text-sm text-muted-foreground">{meta}</p>
         )}
-      </CardContent>
+      </div>
 
-      <CardFooter className="gap-3 pt-0">
+      <div className="flex items-center gap-3 border-t border-border/80 p-4">
         <Button asChild variant="outline" className="flex-1">
           <Link
             href={`/meal-planner/my-meal-plans/${plan.id}`}
@@ -86,8 +62,8 @@ const MealPlanCard = ({ plan }: { plan: GetMealPannerTyp }) => {
           </Link>
         </Button>
         <DeleteMealAlertDialog onConfirm={deleteMealPlan} />
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 };
 

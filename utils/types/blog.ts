@@ -33,6 +33,8 @@ export interface Content{
     blog_id?: string;
     image?: ContentImage;
     items?: string[];
+    ingredients?: Ingredient[];
+    instructions?: string[];
     recipe?: BlogContentRecipe;
     tips?: Tips;
 }

@@ -2,7 +2,7 @@ import {
   BookOpen,
   Camera,
   ChefHat,
-  Heart,
+  ImagePlus,
   MessageCircle,
   Utensils,
 } from "lucide-react";
@@ -38,11 +38,12 @@ const aiFeatures = [
     badge: "New",
   },
   {
-    id: "nutrition-analyzer",
-    title: "Nutrition Analyzer",
-    description: "Analyze nutritional content of Ethiopian dishes",
-    icon: Heart,
-    badge: "Coming Soon",
+    id: "photo-to-recipe",
+    title: "Food Photo to Recipe",
+    description:
+      "Upload a food photo and turn it into an authentic Ethiopian recipe",
+    icon: ImagePlus,
+    badge: "New",
   },
   // {
   //   id: "recipe-translator",

@@ -25,7 +25,9 @@ export const AIgenerateImage = async (
     console.log(`✅ GEMINI_API_KEY is configured`);
 
     const new_prompt =
-      `You are a professional photographer. Generate a high quality landscape aspect ratio image of the following prompt: ${prompt}`;
+      `Generate a landscape photograph of ONLY the food or beverage described below. The image must contain ONLY the dish, plated food, ingredients, or drink — nothing else. No people, no hands, no faces, no human figures, no animals, no text, no logos. Focus on the food's colors, textures, plating, and presentation on a surface. Natural lighting, appetizing composition.
+
+Dish: ${prompt}`;
     console.log(`📝 Formatted prompt: "${new_prompt}"`);
 
     console.log(`🚀 Calling Gemini API...`);
@@ -121,7 +123,7 @@ export const generateStockImage = async (
   prompt: string,
 ): Promise<{ url: string; path: string } | null> => {
   try {
-    const stockUrl = await generateImage(prompt);
+    const stockUrl = await generateImage(prompt, true);
     if (stockUrl) {
       return { url: stockUrl, path: "" };
     }

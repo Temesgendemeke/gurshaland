@@ -25,6 +25,9 @@ import RecipeImage from "./RecipeModel/RecipeImage";
 import { generateUniqueSlug, generateUniqueTitle } from "@/utils/slugify";
 import { uploadAIImageToStorage } from "@/utils/genAI";
 import { cn } from "@/lib/utils";
+import DownloadPdfButton from "@/components/pdf/DownloadPdfButton";
+import { generateRecipePdf } from "@/actions/pdf";
+import { RECIPE_PDF_CREDIT_COST } from "@/constants/creditCosts";
 
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -255,7 +258,7 @@ const FullRecipeModel = ({
       </div>
 
       {/* Footer */}
-      <DialogFooter className="shrink-0 gap-2 border-t border-border bg-card px-6 py-4 sm:space-x-0 sm:px-8">
+      <DialogFooter className="shrink-0 gap-2 border-t border-border bg-card px-2 py-4 sm:space-x-0 sm:px-8">
         {!isInline && (
           <DialogClose asChild>
             <Button
@@ -267,6 +270,12 @@ const FullRecipeModel = ({
             </Button>
           </DialogClose>
         )}
+        <DownloadPdfButton
+          generate={() => generateRecipePdf(recipe)}
+          cost={RECIPE_PDF_CREDIT_COST}
+          variant="outline"
+          className="w-full active:scale-[0.97] sm:w-auto"
+        />
         <Button
           onClick={handleSaveRecipe}
           disabled={isSaving}

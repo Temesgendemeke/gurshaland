@@ -242,8 +242,9 @@ export default function BlogForm({
         );
       }
       res?.contents?.forEach(async (content, index) => {
-        const { path: oldpath, url: oldURl } = blog?.contents?.[index]
-          ?.image as ImageFormData;
+        const existing = blog?.contents?.[index]?.image as ImageFormData | undefined;
+        const oldpath = existing?.path;
+        const oldURl = existing?.url;
         const newFile = (data?.contents?.[index] as any)?.image
           ?.file as File | null;
         if (newFile && content?.id && user?.id) {

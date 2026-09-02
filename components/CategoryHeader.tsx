@@ -1,25 +1,56 @@
-import React from "react";
+"use client";
 
-const CategoryHeader = ({
-  currentCategory,
-}: {
-  currentCategory: {
-    color: string;
-    name: string;
-    description: string;
-  };
-}) => {
+import { useEffect } from "react";
+import { useParams } from "next/navigation";
+import {
+  categoryStore,
+  slugifyCategory,
+} from "@/store/Category";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { Category } from "@/utils/types/category";
+
+const CategoryHeader = () => {
+  const params = useParams<{ category: string }>();
+  const slug = params?.category ?? "";
+
+  const categories = categoryStore((state) => state.categories);
+  const loading = categoryStore((state) => state.loading);
+  const error = categoryStore((state) => state.error);
+  const fetchCategories = categoryStore((state) => state.fetchCategories);
+
+  useEffect(() => {
+    if (!categories) void fetchCategories();
+  }, [categories, fetchCategories]);
+
+  const currentCategory: Category | undefined = categories?.find(
+    (category) => slugifyCategory(category.name) === slug,
+  );
+
+  if (loading && !currentCategory) {
+    return (
+      <header className="mb-12">
+        <Skeleton className="h-12 w-2/3 max-w-md sm:h-16" />
+        <Skeleton className="mt-6 h-5 w-full max-w-xl" />
+        <Skeleton className="mt-2 h-5 w-3/4 max-w-lg" />
+      </header>
+    );
+  }
+
   return (
-    <div className="text-center mb-12">
-      <div className="inline-block p-4 rounded-lg bg-card border border-border mb-6">
-        <h1 className="text-4xl font-bold text-foreground">
-          {currentCategory.name}
-        </h1>
-      </div>
-      <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-        {currentCategory.description}
-      </p>
-    </div>
+    <header className="mb-12 border-b pb-6">
+      <h1 className="font-bold text-5xl font-semibold leading-[1.04] tracking-tighter text-foreground sm:text-6xl lg:text-7xl">
+        <span className="capitalize">
+          {currentCategory?.name ?? slug.replace(/-/g, " ")}
+        </span>
+      </h1>
+      {currentCategory?.description ? (
+        <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+          {currentCategory.description}
+        </p>
+      ) : error ? (
+        <p className="mt-4 max-w-2xl text-sm text-error">{error}</p>
+      ) : null}
+    </header>
   );
 };
 

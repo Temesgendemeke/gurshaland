@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { Footer } from "@/components/footer";
 
 const HIDDEN_PREFIXES = [
-  "/dashboard",
   "/admin",
   "/restaurant/add",
   "/login",
@@ -15,6 +14,7 @@ const HIDDEN_PREFIXES = [
   "/recipes/create",
   "/blog/create",
   "/ai-features/generate-recipe",
+  "/settings",
 ];
 
 export default function FooterController() {

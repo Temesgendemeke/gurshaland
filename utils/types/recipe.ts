@@ -99,6 +99,7 @@ export interface RecipeComment {
 }
 
 interface author {
+  id?: string;
   username: string;
   full_name: string;
   avatar_url: string;

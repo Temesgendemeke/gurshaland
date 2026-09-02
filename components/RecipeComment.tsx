@@ -11,9 +11,14 @@ import type { RecipeComment } from "@/utils/types/recipe";
 interface RecipeCommentProps {
   user_id: string | undefined;
   recipe_id: string | undefined;
+  isOwner?: boolean;
 }
 
-const RecipeComment = ({ user_id, recipe_id }: RecipeCommentProps) => {
+const RecipeComment = ({
+  user_id,
+  recipe_id,
+  isOwner = false,
+}: RecipeCommentProps) => {
   const [comment, setComment] = useState("");
   const router = useRouter();
   const addComment = useRecipeDetailStore((store) => store.addComment);
@@ -36,6 +41,8 @@ const RecipeComment = ({ user_id, recipe_id }: RecipeCommentProps) => {
       toast.message("Failed to post comment. Please try again.");
     }
   };
+  if (isOwner) return null;
+
   return (
     <div className="mb-6">
       <Textarea

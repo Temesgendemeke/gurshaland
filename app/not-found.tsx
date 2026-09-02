@@ -1,36 +1,33 @@
-"use client";
 import Link from "next/link";
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { UtensilsCrossed } from "lucide-react";
 
-const NotFound = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    document.body.dataset.hideFooter = "true";
-    return () => {
-      delete document.body.dataset.hideFooter;
-    };
-  }, []);
-
+export default function NotFound() {
   return (
-    <div className=" flex flex-col items-center justify-center h-screen text-foreground">
-      <h1 className="text-5xl md:text-7xl font-bold text-destructive tracking-widest">
+    <div className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
+      {/* Icon */}
+      <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+        <UtensilsCrossed className="h-10 w-10 text-muted-foreground" />
+      </div>
+
+      {/* Title */}
+      <h1 className="font-gosh text-6xl font-black tracking-tight text-foreground sm:text-7xl">
         404
       </h1>
-      <p className="text-xl md:text-2xl text-muted-foreground mt-4">
-        Oops! The page you are looking for does not exist.
+
+      <p className="mt-4 max-w-sm text-base leading-relaxed text-muted-foreground">
+        The page you&apos;re looking for doesn&apos;t exist or has been moved.
       </p>
-      <Button
-        onClick={() => router.back()}
-        variant="outline"
-        className="mt-8 px-8 py-3 font-bold"
-      >
-        Go Back
-      </Button>
+
+      {/* Actions */}
+      <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <Button asChild variant="outline" className="rounded-full px-6">
+          <Link href="/">Go Home</Link>
+        </Button>
+        <Button asChild className="rounded-full px-6">
+          <Link href="/recipes">Browse Recipes</Link>
+        </Button>
+      </div>
     </div>
   );
-};
-
-export default NotFound;
+}

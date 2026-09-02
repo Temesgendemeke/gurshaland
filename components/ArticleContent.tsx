@@ -1,125 +1,126 @@
 import React from "react";
-import { ChefHat, NotebookPen } from "lucide-react";
-import { Blog } from "@/utils/types/blog";
+import Image from "next/image";
+import { Blog, Content } from "@/utils/types/blog";
 import format_calories from "@/utils/formatcalories";
 
-type ContentSectionItem = {
-  body?: string;
-  title?: string;
-  description?: string;
-  ingredients?: { amount: number; name: string }[];
-  instructions?: string[];
-  items?: string[];
+const ContentSection = ({ section }: { section: Content }) => {
+  const hasTitle = !!section.title?.trim();
+  const hasBody = !!section.body?.trim();
+  const hasIngredients =
+    Array.isArray(section.ingredients) && section.ingredients.length > 0;
+  const hasInstructions =
+    Array.isArray(section.instructions) && section.instructions.length > 0;
+  const hasItems = Array.isArray(section.items) && section.items.length > 0;
+  const hasImage = !!section.image?.url;
+  const isRecipe = hasIngredients || hasInstructions;
+
+  return (
+    <div className="py-10 first:pt-0">
+      {/* Section heading */}
+      {hasTitle && (
+        <h2 className="mb-4 text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+          {section.title}
+        </h2>
+      )}
+
+      {/* Body text */}
+      {hasBody && (
+        <p className="text-[1.0625rem] leading-[1.85] text-foreground/80">
+          {section.body}
+        </p>
+      )}
+
+      {/* Content image */}
+      {hasImage && (
+        <div className="my-8">
+          <div className="relative aspect-[16/9] bg-muted">
+            <Image
+              src={section.image!.url}
+              alt={section.title || "Section image"}
+              fill
+              sizes="(max-width: 768px) 100vw, 680px"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Recipe — clean two-column layout */}
+      {isRecipe && (
+        <div className="my-8 grid gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+          {hasIngredients && (
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                Ingredients
+              </p>
+              <ul className="space-y-2">
+                {section.ingredients!.map((ingredient, i) => (
+                  <li
+                    key={i}
+                    className="flex items-baseline gap-2 text-sm"
+                  >
+                    <span className="shrink-0 font-medium text-foreground">
+                      {format_calories(Number(ingredient.amount) || 0)}
+                    </span>
+                    <span className="text-muted-foreground">
+                      {ingredient.name}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {hasInstructions && (
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                Method
+              </p>
+              <ol className="space-y-3">
+                {section.instructions!.map((instruction, i) => (
+                  <li key={i} className="flex gap-3 text-sm">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-foreground/5 text-[0.6875rem] font-semibold text-muted-foreground">
+                      {i + 1}
+                    </span>
+                    <span className="leading-relaxed text-foreground/80">
+                      {instruction}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Tips / bullet list */}
+      {hasItems && !isRecipe && (
+        <ul className="my-6 space-y-2.5">
+          {section.items!.map((tip, i) => (
+            <li key={i} className="flex gap-2.5 text-sm leading-relaxed">
+              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-foreground/30" />
+              <span className="text-foreground/80">{tip}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 };
 
 const ArticleContent = ({ blogPost }: { blogPost: Blog }) => {
+  const sections = blogPost?.contents;
+
+  if (!sections || sections.length === 0) {
+    return (
+      <p className="text-muted-foreground">No content available.</p>
+    );
+  }
+
   return (
-    <div className="mx-auto w-full max-w-3xl">
-      {blogPost?.contents?.map((section, index) => {
-        const content = section as ContentSectionItem;
-        switch (content.body) {
-          case "paragraph":
-            return (
-              <p
-                key={index}
-                className="mb-6 text-[1.0625rem] leading-[1.85] text-foreground/80"
-              >
-                {content.body}
-              </p>
-            );
-          case content.title:
-            return (
-              <h2
-                key={index}
-                className="mb-5 mt-10 border-l-2 border-primary pl-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
-              >
-                {content.title}
-              </h2>
-            );
-          case "recipe":
-            return (
-              <div
-                key={index}
-                className="my-10 overflow-hidden rounded-xl border border-border/70 bg-card shadow-[0_1px_2px_hsl(215_15%_10%/0.04)]"
-              >
-                <div className="flex items-center gap-3 border-b border-border/70 bg-muted/40 px-6 py-4 sm:px-8">
-                  <ChefHat className="h-5 w-5 shrink-0 text-primary" />
-                  <h3 className="text-lg font-bold tracking-tight text-foreground">
-                    {content.title}
-                  </h3>
-                </div>
-                <div className="grid gap-8 p-6 sm:p-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-                  <div>
-                    <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                      Ingredients
-                    </p>
-                    <ul className="space-y-2.5">
-                      {content.ingredients?.map((ingredient, i) => (
-                        <li
-                          key={i}
-                          className="flex items-baseline gap-2 text-sm"
-                        >
-                          <span className="shrink-0 font-semibold text-foreground">
-                            {format_calories(Number(ingredient.amount) || 0)}
-                          </span>
-                          <span className="text-muted-foreground">
-                            {ingredient.name}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                      Method
-                    </p>
-                    <ol className="space-y-4">
-                      {content.instructions?.map((instruction, i) => (
-                        <li key={i} className="flex gap-3 text-sm">
-                          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
-                            {i + 1}
-                          </span>
-                          <span className="leading-relaxed text-muted-foreground">
-                            {instruction}
-                          </span>
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                </div>
-              </div>
-            );
-          case "tips":
-            return (
-              <div
-                key={index}
-                className="my-10 rounded-xl border border-border/70 bg-card p-6 sm:p-8"
-              >
-                {content.title && (
-                  <div className="mb-4 flex items-center gap-3">
-                    <NotebookPen className="h-5 w-5 shrink-0 text-primary" />
-                    <h3 className="text-lg font-bold tracking-tight text-foreground">
-                      {content.title}
-                    </h3>
-                  </div>
-                )}
-                {content.description && (
-                  <p className="mb-5 text-muted-foreground">{content.description}</p>
-                )}
-                <ul className="space-y-3">
-                  {content.items?.map((tip, i) => (
-                    <li key={i} className="flex gap-3 text-sm leading-relaxed">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                      <span className="text-foreground/80">{tip}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          default:
-            return null;
-        }
-      })}
+    <div>
+      {sections.map((section, index) => (
+        <ContentSection key={section.id ?? index} section={section} />
+      ))}
     </div>
   );
 };

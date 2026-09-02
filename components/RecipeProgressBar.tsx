@@ -5,9 +5,11 @@ import { cn } from "@/lib/utils";
 
 interface RecipeProgressBarProps {
   isGenerating: boolean;
+  title?: string;
+  steps?: { id: number; label: string; icon: any; duration: number }[];
 }
 
-const generationSteps = [
+const defaultSteps = [
   { id: 1, label: "Analyzing ingredients", icon: ChefHat, duration: 2000 },
   { id: 2, label: "Crafting recipe with AI", icon: Brain, duration: 3000 },
   { id: 3, label: "Generating recipe image", icon: Image, duration: 2500 },
@@ -16,6 +18,8 @@ const generationSteps = [
 
 export default function RecipeProgressBar({
   isGenerating,
+  title = "Creating your recipe",
+  steps = defaultSteps,
 }: RecipeProgressBarProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -29,13 +33,13 @@ export default function RecipeProgressBar({
 
     let stepIndex = 0;
     let accumulatedTime = 0;
-    const totalDuration = generationSteps.reduce(
+    const totalDuration = steps.reduce(
       (sum, step) => sum + step.duration,
       0,
     );
 
     const interval = setInterval(() => {
-      if (stepIndex < generationSteps.length) {
+      if (stepIndex < steps.length) {
         setCurrentStep(stepIndex);
 
         const stepProgress = Math.min(
@@ -46,7 +50,7 @@ export default function RecipeProgressBar({
 
         accumulatedTime += 100;
 
-        if (accumulatedTime >= generationSteps[stepIndex].duration) {
+        if (accumulatedTime >= steps[stepIndex].duration) {
           stepIndex++;
         }
       } else {
@@ -68,7 +72,7 @@ export default function RecipeProgressBar({
             In progress
           </p>
           <h3 className="mt-1 font-gosh text-lg font-bold tracking-tight text-foreground">
-            Creating your recipe
+            {title}
           </h3>
         </div>
         <span className="text-sm font-semibold tabular-nums text-primary">
@@ -79,7 +83,7 @@ export default function RecipeProgressBar({
       <Progress value={progress} className="h-1.5 bg-muted" />
 
       <ol className="space-y-0">
-        {generationSteps.map((step, index) => {
+        {steps.map((step, index) => {
           const Icon = step.icon;
           const isActive = index === currentStep;
           const isCompleted = index < currentStep;
@@ -99,7 +103,7 @@ export default function RecipeProgressBar({
                 >
                   <Icon className="h-4 w-4" strokeWidth={1.75} />
                 </span>
-                {index < generationSteps.length - 1 && (
+                {index < steps.length - 1 && (
                   <span
                     className={cn(
                       "w-px flex-1 min-h-5",

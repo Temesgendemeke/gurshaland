@@ -4,7 +4,7 @@ import Logo from "./Logo";
 
 export function Footer() {
   return (
-    <footer className="text-muted-foreground w-full mx-auto border-t border-border">
+    <footer className="mt-20 w-full border-t border-border/70 text-muted-foreground">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-16">
         <div className="grid md:grid-cols-4 gap-8 lg:gap-12">
           <div className="space-y-4">
@@ -16,7 +16,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-gosh font-semibold mb-4 text-foreground">Recipes</h3>
+            <h3 className="mb-4 font-gosh text-sm font-semibold text-foreground">Recipes</h3>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -62,7 +62,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-gosh font-semibold mb-4 text-foreground">Culture</h3>
+            <h3 className="mb-4 font-gosh text-sm font-semibold text-foreground">Culture</h3>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -100,7 +100,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-gosh font-semibold mb-4 text-foreground">Connect</h3>
+            <h3 className="mb-4 font-gosh text-sm font-semibold text-foreground">Connect</h3>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -138,7 +138,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-8 text-center text-muted-foreground border-t border-border">
+        <div className="mt-10 border-t border-border/70 pt-8 text-center text-sm text-muted-foreground">
           <p className="flex items-center justify-center gap-1.5">
             &copy; {new Date().getFullYear()} Gurshaland. Made with
             <Heart className="w-4 h-4 inline text-primary" strokeWidth={2} /> for Ethiopian
