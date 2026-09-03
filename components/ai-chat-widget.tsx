@@ -237,13 +237,7 @@ export function AIChatWidget() {
               </span>
               <p className="flex min-w-0 items-center gap-2 text-sm font-semibold tracking-tight text-foreground">
                 GurshaAI
-                <span
-                  className={cn(
-                    "h-1.5 w-1.5 shrink-0 rounded-full",
-                    isStreaming ? "bg-amber-500" : "bg-emerald-500",
-                    isStreaming && !reduceMotion && "animate-pulse",
-                  )}
-                />
+
               </p>
             </div>
             <button
@@ -379,7 +373,7 @@ export function AIChatWidget() {
               )}
             </form>
             <p className="mt-2 text-center text-[0.6875rem] text-muted-foreground/70">
-              GurshaAI can make mistakes — double-check important details.
+              GurshaAI can make mistakes  double-check important details.
             </p>
           </div>
         </motion.div>

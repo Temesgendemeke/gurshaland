@@ -329,7 +329,7 @@ export function PhotoToRecipeForm() {
               <span className="text-xs leading-relaxed text-muted-foreground">
                 Drag &amp; drop or click to browse
                 <br />
-                JPG, PNG, or WebP — up to 10MB
+                JPG, PNG, or WebP  up to 10MB
               </span>
             </>
           )}

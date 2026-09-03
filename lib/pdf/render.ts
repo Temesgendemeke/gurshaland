@@ -28,9 +28,10 @@ export async function renderHtmlToPdf(html: string): Promise<Buffer> {
       displayHeaderFooter: true,
       headerTemplate: "<div></div>",
       footerTemplate: `
-        <div style="width:100%;font-size:8px;color:#8a94a6;font-family:'Segoe UI',Roboto,Arial,sans-serif;
-                    text-align:center;padding:0 14mm;">
-          Gurshaland · <span class="pageNumber"></span> / <span class="totalPages"></span>
+        <div style="width:100%;font-size:7.5px;color:#a1a1aa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+                    display:flex;justify-content:space-between;padding:0 14mm;box-sizing:border-box;">
+          <span>Gurshaland · Ethiopian Culinary Archive</span>
+          <span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>
         </div>`,
       margin: { top: "12mm", right: "14mm", bottom: "14mm", left: "14mm" },
     });

@@ -17,7 +17,7 @@ const AuthVisual = () => {
           priority
           sizes="30vw"
         />
-        {/* Cinematic scrim — keeps text legible at every scroll/zoom level */}
+        {/* Cinematic scrim  keeps text legible at every scroll/zoom level */}
         {/* <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/25 to-black/85" /> */}
 
         {/* Subtle grain overlay for texture (section-scoped) */}

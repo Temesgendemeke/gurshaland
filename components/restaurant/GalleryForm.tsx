@@ -28,7 +28,7 @@ const GalleryForm = ({
   });
 
   // delete from db and storage
-  const deleteImage = async (path: string) => {};
+  const deleteImage = async (path: string) => { };
 
   return (
     <Card className="border-border/60 bg-card shadow-[0_15px_40px_-30px_hsl(var(--foreground)/0.15)]">
@@ -42,7 +42,7 @@ const GalleryForm = ({
           </div>
           <CardTitle className="mt-1 font-gosh text-xl">Gallery</CardTitle>
           <CardDescription>
-            Showcase the atmosphere — add up to a few photos of your space.
+            Showcase the atmosphere  add up to a few photos of your space.
           </CardDescription>
         </div>
         <Button
@@ -62,7 +62,7 @@ const GalleryForm = ({
               <PhotoIcon className="h-6 w-6 text-primary" strokeWidth={1.5} />
             </div>
             <p className="text-sm text-muted-foreground">
-              No gallery images yet — add photos of the dining room, terrace,
+              No gallery images yet  add photos of the dining room, terrace,
               or signature dishes.
             </p>
           </div>

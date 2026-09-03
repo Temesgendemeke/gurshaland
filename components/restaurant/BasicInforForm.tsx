@@ -36,7 +36,7 @@ const BasicInforForm = ({ form }: { form: any }) => {
           Restaurant Details
         </CardTitle>
         <CardDescription>
-          The core identity of your establishment — name, story, and cover.
+          The core identity of your establishment  name, story, and cover.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">

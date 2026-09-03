@@ -70,10 +70,16 @@ export const deleteBlog = async (blog: Blog) => {
     ...contentImagePaths,
   ];
 
-  const { error: BlogDeleteError, count } = await supabase
-    .from("blog")
-    .delete({ count: "exact" })
-    .eq("id", blog.id);
+  let query = supabase.from("blog").delete({ count: "exact" });
+  if (blog.id) {
+    query = query.eq("id", blog.id);
+  } else if (blog.slug) {
+    query = query.eq("slug", blog.slug);
+  } else {
+    throw new Error("Missing blog id or slug for deletion");
+  }
+
+  const { error: BlogDeleteError, count } = await query;
 
   if (BlogDeleteError) throw BlogDeleteError;
 

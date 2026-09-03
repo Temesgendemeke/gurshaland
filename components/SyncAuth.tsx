@@ -12,15 +12,22 @@ const SyncAuth = ({children} : {children : React.ReactNode}) => {
     const supabase = createClient()
 
     useEffect(()=>{
-         supabase.auth.getUser().then(({data: {user}}) => {
-            if(user) {
+         supabase.auth
+            .getUser()
+            .then(({ data: { user } }) => {
+              if (user) {
                 setUser(user);
                 fetchProfile(user.id);
-            } else {
+              } else {
                 clearUser();
                 clearProfile();
-            }
-         })
+              }
+            })
+            .catch((err) => {
+              console.warn("Could not sync user session:", err?.message || err);
+              clearUser();
+              clearProfile();
+            });
 
          const {data: listener} = supabase.auth.onAuthStateChange((_event, session)=>{
             if(session?.user) {

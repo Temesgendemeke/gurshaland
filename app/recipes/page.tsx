@@ -46,14 +46,22 @@ function RecipesPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const sorted_by = searchParams.get("sorted_by");
+  const querySearch = searchParams.get("search") || "";
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(querySearch);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const reduceMotion = useReducedMotion();
   const resultsRef = useRef<HTMLDivElement>(null);
   const hasUserInteracted = useRef(false);
+
+  useEffect(() => {
+    const query = searchParams.get("search");
+    if (query !== null && query !== searchTerm) {
+      setSearchTerm(query);
+    }
+  }, [searchParams]);
 
   const allRecipes = recipeStore((store) => store.recipes) || [];
   const trendingRecipes = recipeStore((store) => store.trendingRecipes) || [];

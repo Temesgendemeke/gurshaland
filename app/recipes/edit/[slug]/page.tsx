@@ -28,9 +28,6 @@ async function EditRecipe({ params }: { params: Promise<{ slug: string }> }) {
     <>
       <Header />
       <div className=" px-4 py-10 sm:px-6 lg:px-8">
-        <Suspense fallback={<div>Loading...</div>}>
-          <BackNavigation route="/recipes" pagename="Recipes" />
-        </Suspense>
         <div className="mt-6 space-y-3 text-center flex flex-col items-center justify-center">
           <h1 className="font-gosh text-3xl font-extrabold tracking-tight text-foreground sm:text-6xl">
             Refine your recipe

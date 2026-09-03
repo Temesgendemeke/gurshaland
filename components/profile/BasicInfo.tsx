@@ -11,7 +11,6 @@ import {
   followProfile,
   unfollowProfile,
 } from "@/actions/followers/followActions";
-import { Settings } from "lucide-react";
 
 interface BasicInfoProps {
   profile: Profile;
@@ -49,10 +48,6 @@ const BasicInfo = ({ profile }: BasicInfoProps) => {
     }
   };
 
-  const handleSettingsClick = () => {
-    router.push(`/profile/${profile.username}/settings`);
-  };
-
   return (
     <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:items-start sm:gap-7 sm:text-left">
       <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border border-border/70 bg-muted shadow-sm sm:h-32 sm:w-32">
@@ -70,7 +65,7 @@ const BasicInfo = ({ profile }: BasicInfoProps) => {
           <h1 className="font-gosh text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl">
             {profile.full_name || profile.username}
           </h1>
-          {isOwnProfile || (
+          {!isOwnProfile && (
             <Button
               onClick={handleFollow}
               disabled={loading}

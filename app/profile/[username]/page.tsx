@@ -64,8 +64,10 @@ export default async function Page({
 
   const blogs: Blog[] = (profile.blogs ?? []).map((b) => ({
     ...b,
+    author_id: b.author_id || profile.id,
     contents: [],
     author: {
+      id: profile.id,
       full_name: profile.full_name || "",
       username: profile.username,
       avatar: profile.avatar_url || "",

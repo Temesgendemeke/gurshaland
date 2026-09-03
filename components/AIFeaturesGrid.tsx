@@ -73,7 +73,7 @@ function CookingAssistantBackground() {
   return (
     <div className="flex h-full items-center justify-center px-6">
       <div className="max-w-[13.75rem] rounded-2xl rounded-bl-sm border border-border bg-background px-4 py-3 text-sm text-foreground">
-        Simmer the berbere until the oil turns deep red — then add the onions.
+        Simmer the berbere until the oil turns deep red  then add the onions.
       </div>
     </div>
   );

@@ -77,7 +77,7 @@ export default function RecipePreviewPage() {
 
         {/* Preview Banner */}
         <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm text-primary">
-          Preview mode — this recipe hasn&apos;t been saved yet.{" "}
+          Preview mode  this recipe hasn&apos;t been saved yet.{" "}
           <ActionButtons
             recipe_id={recipe.id ?? ""}
             user_id={user?.id ?? ""}

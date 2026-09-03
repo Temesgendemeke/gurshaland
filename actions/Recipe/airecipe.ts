@@ -69,7 +69,7 @@ Constraints:
   instructions (array of { step: number, title: string, description: string, imagePrompt: string, tips?: string }),
   nutrition ({ calories:number, protein:number, carbs:number, fat:number, fiber:number }),
   preptime (number), cooktime (number), difficulty (string), servings (number).
-- imagePrompt must be a short, descriptive phrase for image generation (no URLs, no base64). The imagePrompt MUST describe ONLY the food, dish, or ingredients in the scene — do NOT include people, faces, hands, or human figures.
+- imagePrompt must be a short, descriptive phrase for image generation (no URLs, no base64). The imagePrompt MUST describe ONLY the food, dish, or ingredients in the scene  do NOT include people, faces, hands, or human figures.
  - category (string) must be ONE OF: ${allowedCategories.join(", ")}
  - Each ingredient.unit must be ONE OF: ${
       allowedUnits.join(", ")

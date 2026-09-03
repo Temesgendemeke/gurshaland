@@ -100,7 +100,7 @@ const Page = () => {
     // The browser client from @supabase/ssr is a singleton with
     // detectSessionInUrl = true, so it auto-detects the recovery `code`
     // in the URL and exchanges it exactly once during initialization.
-    // Do NOT call exchangeCodeForSession() manually here — a second
+    // Do NOT call exchangeCodeForSession() manually here  a second
     // exchange fails with "invalid or expired" and races the auth-token
     // lock ("Lock ... was released because another request stole it").
     supabase.auth.getSession().then(({ data }) => {

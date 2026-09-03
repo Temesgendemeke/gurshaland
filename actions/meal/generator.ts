@@ -56,7 +56,7 @@ Return ONLY valid JSON (no markdown, no code blocks) based on this schema:
           "protein": number,
           "carbs": number,
           "fat": number,
-          "pexels_search_term": "string — a short search query for finding a PHOTO of this exact Ethiopian dish on Pexels. MUST describe the actual food visually (e.g. 'Ethiopian doro wat chicken stew', 'injera flatbread with stew', 'Ethiopian kitfo minced meat'). Always include the dish name. 3-6 words. Do NOT use abstract or vague terms."
+          "pexels_search_term": "string  a short search query for finding a PHOTO of this exact Ethiopian dish on Pexels. MUST describe the actual food visually (e.g. 'Ethiopian doro wat chicken stew', 'injera flatbread with stew', 'Ethiopian kitfo minced meat'). Always include the dish name. 3-6 words. Do NOT use abstract or vague terms."
         }
       ],
       "total_calories": number

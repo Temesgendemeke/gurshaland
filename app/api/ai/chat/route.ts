@@ -42,7 +42,7 @@ function getAdminClient() {
 /**
  * Fills in safe defaults for anything the model/user didn't specify, and
  * personalizes the request with the logged-in user's known profile info.
- * Never invents anthropometric data — those are only kept when the user
+ * Never invents anthropometric data  those are only kept when the user
  * actually told us them.
  */
 function normalizeMealPlanValues(
@@ -188,7 +188,7 @@ You are the Gurshaland AI assistant embedded in the chat widget. You can do all 
 
 3. NAVIGATE THE USER WITH PRE-FILLED INPUTS (the app will open the page and pre-fill a form, then auto-run it)
    - navigateToRecipeGenerator(prompt): call when the user wants to GENERATE a new recipe. Write prompt as a clean, well-formatted request: what they want to cook, ingredients they have, dietary needs, servings, difficulty, and any time limits. Do not put markdown in the prompt.
-   - navigateToMealPlanner(values): call when the user wants a meal plan. Fill values from what they said: timeframe ("today" or "full-week"), goal, diet, meals_per_day (2-6), and optional calories/age/gender/height/weight/activity_level/prompt. Never invent age, gender, height, or weight — leave those out unless the user mentioned them. Anything missing gets a sensible default automatically, and the plan is personalized with the logged-in user's name.
+   - navigateToMealPlanner(values): call when the user wants a meal plan. Fill values from what they said: timeframe ("today" or "full-week"), goal, diet, meals_per_day (2-6), and optional calories/age/gender/height/weight/activity_level/prompt. Never invent age, gender, height, or weight  leave those out unless the user mentioned them. Anything missing gets a sensible default automatically, and the plan is personalized with the logged-in user's name.
 
 # Rules
 - ALWAYS call a tool before asserting facts about restaurants, existing recipes, or the user's account. Never invent restaurants, ratings, dishes, or recipes.
@@ -312,7 +312,7 @@ export async function POST(req: NextRequest) {
         }),
         navigateToMealPlanner: tool({
           description:
-            "Navigate the user to the Meal Planner page, pre-fill their preferences, and auto-run generation. Call when the user wants a meal plan. Fill every field the user mentioned; leave optional body fields (age, gender, height, weight) OUT unless the user told you them — never invent them. The app applies sensible defaults for anything missing and personalizes with the logged-in user's name.",
+            "Navigate the user to the Meal Planner page, pre-fill their preferences, and auto-run generation. Call when the user wants a meal plan. Fill every field the user mentioned; leave optional body fields (age, gender, height, weight) OUT unless the user told you them  never invent them. The app applies sensible defaults for anything missing and personalizes with the logged-in user's name.",
           inputSchema: z.object({
             values: MEAL_PLAN_VALUES,
           }),

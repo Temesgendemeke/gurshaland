@@ -288,7 +288,7 @@ export default function BlogForm({
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="space-y-8 pb-12 bg-card border border-primary/80 p-4"
+      className="space-y-8 pb-12 bg-card border border-border p-4"
     >
       {/* Cover Image - Full width, no card wrapper */}
       <Card className="space-y-4">

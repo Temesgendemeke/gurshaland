@@ -20,8 +20,8 @@ export interface AutonomousState {
 }
 
 /**
- * Reads a pending AI action from the auth gate and — when it was flagged
- * autoRun — waits a short countdown before calling `onRun`. The intent is
+ * Reads a pending AI action from the auth gate and  when it was flagged
+ * autoRun  waits a short countdown before calling `onRun`. The intent is
  * only cleared when the action actually fires (or the user cancels), so
  * React re-mounts / StrictMode can't silently cancel it.
  *

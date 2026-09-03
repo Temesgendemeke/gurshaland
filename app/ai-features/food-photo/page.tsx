@@ -28,7 +28,7 @@ export default function FoodPhotoPage() {
                 Turn any food photo into an Ethiopian dish
               </h1>
               <p className="mt-4 text-xs leading-relaxed text-muted-foreground sm:text-lg">
-                Upload a photo of a dish you love — from any cuisine — and
+                Upload a photo of a dish you love  from any cuisine  and
                 we&apos;ll craft the closest authentic Ethiopian recipe with
                 steps, nutrition, and a photo in about a minute.
               </p>

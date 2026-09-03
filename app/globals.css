@@ -3,8 +3,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: var(--font-statoshi);
-  --font-satoshi: var(--font-statoshi);
+  --font-sans: var(--font-satoshi, var(--font-statoshi)), ui-sans-serif, system-ui, sans-serif;
+  --font-satoshi: var(--font-satoshi, var(--font-statoshi)), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif), Georgia, Cambria, "Times New Roman", Times, serif;
   --font-gosh: var(--font-gosh);
 
   --color-background: hsl(var(--background));
@@ -52,10 +53,12 @@
   --animate-caret-blink: caret-blink 1.1s step-end infinite;
 
   @keyframes caret-blink {
+
     0%,
     100% {
       opacity: 1;
     }
+
     50% {
       opacity: 0;
     }
@@ -63,11 +66,7 @@
 }
 
 @layer base {
-  /* ------------------------------------------------------------------
-     Normalize/reset layer — removes default browser differences in
-     box model, margin, line-height, and font rendering so Chrome,
-     Firefox, and Safari all start from the same baseline.
-  ------------------------------------------------------------------ */
+
   *,
   ::before,
   ::after {
@@ -77,8 +76,6 @@
   html {
     font-size: 100%;
     line-height: 1.5;
-    /* Prevent iOS/Android and some desktop browsers from auto-inflating
-       text when the page is zoomed, so rem-based sizing stays stable. */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
@@ -140,126 +137,131 @@
 
 @layer base {
   :root {
-    /*
-      "Berbere & Slate" theme — replaces the banned warm beige/brass/espresso
-      AI-default palette with Terracotta + Slate: warm rust primary against
-      cool grey neutrals, no brass. Ethiopian flag green as functional accent.
+    /* 
+      Pragmatic High-Clarity Palette:
+      Timeless, neutral foundation with authentic Berbere Crimson accent.
+      Zero muddy sepia/linen tint. Highest legibility, editorial precision.
     */
+    --background: 0 0% 100%;
 
-    /* Base: cool slate background, near-black text (not warm espresso) */
-    --background: 215 25% 96%;
-    --foreground: 215 20% 10%;
+    /* Pure, crisp white canvas (#FFFFFF) */
+    --foreground: 224 71% 4%;
+    /* Deep ink slate-black (#020817) */
 
-    --card: 215 20% 98%;
-    --card-foreground: 215 20% 10%;
-    --popover: 215 20% 98%;
-    --popover-foreground: 215 20% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
 
-    /* Primary: berbere red — authentic spice color, kept as brand anchor */
-    --primary: 12 68% 42%;
-    --primary-foreground: 215 25% 97%;
+    /* Primary: Authentic, vibrant Ethiopian Berbere Red */
+    --primary: 8 84% 44%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary: deep slate — functional, not decorative brass/gold */
-    --secondary: 215 15% 18%;
-    --secondary-foreground: 215 25% 97%;
+    /* Secondary: Clean, quiet neutral slate */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 215 15% 88%;
-    --muted-foreground: 215 10% 35%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 46%;
 
-    --accent: 215 15% 90%;
-    --accent-foreground: 215 20% 10%;
+    --accent: 220 14% 96%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 6 72% 46%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 215 15% 82%;
-    --input: 215 15% 82%;
-    --ring: 12 68% 42%;
-    --radius: 0.625rem;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 8 84% 44%;
+    --radius: 0.75rem;
 
-    --chart-1: 12 68% 42%;
-    --chart-2: 142 45% 35%;
-    --chart-3: 215 15% 25%;
-    --chart-4: 215 20% 15%;
-    --chart-5: 200 30% 40%;
+    --chart-1: 8 84% 44%;
+    --chart-2: 142 60% 32%;
+    --chart-3: 222 47% 20%;
+    --chart-4: 215 25% 40%;
+    --chart-5: 38 92% 50%;
 
-    --sidebar-background: 215 22% 94%;
-    --sidebar-foreground: 215 20% 10%;
-    --sidebar-primary: 12 68% 42%;
-    --sidebar-primary-foreground: 215 25% 97%;
-    --sidebar-accent: 215 15% 88%;
-    --sidebar-accent-foreground: 215 20% 10%;
-    --sidebar-border: 215 15% 82%;
-    --sidebar-ring: 12 68% 42%;
+    --sidebar-background: 220 14% 98%;
+    --sidebar-foreground: 224 71% 4%;
+    --sidebar-primary: 8 84% 44%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 94%;
+    --sidebar-accent-foreground: 224 71% 4%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 8 84% 44%;
 
-    /* Semantic colors — distinct, not fighting the palette */
-    --success: 142 45% 32%;
-    --warning: 35 85% 45%;
-    --error: 6 68% 45%;
-    --info: 200 40% 40%;
-    --popular: 12 60% 40%;
+    /* Semantic & cultural accents */
+    --success: 142 60% 32%;
+    --warning: 38 92% 50%;
+    --error: 0 84% 50%;
+    --info: 217 91% 60%;
+    --popular: 8 84% 44%;
 
-    /* Ethiopian flag colors — green as functional accent, red = primary, yellow removed as accent */
-    --ethiopian-green: 142 55% 30%;
-    --ethiopian-yellow: 42 88% 50%;
-    --ethiopian-red: 12 68% 42%;
+    /* Cultural accents */
+    --ethiopian-green: 142 60% 30%;
+    --ethiopian-yellow: 40 94% 46%;
+    --ethiopian-red: 8 84% 44%;
 
-    --gradient-from: 215 25% 96%;
-    --gradient-via: 215 20% 97%;
-    --gradient-to: 215 22% 94%;
+    --gradient-from: 0 0% 100%;
+    --gradient-via: 220 14% 99%;
+    --gradient-to: 220 14% 96%;
   }
 
   .dark {
-    --background: 215 25% 8%;
-    --foreground: 215 20% 92%;
-    --card: 215 20% 12%;
-    --card-foreground: 215 20% 92%;
-    --popover: 215 20% 12%;
-    --popover-foreground: 215 20% 92%;
+    /* 
+      Pragmatic Dark Mode:
+      Deep, architectural Obsidian Slate (#030712) with luminous Berbere.
+    */
+    --background: 224 71% 4%;
+    --foreground: 210 20% 98%;
+    --card: 222 47% 7%;
+    --card-foreground: 210 20% 98%;
+    --popover: 222 47% 7%;
+    --popover-foreground: 210 20% 98%;
 
-    --primary: 12 65% 54%;
-    --primary-foreground: 215 25% 8%;
+    --primary: 8 88% 58%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 15% 22%;
-    --secondary-foreground: 215 25% 92%;
+    --secondary: 217 33% 15%;
+    --secondary-foreground: 210 20% 98%;
 
-    --muted: 215 15% 18%;
-    --muted-foreground: 215 10% 65%;
+    --muted: 217 33% 13%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 215 15% 18%;
-    --accent-foreground: 215 20% 92%;
+    --accent: 217 33% 13%;
+    --accent-foreground: 210 20% 98%;
 
-    --destructive: 6 60% 40%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 215 15% 22%;
-    --input: 215 15% 22%;
-    --ring: 12 65% 54%;
+    --border: 217 33% 16%;
+    --input: 217 33% 16%;
+    --ring: 8 88% 58%;
 
-    --chart-1: 12 65% 54%;
-    --chart-2: 142 45% 45%;
-    --chart-3: 215 15% 35%;
-    --chart-4: 215 20% 80%;
-    --chart-5: 200 35% 55%;
+    --chart-1: 8 88% 58%;
+    --chart-2: 142 50% 48%;
+    --chart-3: 215 20% 65%;
+    --chart-4: 220 20% 80%;
+    --chart-5: 38 92% 55%;
 
-    --sidebar-background: 215 24% 7%;
-    --sidebar-foreground: 215 20% 92%;
-    --sidebar-primary: 12 65% 54%;
-    --sidebar-primary-foreground: 215 25% 8%;
-    --sidebar-accent: 215 15% 18%;
-    --sidebar-accent-foreground: 215 20% 92%;
-    --sidebar-border: 215 15% 22%;
-    --sidebar-ring: 12 65% 54%;
+    --sidebar-background: 224 71% 3%;
+    --sidebar-foreground: 210 20% 98%;
+    --sidebar-primary: 8 88% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 33% 13%;
+    --sidebar-accent-foreground: 210 20% 98%;
+    --sidebar-border: 217 33% 16%;
+    --sidebar-ring: 8 88% 58%;
 
-    --success: 142 40% 52%;
-    --warning: 35 80% 55%;
-    --error: 6 62% 58%;
-    --info: 200 45% 56%;
-    --popular: 12 55% 55%;
+    --success: 142 50% 48%;
+    --warning: 38 92% 55%;
+    --error: 0 72% 51%;
+    --info: 217 91% 60%;
+    --popular: 8 88% 58%;
 
-    --gradient-from: 215 25% 8%;
-    --gradient-via: 215 20% 10%;
-    --gradient-to: 215 24% 6%;
+    --gradient-from: 224 71% 4%;
+    --gradient-via: 222 47% 7%;
+    --gradient-to: 224 71% 3%;
   }
 }
 
@@ -283,6 +285,7 @@ html body[data-scroll-locked][data-scroll-locked] {
   * {
     border-color: hsl(var(--border));
   }
+
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
@@ -290,21 +293,18 @@ html body[data-scroll-locked][data-scroll-locked] {
     min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: var(--font-statoshi), ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-satoshi, var(--font-statoshi)), ui-sans-serif, system-ui, sans-serif;
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
   }
 }
 
-/* Full-height container that adapts to mobile browser UI (address bar).
-   Falls back to 100vh for browsers without 100dvh support. */
 @layer utilities {
-  /* Fluid type scale: clamp() instead of fixed breakpoint sizes so text
-     scales smoothly with viewport/zoom instead of jumping at thresholds. */
   .text-fluid-hero {
-    font-size: clamp(3rem, 2.1rem + 2.6vw, 4.5rem);
-    line-height: 1.1;
+    font-size: clamp(2.75rem, 2rem + 2.5vw, 4.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
   }
 
   .text-fluid-section {
@@ -331,8 +331,6 @@ html body[data-scroll-locked][data-scroll-locked] {
   background: hsl(var(--background));
 }
 
-/* Berbere red primary — now solid+saturated enough not to need a gradient
-   crutch to feel "designed" */
 .ethiopian-primary {
   background: hsl(var(--primary));
 }
@@ -345,10 +343,10 @@ html body[data-scroll-locked][data-scroll-locked] {
   background: hsl(var(--ethiopian-green));
 }
 
-/* Flag-color accents — green as functional accent, red = primary, yellow removed */
 .flag-accent-green {
   color: hsl(var(--ethiopian-green));
 }
+
 .flag-accent-red {
   color: hsl(var(--ethiopian-red));
 }
@@ -357,17 +355,20 @@ html body[data-scroll-locked][data-scroll-locked] {
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(100%);
   }
 }
 
 @keyframes breathe {
+
   0%,
   100% {
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(1.02);
     opacity: 0.8;
@@ -379,6 +380,7 @@ html body[data-scroll-locked][data-scroll-locked] {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -386,10 +388,12 @@ html body[data-scroll-locked][data-scroll-locked] {
 }
 
 @keyframes staggeredPulse {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -417,15 +421,20 @@ html body[data-scroll-locked][data-scroll-locked] {
   }
 
   .modern-card {
-    @apply rounded-lg border border-border/70 bg-card transition-colors;
+    @apply rounded-xl border border-border/80 bg-card transition-all shadow-sm;
   }
 
   .modern-card-hover {
-    @apply hover:border-border;
+    @apply hover:border-border hover:shadow-md;
   }
 
+  /* Consistent rounded-xl buttons across the entire page */
   .btn-primary-modern {
-    @apply bg-primary text-primary-foreground font-semibold transition-colors duration-200 hover:bg-primary/90 active:translate-y-px;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-semibold transition-all duration-200 hover:bg-primary/90 hover:shadow-md hover:shadow-primary/20 active:translate-y-px;
+  }
+
+  .btn-secondary-modern {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card text-foreground font-medium transition-all duration-200 hover:bg-muted/60 active:translate-y-px;
   }
 
   .modern-bckground-gradient {
@@ -433,17 +442,11 @@ html body[data-scroll-locked][data-scroll-locked] {
   }
 
   .modern-logo {
-    @apply text-primary font-semibold;
-  }
-
-  /* Secondary button now uses the gold flag-color directly instead of a
-     warning/popular gradient blend that had no thematic reasoning */
-  .btn-secondary-modern {
-    @apply bg-secondary text-secondary-foreground font-semibold transition-colors duration-200 hover:bg-secondary/90 active:translate-y-px;
+    @apply text-primary font-bold tracking-tight;
   }
 
   .heading-primary {
-    @apply text-foreground font-bold tracking-tight;
+    @apply text-foreground font-serif tracking-tight;
   }
 
   .heading-secondary {
@@ -455,7 +458,7 @@ html body[data-scroll-locked][data-scroll-locked] {
   }
 
   .text-body-muted {
-    @apply text-muted-foreground;
+    @apply text-muted-foreground leading-relaxed;
   }
 }
 
@@ -465,7 +468,7 @@ html body[data-scroll-locked][data-scroll-locked] {
 }
 
 .focus-modern {
-  @apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all duration-200;
 }
 
 .transition-standard {
@@ -495,27 +498,20 @@ html body[data-scroll-locked][data-scroll-locked] {
   @apply bg-muted-foreground/30;
 }
 
-/*
-  Grain overlay — previously filled with --primary (berbere red) at 42%
-  opacity in multiply blend, which tints the ENTIRE page red/pink since
-  multiply darkens everything underneath toward the fill color. That was
-  the actual cause of the pink cast, not the background token. Switched
-  to a neutral foreground-based fill at much lower opacity so it reads
-  as subtle paper texture instead of a color wash.
-*/
+/* Subtle organic paper texture overlay */
 .grain-overlay {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.05;
+  opacity: 0.04;
   mix-blend-mode: multiply;
   backface-visibility: hidden;
   transform: translateZ(0);
 }
 
 .dark .grain-overlay {
-  opacity: 0.08;
+  opacity: 0.06;
   mix-blend-mode: overlay;
 }
 
@@ -536,6 +532,7 @@ html body[data-scroll-locked][data-scroll-locked] {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(calc(-100% - var(--gap, 1rem)));
   }
@@ -545,6 +542,7 @@ html body[data-scroll-locked][data-scroll-locked] {
   from {
     transform: translateY(0);
   }
+
   to {
     transform: translateY(calc(-100% - var(--gap, 1rem)));
   }

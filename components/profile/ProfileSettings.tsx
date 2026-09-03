@@ -61,7 +61,7 @@ import generate_error from "@/utils/generate_error";
 import { useRouter } from "next/navigation";
 
 /* ------------------------------------------------------------------ */
-/*  Change Password — button card + modal form                        */
+/*  Change Password  button card + modal form                        */
 /* ------------------------------------------------------------------ */
 function ChangePasswordSection() {
   const [open, setOpen] = useState(false);
@@ -580,11 +580,10 @@ export default function ProfileSettings() {
                         characters)
                       </p>
                       <span
-                        className={`text-xs ${
-                          (field.value?.length || 0) > 450
+                        className={`text-xs ${(field.value?.length || 0) > 450
                             ? "text-warning"
                             : "text-muted-foreground"
-                        }`}
+                          }`}
                       >
                         {field.value?.length || 0}/500
                       </span>

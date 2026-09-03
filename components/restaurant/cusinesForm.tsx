@@ -38,7 +38,7 @@ const CusinesForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
 
       {cuisines.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border bg-muted/20 px-4 py-6 text-center text-xs text-muted-foreground">
-          No cuisines yet — add Ethiopian, Italian, Fusion...
+          No cuisines yet  add Ethiopian, Italian, Fusion...
         </div>
       ) : (
         <div className="space-y-3">

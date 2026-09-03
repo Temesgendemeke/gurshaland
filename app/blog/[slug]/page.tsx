@@ -68,7 +68,7 @@ const BlogPostPage = async ({ params }: { params: { slug: string } }) => {
         </div>
       )}
 
-      {/* Article body — narrow reading width */}
+      {/* Article body  narrow reading width */}
       <div className="mx-auto mt-12 px-4 sm:px-6 md:mt-16">
         <ArticleContent blogPost={blogPost} />
       </div>

@@ -91,7 +91,7 @@ export default function AutonomousBanner({
               onClick={onCancel}
               className="h-9 rounded-lg border border-border bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
             >
-              Cancel — I&apos;ll do it
+              Cancel  I&apos;ll do it
             </button>
           </div>
         </div>

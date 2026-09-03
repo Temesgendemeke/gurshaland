@@ -45,7 +45,7 @@ const ContentSection = ({ section }: { section: Content }) => {
         </div>
       )}
 
-      {/* Recipe — clean two-column layout */}
+      {/* Recipe  clean two-column layout */}
       {isRecipe && (
         <div className="my-8 grid gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
           {hasIngredients && (

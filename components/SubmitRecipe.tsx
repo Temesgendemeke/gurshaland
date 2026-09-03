@@ -370,7 +370,7 @@ export default function SubmitRecipeForm({
   return (
     <Form {...form}>
       <form
-        className="space-y-2 bg-card pb-5 border border-primary/80"
+        className="space-y-2 bg-card pb-5 border border-border"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <BasicInfoFields

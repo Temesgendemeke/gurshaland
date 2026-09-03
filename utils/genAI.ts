@@ -25,7 +25,7 @@ export const AIgenerateImage = async (
     console.log(`✅ GEMINI_API_KEY is configured`);
 
     const new_prompt =
-      `Generate a landscape photograph of ONLY the food or beverage described below. The image must contain ONLY the dish, plated food, ingredients, or drink — nothing else. No people, no hands, no faces, no human figures, no animals, no text, no logos. Focus on the food's colors, textures, plating, and presentation on a surface. Natural lighting, appetizing composition.
+      `Generate a landscape photograph of ONLY the food or beverage described below. The image must contain ONLY the dish, plated food, ingredients, or drink  nothing else. No people, no hands, no faces, no human figures, no animals, no text, no logos. Focus on the food's colors, textures, plating, and presentation on a surface. Natural lighting, appetizing composition.
 
 Dish: ${prompt}`;
     console.log(`📝 Formatted prompt: "${new_prompt}"`);
@@ -117,7 +117,7 @@ export const generateRecipeImage = async (
   return null;
 };
 
-// Stock photo only (no AI cost) — used for step/instruction images so the
+// Stock photo only (no AI cost)  used for step/instruction images so the
 // AI image budget stays capped at the single hero image.
 export const generateStockImage = async (
   prompt: string,

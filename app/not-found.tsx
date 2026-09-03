@@ -5,10 +5,7 @@ import { UtensilsCrossed } from "lucide-react";
 export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
-      {/* Icon */}
-      <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-muted">
-        <UtensilsCrossed className="h-10 w-10 text-muted-foreground" />
-      </div>
+     
 
       {/* Title */}
       <h1 className="font-gosh text-6xl font-black tracking-tight text-foreground sm:text-7xl">

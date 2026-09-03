@@ -4,7 +4,10 @@
     "slug": "abees-burritos-and-bowls-civil-service",
     "description": "Burrito and bowls restaurant",
     "rating": 0,
-    "cuisines": ["Desserts", "Mexican"],
+    "cuisines": [
+      "Desserts",
+      "Mexican"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -103,7 +106,11 @@
     "slug": "251-kitchen-cocktail-bole",
     "description": "Restaurant And Cocktail Bar.",
     "rating": 3.7,
-    "cuisines": ["American", "Italian", "Seafood"],
+    "cuisines": [
+      "American",
+      "Italian",
+      "Seafood"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -794,7 +801,11 @@
     "slug": "aarabon-caf-sarbet",
     "description": "Aarabon Recreation Center is an entertainment venue with a Café, Restaurant, Sports Bar, and Children’s arcade all under one roof.   We serve both Ethiopian and international cuisines.",
     "rating": 3.4,
-    "cuisines": ["Sandwiches", "Fusion", "Breakfast"],
+    "cuisines": [
+      "Sandwiches",
+      "Fusion",
+      "Breakfast"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -1109,7 +1120,11 @@
     "slug": "abyssinia-flavors-gerji",
     "description": "A place where you can experience the true taste of habeshan cuisine .",
     "rating": 0,
-    "cuisines": ["Fasting", "Ethiopian", "Breakfast"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian",
+      "Breakfast"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -1360,7 +1375,11 @@
     "slug": "abyssinia-flavors-summit",
     "description": "A place where you can experience the true taste of habeshan cuisine .",
     "rating": 5,
-    "cuisines": ["Fasting", "Ethiopian", "Breakfast"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian",
+      "Breakfast"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -1619,7 +1638,13 @@
     "slug": "add-burger-and-cafe-bole",
     "description": "Enjoy gourmet burgers made from fresh, never-frozen ingredients and piled high with premium toppings. Add Burger creates juicy patties made from scratch daily, served on house-baked buns alongside mouthwatering fries and artisan dishes.",
     "rating": 2.8,
-    "cuisines": ["Fasting", "Burgers", "Pasta", "Chicken", "Discount"],
+    "cuisines": [
+      "Fasting",
+      "Burgers",
+      "Pasta",
+      "Chicken",
+      "Discount"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -2110,7 +2135,11 @@
     "slug": "addis-mix-bole",
     "description": "We're passionate about flavorsome foods made with fresh ingredients and tremendous hospitality.\r\nwe believe our food should not only be mouth-watering but delivered by caring, friendly individuals. \r\n",
     "rating": 3.9,
-    "cuisines": ["Fasting", "Ethiopian", "Breakfast"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian",
+      "Breakfast"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -2353,7 +2382,11 @@
     "slug": "addis-mix-summit",
     "description": "We're passionate about flavorsome foods made with fresh ingredients and tremendous hospitality.\r\nwe believe our food should not only be mouth-watering but delivered by caring, friendly individuals. \r\n",
     "rating": 0,
-    "cuisines": ["Ethiopian", "Breakfast", "Flowers"],
+    "cuisines": [
+      "Ethiopian",
+      "Breakfast",
+      "Flowers"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -2660,7 +2693,10 @@
     "slug": "ado-kitchen",
     "description": "Ethiopian traditional food restourant ",
     "rating": 0,
-    "cuisines": ["Fasting", "Ethiopian"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -2895,7 +2931,10 @@
     "slug": "afro-groove-wollo-sefer",
     "description": "Started in 2015, Afro Groove imports fresh salmon direct from Norway and serves up delicacies like smoked salmon baguettes and salmon burgers.",
     "rating": 2.6,
-    "cuisines": ["Sandwiches", "Seafood"],
+    "cuisines": [
+      "Sandwiches",
+      "Seafood"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -3538,7 +3577,13 @@
     "slug": "aladdin-bisrate-gebriel",
     "description": "A local staple for almost 20 years, Aladdin has been serving some of the finest Armenian and Mediterranean food in Addis. Items do not come with pita unless specified in the description.",
     "rating": 3.8,
-    "cuisines": ["Armenian", "Kebabs", "Fasting", "Mediterranean", "Pizza"],
+    "cuisines": [
+      "Armenian",
+      "Kebabs",
+      "Fasting",
+      "Mediterranean",
+      "Pizza"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -4077,7 +4122,12 @@
     "slug": "aldibs-shawarma-fast-food-gerji",
     "description": "\"Shawarma, popular street food in the Middle East, which originated in Turkey and is made of spit-roasted layers of lamb, beef, or other meat that are sliced and often wrapped in or served with pita. Shawarma is similar to Greek gyros, though the former is seasoned with more spices and the latter with more herbs.\"",
     "rating": 2.8,
-    "cuisines": ["Pizza", "Wraps", "Chicken", "Shawarma"],
+    "cuisines": [
+      "Pizza",
+      "Wraps",
+      "Chicken",
+      "Shawarma"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -4328,7 +4378,11 @@
     "slug": "andiamo-pizza-and-pasta-restaurant-sarbet-branch",
     "description": "Italian Restaurant",
     "rating": 3,
-    "cuisines": ["Pizza", "Italian", "Pasta"],
+    "cuisines": [
+      "Pizza",
+      "Italian",
+      "Pasta"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -4699,7 +4753,13 @@
     "slug": "arirang-2-restaurant-bisrate-gebriel",
     "description": " Arirang 2 is a new venture brought to you by Arirang Korean Restaurant. we offer various fusion food that are trending in East Asia including the famous fried chicken. We also have a bakery that provides delicious Asian breads and pastries that never existed in Addis.",
     "rating": 4.4,
-    "cuisines": ["Desserts", "Asian", "Brunch", "Chicken", "Korean"],
+    "cuisines": [
+      "Desserts",
+      "Asian",
+      "Brunch",
+      "Chicken",
+      "Korean"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -5342,7 +5402,12 @@
     "slug": "arirang-restaurant-torhaloch",
     "description": "Arirang Korean Restaurant was established in 2009. Our aim has always been serving our customers with the highest quality. We have always brought top-quality Asian food to top customers. We offer mainly Korean, Japanese, and Chinese cuisine where many famous personnel have tried and returned for more!\r\n\r\nPlease note: Orders might take longer than an hour on weekends.",
     "rating": 3.7,
-    "cuisines": ["Asian", "Vegetarian", "Noodles", "Korean"],
+    "cuisines": [
+      "Asian",
+      "Vegetarian",
+      "Noodles",
+      "Korean"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -5993,7 +6058,12 @@
     "slug": "atelefugn-bulgaria",
     "description": "Discover traditional Ethiopian cuisine made from scratch. Atelefugn prepares authentic dishes using time-honored recipes and the finest Ethiopian spices. Authentic Ethiopian flavors made with love.",
     "rating": 3.7,
-    "cuisines": ["Fasting", "Ethiopian", "Breakfast", "Vegetarian"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian",
+      "Breakfast",
+      "Vegetarian"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -6479,7 +6549,11 @@
     "slug": "atmosphere",
     "description": "No description provided",
     "rating": 0,
-    "cuisines": ["Fasting", "Ethiopian", "Pasta"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian",
+      "Pasta"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -6634,7 +6708,11 @@
     "slug": "azmera-shiro-bole",
     "description": "Azmera Shiro is a well-known Ethiopian restaurant that specializes in traditional food and Ethiopian delicacies.",
     "rating": 3.4,
-    "cuisines": ["Fasting", "Ethiopian", "Breakfast"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian",
+      "Breakfast"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -7165,7 +7243,12 @@
     "slug": "babis-bistro-bisrate-gebriel",
     "description": "Craving something delicious?\r\nTired to cook something good?\r\nWant to impress your date with “YOUR” culinary skills?\r\nWhichever it is …..\r\nWe got your back and your tummy",
     "rating": 3.4,
-    "cuisines": ["Fusion", "Burgers", "Pasta", "Wraps"],
+    "cuisines": [
+      "Fusion",
+      "Burgers",
+      "Pasta",
+      "Wraps"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -7552,7 +7635,11 @@
     "slug": "bait-al-mandi-bole",
     "description": "Authentic Yemeni Cuisine in Addis Ababa since 2008, Bait Al Mandi serves various dishes from lamb, chicken and fish,  Mediterranean appetizers, local dishes, and many more. ",
     "rating": 3.6,
-    "cuisines": ["Mediterranean", "Wraps", "Middle Eastern"],
+    "cuisines": [
+      "Mediterranean",
+      "Wraps",
+      "Middle Eastern"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -8083,7 +8170,12 @@
     "slug": "bazra-coffee",
     "description": "No description provided",
     "rating": 0,
-    "cuisines": ["Sandwiches", "Italian", "Breakfast", "Wraps"],
+    "cuisines": [
+      "Sandwiches",
+      "Italian",
+      "Breakfast",
+      "Wraps"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -8270,7 +8362,11 @@
     "slug": "bella-ciao-chicken-bole",
     "description": "Bella Ciao Chicken, located at bole brass is a brand-new fast food cafe combining the loved flavor of Chicken with multiple vegetarian and vegan-friendly dishes for an atmosphere that is unique and welcoming to all.",
     "rating": 4,
-    "cuisines": ["Pizza", "Burgers", "Wraps"],
+    "cuisines": [
+      "Pizza",
+      "Burgers",
+      "Wraps"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -10282,7 +10378,11 @@
     "slug": "boss-burger-summit",
     "description": "Boss Burger Addis is a fast food restaurant located in the heart of Addis, Very well known for our exquisite house sauce and juicy burger patties. Try some of our signature recipes & enjoy your experience 🔥\r\nIf you want receipt please contact us first.",
     "rating": 0,
-    "cuisines": ["Fasting", "Burgers", "Discount"],
+    "cuisines": [
+      "Fasting",
+      "Burgers",
+      "Discount"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -10573,7 +10673,11 @@
     "slug": "boss-burger-bole",
     "description": "Boss Burger Addis is a fast food restaurant located in the heart of Addis, Very well known for our exquisite house sauce and juicy burger patties. Try some of our signature recipes & enjoy your experience 🔥\r\nIf you want receipt please contact us first.",
     "rating": 3.5,
-    "cuisines": ["Fasting", "Burgers", "Discount"],
+    "cuisines": [
+      "Fasting",
+      "Burgers",
+      "Discount"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -10856,7 +10960,11 @@
     "slug": "burger-city",
     "description": "No description provided",
     "rating": 5,
-    "cuisines": ["Desserts", "Burgers", "Breakfast"],
+    "cuisines": [
+      "Desserts",
+      "Burgers",
+      "Breakfast"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -10971,7 +11079,10 @@
     "slug": "burger-crush",
     "description": "Burger Crush is located at Sarbet around Vatican Embassy and is working to be the best fast food restaurant in Addis Ababa and Ethiopia. Burger Crush has kept faith with a strategy which was to prepare fast foods using recipes designed by our company thereby giving our food a unique flavor.",
     "rating": 2.9,
-    "cuisines": ["Burgers", "Drinks"],
+    "cuisines": [
+      "Burgers",
+      "Drinks"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -11054,7 +11165,12 @@
     "slug": "burger-factory-bisrate-gebriel",
     "description": "At Burger Factory, the art is to transform the humble burger into a culinary work of art. The chefs use only premium ingredients to construct burgers crafted for optimal flavor. Customize with mouthwatering toppings and sauces for a personalized burger masterpiece. Experience burgers made into an art form.",
     "rating": 4.1,
-    "cuisines": ["American", "Sandwiches", "Burgers", "Drinks"],
+    "cuisines": [
+      "American",
+      "Sandwiches",
+      "Burgers",
+      "Drinks"
+    ],
     "address": "Lat: 8.99015622103156, Lon: 38.72481593156296",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -11233,7 +11349,11 @@
     "slug": "burger-shack-bole",
     "description": "Variety of delicious Burgers ",
     "rating": 5,
-    "cuisines": ["American", "Mexican", "Burgers"],
+    "cuisines": [
+      "American",
+      "Mexican",
+      "Burgers"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -11572,7 +11692,11 @@
     "slug": "burgerizza-bole",
     "description": "Have you ever had a pizza and a burger combined into one? A perfectly seasoned patty, paired with handpicked tomatoes and then topped with a marvelous slice of Margarita pizza. Well, you're in luck, because here at Burgerizza, we make that dream a reality. Everything is ALWAYS served fresh, tasty; hot just the way you'd love it! Your way, all the way with passion! We pride ourselves to be the hallmark of quality, service, cleanliness and consistency in Addis.",
     "rating": 4.1,
-    "cuisines": ["Pizza", "Burgers", "Discount"],
+    "cuisines": [
+      "Pizza",
+      "Burgers",
+      "Discount"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -11751,7 +11875,11 @@
     "slug": "burgerizza-bulbula",
     "description": "Have you ever had a pizza and a burger combined into one? A perfectly seasoned patty, paired with handpicked tomatoes and then topped with a marvelous slice of Margarita pizza. Well, you're in luck, because here at Burgerizza, we make that dream a reality. Everything is ALWAYS served fresh, tasty; hot just the way you'd love it! Your way, all the way with passion! We pride ourselves to be the hallmark of quality, service, cleanliness and consistency in Addis.",
     "rating": 0,
-    "cuisines": ["Pizza", "Burgers", "Discount"],
+    "cuisines": [
+      "Pizza",
+      "Burgers",
+      "Discount"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -11930,7 +12058,11 @@
     "slug": "burgerizza-dembel",
     "description": "Have you ever had a pizza and a burger combined into one? A perfectly seasoned patty, paired with handpicked tomatoes and then topped with a marvelous slice of Margarita pizza. Well, you're in luck, because here at Burgerizza, we make that dream a reality. Everything is ALWAYS served fresh, tasty; hot just the way you'd love it! Your way, all the way with passion! We pride ourselves to be the hallmark of quality, service, cleanliness and consistency in Addis.",
     "rating": 2,
-    "cuisines": ["Pizza", "Burgers", "Discount"],
+    "cuisines": [
+      "Pizza",
+      "Burgers",
+      "Discount"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -12109,7 +12241,11 @@
     "slug": "burgerizza-summit",
     "description": "Have you ever had a pizza and a burger combined into one? A perfectly seasoned patty, paired with handpicked tomatoes and then topped with a marvelous slice of Margarita pizza. Well, you're in luck, because here at Burgerizza, we make that dream a reality. Everything is ALWAYS served fresh, tasty; hot just the way you'd love it! Your way, all the way with passion! We pride ourselves to be the hallmark of quality, service, cleanliness and consistency in Addis.",
     "rating": 1.5,
-    "cuisines": ["Pizza", "Burgers", "Discount"],
+    "cuisines": [
+      "Pizza",
+      "Burgers",
+      "Discount"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -12288,7 +12424,11 @@
     "slug": "by-the-slice",
     "description": "Freshly made. Always delicious",
     "rating": 0,
-    "cuisines": ["Pizza", "American", "Italian"],
+    "cuisines": [
+      "Pizza",
+      "American",
+      "Italian"
+    ],
     "address": "Yeka, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -12371,7 +12511,11 @@
     "slug": "by-the-slice-sarbet",
     "description": "Freshly made. Always delicious",
     "rating": 0,
-    "cuisines": ["Pizza", "American", "Italian"],
+    "cuisines": [
+      "Pizza",
+      "American",
+      "Italian"
+    ],
     "address": "Lideta, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -12454,7 +12598,11 @@
     "slug": "canaan-caf-ayat",
     "description": "Italian pizza and burger",
     "rating": 0,
-    "cuisines": ["Pizza", "Burgers", "Pasta"],
+    "cuisines": [
+      "Pizza",
+      "Burgers",
+      "Pasta"
+    ],
     "address": "Yeka, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -12665,7 +12813,12 @@
     "slug": "chaka-buna-morning-star",
     "description": "Because of the simplicity of our purpose good coffee, delicious food, a relaxed atmosphere, and excellent service, whether it is for a quick early-morning breakfast, prolonged meeting, hangouts or just lounging solo with a book, Chaka is the ideal place that works for everyone.",
     "rating": 4.5,
-    "cuisines": ["Sandwiches", "Ethiopian", "Burgers", "Breakfast"],
+    "cuisines": [
+      "Sandwiches",
+      "Ethiopian",
+      "Burgers",
+      "Breakfast"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -13052,7 +13205,12 @@
     "slug": "chaka-buna-bole",
     "description": "Because of the simplicity of our purpose good coffee, delicious food, a relaxed atmosphere and excellent service, whether it is for a quick early - morning breakfast, prolonged meeting, hangouts or just lounging solo with a book, Chaka is the ideal place that works for everyone.",
     "rating": 4.5,
-    "cuisines": ["Sandwiches", "Ethiopian", "Burgers", "Wraps"],
+    "cuisines": [
+      "Sandwiches",
+      "Ethiopian",
+      "Burgers",
+      "Wraps"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -13431,7 +13589,12 @@
     "slug": "chaka-buna-cmc",
     "description": "Because of the simplicity of our purpose good coffee, delicious food, a relaxed atmosphere and excellent service, whether it is for a quick early - morning breakfast, prolonged meeting, hangouts or just lounging solo with a book, Chaka is the ideal place that works for everyone.",
     "rating": 1,
-    "cuisines": ["Sandwiches", "Ethiopian", "Burgers", "Wraps"],
+    "cuisines": [
+      "Sandwiches",
+      "Ethiopian",
+      "Burgers",
+      "Wraps"
+    ],
     "address": "Yeka, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -13810,7 +13973,12 @@
     "slug": "chaka-buna-hayahulet",
     "description": "Because of the simplicity of our purpose good coffee, delicious food, a relaxed atmosphere and excellent service, whether it is for a quick early - morning breakfast, prolonged meeting, hangouts or just lounging solo with a book, Chaka is the ideal place that works for everyone.",
     "rating": 2.8,
-    "cuisines": ["Sandwiches", "Ethiopian", "Burgers", "Wraps"],
+    "cuisines": [
+      "Sandwiches",
+      "Ethiopian",
+      "Burgers",
+      "Wraps"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -14245,7 +14413,12 @@
     "slug": "chaka-buna-ras-branch",
     "description": "Because of the simplicity of our purpose good coffee, delicious food, a relaxed atmosphere, and excellent service, whether it is for a quick early-morning breakfast, prolonged meeting, hangouts or just lounging solo with a book, Chaka is the ideal place that works for everyone.",
     "rating": 4.7,
-    "cuisines": ["Sandwiches", "Ethiopian", "Burgers", "Wraps"],
+    "cuisines": [
+      "Sandwiches",
+      "Ethiopian",
+      "Burgers",
+      "Wraps"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -14608,7 +14781,12 @@
     "slug": "chanoly-noodles-bulbula",
     "description": "Chanoly Smoothie and Noodles house has been serving fresh foods and drinks since 2012 GC and with an open Chinese style kitchen and chefs with the motive of delivering healthy Asian Chinese meals with the local touch and international mojitos and smoothies with the local fusion. Our restaurant is well-known for its freshly house-made different types of Chinese noodles, sizzling, mixed vegetables.",
     "rating": 0,
-    "cuisines": ["Fasting", "Chinese", "Vegetarian", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Chinese",
+      "Vegetarian",
+      "Noodles"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -14859,7 +15037,12 @@
     "slug": "chanoly-noodles-friendship",
     "description": "Chanoly Smoothie and Noodles house has been serving fresh foods and drinks since 2012 GC and with an open Chinese style kitchen and chefs with the motive of delivering healthy Asian Chinese meals with the local touch and international mojitos and smoothies with the local fusion. Our restaurant is well-known for its freshly house-made different types of Chinese noodles, sizzling, mixed vegetables.",
     "rating": 4.2,
-    "cuisines": ["Fasting", "Chinese", "Vegetarian", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Chinese",
+      "Vegetarian",
+      "Noodles"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -15110,7 +15293,12 @@
     "slug": "chanoly-noodles-lebu",
     "description": "Chanoly Smoothie and Noodles house has been serving fresh foods and drinks since 2012 GC and with an open Chinese style kitchen and chefs with the motive of delivering healthy Asian Chinese meals with the local touch and international mojitos and smoothies with the local fusion. Our restaurant is well-known for its freshly house-made different types of Chinese noodles, sizzling, mixed vegetables.",
     "rating": 5,
-    "cuisines": ["Fasting", "Chinese", "Vegetarian", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Chinese",
+      "Vegetarian",
+      "Noodles"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -15361,7 +15549,12 @@
     "slug": "chanoly-noodles-meskel-flower",
     "description": "Chanoly Smoothie and Noodles house has been serving fresh foods and drinks since 2012 GC and with an open Chinese style kitchen and chefs with the motive of delivering healthy Asian Chinese meals with the local touch and international mojitos and smoothies with the local fusion. Our restaurant is well-known for its freshly house-made different types of Chinese noodles, sizzling, mixed vegetables.",
     "rating": 4.1,
-    "cuisines": ["Fasting", "Chinese", "Vegetarian", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Chinese",
+      "Vegetarian",
+      "Noodles"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -15612,7 +15805,12 @@
     "slug": "chanoly-noodles-sarbet",
     "description": "Chanoly Smoothie and Noodles house has been serving fresh foods and drinks since 2012 GC and with an open Chinese style kitchen and chefs with the motive of delivering healthy Asian Chinese meals with the local touch and international mojitos and smoothies with the local fusion. Our restaurant is well-known for its freshly house-made different types of Chinese noodles, sizzling, mixed vegetables.",
     "rating": 4,
-    "cuisines": ["Fasting", "Chinese", "Vegetarian", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Chinese",
+      "Vegetarian",
+      "Noodles"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -15855,7 +16053,13 @@
     "slug": "chanoly-noodles-summit",
     "description": "Chanoly Smoothie and Noodles house has been serving fresh foods and drinks since 2012 GC and with an open Chinese style kitchen and chefs with the motive of delivering healthy Asian Chinese meals with the local touch and international mojitos and smoothies with the local fusion. Our restaurant is well-known for its freshly house-made different types of Chinese noodles, sizzling, mixed vegetables.",
     "rating": 4,
-    "cuisines": ["Fasting", "Chinese", "Vegetarian", "Noodles", "Salads"],
+    "cuisines": [
+      "Fasting",
+      "Chinese",
+      "Vegetarian",
+      "Noodles",
+      "Salads"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -16098,7 +16302,10 @@
     "slug": "chillies-addis-bole",
     "description": "This chic Addis Ababa restaurant blends classic Indian cuisine with modern flair. Savor elevated dishes that transform traditional flavors into contemporary works of art. Experience the different flavors of different chef special dishes daily. At the intersection of tradition and innovation, Chillies Addis reimagines Indian dining.",
     "rating": 3.6,
-    "cuisines": ["Ethiopian", "Indian"],
+    "cuisines": [
+      "Ethiopian",
+      "Indian"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -16605,7 +16812,10 @@
     "slug": "chu-ramen-noodles-bole",
     "description": "Welcome to \"Flavors of Asia,\" a vibrant and enticing restaurant that takes pride in serving an exquisite combination of noodles with beef, vegetables, and chicken, along with tantalizing salads and the finest rice dishes.",
     "rating": 1,
-    "cuisines": ["Noodles", "Salads"],
+    "cuisines": [
+      "Noodles",
+      "Salads"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -16786,7 +16996,12 @@
     "slug": "cobuqa-mexican-restaurant-kazanchis",
     "description": "cobuqa is a Tex-Mex restaurant that aims to offer authentic Mexican dishes; additional cobuqa offers special dishes like Lamb Burger and a marinated Version of Club Sandwich.\r\n",
     "rating": 3.5,
-    "cuisines": ["American", "Sandwiches", "Mexican", "Salads"],
+    "cuisines": [
+      "American",
+      "Sandwiches",
+      "Mexican",
+      "Salads"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -17165,7 +17380,11 @@
     "slug": "cochin-fried-chicken-bole",
     "description": "Cochin Fried Chicken, the “Headquarters of Fried Chicken”, combines Cochin Chicken sourced from abroad with a blend of homemade sauces to serve delicious meals.",
     "rating": 3.6,
-    "cuisines": ["Pizza", "Burgers", "Chicken"],
+    "cuisines": [
+      "Pizza",
+      "Burgers",
+      "Chicken"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -17696,7 +17915,12 @@
     "slug": "container-bistro",
     "description": "No description provided",
     "rating": 2.5,
-    "cuisines": ["American", "Sandwiches", "Burgers", "Wraps"],
+    "cuisines": [
+      "American",
+      "Sandwiches",
+      "Burgers",
+      "Wraps"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -17915,7 +18139,13 @@
     "slug": "cook-studio",
     "description": "Italian Food ; French Dessert\r\n",
     "rating": 0,
-    "cuisines": ["Desserts", "Italian", "Burgers", "Pasta", "Bakery"],
+    "cuisines": [
+      "Desserts",
+      "Italian",
+      "Burgers",
+      "Pasta",
+      "Bakery"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -18014,7 +18244,11 @@
     "slug": "crave-cafe-restaurant-meskel-flower",
     "description": "Here at Crave, Our satisfaction is satisfying our customers with their cravings.",
     "rating": 4.4,
-    "cuisines": ["Pizza", "Italian", "Wraps"],
+    "cuisines": [
+      "Pizza",
+      "Italian",
+      "Wraps"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -19668,7 +19902,11 @@
     "slug": "daily-sub-kazanchis-eca",
     "description": "Fresh, Organic and Tasty  \r\nDaily Sub, we pay special attention to Natural/Organic Foods and Flavors. We always make sure that the food you get from us is Tasty and full of Satisfaction.\r\nWe always have Fresh, Natural/Organic and Unique Flavors.\r\nWe focus on the complete health, constant satisfaction and reasonable payment of our customers.\r\nWe are happy and honored to have you as our family.",
     "rating": 0,
-    "cuisines": ["Sandwiches", "Breakfast", "Wraps"],
+    "cuisines": [
+      "Sandwiches",
+      "Breakfast",
+      "Wraps"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -20095,7 +20333,10 @@
     "slug": "dashen-traditional-restaurant-hayahulet",
     "description": "Established in 1976, Dashen Restaurant has been serving our community and visitors with excellence. Dashen Terara serves exquisite signature Ethiopian cuisine with homemade spices and fresh ingredients.",
     "rating": 3.8,
-    "cuisines": ["Fasting", "Ethiopian"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian"
+    ],
     "address": "Yeka, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -20562,7 +20803,9 @@
     "slug": "debonairs-pizza-bole",
     "description": "Debonairs is one of Africa's largest pizza chains known for their creative and innovative pizzas and now they're here in Ethiopia. Try some of their unique creations like the Cram-Decker or the Triple-Decker!",
     "rating": 3.2,
-    "cuisines": ["Pizza"],
+    "cuisines": [
+      "Pizza"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -21021,7 +21264,10 @@
     "slug": "debonairs-pizza-meskel-flower",
     "description": "Debonairs is one of Africa's largest pizza chains known for their creative and innovative pizzas and now they're here in Ethiopia. Try some of their unique creations like the Cram-Decker or the Triple-Decker!",
     "rating": 3.8,
-    "cuisines": ["Pizza", "Discount"],
+    "cuisines": [
+      "Pizza",
+      "Discount"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -21472,7 +21718,10 @@
     "slug": "debonairs-pizza-sarbet",
     "description": "Debonairs is one of Africa's largest pizza chains known for their creative and innovative pizzas and now they're here in Ethiopia. Try some of their unique creations like the Cram-Decker or the Triple-Decker!",
     "rating": 3.2,
-    "cuisines": ["Pizza", "Discount"],
+    "cuisines": [
+      "Pizza",
+      "Discount"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -21939,7 +22188,9 @@
     "slug": "debonairs-pizza-summit",
     "description": "Debonairs is one of Africa's largest pizza chains known for their creative and innovative pizzas and now they're here in Ethiopia. Try some of their unique creations like the Cram-Decker or the Triple-Decker!",
     "rating": 3.9,
-    "cuisines": ["Pizza"],
+    "cuisines": [
+      "Pizza"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -22390,7 +22641,13 @@
     "slug": "delmela-summit",
     "description": "Delmelá is one of the newest hip stylish Cafe/Restaurants in town with the ambiance complimenting its exquisite menu, also providing you with fasting & vegan options. We specialize in everything we create, from flavorful Rice Bowls to bountiful Wraps and Sandwiches, including our House Special “Delmela Sandwich”.",
     "rating": 0,
-    "cuisines": ["Fasting", "Desserts", "Sandwiches", "Vegan", "Breakfast"],
+    "cuisines": [
+      "Fasting",
+      "Desserts",
+      "Sandwiches",
+      "Vegan",
+      "Breakfast"
+    ],
     "address": "Lat: 9.011064988800095, Lon: 38.85118410919032",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -22817,7 +23074,11 @@
     "slug": "dok-restaurant-megenagna-top-view",
     "description": "At DOK we embrace the Italian tradition of Denominazione di Origine Controllata (D.O.C) celebrating the quality and authentic taste of Italy. Real Italian eating and age-old simplicity refreshed with contemporary flair and prepared by passionate chefs using original recipes and ingredients from Italy.",
     "rating": 3.7,
-    "cuisines": ["Fasting", "Pizza", "Italian"],
+    "cuisines": [
+      "Fasting",
+      "Pizza",
+      "Italian"
+    ],
     "address": "Lat: 9.022573089609503, Lon: 38.80343749739757",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -23300,7 +23561,12 @@
     "slug": "donut-stop-torhaloch",
     "description": "Our Donuts are freshly made every day. We started our business to bring Addis Ababa the sweet taste of what a proper donut tastes like. You'll soon be thinking about your next visit to Do'nut Stop!",
     "rating": 4.5,
-    "cuisines": ["Pizza", "Desserts", "Burgers", "Donuts"],
+    "cuisines": [
+      "Pizza",
+      "Desserts",
+      "Burgers",
+      "Donuts"
+    ],
     "address": "Lat: 8.999697877319724, Lon: 38.72023623972539",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -23623,7 +23889,9 @@
     "slug": "doro-dash",
     "description": "The Doro that brings the flavor. \r\nGRILLED. ROASTED. DELIVERED. \r\nOnly online. Only Doro. ",
     "rating": 5,
-    "cuisines": ["Chicken"],
+    "cuisines": [
+      "Chicken"
+    ],
     "address": "Lat: 8.995586896017013, Lon: 38.72960743262578",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -23638,7 +23906,7 @@
           "amount": "966.00",
           "currency": "ETB"
         },
-        "description": "Doro Crêpe Wrap\r\nThin savory crêpe filled with shredded\r\ngarlic herb chicken, spicy sauce, and\r\ncrispy onions — rolled to perfection and\r\neasy to eat on the go."
+        "description": "Doro Crêpe Wrap\r\nThin savory crêpe filled with shredded\r\ngarlic herb chicken, spicy sauce, and\r\ncrispy onions  rolled to perfection and\r\neasy to eat on the go."
       },
       {
         "name": "Grilled Chicken Wings  (Buffalo or Garlic Lemon)",
@@ -23690,7 +23958,14 @@
     "slug": "dusk-restaurant-bole",
     "description": "No description provided",
     "rating": 0,
-    "cuisines": ["Pizza", "Burgers", "Breakfast", "Wraps", "Chicken", "Salads"],
+    "cuisines": [
+      "Pizza",
+      "Burgers",
+      "Breakfast",
+      "Wraps",
+      "Chicken",
+      "Salads"
+    ],
     "address": "Lat: 8.99185195028897, Lon: 38.78465214232869",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -24525,7 +24800,9 @@
     "slug": "effoi-lebu",
     "description": "እፎይ / Effoi has been serving authentic pizza made using 99% local ingredients since 2007 g.c from our store in Chechinya (RED). Since launching, We've opened branches in Kazainchis (Effoi ORANGE) and Sar-bet (Effoi GREEN) which also serves sandwich, salad, and fresh soups daily.",
     "rating": 0,
-    "cuisines": ["Pizza"],
+    "cuisines": [
+      "Pizza"
+    ],
     "address": "Lat: 8.948808078276565, Lon: 38.73231851325879",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -24848,7 +25125,9 @@
     "slug": "effoi-bole",
     "description": "እፎይ / Effoi has been serving authentic pizza made using 99% local ingredients since 2007 g.c from our store in Chechinya (RED). Since launching, We've opened branches in Kazainchis (Effoi ORANGE) and Sar-bet (Effoi GREEN) which also serves sandwich, salad, and fresh soups daily.",
     "rating": 3.9,
-    "cuisines": ["Pizza"],
+    "cuisines": [
+      "Pizza"
+    ],
     "address": "Lat: 9.002812683609607, Lon: 38.779527766709414",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -25051,7 +25330,10 @@
     "slug": "effoi-sarbet",
     "description": "እፎይ / Effoi has been serving authentic pizza made using 99% local ingredients since 2007 g.c from our store in Chechinya (RED). Since launching, We've opened branches in Kazainchis (Effoi ORANGE) and Sar-bet (Effoi GREEN) which also serves sandwich, salad, and fresh soups daily.",
     "rating": 3.5,
-    "cuisines": ["Pizza", "Fusion"],
+    "cuisines": [
+      "Pizza",
+      "Fusion"
+    ],
     "address": "Lat: 8.998550645404954, Lon: 38.73968839739738",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -25246,7 +25528,12 @@
     "slug": "entoto-road-side",
     "description": "Entoto our fine dining restaurant with the ambition of showing off Ethiopian ingredients in internationally inspired dishes.",
     "rating": 4.3,
-    "cuisines": ["Pizza", "Desserts", "Burgers", "Salads"],
+    "cuisines": [
+      "Pizza",
+      "Desserts",
+      "Burgers",
+      "Salads"
+    ],
     "address": "Lat: 8.994121834985293, Lon: 38.78119827116382",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -25625,7 +25912,11 @@
     "slug": "fafresh-cultural-kitchen-dembel",
     "description": "Fafresh Cultural Kitchen provides foods and dishes that are passed on through generations,unique and fresh dishes which have been consumed for many generations.",
     "rating": 3,
-    "cuisines": ["Fasting", "Ethiopian", "Breakfast"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian",
+      "Breakfast"
+    ],
     "address": "Lat: 9.002736939416383, Lon: 38.768744837952504",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -26188,7 +26479,10 @@
     "slug": "five-stop",
     "description": "Gourmet Fast Food",
     "rating": 0,
-    "cuisines": ["Pizza", "Sandwiches"],
+    "cuisines": [
+      "Pizza",
+      "Sandwiches"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -26551,7 +26845,12 @@
     "slug": "frankies-chicken-teriyaki",
     "description": "No description provided",
     "rating": 0,
-    "cuisines": ["American", "Asian", "Noodles", "Chicken"],
+    "cuisines": [
+      "American",
+      "Asian",
+      "Noodles",
+      "Chicken"
+    ],
     "address": "Lideta, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -26634,7 +26933,10 @@
     "slug": "galani-coffee-jackros",
     "description": "Galani Coffee brings a good mixture of house blend coffee and honey straight from the farm. We also specialize in delicious gelatos made with fresh ingredients that you'll be sure to love!",
     "rating": 4.6,
-    "cuisines": ["Desserts", "Ice Cream"],
+    "cuisines": [
+      "Desserts",
+      "Ice Cream"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -26829,7 +27131,10 @@
     "slug": "gebeta-restaurant",
     "description": "Gebeta was established back in November, 2015. We prepare most of the ingredients in-house due to that we have regular customers who have been coming back for the last four years. Our customers love the famous ‘Chikena Tibs and ‘Feyel Tibs’. We also cater for different occasions and prepare different picnic agilgil.",
     "rating": 4.3,
-    "cuisines": ["Fasting", "Ethiopian"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -27248,7 +27553,10 @@
     "slug": "grand-kubi",
     "description": "Grand Kubi is a Turkish Specialty Restaurant that has been serving delicious meals since 2018. ",
     "rating": 0,
-    "cuisines": ["Kebabs", "Turkish"],
+    "cuisines": [
+      "Kebabs",
+      "Turkish"
+    ],
     "address": "Lideta, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -27843,7 +28151,10 @@
     "slug": "grub-on-sarbet-branch",
     "description": "Grub On serves one of the most delicate American Burgers in Addis. Our Burgers have a soft fluffy bun, perfectly juicy meat, finished with our mouth-watering dressing, topped off with freshly cut iceberg lettuce, tomatoes, and onions. Grub yours at Grub On.",
     "rating": 4.6,
-    "cuisines": ["American", "Burgers"],
+    "cuisines": [
+      "American",
+      "Burgers"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -27974,7 +28285,10 @@
     "slug": "grub-on-bole",
     "description": "Grub On serves one of the most delicate American Burgers in Addis. Our Burgers have a soft fluffy bun, perfectly juicy meat, finished with our mouth-watering dressing, topped off with freshly cut iceberg lettuce, tomatoes, and onions. Grub yours at Grub On.",
     "rating": 3.8,
-    "cuisines": ["American", "Burgers"],
+    "cuisines": [
+      "American",
+      "Burgers"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -28113,7 +28427,10 @@
     "slug": "habeshas-kitchen",
     "description": "Habesha's Kitchen serves delicious Ethiopian cultural meals with fresh ingredients and excellent service. ",
     "rating": 4,
-    "cuisines": ["Ethiopian", "Deals"],
+    "cuisines": [
+      "Ethiopian",
+      "Deals"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -28452,7 +28769,10 @@
     "slug": "homeland-coffee-smoothie",
     "description": "No description provided",
     "rating": 0,
-    "cuisines": ["Breakfast", "Wraps"],
+    "cuisines": [
+      "Breakfast",
+      "Wraps"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -28815,7 +29135,11 @@
     "slug": "in-joy-burger-bisrate-gebriel",
     "description": "Way you like it!",
     "rating": 5,
-    "cuisines": ["American", "Burgers", "Breakfast"],
+    "cuisines": [
+      "American",
+      "Burgers",
+      "Breakfast"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -29010,7 +29334,11 @@
     "slug": "in-joy-burger-bole",
     "description": "Way you like it!",
     "rating": 0,
-    "cuisines": ["American", "Burgers", "Breakfast"],
+    "cuisines": [
+      "American",
+      "Burgers",
+      "Breakfast"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -29253,7 +29581,11 @@
     "slug": "in-joy-burger-cmc",
     "description": "Way you like it!",
     "rating": 0,
-    "cuisines": ["American", "Burgers", "Breakfast"],
+    "cuisines": [
+      "American",
+      "Burgers",
+      "Breakfast"
+    ],
     "address": "Yeka, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -29448,7 +29780,11 @@
     "slug": "in-joy-burger-hayahulet",
     "description": "Way you like it!",
     "rating": 0,
-    "cuisines": ["American", "Burgers", "Breakfast"],
+    "cuisines": [
+      "American",
+      "Burgers",
+      "Breakfast"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -29691,7 +30027,11 @@
     "slug": "in-joy-burger-kazanchis",
     "description": "Way you like it!",
     "rating": 0,
-    "cuisines": ["American", "Burgers", "Breakfast"],
+    "cuisines": [
+      "American",
+      "Burgers",
+      "Breakfast"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -29886,7 +30226,11 @@
     "slug": "in-joy-burger-meskel-flower",
     "description": "Way you like it!",
     "rating": 0,
-    "cuisines": ["American", "Burgers", "Breakfast"],
+    "cuisines": [
+      "American",
+      "Burgers",
+      "Breakfast"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -30081,7 +30425,11 @@
     "slug": "in-joy-burger-summit",
     "description": "Way you like it!",
     "rating": 0,
-    "cuisines": ["American", "Burgers", "Breakfast"],
+    "cuisines": [
+      "American",
+      "Burgers",
+      "Breakfast"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -30276,7 +30624,10 @@
     "slug": "istanbul-turkish-restaurant-bole",
     "description": "Headed up by a Turkish chef with decades worth of experience, Istanbul Turkish Restaurant is renowned for its delicious grilled meats, hummus, fresh breads, and salads. Try some traditional Turkish dishes today.",
     "rating": 2.8,
-    "cuisines": ["Mediterranean", "Turkish"],
+    "cuisines": [
+      "Mediterranean",
+      "Turkish"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -30759,7 +31110,11 @@
     "slug": "jewel-of-india-dembel",
     "description": "Jewel of India’s authentic cooking will make your taste buds smile. Our melody of carefully orchestrated spices allows the flavor to dance through your soul.",
     "rating": 2.8,
-    "cuisines": ["Desserts", "Vegan", "Indian"],
+    "cuisines": [
+      "Desserts",
+      "Vegan",
+      "Indian"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -31722,7 +32077,9 @@
     "slug": "kategna-bole-millennium",
     "description": "No description provided",
     "rating": 2.5,
-    "cuisines": ["Ethiopian"],
+    "cuisines": [
+      "Ethiopian"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -32421,7 +32778,9 @@
     "slug": "kategna-laphto-mall-branch",
     "description": "No description provided",
     "rating": 3.5,
-    "cuisines": ["Ethiopian"],
+    "cuisines": [
+      "Ethiopian"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -33120,7 +33479,10 @@
     "slug": "konark-indian-hotel-bole",
     "description": "We will help you experience Indian food in its true sense. From living among the residents to eating authentic delicacies you are sure to Order again with memories and wonderful moments.",
     "rating": 3.6,
-    "cuisines": ["Indian", "Deals"],
+    "cuisines": [
+      "Indian",
+      "Deals"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -34299,7 +34661,10 @@
     "slug": "korma-grill-bole-atlas",
     "description": "Korma Grill has the best grill in town, with excellent service and a relaxing ambiance.",
     "rating": 4.1,
-    "cuisines": ["Sandwiches", "Chicken"],
+    "cuisines": [
+      "Sandwiches",
+      "Chicken"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -34414,7 +34779,10 @@
     "slug": "la-morena-mexican-restaurant-sarbet",
     "description": "La Morena is an authentic, Mexican Taqueria located near Sarbet. We aspire to contribute to a world-class culinary experience in our growing city of Addis Ababa. In a relaxing, family-friendly setting, we serve up healthy and delicious burritos, tacos, quesadillas, and omchurros, using only the best ingredients. Our leafy, outdoor sitting area provides a welcome respite from the hustle and bustle of Addis. Come enjoy your favorite Mexican food or try out a new culinary experience. You won't be disappointed!",
     "rating": 4,
-    "cuisines": ["Desserts", "Mexican"],
+    "cuisines": [
+      "Desserts",
+      "Mexican"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -34601,7 +34969,10 @@
     "slug": "la-morena-mexican-restaurant-gerji",
     "description": "La Morena is an authentic, Mexican Taqueria located near Sarbet. We aspire to contribute to a world-class culinary experience in our growing city of Addis Ababa. In a relaxing, family-friendly setting, we serve up healthy and delicious burritos, tacos, quesadillas, and omchurros, using only the best ingredients. Our leafy, outdoor sitting area provides a welcome respite from the hustle and bustle of Addis. Come enjoy your favorite Mexican food or try out a new culinary experience. You won't be disappointed!",
     "rating": 5,
-    "cuisines": ["Desserts", "Mexican"],
+    "cuisines": [
+      "Desserts",
+      "Mexican"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -34772,7 +35143,13 @@
     "slug": "la-nouvelle-bole",
     "description": "Indulge your senses at La Nouvelle! This French cafe tantalizes your tastebuds with cuisine made from the freshest ingredients. Begin your meal with a sensational starter that delights. Then, savor an incredible main dish with flavors that excite your palate. La Nouvelle offers a sensory experience like no other. Their dishes are masterpieces - simply magnifique!",
     "rating": 3.8,
-    "cuisines": ["Fusion", "French", "Burgers", "Breakfast", "Discount"],
+    "cuisines": [
+      "Fusion",
+      "French",
+      "Burgers",
+      "Breakfast",
+      "Discount"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -36863,7 +37240,11 @@
     "slug": "le-basilic-restaurant",
     "description": "Pizza I Pasta I Bar Home of Freshness",
     "rating": 4.3,
-    "cuisines": ["Pizza", "Italian", "Pasta"],
+    "cuisines": [
+      "Pizza",
+      "Italian",
+      "Pasta"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -37130,7 +37511,12 @@
     "slug": "lela-sishu-atlas",
     "description": "Sishu is the iconic, American style, casual dining restaurant, serving the best burgers, sandwiches, and baked goods in Addis for over 10 years. Now at Atlas as well as Kera .",
     "rating": 3.6,
-    "cuisines": ["American", "Desserts", "Sandwiches", "Burgers"],
+    "cuisines": [
+      "American",
+      "Desserts",
+      "Sandwiches",
+      "Burgers"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -37325,7 +37711,11 @@
     "slug": "little-china-noodle-sarbet",
     "description": "Little China serves delicious Chinese-inspired meals and prides itself on simple yet delicious dishes with fresh ingredients.",
     "rating": 3.3,
-    "cuisines": ["Fasting", "Chinese", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Chinese",
+      "Noodles"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -37632,7 +38022,11 @@
     "slug": "little-china-noodle-bole",
     "description": "Little China serves delicious Chinese-inspired meals and prides itself on simple yet delicious dishes with fresh ingredients.",
     "rating": 3.9,
-    "cuisines": ["Fasting", "Chinese", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Chinese",
+      "Noodles"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -37939,7 +38333,12 @@
     "slug": "little-china-noodle-century-mall",
     "description": "Little China serves delicious Chinese-inspired meals and prides itself on simple yet delicious dishes with fresh ingredients.",
     "rating": 3.5,
-    "cuisines": ["Fasting", "Asian", "Chinese", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Asian",
+      "Chinese",
+      "Noodles"
+    ],
     "address": "Yeka, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -38206,7 +38605,11 @@
     "slug": "little-china-noodle-kazanchis",
     "description": "Little China serves delicious Chinese-inspired meals and prides itself on simple yet delicious dishes with fresh ingredients.",
     "rating": 4,
-    "cuisines": ["Fasting", "Chinese", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Chinese",
+      "Noodles"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -38521,7 +38924,9 @@
     "slug": "little-ethiopia",
     "description": "We're passionate about flavorsome foods made with fresh ingredients and tremendous hospitality.\r\nwe believe our food should not only be mouth-watering but delivered by caring, friendly individuals. ",
     "rating": 0,
-    "cuisines": ["Ethiopian"],
+    "cuisines": [
+      "Ethiopian"
+    ],
     "address": "Lat: 9.003002719278562, Lon: 38.78835879550159",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -38684,7 +39089,10 @@
     "slug": "little-ethiopia-summit",
     "description": "We're passionate about flavorsome foods made with fresh ingredients and tremendous hospitality.\r\nwe believe our food should not only be mouth-watering but delivered by caring, friendly individuals. ",
     "rating": 0,
-    "cuisines": ["Fasting", "Ethiopian"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian"
+    ],
     "address": "Lat: 9.009809777374212, Lon: 38.85444188040179",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -39011,7 +39419,9 @@
     "slug": "maheder-foods",
     "description": "Maheder Foods is a food processing firm established in year 2012 to provide healthy, nutria-dense processed and affordable, organic, nutritious foods to customers.",
     "rating": 0,
-    "cuisines": ["Ethiopian"],
+    "cuisines": [
+      "Ethiopian"
+    ],
     "address": "Lat: 9.010181910054849, Lon: 38.78080591483301",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -39029,7 +39439,10 @@
     "slug": "maheder-foods-atlas",
     "description": "\r\nMaheder Foods is a food processing firm established in year 2012 to provide healthy, nutria-dense processed and affordable, organic, nutritious foods to customers.",
     "rating": 0,
-    "cuisines": ["Ethiopian", "Deals"],
+    "cuisines": [
+      "Ethiopian",
+      "Deals"
+    ],
     "address": "Lat: 9.010165901842479, Lon: 38.780796246746796",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -39056,7 +39469,11 @@
     "slug": "mesti-restaurant-hayahulet",
     "description": "Mesti restaurant was established in 2008 G.C in a fast-growing district in Addis Ababa just 150m from Hayahulet Dinberua Hospital, casual dining restaurant featuring all traditional and foreign dishes prepared with love and care.",
     "rating": 5,
-    "cuisines": ["Pizza", "Ethiopian", "Breakfast"],
+    "cuisines": [
+      "Pizza",
+      "Ethiopian",
+      "Breakfast"
+    ],
     "address": "Lat: 9.021030454835273, Lon: 38.79102065506942",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -39707,7 +40124,13 @@
     "slug": "mimis-addis-restaurant-bole-atlas",
     "description": "🌟New Deals: - 20% on a few of our specialties. Prices on the website are already discounted. Enjoy!!🌟 \r\n\r\nIn The heart of Addis, yet in a calm and very pleasant environment, MIMI's  Addis is here to serve you the best food and drinks. Located close to Atlas Hotel beside the old Tele, This is the place where\r\n EXCELLENT service, fresh and tasty food are mutually coupled readily to make your DAY. MIMI's Addis Kitchen is the center of our fresh and tasty food prepared just to serve you the best dishes.",
     "rating": 3.2,
-    "cuisines": ["Ethiopian", "Burgers", "Breakfast", "Chicken", "Discount"],
+    "cuisines": [
+      "Ethiopian",
+      "Burgers",
+      "Breakfast",
+      "Chicken",
+      "Discount"
+    ],
     "address": "Lat: 9.00015407229982, Lon: 38.784085236248586",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -40582,7 +41005,12 @@
     "slug": "mitmita-restaurant-bole",
     "description": "Authentic Ethiopian cuisine made with love!!",
     "rating": 4.4,
-    "cuisines": ["Ethiopian", "Vegan", "Breakfast", "Drinks"],
+    "cuisines": [
+      "Ethiopian",
+      "Vegan",
+      "Breakfast",
+      "Drinks"
+    ],
     "address": "Lat: 8.99231, Lon: 38.78836",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -41449,7 +41877,10 @@
     "slug": "mokodo-pizza-tesfayes-authentic-italian-pizza-bole",
     "description": "Chef Tesfaye started making pizza 20 years ago when he was just 12 years old. Since then he has developed several innovative techniques of creating authentic pizza in his brick-oven using only the finest ingredients imported all the way from Italy and worked in renowned establishments across Addis such as Grani di Pepe and others.",
     "rating": 4.1,
-    "cuisines": ["Pizza", "Italian"],
+    "cuisines": [
+      "Pizza",
+      "Italian"
+    ],
     "address": "Lat: 8.985533179042871, Lon: 38.78711889349177",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -42132,7 +42563,10 @@
     "slug": "moriya-donuts-summit",
     "description": "Moriya Donuts is one of the best donuts shop/ cafe in Addis Ababa that serves it's customers with well crafted and freshly made donuts with variety of taste and best quality.\r\n",
     "rating": 5,
-    "cuisines": ["Donuts", "Bakery"],
+    "cuisines": [
+      "Donuts",
+      "Bakery"
+    ],
     "address": "Lat: 9.01336949090452, Lon: 38.8528164398828",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -42327,7 +42761,10 @@
     "slug": "moriya-donuts-bole",
     "description": "Moriya Donuts is one of the best donuts shop/ cafe in Addis Ababa that serves it's customers with well crafted and freshly made donuts with variety of taste and best quality.\r\n",
     "rating": 4,
-    "cuisines": ["Donuts", "Bakery"],
+    "cuisines": [
+      "Donuts",
+      "Bakery"
+    ],
     "address": "Lat: 8.99446868930356, Lon: 38.7901949662651",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -42530,7 +42967,12 @@
     "slug": "moyos-cafe",
     "description": "\"Hungry for something healthy? Moyo's specializes in healthy dining options including wholesome salads, perfectly portioned sandwiches with your choice of white or wheat bread, and pasta made with premium ingredients.  Finally, a cafe that makes eating healthy, simple.\r\nEat Well...Be Well.\"",
     "rating": 3.6,
-    "cuisines": ["American", "Healthy", "Sandwiches", "Breakfast"],
+    "cuisines": [
+      "American",
+      "Healthy",
+      "Sandwiches",
+      "Breakfast"
+    ],
     "address": "Lat: 9.005537713165571, Lon: 38.78119111061096",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -43117,7 +43559,12 @@
     "slug": "mu-pastry",
     "description": "cake & bakery",
     "rating": 0,
-    "cuisines": ["Breakfast", "Donuts", "Salads", "Bakery"],
+    "cuisines": [
+      "Breakfast",
+      "Donuts",
+      "Salads",
+      "Bakery"
+    ],
     "address": "Lat: 8.985932938546684, Lon: 38.78791455317226",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -43312,7 +43759,10 @@
     "slug": "muhany-choco-and-sweets-bole",
     "description": "MUHANY is a chocolate based store where you can discover the love of chocolate and sweet\r\n",
     "rating": 0,
-    "cuisines": ["Desserts", "Bakery"],
+    "cuisines": [
+      "Desserts",
+      "Bakery"
+    ],
     "address": "Lat: 8.991026862342633, Lon: 38.78828878582259",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -43515,7 +43965,12 @@
     "slug": "my-choice-lounge-grill",
     "description": "GRILL & COCKTAIL HOUSE",
     "rating": 0,
-    "cuisines": ["Fasting", "Ethiopian", "Pasta", "Wraps"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian",
+      "Pasta",
+      "Wraps"
+    ],
     "address": "Lat: 8.996343423346032, Lon: 38.73303372036312",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -43750,7 +44205,11 @@
     "slug": "olive-and-bread-kebena",
     "description": "“Olive and Bread Italian inspired restaurant located in the heart of Addis Ababa. The 75-seat eatery offers traditional Italian cuisine with an elegant and classy ambience.”",
     "rating": 0,
-    "cuisines": ["Pizza", "Italian", "Pasta"],
+    "cuisines": [
+      "Pizza",
+      "Italian",
+      "Pasta"
+    ],
     "address": "Lat: 9.03669262641926, Lon: 38.773621842329014",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -44811,7 +45270,10 @@
     "slug": "original-burger",
     "description": "No description provided",
     "rating": 2,
-    "cuisines": ["Burgers", "Wraps"],
+    "cuisines": [
+      "Burgers",
+      "Wraps"
+    ],
     "address": "Lat: 8.992292239710892, Lon: 38.78135946384364",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -44974,7 +45436,11 @@
     "slug": "pio-gastro-bar-restaurant",
     "description": "Pio Gastro Bar & Restaurant brings the flavors of Italy to life. Enjoy authentic pastas, wood-fired pizzas, and classic entrees. Pio also promises a dining experience unlike any other with every meal. If you are looking for high-quality Italian cuisine Pio is the answer.",
     "rating": 5,
-    "cuisines": ["Pizza", "Desserts", "Pasta"],
+    "cuisines": [
+      "Pizza",
+      "Desserts",
+      "Pasta"
+    ],
     "address": "Lat: 8.996617471467, Lon: 38.75886459739734",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -45329,7 +45795,12 @@
     "slug": "pizza-corner-atlas",
     "description": "Pizza Corner is a well known family restaurant that has been serving Addis for more than 16 Years. They are famous for their delicious combos such as the Mesfin combo and the Engineer combo both named after two long time customers.This is how much Pizza Corner values its customers.",
     "rating": 2.7,
-    "cuisines": ["Pizza", "Italian", "Pasta", "Discount"],
+    "cuisines": [
+      "Pizza",
+      "Italian",
+      "Pasta",
+      "Discount"
+    ],
     "address": "Lat: 9.009997742563554, Lon: 38.780388087845225",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -45700,7 +46171,9 @@
     "slug": "pizza-doba",
     "description": "No description provided",
     "rating": 0,
-    "cuisines": ["Pizza"],
+    "cuisines": [
+      "Pizza"
+    ],
     "address": "Lat: 8.988390048254963, Lon: 38.79526296945588",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -45783,7 +46256,10 @@
     "slug": "pizza-hut-ayat",
     "description": "Pizza Hut is one of the fastest-growing international pizza chains in the world and now it's in Addis. With world-class expertise and fresh ingredients, Pizza Hut is sure to delight even the most discerning pizza connoisseur. Add a pizza to your basket to pick your crust and add extras!",
     "rating": 0,
-    "cuisines": ["Fasting", "Pizza"],
+    "cuisines": [
+      "Fasting",
+      "Pizza"
+    ],
     "address": "Lat: 9.031248471897559, Lon: 38.877528784260186",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -46418,7 +46894,10 @@
     "slug": "pizza-hut-bulbula",
     "description": "Pizza Hut is one of the fastest-growing international pizza chains in the world and now it's in Addis. With world-class expertise and fresh ingredients, Pizza Hut is sure to delight even the most discerning pizza connoisseur. Add a pizza to your basket to pick your crust and add extras!",
     "rating": 0,
-    "cuisines": ["Fasting", "Pizza"],
+    "cuisines": [
+      "Fasting",
+      "Pizza"
+    ],
     "address": "Lat: 8.948537388626933, Lon: 38.78487318465527",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -47117,7 +47596,10 @@
     "slug": "pizza-hut-gerji",
     "description": "Pizza Hut is one of the fastest-growing international pizza chains in the world and now it's in Addis. With world-class expertise and fresh ingredients, Pizza Hut is sure to delight even the most discerning pizza connoisseur. Add a pizza to your basket to pick your crust and add extras!",
     "rating": 0,
-    "cuisines": ["Fasting", "Pizza"],
+    "cuisines": [
+      "Fasting",
+      "Pizza"
+    ],
     "address": "Lat: 9.001311994069765, Lon: 38.80173040899564",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -47832,7 +48314,10 @@
     "slug": "pizza-hut-lebu",
     "description": "Pizza Hut is one of the fastest-growing international pizza chains in the world and now it's in Addis. With world-class expertise and fresh ingredients, Pizza Hut is sure to delight even the most discerning pizza connoisseur. Add a pizza to your basket to pick your crust and add extras!",
     "rating": 0,
-    "cuisines": ["Armenian", "Pizza"],
+    "cuisines": [
+      "Armenian",
+      "Pizza"
+    ],
     "address": "Lat: 8.948963149761607, Lon: 38.732108124336435",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -48539,7 +49024,9 @@
     "slug": "pizza-hut-summit",
     "description": "Pizza Hut is one of the fastest-growing international pizza chains in the world and now it's in Addis. With world-class expertise and fresh ingredients, Pizza Hut is sure to delight even the most discerning pizza connoisseur. Add a pizza to your basket to pick your crust and add extras!",
     "rating": 4.4,
-    "cuisines": ["Pizza"],
+    "cuisines": [
+      "Pizza"
+    ],
     "address": "Lat: 9.010983611703693, Lon: 38.8511907163292",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -49230,7 +49717,10 @@
     "slug": "pizza-hut-bole",
     "description": "Pizza Hut is one of the fastest-growing international pizza chains in the world and now it's in Addis. With world-class expertise and fresh ingredients, Pizza Hut is sure to delight even the most discerning pizza connoisseur. Add a pizza to your basket to pick your crust and add extras!",
     "rating": 3.4,
-    "cuisines": ["Fasting", "Pizza"],
+    "cuisines": [
+      "Fasting",
+      "Pizza"
+    ],
     "address": "Lat: 8.996770174592886, Lon: 38.78630106856136",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -49913,7 +50403,10 @@
     "slug": "pizza-hut-century-mall",
     "description": "Pizza Hut is one of the fastest-growing international pizza chains in the world and now it's in Addis. With world-class expertise and fresh ingredients, Pizza Hut is sure to delight even the most discerning pizza connoisseur. Add a pizza to your basket to pick your crust and add extras! All Pizza Hut deliveries are 50 ETB! (all deliveries are limited to 0-3 KM only)",
     "rating": 4.7,
-    "cuisines": ["Fasting", "Pizza"],
+    "cuisines": [
+      "Fasting",
+      "Pizza"
+    ],
     "address": "Lat: 9.019755819189513, Lon: 38.81409082004577",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -50572,7 +51065,10 @@
     "slug": "pizza-hut-sarbet",
     "description": "Pizza Hut is one of the fastest-growing international pizza chains in the world and now it's in Addis. With world-class expertise and fresh ingredients, Pizza Hut is sure to delight even the most discerning pizza connoisseur. Add a pizza to your basket to pick your crust and add extras! All Pizza Hut deliveries are 50 ETB!",
     "rating": 3.6,
-    "cuisines": ["Fasting", "Pizza"],
+    "cuisines": [
+      "Fasting",
+      "Pizza"
+    ],
     "address": "Lat: 8.989229655372775, Lon: 38.72397008205345",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -52527,7 +53023,14 @@
     "slug": "sakura-bole-rwanda",
     "description": "\"Sakura\" (cherry blossom) is the first authentic Japanese Restaurant in Ethiopia, owned by an Ethio-Japanese couple.  Our mission is to introduce Japanese food culture, one of the secrets of long life.  We take pride in the quality and purity of our food. From sushi to noodles, Sakura strives to present fresh, healthy and tasty dishes that satisfy your eyes and the stomach. Please note orders can take more than 1 hour.",
     "rating": 3.4,
-    "cuisines": ["Fasting", "Asian", "Japanese", "Vegan", "Seafood", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Asian",
+      "Japanese",
+      "Vegan",
+      "Seafood",
+      "Noodles"
+    ],
     "address": "Lat: 8.98668923813673, Lon: 38.77577139550155",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -53170,7 +53673,9 @@
     "slug": "sandwich-house",
     "description": "No description provided",
     "rating": 0,
-    "cuisines": ["Sandwiches"],
+    "cuisines": [
+      "Sandwiches"
+    ],
     "address": "Lat: 8.99617554240157, Lon: 38.79121219550161",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -53509,7 +54014,12 @@
     "slug": "savor-flamingo",
     "description": "Savor provides delicious, nourishing and gourmet foods, drinks and desserts coupled with great service. Savor’s menu, service and ambiance are designed to meet and exceed the expectations of the internationally exposed customer in availability, taste and variety. Savor’s products and services are designed to be frequented a few times a week and suitable for different types of outings such as a quick business lunch, brunch with the family, late-night dining or stopover for authentic  Italian gelato or desserts.",
     "rating": 3.1,
-    "cuisines": ["American", "Desserts", "Burgers", "Breakfast"],
+    "cuisines": [
+      "American",
+      "Desserts",
+      "Burgers",
+      "Breakfast"
+    ],
     "address": "Lat: 9.007667623545466, Lon: 38.763264264418126",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -54192,7 +54702,13 @@
     "slug": "shamo-chicken-waffle",
     "description": "Home Style Family Restaurant",
     "rating": 4,
-    "cuisines": ["Pizza", "Burgers", "Breakfast", "Chicken", "Shawarma"],
+    "cuisines": [
+      "Pizza",
+      "Burgers",
+      "Breakfast",
+      "Chicken",
+      "Shawarma"
+    ],
     "address": "Lideta, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -54451,7 +54967,11 @@
     "slug": "simple-bistro-bole",
     "description": "Burgers and Wings with the flavorful American Texas taste.",
     "rating": 4.2,
-    "cuisines": ["Burgers", "Breakfast", "Chicken"],
+    "cuisines": [
+      "Burgers",
+      "Breakfast",
+      "Chicken"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -54734,7 +55254,11 @@
     "slug": "simple-bistro-summit",
     "description": "Burgers and Wings with the flavorful American Texas taste.",
     "rating": 4.8,
-    "cuisines": ["Burgers", "Breakfast", "Chicken"],
+    "cuisines": [
+      "Burgers",
+      "Breakfast",
+      "Chicken"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -54977,7 +55501,12 @@
     "slug": "sishu-century-mall",
     "description": "Sishu is the iconic, American style, casual dining restaurant, serving the best burgers, sandwiches and baked goods in Addis for over 10 years. Now at Gurd Shola  as well as Atlas & Kera.",
     "rating": 5,
-    "cuisines": ["American", "Desserts", "Sandwiches", "Burgers"],
+    "cuisines": [
+      "American",
+      "Desserts",
+      "Sandwiches",
+      "Burgers"
+    ],
     "address": "Yeka, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -55164,7 +55693,12 @@
     "slug": "sishu-kera",
     "description": "Sishu is the iconic, American style, casual dining restaurant, serving the best burgers, sandwiches and baked goods in Addis for over 10 years. Now at kera  as well as Atlas & Gurd Shola.",
     "rating": 4,
-    "cuisines": ["American", "Desserts", "Sandwiches", "Burgers"],
+    "cuisines": [
+      "American",
+      "Desserts",
+      "Sandwiches",
+      "Burgers"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -55351,7 +55885,12 @@
     "slug": "sosha-restaurant-bole",
     "description": "We are Sosha, a casual eatery where flavor and nutrition reign supreme. It's food without a wrapper, all-natural screaming with flavor. For those looking to live clean, Sosha offers nutrition and flavor delivered with food excellence and care. Sosha is not just food, it's a way of life.",
     "rating": 4.4,
-    "cuisines": ["Healthy", "Sandwiches", "Wraps", "Salads"],
+    "cuisines": [
+      "Healthy",
+      "Sandwiches",
+      "Wraps",
+      "Salads"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -55858,7 +56397,11 @@
     "slug": "sugo-summit",
     "description": "Pizza & Pasta\r\n",
     "rating": 0,
-    "cuisines": ["Pizza", "Italian", "Pasta"],
+    "cuisines": [
+      "Pizza",
+      "Italian",
+      "Pasta"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -56069,7 +56612,9 @@
     "slug": "swadh-restaurant-wellosefer",
     "description": "Swadh specializes in authentic Indian cuisine of the best quality and uses the very best ingredients prepared by our chefs who have more than 45 years of experience.\r\n\r\nPlease note, orders may take over an hour to make.",
     "rating": 3.9,
-    "cuisines": ["Indian"],
+    "cuisines": [
+      "Indian"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -56432,7 +56977,12 @@
     "slug": "temsalet-kitchen-sarbet",
     "description": " A place where quality, relationships, and empowerment fuse for one purpose.",
     "rating": 3.7,
-    "cuisines": ["Fasting", "Ethiopian", "Breakfast", "Pasta"],
+    "cuisines": [
+      "Fasting",
+      "Ethiopian",
+      "Breakfast",
+      "Pasta"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -57536,7 +58086,11 @@
     "slug": "the-food-boutique",
     "description": "Italian casual fine dining",
     "rating": 1,
-    "cuisines": ["Pizza", "Italian", "Pasta"],
+    "cuisines": [
+      "Pizza",
+      "Italian",
+      "Pasta"
+    ],
     "address": "Lideta, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -58003,7 +58557,9 @@
     "slug": "the-goat-caf-bole",
     "description": "An innovative coffee company, established by two young economists, inspired to pay homage to the Ethiopian legend of The Goat & the herdsman who found the first bean.\r\nGOAT you. Cheers to the GREATEST OF ALL TIME. (Please note: Only accepting drink orders 0-6KM. You can't order more than four drinks in a single order)",
     "rating": 3.3,
-    "cuisines": ["Drinks"],
+    "cuisines": [
+      "Drinks"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -58422,7 +58978,11 @@
     "slug": "the-goat-caf-mexico",
     "description": "An innovative coffee company, established by two young economists, inspired to pay homage to the Ethiopian legend of The Goat & the herdsman who found the first bean. (Please note: Only accepting drink orders 0-6KM. You can't order more than four drinks in a single order)",
     "rating": 3.9,
-    "cuisines": ["Fasting", "Breakfast", "Drinks"],
+    "cuisines": [
+      "Fasting",
+      "Breakfast",
+      "Drinks"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -58897,7 +59457,9 @@
     "slug": "the-golden-palm",
     "description": "Middle eastern cuisine",
     "rating": 0,
-    "cuisines": ["Middle Eastern"],
+    "cuisines": [
+      "Middle Eastern"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -59156,7 +59718,10 @@
     "slug": "the-hacienda",
     "description": "It’s OPIUM rebranded - Ultimate destination for All American favorites. Perfect meals on-the-go or a cozy sit-down.\r\n",
     "rating": 5,
-    "cuisines": ["American", "Mexican"],
+    "cuisines": [
+      "American",
+      "Mexican"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -59551,7 +60116,12 @@
     "slug": "the-jungle",
     "description": "No description provided",
     "rating": 4,
-    "cuisines": ["American", "Ethiopian", "Burgers", "Salads"],
+    "cuisines": [
+      "American",
+      "Ethiopian",
+      "Burgers",
+      "Salads"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -59954,7 +60524,9 @@
     "slug": "the-kitchen-hyatt-regency-addis-ababa",
     "description": "Inspired Middle Eastern Cuisine.",
     "rating": 1,
-    "cuisines": ["Middle Eastern"],
+    "cuisines": [
+      "Middle Eastern"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -60181,7 +60753,12 @@
     "slug": "tian-tian-chinese-kitchen-sarbet",
     "description": "Tian Tian is a Chinese restaurant located at Bole, Infront of the Sheger Building.",
     "rating": 5,
-    "cuisines": ["Fasting", "Asian", "Chinese", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Asian",
+      "Chinese",
+      "Noodles"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -60648,7 +61225,12 @@
     "slug": "tian-tian-chinese-kitchen-bole-friendship-branch",
     "description": "Tian Tian is a Chinese restaurant located at Bole, Infront of the Sheger Building.",
     "rating": 3.3,
-    "cuisines": ["Fasting", "Asian", "Chinese", "Noodles"],
+    "cuisines": [
+      "Fasting",
+      "Asian",
+      "Chinese",
+      "Noodles"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -61107,7 +61689,10 @@
     "slug": "tomatelli-bisrate-gebriel",
     "description": "Tomatelli serves you quality fresh-made pasta and sauces, perfect when you are looking for proper food that satisfies your hunger! You will love our traditional pasta dishes that are ready in just minutes.",
     "rating": 0,
-    "cuisines": ["Italian", "Pasta"],
+    "cuisines": [
+      "Italian",
+      "Pasta"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -61246,7 +61831,10 @@
     "slug": "tomatelli-bole",
     "description": "Tomatelli serves you quality fresh-made pasta and sauces, perfect when you are looking for proper food that satisfies your hunger! You will love our traditional pasta dishes that are ready in just minutes.",
     "rating": 3.8,
-    "cuisines": ["Italian", "Pasta"],
+    "cuisines": [
+      "Italian",
+      "Pasta"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -61385,7 +61973,11 @@
     "slug": "trattoria-gusto-kazanchis",
     "description": "Trattoria is an Ethio Italian restaurant that brings you a less formal fine dining experience with casual service. Targeting middle-class spenders, our motto is good food at an affordable price.",
     "rating": 3.7,
-    "cuisines": ["Ethiopian", "Italian", "Pasta"],
+    "cuisines": [
+      "Ethiopian",
+      "Italian",
+      "Pasta"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -62004,7 +62596,11 @@
     "slug": "tutu-noodles-friendship",
     "description": "we serve Noodles, Sizzling, soup, Dumpling ,rice, salads and more.",
     "rating": 2,
-    "cuisines": ["Chinese", "Noodles", "Chicken"],
+    "cuisines": [
+      "Chinese",
+      "Noodles",
+      "Chicken"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -62375,7 +62971,11 @@
     "slug": "tutu-noodles-gerji",
     "description": "we serve Noodles, Sizzling, soup, Dumpling ,rice, salads and more.",
     "rating": 0,
-    "cuisines": ["Chinese", "Noodles", "Chicken"],
+    "cuisines": [
+      "Chinese",
+      "Noodles",
+      "Chicken"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -62706,7 +63306,11 @@
     "slug": "tutu-noodles-rwanda",
     "description": "we serve Noodles, Sizzling, soup, Dumpling ,rice, salads and more.",
     "rating": 0,
-    "cuisines": ["Chinese", "Noodles", "Chicken"],
+    "cuisines": [
+      "Chinese",
+      "Noodles",
+      "Chicken"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -63762,7 +64366,12 @@
     "slug": "wegus-coffee",
     "description": "cafe and Restorant",
     "rating": 0,
-    "cuisines": ["Sandwiches", "Breakfast", "Wraps", "Salads"],
+    "cuisines": [
+      "Sandwiches",
+      "Breakfast",
+      "Wraps",
+      "Salads"
+    ],
     "address": "Nefas Silk, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -64173,7 +64782,9 @@
     "slug": "woinshet-doro-hayahulet",
     "description": "Since its establishment in 2001 E.C, Woinshet Doro delivers the best Ethiopian traditional foods including our favorite Doro Wot for our esteemed customers here in Ethiopia and abroad.",
     "rating": 3.8,
-    "cuisines": ["Ethiopian"],
+    "cuisines": [
+      "Ethiopian"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -64360,7 +64971,9 @@
     "slug": "zaika-meskel-flower",
     "description": "Indian Restaurant.\r\n",
     "rating": 4.3,
-    "cuisines": ["Indian"],
+    "cuisines": [
+      "Indian"
+    ],
     "address": "Kirkos, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -65165,7 +65778,11 @@
     "slug": "zipotle-bole",
     "description": "Put on a feast with our Mexican-inspired delectable dishes.",
     "rating": 3.6,
-    "cuisines": ["American", "Mexican", "Vegan"],
+    "cuisines": [
+      "American",
+      "Mexican",
+      "Vegan"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",
@@ -65608,7 +66225,11 @@
     "slug": "zola-international-imperial",
     "description": "Here you have the well-known taste of Zola International Hotel; a chance to enjoy every single bite. We present to you ample choices of innovative dining: call it “The Menu of menus”.\r\n\r\nBon Appétit!",
     "rating": 3.2,
-    "cuisines": ["Ethiopian", "Italian", "Pasta"],
+    "cuisines": [
+      "Ethiopian",
+      "Italian",
+      "Pasta"
+    ],
     "address": "Bole, Adis Ababa, Ethiopia",
     "city": "Adis Ababa",
     "country": "Ethiopia",

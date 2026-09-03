@@ -72,8 +72,10 @@ export default function ProfileTabs({
                 }
                 recipe={{
                   ...recipe,
+                  author_id: (recipe as any).author_id || profile.id,
                   slug: recipe.slug,
                   author: {
+                    id: profile.id,
                     username: profile.username,
                     full_name: profile.full_name,
                     avatar_url: profile.avatar_url,
@@ -105,7 +107,10 @@ export default function ProfileTabs({
             {blogs.map((blog) => (
               <BlogPostCard
                 key={blog.id ?? blog.slug}
-                post={blog}
+                post={{
+                  ...blog,
+                  author_id: (blog as any).author_id || profile.id,
+                }}
                 badge={
                   isOwn && blog.status === "draft" ? "Draft" : undefined
                 }
