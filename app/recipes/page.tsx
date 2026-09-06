@@ -156,44 +156,22 @@ function RecipesPageContent() {
       <Header />
 
       {/* Masthead */}
-      <header className="mx-auto w-full max-w-7xl px-4 pt-14 sm:px-6 md:pt-10">
-        {/* <p className="mb-4 text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-primary">
-          The Gurshaland Kitchen
-        </p> */}
-        <h1 className="max-w-3xl font-gosh text-5xl font-semibold leading-[1.04] tracking-tighter text-foreground sm:text-6xl lg:text-7xl">
+      <header className="mx-auto w-full max-w-7xl px-3.5 sm:px-6 lg:px-8 pt-8 sm:pt-12">
+        <h1 className="max-w-3xl font-gosh text-2xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-foreground">
           Recipes Worth Cooking
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+        <p className="mt-2 sm:mt-4 max-w-2xl text-xs sm:text-base leading-relaxed text-muted-foreground">
           Dishes from Ethiopian kitchens, collected and tested by our cooks.
           Find your next meal by category or skill level.
         </p>
       </header>
 
       {/* Filters */}
-      <div ref={resultsRef} className="mx-auto w-full max-w-7xl px-4 sm:px-6">
-        <div className="mt-12 border-t border-border/70 pb-2">
-          <div className="flex flex-col gap-3 py-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
-            {/* <div className="scrollbar-hide  flex gap-2 overflow-x-auto pb-1">
-              {SORTS.map((s) => {
-                const active = sort === s.value;
-                return (
-                  <button
-                    key={s.value}
-                    onClick={() => handleSortChange(s.value)}
-                    className={cn(
-                      "shrink-0 rounded-full border px-4 py-2  font-medium transition-all duration-200 active:scale-[0.97] text-xs",
-                      active
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                        : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
-                    )}
-                  >
-                    {s.label}
-                  </button>
-                );
-              })}
-            </div> */}
+      <div ref={resultsRef} className="mx-auto w-full max-w-7xl px-3.5 sm:px-6 lg:px-8">
+        <div className="mt-6 sm:mt-10 border-t border-border/70 pb-2">
+          <div className="flex flex-col gap-3 py-4 sm:py-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
             <div>
-              <div className="scrollbar-hide  flex gap-2 overflow-x-auto pb-1">
+              <div className="scrollbar-hide flex gap-2 overflow-x-auto pb-1">
                 {CATEGORIES.map((category) => {
                   const active = selectedCategory === category;
                   return (

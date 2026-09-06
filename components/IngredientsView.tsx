@@ -6,14 +6,14 @@ import { Check, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Ingredient } from "@/utils/types/recipe";
 
-type IngredientWithUnit = Ingredient & { unit?: string };
+type IngredientWithUnit = Ingredient;
 
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const IngredientsView = ({
-  ingredients,
+  ingredients = [],
 }: {
-  ingredients: IngredientWithUnit[];
+  ingredients?: Ingredient[];
 }) => {
   const reduce = useReducedMotion();
   const [checked, setChecked] = useState<Set<number>>(new Set());
@@ -31,9 +31,9 @@ const IngredientsView = ({
   const pct = ingredients.length ? (done / ingredients.length) * 100 : 0;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
-      <div className="flex items-center justify-between gap-3 border-b border-border/80 px-4 py-3">
-        <h3 className="text-[0.6875rem] font-semibold uppercase tracking-widest text-foreground">
+    <div className="overflow-hidden rounded-xl border border-border bg-card/50">
+      <div className="flex items-center justify-between gap-3 border-b border-border/60 px-4 py-3.5">
+        <h3 className="font-gosh text-base font-semibold tracking-tight text-foreground">
           Ingredients
         </h3>
         {ingredients.length > 0 && (
@@ -83,7 +83,7 @@ const IngredientsView = ({
             />
           </div>
 
-          <ul className="divide-y divide-border/80">
+          <ul className="divide-y divide-border/40">
             {ingredients.map((ingredient, index) => {
               const isChecked = checked.has(index);
               return (

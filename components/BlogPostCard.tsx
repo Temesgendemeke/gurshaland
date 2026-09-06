@@ -8,6 +8,7 @@ import { Blog } from "@/utils/types/blog";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/store/useAuth";
 import { useState } from "react";
+import { UserAvatar } from "@/components/UserAvatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -83,7 +84,7 @@ export default function BlogPostCard({
   };
 
   return (
-    <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/70 bg-card transition-all duration-300 hover:border-border hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/60 transition-colors duration-200 hover:border-foreground/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
       {/* Three-dot menu for owners */}
       {isOwner && (
         <div className="absolute top-3 right-3 z-20">
@@ -92,7 +93,7 @@ export default function BlogPostCard({
               <Button
                 variant="secondary"
                 size="icon"
-                className="h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-sm hover:bg-background text-foreground"
+                className="h-8 w-8 rounded-full bg-background/90 backdrop-blur-sm border border-border hover:bg-background text-foreground"
                 aria-label="Blog options"
                 onClick={(e) => {
                   e.preventDefault();
@@ -160,7 +161,7 @@ export default function BlogPostCard({
       <div className="relative aspect-[16/10] overflow-hidden bg-muted">
         <Image
           src={post?.image?.url || "/placeholder.svg"}
-          alt={post.title}
+          alt={post.title || "Blog post"}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover"
@@ -190,22 +191,15 @@ export default function BlogPostCard({
           </p>
         )}
 
-        {/* Serene Footer */}
+        {/* Card Footer */}
         <div className="mt-auto flex items-center justify-between pt-3 text-xs text-muted-foreground">
           <div className="flex items-center gap-2 min-w-0">
-            <span className="relative flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-[10px] font-medium text-foreground">
-              {post.author?.avatar ? (
-                <Image
-                  src={post.author.avatar}
-                  alt={authorName}
-                  fill
-                  sizes="20px"
-                  className="object-cover"
-                />
-              ) : (
-                authorName[0]?.toUpperCase() || "A"
-              )}
-            </span>
+            <UserAvatar
+              avatarUrl={post.author?.avatar || (post.author as any)?.avatar_url}
+              name={authorName}
+              username={post.author?.username}
+              className="h-5 w-5 text-[10px] font-medium"
+            />
             <span className="truncate font-medium text-foreground/80 text-xs">
               {authorName}
             </span>

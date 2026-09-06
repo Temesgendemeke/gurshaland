@@ -45,12 +45,16 @@ export default function BasicInfoFields({
   setImage,
 }: BasicInfoFieldsProps) {
   return (
-    <Card className="border-none">
-      <CardHeader>
-        <CardTitle>Recipe details</CardTitle>
-        <CardDescription>The core details of your dish.</CardDescription>
+    <Card className="rounded-2xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-none space-y-6">
+      <CardHeader className="p-0 pb-4 border-b border-border/60">
+        <CardTitle className="font-gosh text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+          Recipe Details
+        </CardTitle>
+        <CardDescription className="text-xs sm:text-sm text-muted-foreground">
+          The core details, title, and cover photo of your dish.
+        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-5">
+      <CardContent className="p-0 space-y-5">
         <div className="grid gap-5  grid-cols-1 lg:grid-cols-2">
           <RecipeImageField
             image={image}

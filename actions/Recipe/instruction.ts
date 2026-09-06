@@ -2,7 +2,7 @@ import { BUCKET } from "@/constants/image";
 import { createClient } from "@/utils/supabase/client";
 
 export const uploadInstructionImage = async (
-  image_file: File | string,
+  image_file: File,
   user_id: string,
   instruction_id: string,
 ) => {

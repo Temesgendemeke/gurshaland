@@ -4,18 +4,6 @@ import { RecipeComment } from "@/utils/types/recipe";
 export const postComment = async (comment: RecipeComment) => {
   const supabase = createClient();
 
-  const { data: recipe, error: recipeError } = await supabase
-    .from("recipe")
-    .select("author_id")
-    .eq("id", comment.recipe_id)
-    .single();
-
-  if (recipeError) throw recipeError;
-
-  if (recipe?.author_id === comment.author_id) {
-    throw new Error("You can't comment on your own recipe.");
-  }
-
   const { data, error } = await supabase.rpc("post_recipe_comment", {
     _comment: comment,
   });
@@ -24,7 +12,7 @@ export const postComment = async (comment: RecipeComment) => {
   return data;
 };
 
-export const deleteComment = async (comment_id: string) => {
+export const deleteComment = async (comment_id: string | number) => {
   const supabase = createClient();
   const { error } = await supabase
     .from("recipe_comment")
@@ -33,3 +21,17 @@ export const deleteComment = async (comment_id: string) => {
 
   if (error) throw error;
 };
+
+export const updateComment = async (comment_id: string | number, newComment: string) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("recipe_comment")
+    .update({ comment: newComment })
+    .eq("id", comment_id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+

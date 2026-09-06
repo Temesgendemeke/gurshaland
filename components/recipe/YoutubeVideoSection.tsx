@@ -1,34 +1,47 @@
 import React from "react";
 
-const YoutubeVideoSection = ({
-  videoId,
-  videoQuery,
-}: {
+interface YoutubeVideoSectionProps {
   videoId?: string;
   videoQuery?: string;
+}
+
+const YoutubeVideoSection: React.FC<YoutubeVideoSectionProps> = ({
+  videoId,
+  videoQuery,
 }) => {
-  // Don't render anything if no videoId is provided
   if (!videoId) {
     return null;
   }
 
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
+
   return (
-    <div className="space-y-3">
-      <h3 className="text-lg font-bold tracking-tight text-foreground">
-        Watch {videoQuery || "this recipe"} tutorial video
-      </h3>
-      <div className="relative w-full h-0 pb-[56.25%]">
-        <iframe
-          className="absolute top-0 left-0 w-full h-full rounded-xl"
-          src={`https://www.youtube.com/embed/${videoId}`}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+    <section className="space-y-4">
+      <div className="flex items-baseline justify-between border-b border-border/60 pb-3">
+        <h3 className="font-gosh text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+          Video Tutorial
+        </h3>
+        {videoQuery && (
+          <span className="text-xs sm:text-sm font-medium text-muted-foreground truncate max-w-[240px]">
+            {videoQuery}
+          </span>
+        )}
       </div>
-    </div>
+
+      <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-black">
+        <iframe
+          className="h-full w-full border-0"
+          src={embedUrl}
+          title={videoQuery ? `${videoQuery} video tutorial` : "Recipe video player"}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        />
+      </div>
+    </section>
   );
 };
 
 export default YoutubeVideoSection;
+
+

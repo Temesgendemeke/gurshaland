@@ -1,16 +1,8 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 
 export default function RecipeDetailSkeleton() {
   return (
     <div className="w-full max-w-7xl mx-auto px-6 py-12 space-y-6">
-      {/* Back Navigation Skeleton */}
-      <Button variant="ghost" className="mb-6 hover:bg-muted/50" disabled>
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        <Skeleton className="h-4 w-32 inline-block" />
-      </Button>
-
       {/* Recipe Header Skeleton */}
       <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
         <Skeleton className="h-96 w-full rounded-2xl" />

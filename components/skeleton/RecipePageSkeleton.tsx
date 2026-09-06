@@ -1,8 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 
 export default function RecipeDetailSkeleton() {
   return (
@@ -11,12 +9,6 @@ export default function RecipeDetailSkeleton() {
       <Skeleton className="h-16 w-full mb-8" />
 
       <div className="w-full md:max-w-9xl mx-auto px-6 py-12">
-        {/* Back Navigation Skeleton */}
-        <Button variant="ghost" className="mb-6 hover:bg-muted" disabled>
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          <Skeleton className="h-4 w-32 inline-block" />
-        </Button>
-
         {/* Recipe Header Skeleton */}
         <div className="grid lg:grid-cols-2 gap-12 mb-12">
           <div>

@@ -1,5 +1,5 @@
 "use client";
-import { Plus, X } from "lucide-react";
+import { Plus, X, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import Image from "next/image";
 import { deleteImage } from "@/actions/Recipe/image";
+import { compressImageToFile } from "@/utils/compressImage";
 import { Skeleton } from "./ui/skeleton";
 import { formSchema } from "@/utils/schema";
 import { z } from "zod";
@@ -59,53 +60,64 @@ export default function InstructionsField({
 
   const handleImageChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    step: number,
+    index: number,
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    form.setValue(`instructions.${step - 1}.image`, {
-      step,
+    const optimizedFile = await compressImageToFile(file, {
+      maxWidth: 1200,
+      maxHeight: 1200,
+      quality: 0.82,
+      mimeType: "image/webp",
+    });
+    const existing = form.getValues(`instructions.${index}`);
+    form.setValue(`instructions.${index}.image`, {
+      step: existing?.step ?? index + 1,
       url: "",
       path: "",
-      file,
+      file: optimizedFile,
     } as any);
   };
 
-  const handleImageDelete = async (e: React.MouseEvent, step: number) => {
+  const handleImageDelete = async (e: React.MouseEvent, index: number) => {
     e.stopPropagation();
-    const image = form.getValues(`instructions.${step - 1}.image`);
+    const image = form.getValues(`instructions.${index}.image`);
     if (image?.path) {
       await deleteImage(image.path);
     }
-    form.setValue(`instructions.${step - 1}.image`, undefined);
+    form.setValue(`instructions.${index}.image`, undefined);
   };
 
   const handleInstructionDelete = async (
     e: React.MouseEvent,
     index: number,
   ) => {
-    await handleImageDelete(e, index + 1);
+    await handleImageDelete(e, index);
     removeInstruction(index);
   };
 
   return (
-    <Card className="border-none">
-      <CardHeader>
-        <CardTitle>Instructions</CardTitle>
-        <CardDescription>Step-by-step how to prepare the dish.</CardDescription>
+    <Card className="rounded-2xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-none space-y-6">
+      <CardHeader className="p-0 pb-4 border-b border-border/60">
+        <CardTitle className="font-gosh text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+          Step-by-Step Instructions
+        </CardTitle>
+        <CardDescription className="text-xs sm:text-sm text-muted-foreground">
+          Clear, numbered steps for preparing and cooking this dish.
+        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-5">
+      <CardContent className="p-0 space-y-5">
         {instructionFields.map((field, index) => (
           <div
             key={field.id}
-            className="space-y-5 rounded-lg border border-border/60 p-4 sm:p-5 md:p-6"
+            className="space-y-5 rounded-xl border border-border/80 bg-background/50 p-4 sm:p-5 md:p-6"
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/10 text-xs font-bold text-primary">
                   {index + 1}
                 </span>
-                <span className="text-base font-semibold text-foreground">
+                <span className="text-sm font-semibold text-foreground">
                   Step {index + 1}
                 </span>
               </div>
@@ -122,9 +134,9 @@ export default function InstructionsField({
                   variant="ghost"
                   size="icon"
                   type="button"
-                  className="h-9 w-9 text-error hover:bg-error/10 hover:text-error"
+                  className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded-lg"
                 >
-                  <X className="h-4 w-4" />
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               )}
             </div>
@@ -136,10 +148,11 @@ export default function InstructionsField({
                   document.getElementById(`input-${index + 1}`)?.click()
                 }
               >
-                {watchInstructions[index].image ? (
+                {watchInstructions?.[index]?.image ? (
                   <div className="flex w-full flex-col items-center">
                     <div className="h-56 w-full">
-                      {(watchInstructions[index].image as PreviewImage)?.url ? (
+                      {(watchInstructions[index].image as PreviewImage)?.file ||
+                      (watchInstructions[index].image as PreviewImage)?.url ? (
                         <Image
                           src={
                             (watchInstructions[index].image as PreviewImage)
@@ -171,7 +184,7 @@ export default function InstructionsField({
                       variant="ghost"
                       size="sm"
                       className="mt-3 text-error hover:bg-error/10 hover:text-error/80"
-                      onClick={(e) => handleImageDelete(e, index + 1)}
+                      onClick={(e) => handleImageDelete(e, index)}
                     >
                       <X className="mr-1 h-4 w-4" />
                       Remove
@@ -206,6 +219,7 @@ export default function InstructionsField({
                           className="h-11"
                           placeholder="e.g., Prepare the batter"
                           {...field}
+                          value={field.value ?? ""}
                         />
                       </FormControl>
                       <FormMessage />
@@ -224,6 +238,7 @@ export default function InstructionsField({
                           placeholder="e.g., 15"
                           type="number"
                           {...field}
+                          value={field.value ?? ""}
                         />
                       </FormControl>
                       <FormMessage />
@@ -238,7 +253,7 @@ export default function InstructionsField({
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={(e) => handleImageChange(e, index + 1)}
+              onChange={(e) => handleImageChange(e, index)}
             />
 
             <FormField
@@ -253,6 +268,7 @@ export default function InstructionsField({
                       placeholder="Describe this step in detail..."
                       rows={3}
                       {...field}
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -272,6 +288,7 @@ export default function InstructionsField({
                       placeholder="Any helpful tips for this step..."
                       rows={2}
                       {...field}
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -294,10 +311,10 @@ export default function InstructionsField({
               image: undefined,
             })
           }
-          className="w-full border-dashed border-primary/40 text-primary hover:border-primary hover:bg-primary/5 active:scale-[0.99]"
+          className="w-full h-10 rounded-xl border border-dashed border-border/80 bg-background/50 hover:bg-accent hover:border-primary/50 text-foreground font-medium text-xs sm:text-sm active:scale-[0.99] gap-1.5"
         >
-          <Plus className="mr-2 h-4 w-4" />
-          Add Step
+          <Plus className="h-4 w-4 text-primary" />
+          <span>Add Step</span>
         </Button>
       </CardContent>
     </Card>

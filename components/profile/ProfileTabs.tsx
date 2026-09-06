@@ -43,7 +43,7 @@ export default function ProfileTabs({
       <TabsList className="h-11 rounded-xl bg-muted/70 p-1.5">
         <TabsTrigger
           value="recipes"
-          className="gap-2 rounded-lg px-4 data-[state=active]:shadow-sm"
+          className="gap-2 rounded-lg px-4 data-[state=active]:bg-background data-[state=active]:border data-[state=active]:border-border"
         >
           Recipes
           <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold tabular-nums text-primary">
@@ -52,7 +52,7 @@ export default function ProfileTabs({
         </TabsTrigger>
         <TabsTrigger
           value="blogs"
-          className="gap-2 rounded-lg px-4 data-[state=active]:shadow-sm"
+          className="gap-2 rounded-lg px-4 data-[state=active]:bg-background data-[state=active]:border data-[state=active]:border-border"
         >
           Blogs
           <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold tabular-nums text-primary">

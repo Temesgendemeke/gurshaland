@@ -102,12 +102,38 @@ export const deleteRecipe = async (_slug: string) => {
     ...instructions.map((ins: Instruction | any) => ins?.image?.path),
   ].filter(Boolean) as string[];
 
-  // Remove images from storage only if there are paths to remove
   if (imagePaths.length > 0) {
     const { error: storageError } = await supabase.storage
       .from(BUCKET)
       .remove(imagePaths);
-    if (storageError) throw storageError;
+    if (storageError) console.warn("Storage removal warning:", storageError);
+  }
+
+  const recipeId = recipeObj?.id;
+  if (recipeId) {
+    // Delete child rows to prevent foreign key constraint violations
+    await supabase.from("recipe_view").delete().eq("recipe_id", recipeId);
+    await supabase.from("recipe_like").delete().eq("recipe_id", recipeId);
+    await supabase.from("recipe_comment").delete().eq("recipe_id", recipeId);
+    await supabase.from("recipe_bookmark").delete().eq("recipe_id", recipeId);
+    await supabase.from("recipe_rating").delete().eq("recipe_id", recipeId);
+    await supabase.from("recipe_image").delete().eq("recipe_id", recipeId);
+    await supabase.from("nutrition").delete().eq("recipe_id", recipeId);
+
+    const { data: stepList } = await supabase
+      .from("instruction")
+      .select("id")
+      .eq("recipe_id", recipeId);
+
+    if (stepList && stepList.length > 0) {
+      await supabase
+        .from("instruction_image")
+        .delete()
+        .in("instruction_id", stepList.map((s) => s.id));
+    }
+
+    await supabase.from("instruction").delete().eq("recipe_id", recipeId);
+    await supabase.from("ingredient").delete().eq("recipe_id", recipeId);
   }
 
   const { error: recipeError } = await supabase
@@ -138,14 +164,18 @@ export const uploadRecipeImage = async (
       data: { publicUrl: url },
     } = supabase.storage.from(BUCKET).getPublicUrl(path);
 
-    const { data, error } = await supabase.from("recipe_image").insert({
-      path,
-      url,
-      recipe_id,
-    });
+    const { data, error } = await supabase
+      .from("recipe_image")
+      .insert({
+        path,
+        url,
+        recipe_id,
+      })
+      .select()
+      .single();
 
     if (error) throw error;
-    return data;
+    return data || { path, url, recipe_id };
   } catch (error) {
     throw error;
   }

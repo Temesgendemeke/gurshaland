@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { IconPlus as Plus, IconCooker as UtensilsCrossed } from "@tabler/icons-react";
+import { IconPlus as Plus, IconToolsKitchen2 as Utensils } from "@tabler/icons-react";
 import { Button } from "../ui/button";
 import MenuInputSection from "./MenuInputSection";
 import { useFieldArray } from "react-hook-form";
@@ -16,9 +16,6 @@ import { useState } from "react";
 
 const MenuForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
   const [openSections, setOpenSections] = useState<number[]>([]);
-  const removeMenuField = (index: number) => {
-    removeMenu(index);
-  };
 
   const toggleSection = (index: number) => {
     setOpenSections((prev) => {
@@ -44,72 +41,67 @@ const MenuForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
       description: "",
       price: {
         amount: 0,
-        currency: "",
+        currency: "ETB",
       },
     });
-    // Automatically open the new section
     toggleSection(menuFields.length);
   };
 
   return (
-    <Card className="border-border/60 bg-card shadow-[0_15px_40px_-30px_hsl(var(--foreground)/0.15)]">
-      <CardHeader className="flex flex-row items-start justify-between gap-4">
+    <Card className="border border-border bg-card/60 rounded-xl">
+      <CardHeader className="flex flex-row items-center justify-between gap-3 p-4 sm:p-6 pb-3 sm:pb-4">
         <div>
-          <div className="flex items-center gap-2 text-primary">
-            <UtensilsCrossed className="h-4 w-4" strokeWidth={1.5} />
-            <span className="text-xs font-semibold uppercase tracking-[0.18em]">
-              Menu
-            </span>
-          </div>
-          <CardTitle className="mt-1 font-gosh text-xl">
+          <CardTitle className="text-base sm:text-lg font-semibold text-foreground">
             Menu Highlights
           </CardTitle>
-          <CardDescription>
-            Add your signature dishes to entice customers.
+          <CardDescription className="text-xs sm:text-sm">
+            Feature signature dishes, specialty courses, and pricing.
           </CardDescription>
         </div>
         <Button
           type="button"
-          variant={"outline"}
+          variant="outline"
+          size="sm"
           onClick={addMenuField}
-          className="shrink-0 gap-2"
+          className="shrink-0 gap-1.5 h-8 font-medium text-xs sm:text-sm"
         >
-          <Plus className="h-4 w-4" strokeWidth={2} />
-          Add Item
+          <Plus className="h-3.5 w-3.5" />
+          <span>Add Dish</span>
         </Button>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {menuFields.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border bg-muted/20 px-4 py-12 text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                <UtensilsCrossed className="h-6 w-6 text-primary" strokeWidth={1.5} />
-              </div>
-              <h3 className="font-gosh text-lg font-bold">
-                No menu items yet
-              </h3>
-              <p className="mx-auto mt-1 mb-5 max-w-xs text-sm text-muted-foreground">
-                Start adding your delicious dishes to showcase your menu.
-              </p>
-              <Button type="button" variant="outline" onClick={addMenuField}>
-                Add Your First Dish
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {menuFields.map((field, index) => (
-                <MenuInputSection
-                  key={field.id}
-                  index={index}
-                  form={form}
-                  onRemove={() => removeMenuField(index)}
-                  isOpen={(idx) => openSections.includes(idx)}
-                  onToggle={() => toggleSection(index)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+      <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+        {menuFields.length === 0 ? (
+          <div className="rounded-lg border border-dashed border-border bg-muted/10 px-4 py-8 text-center">
+            <Utensils className="mx-auto h-8 w-8 text-muted-foreground/50 mb-2" strokeWidth={1.5} />
+            <p className="text-sm font-medium text-foreground">No menu items added yet</p>
+            <p className="text-xs text-muted-foreground mt-1 max-w-sm mx-auto">
+              Add signature dishes so diners can preview your cuisine and pricing.
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addMenuField}
+              className="mt-4 gap-1.5"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              Add First Dish
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {menuFields.map((field, index) => (
+              <MenuInputSection
+                key={field.id}
+                index={index}
+                form={form}
+                onRemove={() => removeMenu(index)}
+                isOpen={(idx) => openSections.includes(idx)}
+                onToggle={() => toggleSection(index)}
+              />
+            ))}
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -35,58 +35,36 @@ const HeroSection = () => {
   });
 
   return (
-    <section className="relative pt-[clamp(2.5rem,1.5rem+2vw,4rem)] pb-4 sm:pb-8 lg:pb-12">
-      {/* Subtle Ambient Lighting */}
-      <div
-        className="pointer-events-none absolute -top-8 -left-12 h-64 w-64 rounded-full bg-primary/[0.08] blur-3xl"
-        aria-hidden="true"
-      />
-
+    <section className="relative pt-[clamp(2rem,1.5rem+2vw,3.5rem)] pb-4 sm:pb-8 lg:pb-12">
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-        {/* Left Content - Pragmatic & High-Converting Marketing */}
+        {/* Left Content */}
         <div className="text-center lg:text-left">
-          {/* Pragmatic Eyebrow Badge */}
-          {/* <motion.div
-            {...enter(0)}
-            className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/[0.07] px-3.5 py-1.5 text-xs font-semibold text-foreground backdrop-blur-xs shadow-xs"
-          >
-            <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-primary font-bold">Authentic & Tested</span>
-            <span className="text-muted-foreground/40">•</span>
-            <span className="text-muted-foreground font-medium">
-              Ethiopian Heritage & AI Culinary Tools
-            </span>
-          </motion.div> */}
-
-          {/* Marketing-Driven Headline */}
           <motion.h1
             {...enter(0.06)}
-            className="font-gosh mb-5 text-fluid-hero font-bold tracking-tight text-foreground text-balance"
+            className="font-gosh mb-4 text-fluid-hero font-bold tracking-tight text-foreground text-balance"
           >
             Cook Authentic{" "}
             <span className="text-primary">Ethiopian Dishes</span> With
             Confidence.
           </motion.h1>
 
-          {/* Pragmatic Value Proposition */}
           <motion.p
             {...enter(0.12)}
-            className="mb-8 max-w-xl text-balance mx-auto lg:mx-0 text-base ml-1 text-muted-foreground leading-relaxed"
+            className="mb-8 max-w-xl text-balance mx-auto lg:mx-0 text-sm sm:text-base text-muted-foreground leading-relaxed"
           >
             From slow-simmered berbere doro wat and fresh sourdough teff injera
             to wholesome fasting wats. Master traditional techniques with
-            foolproof recipes, step-by-step guides, and smart AI kitchen tools.
+            tested recipes, step-by-step guides, and smart AI kitchen tools.
           </motion.p>
 
-          {/* Action CTAs */}
           <motion.div
             {...enter(0.18)}
-            className="flex flex-col items-center justify-center gap-3.5 sm:flex-row sm:gap-4 lg:justify-start"
+            className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4 lg:justify-start"
           >
             <Button
               asChild
               size="lg"
-              className="btn-primary-modern group h-12 w-full px-7 text-base font-semibold shadow-md shadow-primary/20 transition-all hover:shadow-lg hover:shadow-primary/30 active:translate-y-px sm:w-auto"
+              className="btn-primary-modern group h-11 sm:h-12 w-full px-7 text-sm sm:text-base font-semibold transition-colors duration-150 sm:w-auto"
             >
               <Link
                 href="/recipes"
@@ -101,7 +79,7 @@ const HeroSection = () => {
               asChild
               variant="outline"
               size="lg"
-              className="btn-secondary-modern h-12 w-full px-6 text-base font-semibold sm:w-auto hover:border-primary/40 hover:text-primary transition-all backdrop-blur-xs"
+              className="btn-secondary-modern h-11 sm:h-12 w-full px-6 text-sm sm:text-base font-semibold sm:w-auto hover:border-foreground/30 transition-colors"
             >
               <Link
                 href="/ai-features/generate-recipe"
@@ -113,7 +91,6 @@ const HeroSection = () => {
             </Button>
           </motion.div>
 
-          {/* Popular Dishes Quick Tags */}
           <motion.div
             {...enter(0.22)}
             className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground lg:justify-start"
@@ -131,12 +108,10 @@ const HeroSection = () => {
               </Link>
             ))}
           </motion.div>
-
-
         </div>
 
-        {/* Right Content - Hero Food Image with AI overlay */}
-        <motion.div {...enter(0.15)} className="relative">
+        {/* Right Content - Hidden on mobile/tablet */}
+        <motion.div {...enter(0.15)} className="relative hidden lg:block">
           <HeroAiGenerator />
         </motion.div>
       </div>

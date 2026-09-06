@@ -1,6 +1,7 @@
 import { BUCKET } from "@/constants/image";
 import { createClient } from "@/utils/supabase/client";
 import generateFilePath from "@/utils/supabase/generate_path";
+import { compressImageToFile } from "@/utils/compressImage";
 
 import { Blog, BlogComment, Content } from "@/utils/types/blog";
 import { Ingredient } from "@/utils/types/recipe";
@@ -70,9 +71,31 @@ export const deleteBlog = async (blog: Blog) => {
     ...contentImagePaths,
   ];
 
+  let blogId = blog.id;
+  if (!blogId && blog.slug) {
+    const { data: b } = await supabase.from("blog").select("id").eq("slug", blog.slug).maybeSingle();
+    if (b) blogId = b.id;
+  }
+
+  if (blogId) {
+    await supabase.from("blog_view").delete().eq("blog_id", blogId);
+    await supabase.from("blog_like").delete().eq("blog_id", blogId);
+    await supabase.from("blog_bookmark").delete().eq("blog_id", blogId);
+    await supabase.from("blog_comment").delete().eq("blog_id", blogId);
+    await supabase.from("blog_image").delete().eq("blog_id", blogId);
+
+    const { data: contents } = await supabase.from("content").select("id").eq("blog_id", blogId);
+    if (contents && contents.length > 0) {
+      const contentIds = contents.map((c) => c.id);
+      await supabase.from("content_image").delete().in("content_id", contentIds);
+      await supabase.from("blog_ingredient").delete().in("content_id", contentIds);
+    }
+    await supabase.from("content").delete().eq("blog_id", blogId);
+  }
+
   let query = supabase.from("blog").delete({ count: "exact" });
-  if (blog.id) {
-    query = query.eq("id", blog.id);
+  if (blogId) {
+    query = query.eq("id", blogId);
   } else if (blog.slug) {
     query = query.eq("slug", blog.slug);
   } else {
@@ -98,16 +121,21 @@ export const uploadImage = async (
   file: File,
 ) => {
   const supabase = createClient();
-  // const filePath = `${type}/${user_id}/${file.name}_${Date.now()}`;
-  const filePath = generateFilePath(type, user_id, file.name);
+  const processedFile = await compressImageToFile(file, {
+    maxWidth: 1920,
+    maxHeight: 1920,
+    quality: 0.82,
+    mimeType: "image/webp",
+  });
+  const filePath = generateFilePath(type, user_id, processedFile.name);
   const table = type == "blog" ? "blog_image" : "content_image";
 
   console.log("table ", table);
   console.log("file path ", filePath);
-  const { error } = await supabase.storage.from(BUCKET).upload(filePath, file, {
-    cacheControl: "3600",
+  const { error } = await supabase.storage.from(BUCKET).upload(filePath, processedFile, {
+    cacheControl: "31536000",
     upsert: true,
-    contentType: file.type || "image/jpeg",
+    contentType: processedFile.type || "image/webp",
   });
   console.log("from here ", error);
   if (error) throw error;
@@ -169,16 +197,21 @@ export const upsertImageFromStorage = async (
       .delete()
       .eq(relationColumn, column_id);
 
-    if (DeleteError) throw DeleteError;
+    const processedFile = await compressImageToFile(file, {
+      maxWidth: 1920,
+      maxHeight: 1920,
+      quality: 0.82,
+      mimeType: "image/webp",
+    });
 
-    const newFilePath = generateFilePath(type, user_id, file.name);
+    const newFilePath = generateFilePath(type, user_id, processedFile.name);
 
     const { error: UploadError } = await supabase.storage
       .from(BUCKET)
-      .upload(newFilePath, file, {
-        cacheControl: "3600",
+      .upload(newFilePath, processedFile, {
+        cacheControl: "31536000",
         upsert: true,
-        contentType: file?.type || "image/jpeg",
+        contentType: processedFile.type || "image/webp",
       });
 
     if (UploadError) throw UploadError;
@@ -231,7 +264,6 @@ export const insertImageDb = async (
   const { error: insertError } = await supabase.from(table).insert({
     url,
     path,
-    user_id,
     ...(table == "blog_image" ? { blog_id: id } : { content_id: id }),
   });
 

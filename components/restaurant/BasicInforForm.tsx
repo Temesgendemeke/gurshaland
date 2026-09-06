@@ -4,6 +4,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import {
   Card,
@@ -13,39 +14,40 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Pattern as FileUpload } from "@/components/FileUpload";
-import { IconAlertCircle as AlertCircle, IconBuildingStore as Store } from "@tabler/icons-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import restaurantSchema from "@/schema/restaurent";
 import { z } from "zod";
 import CusinesForm from "./cusinesForm";
+import { normalizeImageUrl } from "@/lib/utils";
 
 type FormValues = z.infer<typeof restaurantSchema>;
 
 const BasicInforForm = ({ form }: { form: any }) => {
+  const rawImage = form.watch("image");
+  const initialImageUrl = normalizeImageUrl(
+    rawImage?.url ||
+      (rawImage?.file instanceof File ? URL.createObjectURL(rawImage.file) : null) ||
+      rawImage,
+  );
+
   return (
-    <Card className="border-border/60 bg-card shadow-[0_15px_40px_-30px_hsl(var(--foreground)/0.15)]">
-      <CardHeader>
-        <div className="flex items-center gap-2 text-primary">
-          <Store className="h-4 w-4" strokeWidth={1.5} />
-          <span className="text-xs font-semibold uppercase tracking-[0.18em]">
-            Basic Info
-          </span>
-        </div>
-        <CardTitle className="mt-1 font-gosh text-xl">
-          Restaurant Details
+    <Card className="border border-border bg-card/60 rounded-xl">
+      <CardHeader className="p-4 sm:p-6 pb-3 sm:pb-4">
+        <CardTitle className="text-base sm:text-lg font-semibold text-foreground">
+          Basic Information
         </CardTitle>
-        <CardDescription>
-          The core identity of your establishment  name, story, and cover.
+        <CardDescription className="text-xs sm:text-sm">
+          General establishment profile, hero cover photo, and culinary specialties.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-5">
-          <div className="rounded-xl border border-border/60 bg-muted/20 p-5">
-            <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-foreground/80">
-              Cover Image
-            </h3>
+      <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0 space-y-4 sm:space-y-6">
+        {/* Cover Photo */}
+        <div className="space-y-2">
+          <FormLabel className="text-sm font-medium">Cover Image</FormLabel>
+          <div className="rounded-lg border border-border/80 bg-muted/10 p-3 sm:p-4">
             <FileUpload
+              initialImage={initialImageUrl}
               maxSize={10 * 1024 * 1024} // 10MB
               accept="image/*"
               onImageChange={(file) => {
@@ -64,50 +66,55 @@ const BasicInforForm = ({ form }: { form: any }) => {
                 }
               }}
             />
-            <p className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
-              <AlertCircle className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-              <span>Recommended size: 1200x600px</span>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Recommended aspect ratio 16:9 (e.g. 1920×1080px or 1200×675px). Max 10MB.
             </p>
           </div>
-
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Restaurant Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="e.g. Gursha House"
-                    className="h-11"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Tell us about your restaurant, atmosphere, and specialties..."
-                    className="min-h-[7.5rem] resize-y"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <CusinesForm form={form} />
         </div>
+
+        {/* Name */}
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Restaurant Name</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="e.g. Gursha Traditional Restaurant"
+                  className="h-10"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Description */}
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="A short overview of your atmosphere, culinary traditions, and dining experience..."
+                  className="min-h-[6.5rem] resize-y"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                Brief summary displayed on listings and search results.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Cuisines */}
+        <CusinesForm form={form} />
       </CardContent>
     </Card>
   );

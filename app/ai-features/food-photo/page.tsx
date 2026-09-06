@@ -4,8 +4,6 @@ import {
   PhotoToRecipeProvider,
   PhotoToRecipeResult,
 } from "@/components/PhotoToRecipeGenerator";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 
 export default function FoodPhotoPage() {
   return (
@@ -13,14 +11,6 @@ export default function FoodPhotoPage() {
       <Header />
 
       <main className="mx-auto w-full max-w-7xl sm:px-6 pb-24 space-y-4 pt-8">
-        <Link
-          href="/ai-features"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground px-2 sm:px-0"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to AI Features
-        </Link>
-
         <PhotoToRecipeProvider scrollOnGenerate>
           <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-6 px-2 sm:px-0">
             <header className="w-full sm:max-w-2xl">

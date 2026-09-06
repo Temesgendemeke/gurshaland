@@ -75,7 +75,7 @@ export default function ActionCard({
   };
 
   return (
-    <div className="relative mt-2 w-full max-w-[19rem] overflow-hidden rounded-[1rem] border border-border bg-card shadow-sm shadow-black/5">
+    <div className="relative mt-2 w-full max-w-[19rem] overflow-hidden rounded-[1rem] border border-border bg-card">
       {/* Progress rail */}
       {!paused && (
         <span className="absolute inset-y-0 left-0 w-[3px] bg-muted" aria-hidden>
@@ -123,7 +123,7 @@ export default function ActionCard({
         <button
           type="button"
           onClick={handleRunNow}
-          className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 text-sm font-semibold text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] transition-colors hover:bg-primary/90 active:scale-[0.98]"
+          className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 active:scale-[0.98]"
         >
           <Icon className="h-4 w-4" strokeWidth={2} />
           {cta}

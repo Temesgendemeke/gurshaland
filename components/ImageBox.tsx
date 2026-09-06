@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { IconUpload as Upload, IconX as X } from "@tabler/icons-react";
 import Image from "next/image";
 import React from "react";
+import { compressImageToFile } from "@/utils/compressImage";
 import { UseFormReturn, FieldValues, Path } from "react-hook-form";
 
 interface ImageBoxProps<T extends FieldValues = FieldValues> {
@@ -47,8 +48,6 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
 
   const handleDeleteImage = async () => {
     if (oldPath) {
-      console.log("from btn", oldPath);
-      // await deleteImageFromStorage([oldPath]);
       await deleteImage(oldPath);
     }
     form.setValue(field as any, undefined as any, {
@@ -57,13 +56,10 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
   };
 
   return (
-    <Card className="p-6 bg-card border-border">
-      {/* <h2 className="text-xl font-bold text-foreground mb-6">{label} Image</h2> */}
-
-      {/*{JSON.stringify(oldPath)}*/}
+    <Card className="p-3 sm:p-5 bg-card border-border shadow-none">
       {/* Preview and controls */}
       <div
-        className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/60 transition-colors cursor-pointer"
+        className="border border-dashed border-border rounded-lg p-4 sm:p-6 text-center hover:border-primary/60 transition-colors cursor-pointer"
         onClick={() => document.getElementById(inputcls)?.click()}
       >
         {imageValue || imageURl ? (
@@ -99,7 +95,7 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
               Click to upload or drag and drop
             </p>
             <p className="text-sm text-muted-foreground/80">
-              PNG, JPG up to 10MB
+              PNG, JPG, or WebP (auto-optimized)
             </p>
           </>
         )}
@@ -109,8 +105,14 @@ export default function ImageBox<T extends FieldValues = FieldValues>({
           accept="image/*"
           className="hidden"
           onChange={async (e) => {
-            const file = e.target.files?.[0];
-            if (file) {
+            const rawFile = e.target.files?.[0];
+            if (rawFile) {
+              const file = await compressImageToFile(rawFile, {
+                maxWidth: 1920,
+                maxHeight: 1920,
+                quality: 0.82,
+                mimeType: "image/webp",
+              });
               const previewUrl = URL.createObjectURL(file);
               form.setValue(
                 `${field}` as Path<T>,

@@ -3,6 +3,8 @@ CREATE OR REPLACE FUNCTION post_recipe_comment(
 )
 RETURNS jsonb
 LANGUAGE plpgsql 
+SECURITY DEFINER
+SET search_path = public, auth
 AS $$
 DECLARE
    comment_id int;
@@ -25,7 +27,19 @@ BEGIN
       'id', c.id,
       'author_id', c.author_id,
       'author', (
-         SELECT row_to_json(p)
+         SELECT jsonb_build_object(
+            'id', p.id,
+            'username', p.username,
+            'full_name', p.full_name,
+            'avatar', COALESCE(
+               (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+               (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+            ),
+            'avatar_url', COALESCE(
+               (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+               (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+            )
+         )
          FROM profile p
          WHERE p.id = c.author_id
          LIMIT 1
@@ -47,3 +61,5 @@ BEGIN
    RETURN result;
 END;
 $$;
+
+GRANT EXECUTE ON FUNCTION post_recipe_comment(jsonb) TO authenticated;

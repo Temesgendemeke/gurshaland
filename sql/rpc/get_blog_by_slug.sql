@@ -1,13 +1,15 @@
 CREATE OR REPLACE FUNCTION get_blog_by_slug(
     blog_slug TEXT,
-    _user_id UUID)
+    _user_id UUID DEFAULT NULL
+)
 RETURNS JSONB 
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
 AS $$
-
 DECLARE
     new_blog JSONB;
-    current_blog_id INTEGER;
+    current_blog_id BIGINT;
     current_category TEXT;
 BEGIN
     -- Get the current blog's ID and category first
@@ -25,11 +27,24 @@ BEGIN
         'title', b.title,
         'subtitle', b.subtitle,
         'author_id', b.author_id,  
-        'featured', b.featured,
+        'featured', false,
         'author', (
-            SELECT COALESCE(row_to_json(profile), '{}'::json)
-            FROM profile
-            WHERE b.author_id = profile.id
+            SELECT jsonb_build_object(
+                'id', p.id,
+                'username', p.username,
+                'full_name', p.full_name,
+                'avatar', COALESCE(
+                    (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+                    (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+                ),
+                'avatar_url', COALESCE(
+                    (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+                    (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+                ),
+                'bio', p.bio
+            )
+            FROM profile p
+            WHERE b.author_id = p.id
             LIMIT 1
         ),
         'created_at', b.created_at,
@@ -54,7 +69,8 @@ BEGIN
                             jsonb_build_object(
                                 'id', ingredient.id,
                                 'amount', ingredient.amount,
-                                'name', ingredient.name
+                                'name', ingredient.name,
+                                'measurement', ingredient.measurement
                             )
                         )
                         FROM blog_ingredient ingredient
@@ -78,6 +94,21 @@ BEGIN
             SELECT count(*)::bigint
             FROM blog_view
             WHERE blog_view.blog_id = b.id
+        ),
+        'like_count', (
+            SELECT count(*)::bigint
+            FROM blog_like
+            WHERE blog_like.blog_id = b.id
+        ),
+        'is_liked', (
+            SELECT CASE WHEN _user_id IS NOT NULL THEN
+                EXISTS (SELECT 1 FROM blog_like bl WHERE bl.blog_id = b.id AND (bl.liked_by = _user_id))
+            ELSE false END
+        ),
+        'is_bookmarked', (
+            SELECT CASE WHEN _user_id IS NOT NULL THEN
+                EXISTS (SELECT 1 FROM blog_bookmark bm WHERE bm.blog_id = b.id AND bm.user_id = _user_id)
+            ELSE false END
         ),
         'relatives_posts', (
             SELECT COALESCE(jsonb_agg(
@@ -109,5 +140,4 @@ BEGIN
 END;
 $$;
 
-
-
+GRANT EXECUTE ON FUNCTION get_blog_by_slug(TEXT, UUID) TO authenticated, anon;

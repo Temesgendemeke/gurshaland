@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ["puppeteer"],
+  serverExternalPackages: ["puppeteer", "takumi-pdf", "@takumi-rs/helpers"],
   experimental: {
     serverActions: {
       bodySizeLimit: "4mb",
@@ -35,6 +35,21 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "images.pexels.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "*.googleusercontent.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
         port: "",
       },
     ],

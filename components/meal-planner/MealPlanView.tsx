@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
-  ChevronLeft,
   Check,
   ShoppingBag,
   Sparkles,
@@ -15,7 +14,7 @@ import {
 import Link from "next/link";
 import { GetMealPannerTyp } from "@/schema/meal-planner";
 import MealPlanSkeleton from "../skeleton/MealPlanSkeleton";
-import DownloadPdfButton from "@/components/pdf/DownloadPdfButton";
+import MealPlanPdfModal from "@/components/pdf/MealPlanPdfModal";
 import { generateMealPlanPdf } from "@/actions/pdf";
 import { MEAL_PLAN_PDF_CREDIT_COST } from "@/constants/creditCosts";
 
@@ -98,52 +97,40 @@ const MealPlanView = ({ id }: { id: string }) => {
         : days.slice(0, 1);
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
-      <div className="space-y-8">
-        {/* Serene Header */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/60 pb-6">
-          <div className="flex min-w-0 items-center gap-3.5">
-            <Button
-              variant="ghost"
-              size="icon"
-              asChild
-              aria-label="Back to my meal plans"
-              className="h-9 w-9 shrink-0 rounded-xl border border-border/60 hover:bg-muted text-muted-foreground hover:text-foreground"
-            >
-              <Link href="/meal-planner/my-meal-plans">
-                <ChevronLeft className="h-4 w-4" />
-              </Link>
-            </Button>
-            <div className="min-w-0 space-y-1">
-              <h1 className="line-clamp-1 font-gosh text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                {plan.name}
-              </h1>
-              <p className="flex flex-wrap items-center gap-x-2 text-xs sm:text-sm text-muted-foreground">
-                <span className="font-semibold text-primary capitalize">
-                  {plan.goal?.replace(/_/g, " ")}
-                </span>
-                <span>·</span>
-                <span className="capitalize">{plan.timeframe} plan</span>
-                <span>·</span>
-                <span>{days.length} days</span>
-                <span>·</span>
-                <span>{plan.meals_per_day} meals/day</span>
-                {plan.calories && (
-                  <>
-                    <span>·</span>
-                    <span>~{plan.calories} kcal/day</span>
-                  </>
-                )}
-              </p>
-            </div>
+    <div className="mx-auto w-full max-w-7xl px-3.5 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <div className="space-y-6 sm:space-y-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border/60 pb-5 sm:pb-6">
+          <div className="min-w-0 space-y-1.5">
+            <h1 className="line-clamp-1 font-gosh text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              {plan.name}
+            </h1>
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-muted-foreground">
+              <span className="font-semibold text-primary capitalize">
+                {plan.goal?.replace(/_/g, " ")}
+              </span>
+              <span>·</span>
+              <span className="capitalize">{plan.timeframe} plan</span>
+              <span>·</span>
+              <span>{days.length} days</span>
+              <span>·</span>
+              <span>{plan.meals_per_day} meals/day</span>
+              {plan.calories && (
+                <>
+                  <span>·</span>
+                  <span>~{plan.calories} kcal/day</span>
+                </>
+              )}
+            </p>
           </div>
-          <DownloadPdfButton
-            generate={() => generateMealPlanPdf(plan)}
-            cost={MEAL_PLAN_PDF_CREDIT_COST}
-            variant="outline"
-            size="sm"
-            className="rounded-xl border-border/80 text-foreground font-medium hover:border-primary/50 hover:text-primary"
-          />
+          <div className="shrink-0 w-full sm:w-auto">
+            <MealPlanPdfModal
+              generate={() => generateMealPlanPdf(plan)}
+              cost={MEAL_PLAN_PDF_CREDIT_COST}
+              plan={plan}
+              className="w-full sm:w-auto rounded-xl"
+            />
+          </div>
         </div>
 
         {/* Day Switcher Tabs (Un-bloated Navigation) */}
@@ -158,7 +145,7 @@ const MealPlanView = ({ id }: { id: string }) => {
                   className={cn(
                     "shrink-0 rounded-xl px-4 py-2 text-xs font-semibold transition-all duration-200 cursor-pointer",
                     isActive
-                      ? "bg-primary text-primary-foreground shadow-xs shadow-primary/20"
+                      ? "bg-primary text-primary-foreground font-bold"
                       : "border border-border/70 bg-card text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                   )}
                 >
@@ -174,7 +161,7 @@ const MealPlanView = ({ id }: { id: string }) => {
               className={cn(
                 "shrink-0 rounded-xl px-4 py-2 text-xs font-semibold transition-all duration-200 cursor-pointer",
                 selectedDay === "all"
-                  ? "bg-primary text-primary-foreground shadow-xs shadow-primary/20"
+                  ? "bg-primary text-primary-foreground font-bold"
                   : "border border-border/70 bg-card text-muted-foreground hover:bg-muted/50 hover:text-foreground"
               )}
             >
@@ -229,7 +216,7 @@ const MealPlanView = ({ id }: { id: string }) => {
                     {day.meals?.map((meal, mIdx) => (
                       <div
                         key={meal.id ?? meal.name ?? mIdx}
-                        className="group rounded-xl border border-border/60 bg-muted/20 p-4 transition-all hover:border-border/90 hover:bg-card hover:shadow-xs"
+                        className="group rounded-xl border border-border bg-card/60 p-4 transition-colors hover:border-foreground/30 hover:bg-card"
                       >
                         <div className="flex flex-wrap items-start justify-between gap-2">
                           <div className="min-w-0 flex-1">
@@ -263,10 +250,10 @@ const MealPlanView = ({ id }: { id: string }) => {
             })}
           </div>
 
-          {/* Quiet Sidebar: Shopping List + Unified Guidance */}
+          {/* Sidebar: Shopping List & Guidance */}
           {(hasShopping || hasGuidance) && (
             <div className="space-y-6 lg:col-span-4">
-              {/* Interactive Zen Shopping List */}
+              {/* Shopping List */}
               {hasShopping && (
                 <div className="rounded-2xl border border-border/70 bg-card p-5">
                   <div className="flex items-center justify-between pb-3 border-b border-border/60">

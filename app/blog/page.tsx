@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { Header } from "@/components/header";
 import { Input } from "@/components/ui/input";
@@ -23,13 +24,24 @@ const cardVariants = {
   show: { opacity: 1, y: 0 },
 };
 
-export default function BlogPage() {
-  const [searchTerm, setSearchTerm] = useState("");
+function BlogPageContent() {
+  const searchParams = useSearchParams();
+  const initialTag = searchParams?.get("tag") || searchParams?.get("search") || "";
+  const [searchTerm, setSearchTerm] = useState(initialTag);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const reduceMotion = useReducedMotion();
   const resultsRef = useRef<HTMLDivElement>(null);
   const hasUserInteracted = useRef(false);
+
+  // Sync if URL query param changes
+  useEffect(() => {
+    const queryTag = searchParams?.get("tag") || searchParams?.get("search");
+    if (queryTag !== null && queryTag !== undefined) {
+      setSearchTerm(queryTag);
+      hasUserInteracted.current = true;
+    }
+  }, [searchParams]);
 
   const blogPosts = blogStore((store) => store.blogs) || [];
   const featuredPost = blogPosts.find((post) => post.featured);
@@ -90,22 +102,19 @@ export default function BlogPage() {
       <Header />
 
       {/* Masthead */}
-      <header className="mx-auto w-full max-w-7xl px-4 pt-14 sm:px-6 md:pt-10">
-        {/* <p className="mb-4 text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-primary">
-          The Gurshaland Journal
-        </p> */}
-        <h1 className="max-w-3xl font-gosh text-5xl font-semibold leading-[1.04] tracking-tighter text-foreground sm:text-6xl lg:text-7xl">
+      <header className="mx-auto w-full max-w-7xl px-3.5 pt-8 sm:px-6 sm:pt-12 md:pt-14 lg:px-8">
+        <h1 className="max-w-3xl font-gosh text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
           Ethiopian Food Blog
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
           Stories, recipes, and insights from the world of Ethiopian cuisine.
           From berbere-spiced kitchens to the traditions behind the plate.
         </p>
       </header>
 
       {/* Filters */}
-      <div ref={resultsRef} className="mx-auto w-full max-w-7xl px-4 sm:px-6">
-        <div className="mt-12 border-t border-border/70 pb-2">
+      <div ref={resultsRef} className="mx-auto w-full max-w-7xl px-3.5 sm:px-6 lg:px-8">
+        <div className="mt-8 border-t border-border/70 pb-2 sm:mt-12">
           <div className="flex flex-col gap-4 py-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="scrollbar-hide -mb-1 flex gap-2 overflow-x-auto pb-1">
               {categories.map((category) => {
@@ -141,7 +150,7 @@ export default function BlogPage() {
       </div>
 
       {/* Content */}
-      <div className="mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6">
+      <div className="mx-auto w-full max-w-7xl px-3.5 pb-16 sm:px-6 sm:pb-24 lg:px-8">
         {loading ? (
           <BlogPageSkeleton />
         ) : (
@@ -273,3 +282,12 @@ export default function BlogPage() {
     </div>
   );
 }
+
+export default function BlogPage() {
+  return (
+    <Suspense fallback={<BlogPageSkeleton />}>
+      <BlogPageContent />
+    </Suspense>
+  );
+}
+

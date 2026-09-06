@@ -1,6 +1,8 @@
 CREATE OR REPLACE FUNCTION change_profile_info(_profile_id uuid, _new_profile jsonb)
 RETURNS jsonb
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
 AS $$
 DECLARE
     _full_name text;
@@ -56,6 +58,14 @@ BEGIN
         'full_name', p.full_name,
         'username', p.username,
         'bio', p.bio,
+        'avatar', COALESCE(
+            (SELECT img.url FROM profile_image img WHERE img.profile_id = p.id ORDER BY img.id DESC LIMIT 1),
+            (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+        ),
+        'avatar_url', COALESCE(
+            (SELECT img.url FROM profile_image img WHERE img.profile_id = p.id ORDER BY img.id DESC LIMIT 1),
+            (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+        ),
         'image', (
             SELECT row_to_json(img)
             FROM profile_image img

@@ -2,19 +2,17 @@
 import { useState } from "react";
 import { Header } from "@/components/header";
 import aiFeatures from "@/constants/aiFeatures";
-import howItWorks from "@/constants/howitworks";
 import PageHeader from "@/components/PageHeader";
 import AIFeaturesGrid from "@/components/AIFeaturesGrid";
-import HowItWorksSection from "@/components/HowItWorksSection";
 
 export default function AIFeaturesPage() {
   const [selectedFeature, setSelectedFeature] = useState("recipe-generator");
 
   return (
-    <div className="">
+    <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-6 py-12  md:mt-4">
+      <main className="mx-auto max-w-7xl px-3.5 py-8 sm:px-6 sm:py-12 lg:px-8">
         <PageHeader />
 
         <AIFeaturesGrid
@@ -22,7 +20,6 @@ export default function AIFeaturesPage() {
           selected={selectedFeature}
           onSelect={setSelectedFeature}
         />
-        {/* <HowItWorksSection steps={howItWorks} /> */}
       </main>
     </div>
   );

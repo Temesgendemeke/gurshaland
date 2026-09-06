@@ -14,6 +14,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/store/useAuth";
+import { UserAvatar } from "@/components/UserAvatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -95,7 +96,7 @@ const RecipeCard = ({ recipe, badge, icon, isOwn }: RecipeCardProp) => {
   };
 
   return (
-    <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/70 bg-card transition-all duration-300 hover:border-border hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/60 transition-colors duration-200 hover:border-foreground/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
       {/* Three-dot menu for owner */}
       {isOwner && (
         <div className="absolute top-3 right-3 z-20">
@@ -104,7 +105,7 @@ const RecipeCard = ({ recipe, badge, icon, isOwn }: RecipeCardProp) => {
               <Button
                 variant="secondary"
                 size="icon"
-                className="h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-sm hover:bg-background text-foreground"
+                className="h-8 w-8 rounded-full bg-background/90 backdrop-blur-sm border border-border hover:bg-background text-foreground"
                 aria-label="Recipe options"
                 onClick={(e) => {
                   e.preventDefault();
@@ -202,22 +203,15 @@ const RecipeCard = ({ recipe, badge, icon, isOwn }: RecipeCardProp) => {
           </p>
         )}
 
-        {/* Serene Footer */}
+        {/* Card Footer */}
         <div className="mt-auto flex items-center justify-between pt-3 text-xs text-muted-foreground">
           <div className="flex items-center gap-2 min-w-0">
-            <span className="relative flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-[10px] font-medium text-foreground">
-              {recipe.author?.avatar_url ? (
-                <Image
-                  src={recipe.author.avatar_url}
-                  alt={recipe.author.username || "Author"}
-                  fill
-                  sizes="20px"
-                  className="object-cover"
-                />
-              ) : (
-                recipe.author?.username?.[0]?.toUpperCase() || "A"
-              )}
-            </span>
+            <UserAvatar
+              avatarUrl={recipe.author?.avatar_url || (recipe.author as any)?.avatar}
+              name={recipe.author?.full_name}
+              username={recipe.author?.username}
+              className="h-5 w-5 text-[10px] font-medium"
+            />
             <span className="truncate font-medium text-foreground/80 text-xs">
               {recipe.author?.username || "Anonymous"}
             </span>

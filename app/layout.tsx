@@ -14,8 +14,11 @@ export const metadata: Metadata = {
   description:
     "Discover and share authentic Ethiopian recipes and culinary traditions",
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: "/icon" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-icon",
   },
   manifest: "/site.webmanifest",
 };

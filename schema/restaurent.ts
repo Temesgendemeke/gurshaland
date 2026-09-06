@@ -2,72 +2,79 @@ import { ImageSchema } from "@/utils/schema";
 import { z } from "zod";
 
 const ReviewSchema = z.object({
-  id: z.string().uuid(),
-  author_id: z.string().uuid(),
-  rating: z.number().min(0).max(5),
-  comment: z.string().min(10).max(500),
-  name: z.string().min(2).max(100),
-  created_at: z.string().datetime(),
+  id: z.string().optional(),
+  author_id: z.string().optional(),
+  rating: z.coerce.number().min(0).max(5).optional(),
+  comment: z.string().max(1000).optional().or(z.literal("")),
+  name: z.string().max(100).optional().or(z.literal("")),
+  created_at: z.string().optional(),
 });
 
 const MenuPriceSchema = z.object({
-  amount: z.number().min(0).max(1000),
-  currency: z.string().min(3).max(3),
-})
+  amount: z.coerce.number().min(0).max(10000000).default(0),
+  currency: z.string().max(10).optional().default("ETB"),
+});
 
 const MenuSchema = z.object({
-  name: z.string().min(2).max(100),
-  description: z.string().min(10).max(500),
-  price: MenuPriceSchema,
+  id: z.string().optional(),
+  name: z.string().min(1, "Menu item name is required").max(150),
+  description: z.string().max(1000).optional().or(z.literal("")),
+  price: MenuPriceSchema.optional(),
 });
 
 const getMenuSchema = MenuSchema.extend({
-  id: z.string(),
+  id: z.string().optional(),
 });
 
-
-
 const RestaurantSchema = z.object({
-  name: z.string().min(2).max(100),
-  description: z.string().min(10).max(500),
-  cuisines: z.array(z.string().min(2).max(100)),
-  address: z.string().min(5).max(200),
-  phone: z.string().min(10).max(20),
-  email: z.string().email().min(5).max(100),
-  website: z.union([z.string().url(), z.literal("")]).optional(),
+  name: z.string().min(1, "Restaurant name is required").max(150),
+  description: z.string().max(2500).optional().or(z.literal("")),
+  cuisines: z.array(z.string()),
+  address: z.string().max(300).optional().or(z.literal("")),
+  phone: z.string().max(50).optional().or(z.literal("")),
+  email: z
+    .string()
+    .max(120)
+    .optional()
+    .or(z.literal(""))
+    .refine(
+      (val) => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+      { message: "Please provide a valid email address" }
+    ),
+  website: z.string().max(500).optional().or(z.literal("")),
   image: ImageSchema.optional(),
-  google_map_url: z.union([z.string().url(), z.literal("")]).optional(),
+  google_map_url: z.string().max(1000).optional().or(z.literal("")),
   menu: z.array(MenuSchema).optional(),
-  author_id: z.string().uuid().optional(),
+  author_id: z.string().optional(),
   gallery: z.array(ImageSchema).optional(),
   reviews: z.array(ReviewSchema).optional(),
-  city: z.string().min(2).max(100).optional(),
-  country: z.string().min(2).max(100).optional(),
+  city: z.string().max(100).optional().or(z.literal("")),
+  country: z.string().max(100).optional().or(z.literal("")),
 });
 
 export const getRestaurentSchema = RestaurantSchema.extend({
-  id: z.string(),
-  rating: z.number().min(0).max(5).optional(),
-  slug: z.string(),
+  id: z.union([z.string(), z.number()]),
+  rating: z.coerce.number().min(0).max(5).optional(),
+  slug: z.string().optional(),
   author: z
     .object({
-      id: z.string().uuid(),
-      name: z.string().min(2).max(100),
-      email: z.string().email().min(5).max(100),
-      image: z.string().url().min(5).max(200).optional(),
+      id: z.string().optional(),
+      name: z.string().max(100).optional().or(z.literal("")),
+      email: z.string().max(100).optional().or(z.literal("")),
+      image: z.string().max(500).optional().or(z.literal("")),
     })
     .optional(),
   menu: z.array(getMenuSchema).optional(),
   image: ImageSchema.extend({
-    id: z.string(),
+    id: z.union([z.string(), z.number()]).optional(),
   }).optional(),
 });
 
-
 export const fetchRestaurantSchema = RestaurantSchema.extend({
-    rating: z.number().min(0).max(5).optional(),
-    slug: z.string()
-})
+  id: z.union([z.string(), z.number()]).optional(),
+  rating: z.coerce.number().min(0).max(5).optional(),
+  slug: z.string().optional(),
+});
 
 export type RestaurantFormType = z.infer<typeof RestaurantSchema>;
 export type GetRestaurentType = z.infer<typeof getRestaurentSchema>;

@@ -2,9 +2,6 @@ import { Header } from "@/components/header";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ProfileSettings from "@/components/profile/ProfileSettings";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 
 export default async function SettingsPage({
   params,

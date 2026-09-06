@@ -1,16 +1,12 @@
-import BackNavigation from "@/components/BackNavigation";
 import { Header } from "@/components/header";
 import SubmitRecipeForm from "@/components/SubmitRecipe";
-import React, { Suspense } from "react";
+import React from "react";
 
 const CreateRecipe = () => {
   return (
     <>
       <Header />
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <Suspense fallback={<div>Loading...</div>}>
-          <BackNavigation route="/recipes" pagename="Recipes" />
-        </Suspense>
         <div className="mt-6 space-y-3 text-center flex flex-col items-center justify-center">
           <h1 className="font-gosh text-3xl font-extrabold tracking-tight text-foreground sm:text-6xl">
             Share your recipe

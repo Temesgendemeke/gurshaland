@@ -25,14 +25,16 @@ interface CulturalNoteFieldProps {
 
 export default function CulturalNoteField({ form }: CulturalNoteFieldProps) {
   return (
-    <Card className="space-y-4  border-none">
-      <CardHeader className="">
-        <CardTitle>The story behind the dish</CardTitle>
-        <CardDescription>
-          Optional. Share the traditions and memories this recipe carries.
+    <Card className="rounded-2xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-none space-y-5">
+      <CardHeader className="p-0 pb-4 border-b border-border/60">
+        <CardTitle className="font-gosh text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+          The Story Behind the Dish
+        </CardTitle>
+        <CardDescription className="text-xs sm:text-sm text-muted-foreground">
+          Optional. Share the traditions, history, and memories this recipe carries.
         </CardDescription>
       </CardHeader>
-      <CardContent className="">
+      <CardContent className="p-0">
         <FormField
           control={form.control}
           name="recipe.culturalNote"
@@ -40,7 +42,7 @@ export default function CulturalNoteField({ form }: CulturalNoteFieldProps) {
             <FormItem className="gap-2">
               <FormControl>
                 <Textarea
-                  className="min-h-32 resize-y"
+                  className="min-h-32 resize-y rounded-xl border-border/80 bg-background/80 leading-relaxed"
                   placeholder="Share the cultural background, family history, or traditional significance of this recipe..."
                   rows={4}
                   {...field}

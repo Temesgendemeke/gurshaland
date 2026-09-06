@@ -1,6 +1,8 @@
 CREATE OR REPLACE FUNCTION get_all_recipes()
 RETURNS jsonb
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
 AS $$
 DECLARE
   result jsonb;
@@ -23,12 +25,13 @@ BEGIN
                     'id', p.id,
                     'username', p.username,
                     'full_name', p.full_name,
-                    'avatar_url', (
-                        SELECT pi.url
-                        FROM profile_image pi
-                        WHERE pi.profile_id = p.id
-                        ORDER BY pi.id DESC
-                        LIMIT 1
+                    'avatar', COALESCE(
+                        (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+                        (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+                    ),
+                    'avatar_url', COALESCE(
+                        (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+                        (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
                     ),
                     'bio', p.bio,
                     'recipes', (

@@ -79,7 +79,7 @@ export default async function Page({
       <Header />
 
       <header className="border-b border-border/70">
-        <div className="mx-auto w-full max-w-7xl px-4 pb-10 pt-10 sm:px-6 sm:pb-12 sm:pt-14">
+        <div className="mx-auto w-full max-w-7xl px-3.5 py-8 sm:px-6 sm:py-12 lg:px-8">
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <BasicInfo profile={profile} />
 
@@ -88,7 +88,7 @@ export default async function Page({
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6">
+      <main className="mx-auto w-full max-w-7xl px-3.5 pb-16 sm:px-6 sm:pb-24 lg:px-8">
         <ProfileTabs
           profile={profile}
           blogs={blogs}

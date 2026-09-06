@@ -21,17 +21,18 @@ const NutritionView = ({ nutrition }: NutritionViewProps) => {
   }));
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border/80">
-      <div className="border-b border-border/80 bg-card px-4 py-3">
-        <h3 className="text-[0.6875rem] font-semibold uppercase tracking-widest text-foreground">
-          Nutrition facts · per serving
+    <div className="overflow-hidden rounded-xl border border-border bg-card/50">
+      <div className="border-b border-border/60 px-4 py-3.5">
+        <h3 className="font-gosh text-base font-semibold tracking-tight text-foreground">
+          Nutrition Facts
         </h3>
+        <p className="text-[11px] text-muted-foreground mt-0.5">Per serving</p>
       </div>
-      <ul className="divide-y divide-border/80 bg-card">
+      <ul className="divide-y divide-border/40">
         {items.map((n) => (
           <li
             key={n.label}
-            className="flex items-baseline justify-between px-4 py-2.5"
+            className="flex items-baseline justify-between px-4 py-2.5 transition-colors hover:bg-muted/20"
           >
             <span className="text-sm text-muted-foreground">{n.label}</span>
             <span className="text-sm font-semibold tabular-nums text-foreground">

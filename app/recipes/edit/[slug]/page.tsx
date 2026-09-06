@@ -1,12 +1,29 @@
-import { getRecipebySlugAdmin } from "@/actions/Recipe/recipe";
-import BackNavigation from "@/components/BackNavigation";
+import { getRecipebySlug, getRecipebySlugAdmin } from "@/actions/Recipe/recipe";
 import { Header } from "@/components/header";
 import SubmitRecipeForm from "@/components/SubmitRecipe";
-import { Suspense } from "react";
+import { createClient } from "@/utils/supabase/server";
 
 async function EditRecipe({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const recipe = await getRecipebySlugAdmin(slug);
+  let recipe: any = null;
+
+  try {
+    recipe = await getRecipebySlugAdmin(slug);
+  } catch (e) {
+    console.error("Failed getRecipebySlugAdmin:", e);
+  }
+
+  if (!recipe) {
+    try {
+      const supabase = await createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      recipe = await getRecipebySlug(slug, user?.id);
+    } catch (e) {
+      console.error("Failed getRecipebySlug fallback:", e);
+    }
+  }
 
   if (!recipe) {
     return (

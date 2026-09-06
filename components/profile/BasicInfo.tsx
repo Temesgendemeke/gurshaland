@@ -1,12 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import avatar from "@/public/avater.webp";
 import { Button } from "../ui/button";
 import { useAuth } from "@/store/useAuth";
 import { Profile } from "@/utils/types/profile";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { useProfileStats } from "@/store/ProfileStats";
+import { UserAvatar } from "@/components/UserAvatar";
 import {
   followProfile,
   unfollowProfile,
@@ -50,13 +49,13 @@ const BasicInfo = ({ profile }: BasicInfoProps) => {
 
   return (
     <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:items-start sm:gap-7 sm:text-left">
-      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border border-border/70 bg-muted shadow-sm sm:h-32 sm:w-32">
-        <Image
-          src={profile.avatar_url || avatar.src}
-          alt={`${profile.username} avatar`}
-          fill
-          sizes="128px"
-          className="object-cover w-full h-full"
+      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-2 border-border bg-muted sm:h-32 sm:w-32">
+        <UserAvatar
+          profileImage={profile.avatar_url}
+          avatarUrl={isOwnProfile ? (user?.user_metadata?.avatar_url || profile.avatar_url) : profile.avatar_url}
+          name={profile.full_name}
+          username={profile.username}
+          className="h-full w-full text-3xl sm:text-4xl font-bold"
         />
       </div>
 

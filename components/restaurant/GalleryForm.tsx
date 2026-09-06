@@ -27,65 +27,78 @@ const GalleryForm = ({
     name: "gallery",
   });
 
-  // delete from db and storage
-  const deleteImage = async (path: string) => { };
+  const deleteImage = async (_path: string) => {};
 
   return (
-    <Card className="border-border/60 bg-card shadow-[0_15px_40px_-30px_hsl(var(--foreground)/0.15)]">
-      <CardHeader className="flex flex-row items-start justify-between gap-4">
+    <Card className="border border-border bg-card/60 rounded-xl">
+      <CardHeader className="flex flex-row items-center justify-between gap-3 p-4 sm:p-6 pb-3 sm:pb-4">
         <div>
-          <div className="flex items-center gap-2 text-primary">
-            <PhotoIcon className="h-4 w-4" strokeWidth={1.5} />
-            <span className="text-xs font-semibold uppercase tracking-[0.18em]">
-              Gallery
-            </span>
-          </div>
-          <CardTitle className="mt-1 font-gosh text-xl">Gallery</CardTitle>
-          <CardDescription>
-            Showcase the atmosphere  add up to a few photos of your space.
+          <CardTitle className="text-base sm:text-lg font-semibold text-foreground">
+            Photo Gallery
+          </CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
+            Showcase dining areas, ambiance, outdoor patio, or signature presentations.
           </CardDescription>
         </div>
         <Button
           type="button"
-          variant={"outline"}
+          variant="outline"
+          size="sm"
           onClick={() => appendGallery({})}
-          className="shrink-0 gap-2"
+          className="shrink-0 gap-1.5 h-8 font-medium text-xs sm:text-sm"
         >
-          <Plus className="h-4 w-4" strokeWidth={2} />
-          Add Image
+          <Plus className="h-3.5 w-3.5" />
+          <span>Add Photo</span>
         </Button>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0 space-y-3 sm:space-y-4">
         {galleryFields.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-border bg-muted/20 px-4 py-10 text-center">
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-              <PhotoIcon className="h-6 w-6 text-primary" strokeWidth={1.5} />
-            </div>
-            <p className="text-sm text-muted-foreground">
-              No gallery images yet  add photos of the dining room, terrace,
-              or signature dishes.
+          <div className="rounded-lg border border-dashed border-border bg-muted/10 px-4 py-8 text-center">
+            <PhotoIcon className="mx-auto h-8 w-8 text-muted-foreground/50 mb-2" strokeWidth={1.5} />
+            <p className="text-sm font-medium text-foreground">No gallery photos yet</p>
+            <p className="text-xs text-muted-foreground mt-1 max-w-sm mx-auto">
+              Add photos of your establishment to enhance diner trust and engagement.
             </p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => appendGallery({})}
+              className="mt-4 gap-1.5"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              Add Photo
+            </Button>
           </div>
         ) : (
-          galleryFields.map((gallery, index) => (
-            <div key={gallery.id} className="relative">
-              <ImageBox
-                form={form}
-                inputcls={`gallery-image-${index}`}
-                field={`gallery.${index}` as any}
-                label={`Gallery ${index + 1}`}
-                deleteImage={deleteImage}
-              />
-              <Button
-                type="button"
-                onClick={() => removeGallery(index)}
-                className="absolute top-6 right-6 z-10"
-                variant={"outline"}
-              >
-                <Trash className="h-4 w-4" strokeWidth={2} />
-              </Button>
-            </div>
-          ))
+          <div className="space-y-4">
+            {galleryFields.map((gallery, index) => (
+              <div key={gallery.id} className="relative rounded-lg border border-border p-4 bg-muted/10">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-medium text-muted-foreground">
+                    Photo #{index + 1}
+                  </span>
+                  <Button
+                    type="button"
+                    onClick={() => removeGallery(index)}
+                    size="icon"
+                    variant="ghost"
+                    className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                    aria-label={`Remove photo ${index + 1}`}
+                  >
+                    <Trash className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+                <ImageBox
+                  form={form}
+                  inputcls={`gallery-image-${index}`}
+                  field={`gallery.${index}` as any}
+                  label={`Gallery ${index + 1}`}
+                  deleteImage={deleteImage}
+                />
+              </div>
+            ))}
+          </div>
         )}
       </CardContent>
     </Card>

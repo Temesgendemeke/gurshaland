@@ -49,12 +49,16 @@ export default function IngredientsField({
   removeIngredient,
 }: IngredientsFieldProps) {
   return (
-    <Card className="border-none">
-      <CardHeader>
-        <CardTitle>Ingredients</CardTitle>
-        <CardDescription>What you&apos;ll need to make it.</CardDescription>
+    <Card className="rounded-2xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-none space-y-6">
+      <CardHeader className="p-0 pb-4 border-b border-border/60">
+        <CardTitle className="font-gosh text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+          Ingredients
+        </CardTitle>
+        <CardDescription className="text-xs sm:text-sm text-muted-foreground">
+          What you&apos;ll need to make it, with precise amounts and units.
+        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-5">
+      <CardContent className="p-0 space-y-5">
         {ingredientFields.map((field, index) => (
           <div key={field.id} className="space-y-3">
             <div className="flex gap-3">
@@ -69,6 +73,7 @@ export default function IngredientsField({
                           className="h-11"
                           placeholder="Amount"
                           {...field}
+                          value={field.value ?? ""}
                         />
                       </FormControl>
                       <FormMessage />
@@ -83,7 +88,7 @@ export default function IngredientsField({
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          value={field.value}
+                          value={field.value || undefined}
                         >
                           <SelectTrigger className="h-11 w-full">
                             <SelectValue placeholder="Unit" />
@@ -114,6 +119,7 @@ export default function IngredientsField({
                           className="h-11"
                           placeholder="Ingredient name"
                           {...field}
+                          value={field.value ?? ""}
                         />
                       </FormControl>
                       <FormMessage />
@@ -146,6 +152,7 @@ export default function IngredientsField({
                       className="h-11"
                       placeholder="Notes (optional)"
                       {...field}
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                 </FormItem>
@@ -158,10 +165,10 @@ export default function IngredientsField({
           type="button"
           variant="outline"
           onClick={() => appendIngredient({ item: "", amount: 0, notes: "" })}
-          className="w-full border-dashed border-primary/40 text-primary hover:border-primary hover:bg-primary/5 active:scale-[0.99]"
+          className="w-full h-10 rounded-xl border border-dashed border-border/80 bg-background/50 hover:bg-accent hover:border-primary/50 text-foreground font-medium text-xs sm:text-sm active:scale-[0.99] gap-1.5"
         >
-          <Plus className="mr-2 h-4 w-4" />
-          Add Ingredient
+          <Plus className="h-4 w-4 text-primary" />
+          <span>Add Ingredient</span>
         </Button>
       </CardContent>
     </Card>

@@ -30,7 +30,7 @@ export default function AutonomousBanner({
       aria-live="polite"
       className="fixed bottom-5 left-1/2 z-[60] w-[calc(100vw-1.5rem)] max-w-md -translate-x-1/2"
     >
-      <div className="overflow-hidden rounded-2xl border border-primary/40 bg-background/95 shadow-2xl shadow-black/15 backdrop-blur">
+      <div className="overflow-hidden rounded-2xl border-2 border-primary/40 bg-background/95 backdrop-blur">
         {/* Header */}
         <div className="flex items-center justify-between gap-3 bg-primary px-4 py-3">
           <div className="flex items-center gap-2.5">

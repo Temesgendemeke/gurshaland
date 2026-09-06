@@ -41,12 +41,14 @@ const RecipeComment = ({
       toast.message("Failed to post comment. Please try again.");
     }
   };
-  if (isOwner) return null;
-
   return (
     <div className="mb-6">
       <Textarea
-        placeholder="Share your experience with this recipe..."
+        placeholder={
+          isOwner
+            ? "Respond as recipe author..."
+            : "Share your experience with this recipe..."
+        }
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         className="mb-3 border-border bg-background"
@@ -57,7 +59,7 @@ const RecipeComment = ({
         onClick={handlePostComment}
         className="bg-primary hover:bg-primary/90 text-primary-foreground"
       >
-        Post Comment
+        {isOwner ? "Respond" : "Post Comment"}
       </Button>
     </div>
   );

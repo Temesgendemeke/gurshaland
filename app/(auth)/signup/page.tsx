@@ -21,7 +21,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import AuthVisual from "@/components/AuthVisual";
 import PasswordField from "@/components/PasswordField";
 import Logo from "@/components/Logo";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 const SignupPage = () => {
   const form = useForm({
@@ -72,16 +72,9 @@ const SignupPage = () => {
       {/* Right Side - Form */}
       <div className="flex flex-col items-center justify-start   relative z-10 lg:h-screen lg:overflow-y-auto">
         <div className="w-full max-w-7xl  mx-auto space-y-6 sm:space-y-8 p-5 sm:p-8 md:p-10">
-          {/* <div className="relative z-10 flex items-center justify-between w-full lg:hidden">
+          <div className="relative z-10 flex items-center justify-between w-full lg:hidden">
             <Logo />
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-md bg-muted hover:bg-muted/70 border border-border transition-colors duration-200 text-xs sm:text-sm font-medium text-foreground"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back
-            </Link>
-          </div> */}
+          </div>
           <div className="space-y-2 sm:space-y-3">
             <h1 className="text-[clamp(1.75rem,1.5rem+1.5vw,3rem)] font-bold tracking-tight text-foreground font-gosh">
               Create Account

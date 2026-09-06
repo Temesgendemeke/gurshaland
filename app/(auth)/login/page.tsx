@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -19,13 +19,10 @@ import { login } from "@/actions/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { z } from "zod";
 import PasswordField from "@/components/PasswordField";
-import Image from "next/image";
-import gursh_image from "@/public/gursha.webp";
 import Logo from "@/components/Logo";
-import { ArrowLeft, Sparkles, X } from "lucide-react";
 import AuthVisual from "@/components/AuthVisual";
 import { createClient } from "@/utils/supabase/client";
-import GoBackNoText from "@/components/GoBackNoText";
+import { useAuth } from "@/store/useAuth";
 
 export type LoginFormSchema = z.infer<typeof loginFormSchema>;
 
@@ -38,29 +35,68 @@ const LoginPage = () => {
     },
   });
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next");
-  const safeNext = next && next.startsWith("/") ? next : "/";
+  const rawFrom = searchParams.get("from");
+  const safeFrom =
+    rawFrom &&
+    rawFrom.startsWith("/") &&
+    !rawFrom.startsWith("//") &&
+    !rawFrom.startsWith("/api")
+      ? rawFrom
+      : null;
+  const safeNext =
+    next &&
+    next.startsWith("/") &&
+    !next.startsWith("//") &&
+    !next.startsWith("/api")
+      ? next
+      : safeFrom || "/";
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
 
-  const onSubmit = async (formData: { email: string; password: string }) => {
-    try {
-      await login(formData.email, formData.password);
-      toast.success(
-        "You have successfully logged in. áŠ¥áŠ•áŠ³áŠ• á‹°áˆ…áŠ“ áˆ˜áŒ¡á¢",
-        {
-          icon: <Sparkles className="w-4 h-4 text-primary" />,
-        },
-      );
+  const fetchProfile = useAuth((state) => state.fetchProfile);
+  const setUser = useAuth((state) => state.setUser);
+  const user = useAuth((state) => state.user);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (user && mounted) {
       router.push(safeNext);
-    } catch (error) {
-      console.log(error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "An error occurred. Please try again.",
-      );
+    }
+  }, [user, mounted]);
+
+  const onSubmit = async (data: LoginFormSchema) => {
+    setLoading(true);
+    const supabase = createClient();
+    try {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      setUser(user);
+      await fetchProfile(user?.id);
+
+      toast.success("Welcome back!");
+      router.push(safeNext);
+      router.refresh();
+    } catch (err) {
+      toast.error("Failed to sign in. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,31 +124,11 @@ const LoginPage = () => {
       {/* Left Side - Visuals */}
       <AuthVisual />
 
-      {/* close button overlay on top right */}
-      {/* <div className="absolute top-4 left-4 z-10">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => router.back()}
-          className="flex items-center text-primary-foreground hover:text-primary-foreground  gap-1.5 sm:gap-2   transition-colors duration-200 text-xs sm:text-sm font-medium bg-transparent hover:bg-primary p-2 rounded-full"
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </Button>
-      </div> */}
-      <GoBackNoText />
-
       {/* Right Side - Form */}
       <div className="flex flex-col relative z-10 lg:min-h-0 lg:overflow-y-auto">
         <div className="w-full mx-auto space-y-6 sm:space-y-8 sm:p-8 md:p-10 rounded-lg max-w-2xl lg:mr-0 lg:my-auto">
           <div className="relative z-10 hidden sm:flex items-center justify-between w-full lg:hidden">
             <Logo />
-            <Link
-              href="/"
-              className="hidden sm:flex  items-center gap-1.5   sm:gap-2 px-3 sm:px-4 py-2 rounded-md bg-muted hover:bg-muted/70 border border-border transition-colors duration-200 text-xs sm:text-sm font-medium text-foreground"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back
-            </Link>
           </div>
           <div className="space-y-2 sm:space-y-3 flex flex-col items-center sm:items-start text-center sm:text-left">
             <h1 className="text-[clamp(1.75rem,1.5rem+1.5vw,3rem)] font-bold tracking-tight text-foreground font-gosh">

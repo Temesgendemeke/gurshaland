@@ -1,6 +1,8 @@
 CREATE OR REPLACE FUNCTION get_full_recipe_admin(_slug text)
 RETURNS jsonb
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
 AS $$
 DECLARE 
    result jsonb;
@@ -15,7 +17,16 @@ BEGIN
         'slug', r.slug,
         'preptime', r.preptime,
         'cooktime', r.cooktime,
+        'totaltime', r.totaltime,
         'cultural_notes', r.cultural_notes,
+        'culturalNote', r.cultural_notes,
+        'category_id', r.category_id,
+        'category', (
+            SELECT jsonb_build_object('id', c.id, 'name', c.name)
+            FROM category c
+            WHERE c.id = r.category_id
+            LIMIT 1
+        ),
         'youtube_video_id', r.youtube_video_id,
         'rating', (
             SELECT COALESCE(jsonb_agg(rating), '[]'::jsonb)
@@ -49,25 +60,25 @@ BEGIN
             WHERE i.recipe_id = r.id
         ),
         'instructions', (
-  SELECT jsonb_agg(
-    jsonb_build_object(
-      'id', ins.id,
-      'step', ins.step,
-      'title', ins.title,
-      'description', ins.description,
-      'time', ins.time,
-      'tips', ins.tips,
-      'image', (
-        SELECT row_to_json(img)
-        FROM instruction_image img
-        WHERE img.instruction_id = ins.id
-        LIMIT 1
-      )
-    ) ORDER BY ins.step
-  )
-  FROM instruction ins
-  WHERE ins.recipe_id = r.id
-),
+            SELECT COALESCE(jsonb_agg(
+                jsonb_build_object(
+                    'id', ins.id,
+                    'step', ins.step,
+                    'title', ins.title,
+                    'description', ins.description,
+                    'time', ins.time,
+                    'tips', ins.tips,
+                    'image', (
+                        SELECT row_to_json(img)
+                        FROM instruction_image img
+                        WHERE img.instruction_id = ins.id
+                        LIMIT 1
+                    )
+                ) ORDER BY ins.step
+            ), '[]'::jsonb)
+            FROM instruction ins
+            WHERE ins.recipe_id = r.id
+        ),
         'nutrition', (
             SELECT jsonb_build_object(
                 'calories', COALESCE(nut.calories, 0),
@@ -87,3 +98,5 @@ BEGIN
     RETURN result;
 END 
 $$;
+
+GRANT EXECUTE ON FUNCTION get_full_recipe_admin(text) TO authenticated, anon;

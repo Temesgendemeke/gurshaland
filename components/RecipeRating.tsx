@@ -42,10 +42,10 @@ const RecipeRating = ({
   if (isOwner) return null;
 
   return (
-    <div className="rounded-xl border border-border/80 bg-card p-5">
-      <h2 className="mb-4 text-lg font-bold tracking-tight text-foreground">
-        Rate this recipe
-      </h2>
+    <div className="rounded-xl border border-border bg-card/50 p-5">
+      <h3 className="font-gosh text-base font-semibold tracking-tight text-foreground mb-3">
+        Rate this Recipe
+      </h3>
       <div ref={ratingRef} className="flex items-center space-x-2 mt-2">
           {[1, 2, 3, 4, 5].map((star) => (
             <button

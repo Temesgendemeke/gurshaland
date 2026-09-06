@@ -4,9 +4,6 @@ import {
   AIRecipeGeneratorProvider,
   AIRecipeGeneratorResult,
 } from "@/components/AIRecipeGenerator";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import GoBackNoText from "@/components/GoBackNoText";
 
 export default async function GenerateRecipePage({
   searchParams,
@@ -21,15 +18,6 @@ export default async function GenerateRecipePage({
       <Header />
 
       <main className="mx-auto w-full max-w-7xl sm:px-6 pb-24 space-y-4 pt-8">
-        {/* <Link
-          href="/ai-features"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground px-2 sm:px-0"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to AI Features
-        </Link> */}
-        {/* <GoBackNoText /> */}
-
         <AIRecipeGeneratorProvider
           scrollOnGenerate
           initialPrompt={initialPrompt}

@@ -4,6 +4,8 @@ CREATE OR REPLACE FUNCTION get_full_recipe(
 )
 RETURNS jsonb
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
 AS $$
 DECLARE 
    result jsonb;
@@ -27,17 +29,30 @@ BEGIN
             WHERE rating.recipe_id = r.id
         ),
         'slug', r.slug,
+        'preptime', r.preptime,
+        'cooktime', r.cooktime,
+        'totaltime', r.totaltime,
+        'cultural_notes', r.cultural_notes,
+        'culturalNote', r.cultural_notes,
+        'category_id', r.category_id,
+        'category', (
+            SELECT jsonb_build_object('id', c.id, 'name', c.name)
+            FROM category c
+            WHERE c.id = r.category_id
+            LIMIT 1
+        ),
         'author', (
             SELECT jsonb_build_object(
                     'id', p.id,
                     'username', p.username,
                     'full_name', p.full_name,
-                    'avatar_url', (
-                        SELECT pi.url
-                        FROM profile_image pi
-                        WHERE pi.profile_id = p.id
-                        ORDER BY pi.id DESC
-                        LIMIT 1
+                    'avatar', COALESCE(
+                        (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+                        (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+                    ),
+                    'avatar_url', COALESCE(
+                        (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+                        (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
                     ),
                     'bio', p.bio,
                     'recipes', (
@@ -56,8 +71,6 @@ BEGIN
           LIMIT 1
         ),
         'tags', r.tags,
-        'preptime', r.preptime,
-        'cooktime', r.cooktime,
         'status', r.status,
         'view_count', (
             SELECT count(*)::bigint
@@ -74,6 +87,7 @@ BEGIN
                 jsonb_build_object(
                     'id', ins.id,
                     'step', ins.step,
+                    'title', ins.title,
                     'description', ins.description,
                     'tips', ins.tips,
                     'time', ins.time,
@@ -81,8 +95,9 @@ BEGIN
                       SELECT row_to_json(img)
                       FROM instruction_image img
                       WHERE img.instruction_id = ins.id
+                      LIMIT 1
                     )
-                )
+                ) ORDER BY ins.step
             ), '[]'::jsonb)
             FROM instruction ins
             WHERE ins.recipe_id = r.id
@@ -102,9 +117,22 @@ BEGIN
             SELECT COALESCE(jsonb_agg(jsonb_build_object(
                 'id', comment.id,
                 'author', (
-                    SELECT row_to_json(profile)
-                    FROM profile 
-                    WHERE comment.author_id = profile.id
+                    SELECT jsonb_build_object(
+                        'id', p.id,
+                        'username', p.username,
+                        'full_name', p.full_name,
+                        'avatar', COALESCE(
+                            (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+                            (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+                        ),
+                        'avatar_url', COALESCE(
+                            (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+                            (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+                        ),
+                        'bio', p.bio
+                    )
+                    FROM profile p 
+                    WHERE comment.author_id = p.id
                     LIMIT 1
                 ),
                 'author_id', comment.author_id,
@@ -114,6 +142,7 @@ BEGIN
                     SELECT rating
                     FROM recipe_rating
                     WHERE recipe_rating.user_id = comment.author_id
+                      AND recipe_rating.recipe_id = r.id
                     LIMIT 1
                 )
             )), '[]'::jsonb)
@@ -135,5 +164,18 @@ BEGIN
       );
 
     RETURN result;
-END
-$$
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION get_full_recipe(text, uuid) TO authenticated, anon;
+
+CREATE OR REPLACE FUNCTION get_full_recipe(_slug text)
+RETURNS jsonb
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public, auth
+AS $$
+  SELECT get_full_recipe(_slug, NULL::uuid);
+$$;
+
+GRANT EXECUTE ON FUNCTION get_full_recipe(text) TO authenticated, anon;

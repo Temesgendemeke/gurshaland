@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   useFileUpload,
   type FileMetadata,
@@ -8,7 +8,7 @@ import {
 } from "@/hooks/use-file-upload";
 import { Alert, AlertDescription, AlertTitle } from "@/components/reui/alert";
 
-import { cn } from "@/lib/utils";
+import { cn, normalizeImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   CircleAlertIcon,
@@ -22,6 +22,7 @@ interface CoverUploadProps {
   maxSize?: number;
   accept?: string;
   className?: string;
+  initialImage?: string | null;
   onImageChange?: (file: File | null) => void;
 }
 
@@ -29,27 +30,51 @@ export function Pattern({
   maxSize = 5 * 1024 * 1024, // 5MB default
   accept = "image/*",
   className,
+  initialImage,
   onImageChange,
 }: CoverUploadProps) {
-  // Default cover image
-  const defaultCoverImage: FileMetadata = {
-    id: "default-cover",
-    name: "cover-image.jpg",
-    size: 2048000,
-    type: "image/jpeg",
-    url: "",
-  };
+  const initialUrl = normalizeImageUrl(initialImage);
 
-  const [coverImage, setCoverImage] = useState<FileWithPreview | null>({
-    id: defaultCoverImage.id,
-    file: defaultCoverImage,
-    preview: defaultCoverImage.url,
-  });
+  const [coverImage, setCoverImage] = useState<FileWithPreview | null>(
+    initialUrl
+      ? {
+          id: "initial-cover",
+          file: {
+            id: "initial-cover",
+            name: "cover-image.jpg",
+            size: 0,
+            type: "image/jpeg",
+            url: initialUrl,
+          },
+          preview: initialUrl,
+        }
+      : null,
+  );
 
-  const [imageLoading, setImageLoading] = useState(true);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(100);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialImage) {
+      const fixed = normalizeImageUrl(initialImage);
+      if (fixed) {
+        setCoverImage({
+          id: "initial-cover",
+          file: {
+            id: "initial-cover",
+            name: "cover-image.jpg",
+            size: 0,
+            type: "image/jpeg",
+            url: fixed,
+          },
+          preview: fixed,
+        });
+        setImageLoading(false);
+      }
+    }
+  }, [initialImage]);
 
   const [
     { isDragging, errors },
@@ -68,42 +93,15 @@ export function Pattern({
     multiple: false,
     onFilesChange: (files) => {
       if (files.length > 0) {
-        setImageLoading(true);
-        setIsUploading(true);
-        setUploadProgress(0);
+        setImageLoading(false);
+        setIsUploading(false);
+        setUploadProgress(100);
         setUploadError(null);
         setCoverImage(files[0]);
         onImageChange?.(files[0].file as File);
-
-        // Simulate upload progress
-        simulateUpload();
       }
     },
   });
-
-  // Simulate upload progress
-  const simulateUpload = () => {
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsUploading(false);
-
-          // Simulate occasional upload failure (10% chance)
-          if (Math.random() < 0.1) {
-            setUploadError("Upload failed. Please try again.");
-            return 0;
-          }
-
-          return 100;
-        }
-
-        // Random progress increment between 5-15%
-        const increment = Math.random() * 10 + 5;
-        return Math.min(prev + increment, 100);
-      });
-    }, 200);
-  };
 
   const removeCoverImage = () => {
     setCoverImage(null);
@@ -114,16 +112,7 @@ export function Pattern({
     onImageChange?.(null);
   };
 
-  const retryUpload = () => {
-    if (coverImage) {
-      setUploadError(null);
-      setIsUploading(true);
-      setUploadProgress(0);
-      simulateUpload();
-    }
-  };
-
-  const hasImage = coverImage && coverImage.preview;
+  const hasImage = Boolean(coverImage?.preview);
 
   return (
     <div className={cn("w-full space-y-4", className)}>
@@ -161,7 +150,7 @@ export function Pattern({
 
               {/* Actual image */}
               <img
-                src={coverImage.preview}
+                src={coverImage?.preview}
                 alt="Cover"
                 className={cn(
                   "h-full w-full object-cover transition-opacity duration-300",
@@ -177,11 +166,11 @@ export function Pattern({
               {/* Action buttons overlay */}
               <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                 <div className="flex gap-2">
-                  <Button onClick={openFileDialog} size="sm" variant="outline">
+                  <Button onClick={openFileDialog} size="sm" variant="outline" type="button">
                     <UploadIcon />
                     Change Cover
                   </Button>
-                  <Button onClick={removeCoverImage} size="sm">
+                  <Button onClick={removeCoverImage} size="sm" variant="destructive" type="button">
                     <XIcon />
                     Remove
                   </Button>
@@ -228,25 +217,25 @@ export function Pattern({
         ) : (
           /* Empty State */
           <div
-            className="flex aspect-21/9 w-full cursor-pointer flex-col items-center justify-center gap-4 p-8 text-center"
+            className="flex aspect-21/9 w-full cursor-pointer flex-col items-center justify-center gap-3 sm:gap-4 p-4 sm:p-8 text-center"
             onClick={openFileDialog}
           >
-            <div className="bg-primary/10 rounded-full p-4">
-              <CloudUploadIcon className="text-primary size-8" />
+            <div className="bg-primary/10 rounded-full p-3 sm:p-4">
+              <CloudUploadIcon className="text-primary size-6 sm:size-8" />
             </div>
 
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold">Upload Cover Image</h3>
-              <p className="text-muted-foreground text-sm">
+            <div className="space-y-1 sm:space-y-2">
+              <h3 className="text-base sm:text-lg font-semibold">Upload Cover Image</h3>
+              <p className="text-muted-foreground text-xs sm:text-sm">
                 Drag and drop an image here, or click to browse
               </p>
-              <p className="text-muted-foreground text-xs">
-                Recommended size: 1200x514px • Max size: 5MB
+              <p className="text-muted-foreground text-[11px] sm:text-xs">
+                Recommended size: 1200x514px • Max size: 10MB
               </p>
             </div>
 
-            <Button variant="outline" size="sm" type="button">
-              <ImageIcon />
+            <Button variant="outline" size="sm" type="button" className="h-8 text-xs">
+              <ImageIcon className="size-3.5 mr-1.5" />
               Browse Files
             </Button>
           </div>
@@ -275,19 +264,16 @@ export function Pattern({
           <AlertTitle>Upload failed</AlertTitle>
           <AlertDescription>
             <p>{uploadError}</p>
-            <Button onClick={retryUpload} size="sm">
-              Retry Upload
-            </Button>
           </AlertDescription>
         </Alert>
       )}
 
       {/* Upload Tips */}
-      <div className="bg-muted/50 rounded-lg p-4">
-        <h4 className="mb-2 text-sm font-medium">Cover Image Guidelines</h4>
+      <div className="bg-muted/40 rounded-lg p-3 sm:p-4 border border-border/40">
+        <h4 className="mb-1.5 text-xs sm:text-sm font-medium">Cover Image Guidelines</h4>
         <ul className="text-muted-foreground space-y-1 text-xs">
           <li>• Use high-quality images with good lighting and composition</li>
-          <li>• Recommended aspect ratio: 21:9 (ultrawide) for best results</li>
+          <li>• Recommended aspect ratio: 16:9 or 21:9 for best results</li>
           <li>• Avoid images with important content near the edges</li>
           <li>• Supported formats: JPG, PNG, WebP</li>
         </ul>

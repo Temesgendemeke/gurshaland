@@ -32,33 +32,34 @@ const MealPlanCard = ({ plan }: { plan: GetMealPannerTyp }) => {
   const meta = [plan.goal, plan.diet].filter(Boolean).join(" · ");
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-border/80 bg-card">
-      <div className="border-b border-border/80 p-5">
-        <h3 className="line-clamp-1 text-lg font-bold tracking-tight text-foreground">
+    <div className="flex h-full flex-col rounded-2xl border border-border bg-card shadow-none transition-colors hover:border-primary/40">
+      <div className="border-b border-border/60 p-4 sm:p-5">
+        <h3 className="line-clamp-1 text-base sm:text-lg font-bold tracking-tight text-foreground font-gosh">
           {plan.name}
         </h3>
-        <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
+        <p className="mt-1 line-clamp-1 text-xs text-muted-foreground capitalize">
           {plan.timeframe} plan
         </p>
       </div>
 
-      <div className="flex grow flex-col gap-2 p-5">
-        <p className="text-sm text-muted-foreground">
+      <div className="flex grow flex-col gap-2 p-4 sm:p-5">
+        <p className="text-xs sm:text-sm text-muted-foreground">
           {plan.days?.length || 0} days · {plan.meals_per_day} meals/day
-          {plan.calories ? ` · ${plan.calories} kcal` : ""}
+          {plan.calories ? ` · ~${plan.calories} kcal` : ""}
         </p>
         {meta && (
-          <p className="line-clamp-1 text-sm text-muted-foreground">{meta}</p>
+          <p className="line-clamp-1 text-xs text-muted-foreground/80 capitalize">{meta}</p>
         )}
       </div>
 
-      <div className="flex items-center gap-3 border-t border-border/80 p-4">
-        <Button asChild variant="outline" className="flex-1">
+      <div className="flex items-center gap-2.5 border-t border-border/60 p-3.5 sm:p-4">
+        <Button asChild variant="outline" size="sm" className="flex-1 h-8 sm:h-9 text-xs font-semibold shadow-none">
           <Link
             href={`/meal-planner/my-meal-plans/${plan.id}`}
-            className="inline-flex items-center justify-center gap-2"
+            className="inline-flex items-center justify-center gap-1.5"
           >
-            View Plan <ArrowRight className="h-4 w-4" />
+            <span>View Plan</span>
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </Button>
         <DeleteMealAlertDialog onConfirm={deleteMealPlan} />

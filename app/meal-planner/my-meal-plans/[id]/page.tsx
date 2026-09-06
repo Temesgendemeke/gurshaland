@@ -5,8 +5,12 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 
 
 
-export default async function MealPlanPage({ params }: { params: { id: string } }) {
-    const { id } = await params
+export default async function MealPlanPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
     const queryClient = new QueryClient()
 
 

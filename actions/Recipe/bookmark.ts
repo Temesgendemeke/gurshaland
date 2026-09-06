@@ -49,6 +49,12 @@ export const getBookmarkedRecipes = async (user_id: string): Promise<Recipe[]> =
   if (recipeError) throw recipeError;
 
   const recipeList = (recipes || []) as any[];
+  const authorIds = [...new Set(recipeList.map((r) => r.author?.id).filter(Boolean))];
+  const { data: profileImages } =
+    authorIds.length > 0
+      ? await supabase.from("profile_image").select("profile_id, url").in("profile_id", authorIds)
+      : { data: [] };
+  const imgMap = new Map((profileImages || []).map((img: any) => [img.profile_id, img.url]));
 
   const recipesWithRatings = await Promise.all(
     recipeList.map(async (recipe) => {
@@ -63,13 +69,18 @@ export const getBookmarkedRecipes = async (user_id: string): Promise<Recipe[]> =
             ratings.length
           : 0;
 
+      const resolvedAvatar = recipe.author
+        ? imgMap.get(recipe.author.id) || null
+        : null;
+
       return {
         ...recipe,
         category: recipe.category || { id: 0, name: "Uncategorized" },
         author: recipe.author
           ? {
               ...recipe.author,
-              avatar_url: null,
+              avatar: resolvedAvatar,
+              avatar_url: resolvedAvatar,
             }
           : null,
         image: recipe.image || null,
@@ -103,7 +114,7 @@ export const toggleBookmark = async(user_id: string, recipe_id: string)=>{
 
         if(insertError) throw insertError
 
-        return {bookmarked: false}
+        return {bookmarked: true}
     }
-    return {bookmarked: true}
+    return {bookmarked: false}
 }

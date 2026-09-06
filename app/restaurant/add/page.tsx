@@ -21,14 +21,14 @@ type FormValues = z.infer<typeof restaurantSchema>;
 const AddRestaurantPage = () => {
   const router = useRouter();
   const form = useForm<FormValues>({
-    resolver: zodResolver(restaurantSchema),
+    resolver: zodResolver(restaurantSchema) as any,
     defaultValues: {
       name: "",
       address: "",
       phone: "",
       email: "",
       website: "",
-      cuisines: [""],
+      cuisines: [],
       description: "",
       image: undefined,
       google_map_url: "",
@@ -40,8 +40,12 @@ const AddRestaurantPage = () => {
 
   const onSubmit = async (data: GetRestaurentType) => {
     try {
+      const sanitizedCuisines = Array.isArray(data.cuisines)
+        ? data.cuisines.filter((c) => typeof c === "string" && c.trim().length > 0)
+        : [];
       const restaurantData = {
         ...data,
+        cuisines: sanitizedCuisines,
         slug: await generateUniqueSlug(data.name, "restaurant"),
       };
       const restaurant = await createRestaurant(restaurantData);
@@ -85,7 +89,7 @@ const AddRestaurantPage = () => {
                 Live Preview
               </h2>
 
-              <div className="overflow-hidden rounded-2xl border border-border/60 bg-card shadow-[0_25px_60px_-30px_hsl(var(--foreground)/0.15)]">
+              <div className="overflow-hidden rounded-2xl border border-border bg-card">
                 <PreviewSection form={form} />
               </div>
             </div>

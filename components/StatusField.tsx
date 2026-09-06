@@ -32,16 +32,16 @@ interface StatusFieldProps {
 
 export default function StatusField({ form }: StatusFieldProps) {
   return (
-    <Card className="space-y-4  border-none">
-      <CardHeader className="">
-        <CardTitle >
-          Publication status
+    <Card className="rounded-2xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-none space-y-5">
+      <CardHeader className="p-0 pb-4 border-b border-border/60">
+        <CardTitle className="font-gosh text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+          Publication & Visibility
         </CardTitle>
-        <CardDescription>
-          Control when your recipe is visible to others.
+        <CardDescription className="text-xs sm:text-sm text-muted-foreground">
+          Control when your recipe is visible to the Gurshaland community.
         </CardDescription>
       </CardHeader>
-      <CardContent className="">
+      <CardContent className="p-0">
         <FormField
           control={form.control}
           name="recipe.status"
@@ -49,7 +49,7 @@ export default function StatusField({ form }: StatusFieldProps) {
             <FormItem className="gap-2">
               <FormControl>
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="h-11 w-full bg-background">
+                  <SelectTrigger className="h-11 w-full rounded-xl border-border/80 bg-background/80">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent position="popper" className="bg-background">

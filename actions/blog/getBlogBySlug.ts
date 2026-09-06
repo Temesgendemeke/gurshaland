@@ -14,3 +14,16 @@ export const getBlogBySlug = async (slug: string, user_id?: string) => {
 
   return data;
 };
+
+export const getRecentBlogsServer = async () => {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.rpc("get_all_blogs");
+
+  if (error) {
+    console.error("Error fetching blogs for sidebar:", error);
+    return [];
+  }
+
+  return data || [];
+};

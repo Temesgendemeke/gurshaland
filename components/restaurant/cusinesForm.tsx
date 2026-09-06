@@ -9,14 +9,14 @@ import {
 import { Input } from "../ui/input";
 import { RestaurantFormType } from "@/schema/restaurent";
 import { Button } from "../ui/button";
-import { IconPlus as Plus, IconCooker as UtensilsCrossed, IconX as X } from "@tabler/icons-react";
+import { IconPlus as Plus, IconToolsKitchen2 as Utensils, IconX as X } from "@tabler/icons-react";
 
 const CusinesForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
   const cuisines = form.watch("cuisines") || [];
 
   const addCuisine = () => {
     const current = form.getValues("cuisines") || [];
-    form.setValue("cuisines", [...current, ""]);
+    form.setValue("cuisines", [...current, ""], { shouldDirty: true });
   };
 
   const removeCuisine = (index: number) => {
@@ -24,24 +24,37 @@ const CusinesForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
     form.setValue(
       "cuisines",
       current.filter((_, i) => i !== index),
+      { shouldDirty: true },
     );
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 pt-1">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium">Cuisines</label>
-        <Button onClick={addCuisine} size="sm" variant="outline" type="button">
-          <Plus className="mr-2 h-4 w-4" strokeWidth={2} /> Add Cuisine
+        <div>
+          <label className="text-sm font-medium text-foreground">Cuisine Specialties</label>
+          <p className="text-xs text-muted-foreground">
+            Tags for search filtering and profile highlights.
+          </p>
+        </div>
+        <Button
+          onClick={addCuisine}
+          size="sm"
+          variant="outline"
+          type="button"
+          className="h-8 gap-1.5 font-medium"
+        >
+          <Plus className="h-3.5 w-3.5" />
+          <span>Add Cuisine</span>
         </Button>
       </div>
 
       {cuisines.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border bg-muted/20 px-4 py-6 text-center text-xs text-muted-foreground">
-          No cuisines yet  add Ethiopian, Italian, Fusion...
+        <div className="rounded-lg border border-dashed border-border bg-muted/10 px-4 py-6 text-center text-xs text-muted-foreground">
+          No cuisines assigned. Click &quot;Add Cuisine&quot; to tag (e.g., Ethiopian, Vegetarian, Cafe).
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {cuisines.map((_, index) => (
             <FormField
               key={index}
@@ -51,20 +64,21 @@ const CusinesForm = ({ form }: { form: UseFormReturn<RestaurantFormType> }) => {
                 <FormItem>
                   <FormControl>
                     <div className="relative">
-                      <UtensilsCrossed className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+                      <Utensils className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
                       <Input
-                        placeholder="e.g. Ethiopian, Italian, Fusion"
-                        className="h-11 pl-10 pr-11"
+                        placeholder="e.g. Ethiopian Traditional"
+                        className="h-10 pl-9 pr-9 text-sm"
                         {...field}
                       />
-                      {cuisines.length > 1 && (
+                      {cuisines.length > 0 && (
                         <Button
                           type="button"
                           variant="ghost"
+                          size="icon"
                           onClick={() => removeCuisine(index)}
-                          className="absolute right-2 top-2 h-7 w-7 text-muted-foreground hover:text-destructive"
+                          className="absolute right-1.5 top-1.5 h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                         >
-                          <X className="h-4 w-4" strokeWidth={2} />
+                          <X className="h-3.5 w-3.5" />
                         </Button>
                       )}
                     </div>

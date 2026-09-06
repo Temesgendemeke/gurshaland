@@ -6,6 +6,8 @@ CREATE OR REPLACE FUNCTION update_full_recipe(
 )
 RETURNS jsonb
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
 AS $$
 DECLARE
   recipe_id_val bigint;
@@ -32,10 +34,19 @@ BEGIN
     END,
     preptime = COALESCE((_recipe ->> 'preptime')::int, preptime),
     cooktime = COALESCE((_recipe ->> 'cooktime')::int, cooktime),
+    totaltime = COALESCE(
+      (_recipe ->> 'totaltime')::int,
+      (COALESCE((_recipe ->> 'preptime')::int, preptime, 0) + COALESCE((_recipe ->> 'cooktime')::int, cooktime, 0))
+    ),
     cultural_notes = COALESCE(_recipe ->> 'cultural_notes', cultural_notes),
     status = COALESCE(_recipe ->> 'status', status),
     slug = COALESCE(_recipe ->> 'slug', slug),
-    youtube_video_id = COALESCE(_recipe ->> 'youtube_video_id', youtube_video_id)
+    youtube_video_id = COALESCE(_recipe ->> 'youtube_video_id', youtube_video_id),
+    category_id = CASE 
+      WHEN _recipe ? 'category_id' AND _recipe ->> 'category_id' IS NOT NULL AND _recipe ->> 'category_id' != '' 
+      THEN (_recipe ->> 'category_id')::bigint 
+      ELSE category_id 
+    END
   WHERE id = recipe_id_val;
 
   -- Delete old ingredients and insert new ones
@@ -51,16 +62,14 @@ BEGIN
     END,
     NULLIF(NULLIF(i ->> 'unit', ''), 'null'),
     NULLIF(NULLIF(i ->> 'notes', ''), 'null')
-  FROM jsonb_array_elements(_ingredients) AS i;
+  FROM jsonb_array_elements(COALESCE(_ingredients, '[]'::jsonb)) AS i;
 
   -- Delete old instructions and their images, then insert new ones
-  -- First, delete instruction images for existing instructions
   DELETE FROM instruction_image 
   WHERE instruction_id IN (
     SELECT id FROM instruction WHERE recipe_id = recipe_id_val
   );
   
-  -- Delete old instructions
   DELETE FROM instruction WHERE recipe_id = recipe_id_val;
 
   -- Insert new instructions with their images
@@ -73,8 +82,8 @@ BEGIN
     SELECT
       recipe_id_val,
       COALESCE((instruction_data.ins_obj ->> 'step')::int, instruction_data.ord::int),
-      NULLIF(COALESCE(instruction_data.ins_obj ->> 'title', ''), ''),
-      NULLIF(COALESCE(instruction_data.ins_obj ->> 'description', ''), ''),
+      COALESCE(instruction_data.ins_obj ->> 'title', ''),
+      COALESCE(instruction_data.ins_obj ->> 'description', ''),
       CASE 
         WHEN instruction_data.ins_obj -> 'time' IS NULL THEN NULL
         WHEN instruction_data.ins_obj -> 'time' = 'null'::jsonb THEN NULL
@@ -88,23 +97,15 @@ BEGIN
   INSERT INTO instruction_image(instruction_id, url, path)
   SELECT
     i.id,
-    img_data.url_val,
-    img_data.path_val
+    instruction_data.ins_obj -> 'image' ->> 'url',
+    instruction_data.ins_obj -> 'image' ->> 'path'
   FROM inserted i
-  CROSS JOIN LATERAL (
-    SELECT 
-      instruction_data.ins_obj -> 'image' ->> 'url' AS url_val,
-      instruction_data.ins_obj -> 'image' ->> 'path' AS path_val
-    FROM instruction_data
-    WHERE (instruction_data.ins_obj ->> 'step')::int = i.step
-      AND instruction_data.ins_obj -> 'image' IS NOT NULL
-      AND instruction_data.ins_obj -> 'image' ->> 'url' IS NOT NULL
-      AND instruction_data.ins_obj -> 'image' ->> 'url' != ''
-    LIMIT 1
-  ) img_data;
+  JOIN instruction_data ON COALESCE((instruction_data.ins_obj ->> 'step')::int, instruction_data.ord::int) = i.step
+  WHERE instruction_data.ins_obj -> 'image' IS NOT NULL
+    AND instruction_data.ins_obj -> 'image' ->> 'url' IS NOT NULL
+    AND instruction_data.ins_obj -> 'image' ->> 'url' != '';
 
   -- Update or insert recipe image
-  -- Delete existing recipe image if new one is provided
   IF (_recipe -> 'image') IS NOT NULL AND (_recipe -> 'image' ->> 'url') IS NOT NULL AND (_recipe -> 'image' ->> 'url') != '' THEN
     DELETE FROM recipe_image WHERE recipe_id = recipe_id_val;
     
@@ -117,10 +118,8 @@ BEGIN
   END IF;
 
   -- Update or insert nutrition
-  -- Delete existing nutrition record if it exists
   DELETE FROM nutrition WHERE recipe_id = recipe_id_val;
   
-  -- Insert new nutrition record
   INSERT INTO nutrition(recipe_id, calories, protein, carbs, fat, fiber)
   VALUES(
     recipe_id_val,
@@ -144,9 +143,11 @@ BEGIN
       'tags', r.tags,
       'preptime', r.preptime,
       'cooktime', r.cooktime,
+      'totaltime', r.totaltime,
       'cultural_notes', r.cultural_notes,
       'status', r.status,
       'slug', r.slug,
+      'category_id', r.category_id,
       'image', (
         SELECT row_to_json(img)
         FROM recipe_image img
@@ -187,3 +188,5 @@ BEGIN
   RETURN result;
 END;
 $$;
+
+GRANT EXECUTE ON FUNCTION update_full_recipe(jsonb, jsonb, jsonb, jsonb) TO authenticated, anon;

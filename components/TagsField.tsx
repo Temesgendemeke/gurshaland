@@ -27,24 +27,28 @@ export default function TagsField({
   removeTag,
 }: TagsFieldProps) {
   return (
-    <Card className="space-y-4  border-none">
-      <CardHeader className="">
-        <CardTitle className="">Tags</CardTitle>
-        <CardDescription>Help people find your recipe.</CardDescription>
+    <Card className="rounded-2xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-none space-y-5">
+      <CardHeader className="p-0 pb-4 border-b border-border/60">
+        <CardTitle className="font-gosh text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+          Tags
+        </CardTitle>
+        <CardDescription className="text-xs sm:text-sm text-muted-foreground">
+          Keywords to help food lovers discover your recipe.
+        </CardDescription>
       </CardHeader>
-      <CardContent className="">
+      <CardContent className="p-0 space-y-3">
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 py-1 pl-3 pr-2 text-sm text-primary"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-primary/25 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"
             >
-              {tag}
+              #{tag}
               <button
                 type="button"
                 onClick={() => removeTag(tag)}
                 aria-label={`Remove tag ${tag}`}
-                className="rounded-full p-0.5 text-primary/60 transition-colors hover:text-primary"
+                className="rounded-md p-0.5 text-primary/60 transition-colors hover:text-primary hover:bg-primary/20"
               >
                 <X className="h-3 w-3" />
               </button>
@@ -53,7 +57,7 @@ export default function TagsField({
         </div>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Input
-            className="h-11"
+            className="h-11 rounded-xl border-border/80 bg-background/80"
             placeholder="Add a tag (e.g., Traditional, Spicy, Vegan)"
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
@@ -65,9 +69,9 @@ export default function TagsField({
             onClick={addTag}
             type="button"
             variant="outline"
-            className="h-11 shrink-0 border-primary/40 text-primary hover:border-primary hover:bg-primary/5"
+            className="h-11 shrink-0 rounded-xl px-5 text-xs sm:text-sm font-medium border-border/80 bg-background/80 hover:bg-accent"
           >
-            Add
+            Add Tag
           </Button>
         </div>
       </CardContent>

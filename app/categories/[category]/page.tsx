@@ -1,8 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -11,16 +9,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { Star, Users, ChefHat } from "lucide-react";
-import BackNavigation from "@/components/BackNavigation";
 import CategoryHeader from "@/components/CategoryHeader";
 import { getRecipesByCategory } from "@/actions/Recipe/category";
 import Recipe from "@/utils/types/recipe";
 import RecipeCard from "@/components/recipe/RecipeCard";
 
 type CategoryPageProps = {
-  params: { category: string };
-  searchParams: { id: string };
+  params: Promise<{ category: string }>;
+  searchParams: Promise<{ id: string }>;
 };
 
 const CategoryPage: React.FC<CategoryPageProps> = async ({
@@ -41,17 +37,14 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 
   if (fetchError) {
     return (
-      <div className="">
+      <div className="min-h-screen bg-background">
         <Header />
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <Suspense fallback={<div>Loading...</div>}>
-            <BackNavigation route={"/categories"} pagename={"Categories"} />
-          </Suspense>
-          <div className="text-center py-12">
-            <h1 className="text-2xl font-bold text-foreground mb-4">
+        <div className="mx-auto max-w-7xl px-3.5 py-12 sm:px-6 lg:px-8">
+          <div className="py-12 text-center">
+            <h1 className="mb-4 text-2xl font-bold text-foreground">
               Error loading recipes
             </h1>
-            <p className="text-muted-foreground mb-6">
+            <p className="mb-6 text-muted-foreground">
               There was an error loading recipes for this category.
             </p>
             <Button asChild>
@@ -65,14 +58,14 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 
   if (!recipes || recipes.length === 0) {
     return (
-      <div>
+      <div className="min-h-screen bg-background">
         <Header />
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="text-center py-12">
-            <h1 className="text-2xl font-bold text-foreground mb-4">
+        <div className="mx-auto max-w-7xl px-3.5 py-12 sm:px-6 lg:px-8">
+          <div className="py-12 text-center">
+            <h1 className="mb-4 text-2xl font-bold text-foreground">
               No recipes found in this category
             </h1>
-            <p className="text-muted-foreground mb-6">
+            <p className="mb-6 text-muted-foreground">
               This category doesn&apos;t have any recipes yet.
             </p>
             <Button asChild>
@@ -87,26 +80,21 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
   const currentCategory = category.replace(/-/g, " ");
 
   return (
-    <div className="bg-background">
+    <div className="min-h-screen bg-background">
       <Header />
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Back Navigation */}
-        {/* <Suspense fallback={<div>Loading...</div>}>
-            <BackNavigation route={"/categories"} pagename={"Categories"} />
-          </Suspense> */}
-
+      <main className="mx-auto max-w-7xl px-3.5 py-8 sm:px-6 sm:py-12 lg:px-8">
         {/* Category Header */}
         <CategoryHeader />
 
         {/* Filters and Sorting */}
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-          <div className="text-muted-foreground">
-            Showing {recipes.length} recipes in {currentCategory}
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-sm font-medium text-muted-foreground">
+            Showing {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"} in {currentCategory}
           </div>
 
           <Select defaultValue="popular">
-            <SelectTrigger className="w-48 border-border bg-background">
+            <SelectTrigger className="w-full sm:w-48 border-border bg-card">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -119,93 +107,12 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
         </div>
 
         {/* Recipe Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {recipes.map((recipe: any) => (
-            //   <Card
-            //     key={recipe.id}
-            //     className="overflow-hidden group bg-card border border-border"
-            //   >
-            //     <div className="relative">
-            //       <img
-            //         src={recipe.image?.url || "/placeholder.svg"}
-            //         alt={recipe.title}
-            //         className="w-full h-48 object-cover"
-            //       />
-            //       <div className="absolute top-4 right-4 bg-background border border-border rounded-full px-3 py-1 flex items-center space-x-1">
-            //         <Star className="w-4 h-4 text-warning fill-warning" />
-            //         <span className="text-sm font-medium text-foreground">
-            //           {recipe.rating || 0}
-            //         </span>
-            //       </div>
-            //       <div className="absolute bottom-4 left-4 right-4">
-            //         <div className="flex flex-wrap gap-1">
-            //           {recipe.tags?.map((tag: any, index: number) => (
-            //             <Badge
-            //               key={index}
-            //               variant="secondary"
-            //               className="text-xs bg-background border border-border text-foreground hover:bg-muted"
-            //             >
-            //               {tag}
-            //             </Badge>
-            //           ))}
-            //         </div>
-            //       </div>
-            //     </div>
-
-            //     <div className="p-6">
-            //       <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-            //         {recipe.title}
-            //       </h3>
-            //       <p className="text-muted-foreground mb-4">
-            //         {recipe.description}
-            //       </p>
-
-            //       <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-            //         <div className="flex items-center space-x-4">
-            //           <div className="flex items-center space-x-1">
-            //             <ChefHat className="w-4 h-4" />
-            //             <span>{recipe.difficulty}</span>
-            //           </div>
-            //           <div className="flex items-center space-x-1">
-            //             <Users className="w-4 h-4" />
-            //             <span>{recipe.servings} servings</span>
-            //           </div>
-            //         </div>
-            //       </div>
-
-            //       <div className="flex items-center justify-between mb-4">
-            //         <div className="text-sm text-muted-foreground">
-            //           by {recipe.author?.username || "Unknown"}
-            //         </div>
-            //         <div className="text-sm text-muted-foreground">
-            //           {recipe.rating_count || 0} reviews
-            //         </div>
-            //       </div>
-
-            //       <Button
-            //         asChild
-            //         className="w-full btn-primary-modern"
-            //       >
-            //         <Link href={`/recipes/${recipe.slug}`}>View Recipe</Link>
-            //       </Button>
-            //     </div>
-            //   </Card>
             <RecipeCard recipe={recipe} key={recipe.id} />
           ))}
-
         </div>
-
-        {/* Load More */}
-        {/* {recipes.length > 4 && <div className="text-center mt-12">
-          <Button
-            variant="outline"
-            size="lg"
-            className="px-8 text-primary cursor-pointer"
-          >
-            Load More Recipes
-          </Button>
-        </div>} */}
-      </div>
+      </main>
     </div>
   );
 };

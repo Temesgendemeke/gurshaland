@@ -1,6 +1,8 @@
 CREATE OR REPLACE FUNCTION get_all_blogs()
 RETURNS TABLE(blog jsonb)
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
 AS $$
 BEGIN
     RETURN QUERY
@@ -10,9 +12,22 @@ BEGIN
         'subtitle', b.subtitle,
         'author_id', b.author_id,
         'author', (
-            SELECT COALESCE(row_to_json(profile), '{}'::json)
-            FROM profile
-            WHERE b.author_id = profile.id
+            SELECT jsonb_build_object(
+                'id', p.id,
+                'username', p.username,
+                'full_name', p.full_name,
+                'avatar', COALESCE(
+                    (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+                    (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+                ),
+                'avatar_url', COALESCE(
+                    (SELECT pi.url FROM profile_image pi WHERE pi.profile_id = p.id ORDER BY pi.id DESC LIMIT 1),
+                    (SELECT COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture', u.raw_user_meta_data->>'avatar') FROM auth.users u WHERE u.id = p.id)
+                ),
+                'bio', p.bio
+            )
+            FROM profile p
+            WHERE b.author_id = p.id
             LIMIT 1
         ),
         'created_at', b.created_at,
@@ -24,12 +39,11 @@ BEGIN
             WHERE b_img.blog_id = b.id
             LIMIT 1
         ),
-        'content', (
+        'contents', (
             SELECT jsonb_agg(
                 jsonb_build_object(
                     'id', content.id,
-                    'label', content.label,
-                    'content', content.content,
+                    'body', content.body,
                     'title', content.title,
                     'instructions', content.instructions,
                     'items', content.items,
@@ -38,7 +52,8 @@ BEGIN
                             jsonb_build_object(
                                 'id', ingredient.id,
                                 'amount', ingredient.amount,
-                                'name', ingredient.name
+                                'name', ingredient.name,
+                                'measurement', ingredient.measurement
                             )
                         )
                         FROM blog_ingredient ingredient
@@ -63,3 +78,5 @@ BEGIN
     WHERE b.status = 'published';
 END;
 $$;
+
+GRANT EXECUTE ON FUNCTION get_all_blogs() TO authenticated, anon;

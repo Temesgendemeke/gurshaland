@@ -1,7 +1,5 @@
-import { Header } from "@/components/header"
-import { getMealplansByAuthorId } from "@/actions/meal/crud"
-import { useAuth } from "@/store/useAuth"
-import MealPlanList from "@/components/meal-planner/MealPlanList"
+import { Header } from "@/components/header";
+import MealPlanList from "@/components/meal-planner/MealPlanList";
 
 const MyMealPlansPage = () => {
 

@@ -1,9 +1,9 @@
 export interface Ingredient {
   item: string;
-  amount?: number;
-  unit?: string;
-  notes?: string;
-  id?: number;
+  amount?: number | null;
+  unit?: string | null;
+  notes?: string | null;
+  id?: number | string;
 }
 
 export interface Nutrition {
@@ -16,12 +16,12 @@ export interface Nutrition {
 
 export interface Instruction {
   step: number;
-  title: string;
+  title?: string;
   description: string;
-  time?: number;
+  time?: number | string;
   tips?: string;
   image?: InstructionImage;
-  id: number;
+  id?: number | string;
 }
 
 export interface AIRecipeInstruction extends Instruction {

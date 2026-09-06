@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Blog, Content } from "@/utils/types/blog";
-import format_calories from "@/utils/formatcalories";
+import BlogRecipeCard from "./blog/BlogRecipeCard";
 
 const ContentSection = ({ section }: { section: Content }) => {
   const hasTitle = !!section.title?.trim();
@@ -15,93 +15,96 @@ const ContentSection = ({ section }: { section: Content }) => {
   const isRecipe = hasIngredients || hasInstructions;
 
   return (
-    <div className="py-10 first:pt-0">
+    <div className="py-4 first:pt-0 border-b border-border/30 last:border-b-0">
       {/* Section heading */}
       {hasTitle && (
-        <h2 className="mb-4 text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+        <h2 className="mb-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl font-gosh">
           {section.title}
         </h2>
       )}
 
       {/* Body text */}
       {hasBody && (
-        <p className="text-[1.0625rem] leading-[1.85] text-foreground/80">
+        <div className="text-base sm:text-lg leading-[1.85] text-foreground/85 font-normal whitespace-pre-line  ">
           {section.body}
-        </p>
+        </div>
       )}
 
-      {/* Content image */}
-      {hasImage && (
-        <div className="my-8">
-          <div className="relative aspect-[16/9] bg-muted">
+
+
+      {/* Connected Image & Recipe Block (or standalone items) */}
+      {hasImage && isRecipe ? (
+        <div className="my-6 w-full overflow-hidden rounded-xl border border-border/70 bg-card/60">
+          {/* Top: Flush Image */}
+          <div className="relative aspect-[16/9] w-full max-h-[460px] border-b border-border/60 bg-muted/20">
             <Image
               src={section.image!.url}
               alt={section.title || "Section image"}
               fill
-              sizes="(max-width: 768px) 100vw, 680px"
+              sizes="(max-width: 896px) 100vw, 896px"
               className="object-cover"
             />
           </div>
-        </div>
-      )}
+          {/* Bottom: Connected Recipe Details & Instructions */}
 
-      {/* Recipe  clean two-column layout */}
-      {isRecipe && (
-        <div className="my-8 grid gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-          {hasIngredients && (
-            <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Ingredients
-              </p>
-              <ul className="space-y-2">
-                {section.ingredients!.map((ingredient, i) => (
-                  <li
-                    key={i}
-                    className="flex items-baseline gap-2 text-sm"
-                  >
-                    <span className="shrink-0 font-medium text-foreground">
-                      {format_calories(Number(ingredient.amount) || 0)}
-                    </span>
-                    <span className="text-muted-foreground">
-                      {ingredient.name}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+
+          <BlogRecipeCard
+            title={section.recipe?.title}
+            ingredients={section.ingredients}
+            instructions={section.instructions}
+            tips={hasItems ? section.items : undefined}
+            className="p-2 sm:p-4"
+          />
+        </div>
+      ) : (
+        <>
+          {/* Standalone Content image */}
+          {hasImage && (
+            <div className="my-6 w-full overflow-hidden rounded-xl border border-border/60 bg-muted/20">
+              <div className="relative aspect-[16/9] w-full max-h-[460px]">
+                <Image
+                  src={section.image!.url}
+                  alt={section.title || "Section image"}
+                  fill
+                  sizes="(max-width: 896px) 100vw, 896px"
+                  className="object-cover"
+                />
+              </div>
             </div>
           )}
-          {hasInstructions && (
-            <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Method
-              </p>
-              <ol className="space-y-3">
-                {section.instructions!.map((instruction, i) => (
-                  <li key={i} className="flex gap-3 text-sm">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-foreground/5 text-[0.6875rem] font-semibold text-muted-foreground">
-                      {i + 1}
-                    </span>
-                    <span className="leading-relaxed text-foreground/80">
-                      {instruction}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </div>
+
+
+          {/* Standalone Recipe Card */}
+          {isRecipe && (
+            <BlogRecipeCard
+              title={section.recipe?.title}
+              ingredients={section.ingredients}
+              instructions={section.instructions}
+              tips={hasItems ? section.items : undefined}
+            />
           )}
-        </div>
+        </>
       )}
 
-      {/* Tips / bullet list */}
-      {hasItems && !isRecipe && (
-        <ul className="my-6 space-y-2.5">
-          {section.items!.map((tip, i) => (
-            <li key={i} className="flex gap-2.5 text-sm leading-relaxed">
-              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-foreground/30" />
-              <span className="text-foreground/80">{tip}</span>
-            </li>
-          ))}
-        </ul>
+
+      {/* Standalone Tips callout (when not part of a recipe) */}
+      {!isRecipe && hasItems && (
+        <div className="my-6 border-l-2 border-primary/50 bg-muted/20 pl-4 pr-3 py-3 rounded-r-lg">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            Tips & Notes
+          </p>
+          <ul className="space-y-1.5">
+            {section.items!.map((tip, i) => (
+              <li
+                key={i}
+                className="text-sm leading-relaxed text-foreground/80 flex items-start gap-2"
+              >
+                <span className="text-primary font-bold text-xs mt-0.5">•</span>
+                <span>{tip}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

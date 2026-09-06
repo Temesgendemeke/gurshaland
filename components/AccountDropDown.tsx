@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/store/useAuth";
 import useProfile from "@/store/Profile";
+import { UserAvatar } from "@/components/UserAvatar";
 
 interface AccountDropDownProps {
   user: User | null;
@@ -77,25 +78,35 @@ const AccountDropDown = ({ user }: AccountDropDownProps) => {
           variant="ghost"
           size="icon"
           aria-label="Account menu"
-          className="rounded-full border border-border/70 bg-background hover:border-primary/40 hover:bg-muted"
+          className="rounded-full border border-border/70 bg-background hover:border-primary/40 hover:bg-muted overflow-hidden h-9 w-9 p-0"
         >
-          <UserIcon className="h-5 w-5" />
+          {user ? (
+            <UserAvatar
+              profileImage={profile?.image?.url}
+              avatarUrl={(profile as any)?.avatar_url || (profile as any)?.avatar || user.user_metadata?.avatar_url}
+              name={displayName}
+              username={username}
+              className="h-full w-full text-xs"
+              size={36}
+            />
+          ) : (
+            <UserIcon className="h-5 w-5" />
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-background w-56 p-1.5">
         {user ? (
           <>
             <div className="mb-1 flex items-center gap-3 border-b border-border/70 px-2.5 py-2.5">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                {profile?.image?.url ? (
-                  <img
-                    src={profile.image.url}
-                    alt="Profile"
-                    className="h-full w-full rounded-full object-cover"
-                  />
-                ) : (
-                  <UserIcon className="h-4.5 w-4.5" />
-                )}
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden">
+                <UserAvatar
+                  profileImage={profile?.image?.url}
+                  avatarUrl={(profile as any)?.avatar_url || (profile as any)?.avatar || user.user_metadata?.avatar_url}
+                  name={displayName}
+                  username={username}
+                  className="h-full w-full text-xs"
+                  size={36}
+                />
               </div>
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-foreground">

@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { compressImageToFile } from "@/utils/compressImage";
 
 interface RecipeImageFieldProps {
   image?: File | string;
@@ -48,7 +49,7 @@ export default function RecipeImageField({
           <Upload className="mb-3 h-10 w-10 text-primary" />
           <p className="font-medium text-foreground">Click to upload</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            PNG or JPG, up to 10MB
+            PNG, JPG, or WebP (auto-optimized)
           </p>
           <Button
             type="button"
@@ -66,10 +67,18 @@ export default function RecipeImageField({
       <input
         id="recipe-image-input"
         type="file"
-        accept="image/png, image/jpeg"
+        accept="image/*"
         className="hidden"
-        onChange={(e) => {
-          setImage(e.target.files?.[0]);
+        onChange={async (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          const optimized = await compressImageToFile(file, {
+            maxWidth: 1920,
+            maxHeight: 1920,
+            quality: 0.82,
+            mimeType: "image/webp",
+          });
+          setImage(optimized);
         }}
       />
     </div>

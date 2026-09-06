@@ -1,6 +1,4 @@
 "use client";
-import { motion, useReducedMotion } from "motion/react";
-import BackNavigation from "@/components/BackNavigation";
 import BlogForm from "@/components/blog/BlogForm";
 import { Header } from "@/components/header";
 import React, { useEffect } from "react";
@@ -13,63 +11,49 @@ function Page(): React.JSX.Element {
   const user = useAuth((store) => store.user);
   const fetchBlog = useBlogDetailStore((store) => store.fetchBlog);
   const blog = useBlogDetailStore((store) => store.blog);
-  const reduceMotion = useReducedMotion();
+  const loading = useBlogDetailStore((store) => store.loading);
 
   useEffect(() => {
-    if (user?.id) {
-      fetchBlog(param.slug as string, user.id);
+    if (param?.slug) {
+      fetchBlog(param.slug as string, user?.id);
     }
-  }, [user?.id, param.slug]);
+  }, [param?.slug, user?.id]);
+
+  if (loading || !blog) {
+    return (
+      <>
+        <Header />
+        <div className="w-full mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <div className="mt-16 flex flex-col items-center justify-center space-y-4 py-16">
+            <div className="h-9 w-9 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            <p className="text-sm font-medium text-muted-foreground">
+              Loading your blog post...
+            </p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
       <Header />
-      <main className="min-h-[100dvh]">
-        <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
-          <BackNavigation route="/blog" pagename="Blogs" />
-        </div>
-
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:py-14">
-          <div className="max-w-2xl">
-            <motion.span
-              initial={reduceMotion ? false : { opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="text-xs font-semibold uppercase tracking-[0.24em] text-primary"
-            >
-              Refine & Update
-            </motion.span>
-
-            <motion.h1
-              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-3 font-gosh text-4xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl"
-            >
-              Refine your
-              <span className="relative text-primary">
-                {" "}
-                story
-                <span className="absolute inset-x-0 -bottom-1 h-1.5 rounded-full bg-primary/40" />
-              </span>
-            </motion.h1>
-
-            <motion.p
-              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg"
-            >
-              Polish your post and share the latest version with the Gurshaland
-              community.
-            </motion.p>
+      <div className="w-full mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="w-full">
+          <div className="mt-6 space-y-3 text-center flex flex-col items-center justify-center">
+            <h1 className="font-gosh text-3xl font-extrabold tracking-tight text-foreground sm:text-6xl">
+              Refine your story
+            </h1>
+            <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
+              Update your blog post and share Ethiopian stories with the world.
+            </p>
+          </div>
+          {/* Form */}
+          <div className="mt-10">
+            <BlogForm blog={blog} mode="update" />
           </div>
         </div>
-
-        <div className="mx-auto max-w-4xl px-4 pb-16 sm:px-6">
-          <BlogForm blog={blog ?? undefined} mode="update" />
-        </div>
-      </main>
+      </div>
     </>
   );
 }

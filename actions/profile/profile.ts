@@ -1,5 +1,6 @@
 import { BUCKET } from "@/constants/image";
 import { createClient } from "@/utils/supabase/client";
+import { compressImageToFile } from "@/utils/compressImage";
 
 export async function deleteUserImages(imagePaths: string[]) {
   const supabase = createClient();
@@ -165,13 +166,21 @@ export const upsertProfilePicure = async (
   image_file: File,
 ) => {
   const supabase = createClient();
-  const path = `profile_picture/${user_id}-${image_file.name}`;
+  const processedFile = await compressImageToFile(image_file, {
+    maxWidth: 512,
+    maxHeight: 512,
+    quality: 0.85,
+    mimeType: "image/webp",
+  });
+
+  const path = `profile_picture/${user_id}-${processedFile.name}`;
   const { error } = await supabase.storage.from(BUCKET).upload(
     path,
-    image_file,
+    processedFile,
     {
       upsert: true,
-      cacheControl: "3600",
+      cacheControl: "31536000",
+      contentType: processedFile.type || "image/webp",
     },
   );
 

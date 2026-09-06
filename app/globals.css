@@ -50,6 +50,18 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
+  /* Crispy editorial theme: zero drop shadows */
+  --shadow: none;
+  --shadow-2xs: none;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-2xl: none;
+  --default-box-shadow: none;
+  --drop-shadow: none;
+
   --animate-caret-blink: caret-blink 1.1s step-end infinite;
 
   @keyframes caret-blink {
@@ -421,20 +433,32 @@ html body[data-scroll-locked][data-scroll-locked] {
   }
 
   .modern-card {
-    @apply rounded-xl border border-border/80 bg-card transition-all shadow-sm;
+    @apply rounded-xl border border-border bg-card/60 transition-colors;
   }
 
   .modern-card-hover {
-    @apply hover:border-border hover:shadow-md;
+    @apply hover:border-foreground/30 hover:bg-card;
   }
 
   /* Consistent rounded-xl buttons across the entire page */
   .btn-primary-modern {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-semibold transition-all duration-200 hover:bg-primary/90 hover:shadow-md hover:shadow-primary/20 active:translate-y-px;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-semibold transition-colors duration-150 hover:bg-primary/90 active:scale-[0.98];
   }
 
   .btn-secondary-modern {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card text-foreground font-medium transition-all duration-200 hover:bg-muted/60 active:translate-y-px;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card text-foreground font-medium transition-colors duration-150 hover:bg-muted/60 active:scale-[0.98];
+  }
+
+  /* Crisp global shadow override */
+  .shadow,
+  .shadow-2xs,
+  .shadow-xs,
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl,
+  .shadow-2xl {
+    box-shadow: none !important;
   }
 
   .modern-bckground-gradient {

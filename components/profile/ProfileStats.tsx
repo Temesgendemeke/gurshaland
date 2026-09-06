@@ -20,7 +20,7 @@ const ProfileStats = ({ profile }: { profile: Profile }) => {
   ];
 
   return (
-    <div className="flex shrink-0 items-center justify-center gap-8 border-t border-border/60 pt-6 sm:gap-12 md:justify-end md:border-t-0 md:pt-0">
+    <div className="flex shrink-0 flex-wrap items-center justify-center gap-5 border-t border-border/60 pt-6 sm:gap-8 md:gap-12 md:justify-end md:border-t-0 md:pt-0">
       {info_list.map((info) => (
         <div
           className="flex flex-col items-center md:items-end"

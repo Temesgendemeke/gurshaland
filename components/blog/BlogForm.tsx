@@ -40,6 +40,7 @@ import {
 import calculate_read_time from "@/utils/calculate_read_time";
 import { generateUniqueSlug } from "@/utils/slugify";
 import { blogStore } from "@/store/Blog";
+import { useBlogDetailStore } from "@/store/BlogDetail";
 import { toast } from "sonner";
 import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
@@ -66,8 +67,88 @@ export default function BlogForm({
   blog?: Blog;
   mode?: "create" | "update";
 }) {
+  const getInitialValues = (b?: Blog): BlogFormData => {
+    return {
+      id: b?.id != null ? String(b.id) : "",
+      title: b?.title || "",
+      subtitle: b?.subtitle || "",
+      category: b?.category || "",
+      tags: b?.tags || [],
+      status: b?.status || "draft",
+      image: b?.image && (b.image.url || b.image.path)
+        ? {
+            path: b.image.path || "",
+            url: b.image.url || "",
+            file: null,
+          }
+        : { path: "", url: "", file: null },
+      contents: (b?.contents || []).map((c: any) => {
+        const hasRecipe = Boolean(
+          c?.recipe ||
+          (Array.isArray(c?.instructions) && c.instructions.length > 0) ||
+          (Array.isArray(c?.ingredients) && c.ingredients.length > 0)
+        );
+
+        const hasTips = Boolean(
+          c?.tips ||
+          (Array.isArray(c?.items) && c.items.length > 0) ||
+          (Array.isArray(c?.tips?.items) && c.tips.items.length > 0)
+        );
+
+        return {
+          ...c,
+          id: c?.id != null ? String(c.id) : undefined,
+          title: c?.title || "",
+          body: c?.body || "",
+          image: c?.image && (c.image.url || c.image.path)
+            ? {
+                path: c.image.path || "",
+                url: c.image.url || "",
+                file: null,
+              }
+            : { path: "", url: "", file: null },
+          recipe: hasRecipe
+            ? {
+                title: c?.recipe?.title || c?.title || "",
+                ingredients: (c?.recipe?.ingredients || c?.ingredients || []).map(
+                  (ing: any) => ({
+                    amount:
+                      ing?.amount !== undefined && ing?.amount !== null
+                        ? ing.amount
+                        : undefined,
+                    measurement: ing?.measurement || "",
+                    name: ing?.name || "",
+                  }),
+                ),
+                instructions: (
+                  c?.recipe?.instructions ||
+                  c?.instructions ||
+                  []
+                ).map((ins: any) =>
+                  typeof ins === "string" ? ins : ins?.text || "",
+                ),
+              }
+            : undefined,
+          tips: hasTips
+            ? {
+                title: c?.tips?.title || "",
+                description: c?.tips?.description || "",
+                items: (c?.tips?.items || c?.items || []).map((item: any) =>
+                  typeof item === "string" ? item : item?.text || "",
+                ),
+              }
+            : undefined,
+        };
+      }),
+    };
+  };
+
   const [tagInput, setTagInput] = useState("");
-  const [openSections, setOpenSections] = useState<number[]>([]);
+  const [openSections, setOpenSections] = useState<number[]>(() =>
+    blog?.contents && blog.contents.length > 0
+      ? blog.contents.map((_, i) => i)
+      : [0],
+  );
   const addBlog = blogStore((store) => store.addBlog);
   const user = useAuth((store) => store.user);
   const router = useRouter();
@@ -76,42 +157,15 @@ export default function BlogForm({
 
   const form = useForm<BlogFormData>({
     resolver: zodResolver(blogSchema),
-    defaultValues: {
-      id: "",
-      title: "",
-      subtitle: "",
-      category: "",
-      tags: [],
-      status: "draft",
-      contents: [],
-    },
+    defaultValues: getInitialValues(blog),
   });
 
   useEffect(() => {
     if (blog && mode === "update") {
-      form.reset({
-        id: blog.id != null ? String(blog.id) : "",
-        author_id: blog.author_id
-          ? String(blog.author_id)
-          : String(user?.id || ""),
-        title: blog.title || "",
-        subtitle: blog.subtitle || "",
-        category: blog.category || "",
-        tags: blog.tags || [],
-        status: blog.status || "draft",
-        image: blog.image
-          ? {
-              path: blog.image.path || "",
-              url: blog.image.url || "",
-              file: null,
-            }
-          : { path: "", url: "", file: null },
-        contents: (blog.contents || []).map((c: any) => ({
-          ...c,
-          title: c?.title || "",
-          body: c?.body || "",
-        })),
-      } as any);
+      const initial = getInitialValues(blog);
+      form.reset(initial);
+      const sectionIndices = (blog.contents || []).map((_, i) => i);
+      setOpenSections(sectionIndices.length > 0 ? sectionIndices : [0]);
     }
   }, [blog, mode, form]);
 
@@ -165,7 +219,14 @@ export default function BlogForm({
       read_time: calculate_read_time(data) as string,
       slug: await generateUniqueSlug(data.title, "blog"),
       contents: data.contents
-        ? data.contents.map(({ image, ...section }) => section)
+        ? data.contents.map(({ image, ...section }: any) => ({
+            ...section,
+            instructions:
+              section?.recipe?.instructions || section?.instructions || [],
+            items: section?.tips?.items || section?.items || [],
+            ingredients:
+              section?.recipe?.ingredients || section?.ingredients || [],
+          }))
         : [],
     };
     try {
@@ -200,7 +261,13 @@ export default function BlogForm({
 
       addBlog(newBlog);
       toast.success("Blog post created successfully!");
-      router.back();
+      const newSlug = newBlog?.slug || cleanData.slug;
+      if (newSlug) {
+        router.push(`/blog/${newSlug}`);
+        router.refresh();
+      } else {
+        router.back();
+      }
     } catch (error) {
       console.log(error);
       toast.error(generate_error(error));
@@ -228,7 +295,12 @@ export default function BlogForm({
         id: String(blog?.id),
         read_time: calculate_read_time(data) as string,
         slug: blog?.slug ?? (await generateUniqueSlug(data.title, "blog")),
-        contents: (rest as any)?.contents || [],
+        contents: ((rest as any)?.contents || []).map((c: any) => ({
+          ...c,
+          instructions: c?.recipe?.instructions || c?.instructions || [],
+          items: c?.tips?.items || c?.items || [],
+          ingredients: c?.recipe?.ingredients || c?.ingredients || [],
+        })),
       };
       const res = await updateBlogAction(cleanBlog as Blog);
       if (mainFile && user?.id) {
@@ -241,31 +313,45 @@ export default function BlogForm({
           targetId,
         );
       }
-      res?.contents?.forEach(async (content, index) => {
-        const existing = blog?.contents?.[index]?.image as ImageFormData | undefined;
-        const oldpath = existing?.path;
-        const oldURl = existing?.url;
-        const newFile = (data?.contents?.[index] as any)?.image
-          ?.file as File | null;
-        if (newFile && content?.id && user?.id) {
-          await upsertImageFromStorage(
-            "content",
-            oldpath,
-            newFile as File,
-            user?.id!,
-            String(content.id),
-          );
-        } else if (oldURl && oldURl) {
-          await insertImageDb(
-            "content_image",
-            user?.id!,
-            oldpath!,
-            oldURl!,
-            String(content.id),
-          );
-        }
-      });
-      toast.success(`${blog?.title} blog updated successfully`);
+      if (res?.contents && Array.isArray(res.contents)) {
+        await Promise.all(
+          res.contents.map(async (content, index) => {
+            const existing = blog?.contents?.[index]?.image as ImageFormData | undefined;
+            const oldpath = existing?.path;
+            const oldURl = existing?.url;
+            const newFile = (data?.contents?.[index] as any)?.image
+              ?.file as File | null;
+            if (newFile && content?.id && user?.id) {
+              await upsertImageFromStorage(
+                "content",
+                oldpath,
+                newFile as File,
+                user?.id!,
+                String(content.id),
+              );
+            } else if (oldURl && oldURl) {
+              await insertImageDb(
+                "content_image",
+                user?.id!,
+                oldpath!,
+                oldURl!,
+                String(content.id),
+              );
+            }
+          }),
+        );
+      }
+      const targetSlug = cleanBlog.slug || blog?.slug;
+      if (targetSlug) {
+        await useBlogDetailStore.getState().fetchBlog(targetSlug, user?.id);
+      }
+      toast.success(`${cleanBlog.title || blog?.title} updated successfully`);
+      if (targetSlug) {
+        router.push(`/blog/${targetSlug}`);
+        router.refresh();
+      } else {
+        router.back();
+      }
     } catch (error) {
       console.log(error);
       toast.error(generate_error(error));
@@ -299,6 +385,7 @@ export default function BlogForm({
           <CardTitle>Basic Information</CardTitle>
           <CardDescription>
             This information will be displayed at the top of your post.
+
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2 md:space-y-4">

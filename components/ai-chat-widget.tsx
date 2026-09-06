@@ -126,7 +126,13 @@ export function AIChatWidget() {
     router.push("/meal-planner");
   };
 
-  if (AUTH_PATHS.includes(pathname)) {
+  const isExcludedPage =
+    AUTH_PATHS.includes(pathname) ||
+    pathname.includes("/edit") ||
+    pathname.includes("/add") ||
+    pathname.includes("/create");
+
+  if (isExcludedPage) {
     return null;
   }
 
@@ -226,8 +232,7 @@ export function AIChatWidget() {
           initial={reduceMotion ? false : { opacity: 0, scale: 0.96, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={reduceMotion ? undefined : { opacity: 0, scale: 0.96, y: 12 }}
-          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-6 right-6 z-50 flex h-[min(76dvh,40rem)] w-[min(calc(100vw-1.5rem),24rem)] flex-col overflow-hidden rounded-[1.25rem] border border-border bg-background shadow-xl shadow-black/10"
+          className="fixed bottom-6 right-6 z-50 flex h-[min(76dvh,40rem)] w-[min(calc(100vw-1.5rem),24rem)] flex-col overflow-hidden rounded-[1.25rem] border border-border bg-background"
         >
           {/* Header */}
           <div className="flex shrink-0 items-center justify-between gap-3 border-b border-border/60 px-4 py-3">
@@ -388,7 +393,7 @@ export function AIChatWidget() {
           transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           onClick={() => setIsOpen(true)}
           aria-label="Open GurshaAI chat assistant"
-          className="fixed bottom-6 right-6 z-50 inline-flex h-12 items-center gap-2 rounded-full bg-primary pr-5 pl-4 text-sm font-semibold tracking-tight text-primary-foreground shadow-lg shadow-primary/25"
+          className="fixed bottom-6 right-6 z-50 inline-flex h-12 items-center gap-2 rounded-full bg-primary pr-5 pl-4 text-sm font-semibold tracking-tight text-primary-foreground border border-primary-foreground/20"
         >
           <FireSolid className="h-4 w-4" />
           GurshaAI

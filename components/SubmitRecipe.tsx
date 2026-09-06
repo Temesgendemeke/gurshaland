@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
 import BasicInfoFields from "./BasicInfo";
 import StatusField from "./StatusField";
 import CulturalNoteField from "./CulturalNoteField";
@@ -30,7 +31,7 @@ import {
   uploadRecipeImage,
   updateRecipe,
 } from "@/actions/Recipe/recipe";
-import { deleteImage } from "@/actions/Recipe/image";
+import { deleteImage, uploadImage } from "@/actions/Recipe/image";
 import { useAuth } from "@/store/useAuth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -60,14 +61,26 @@ export default function SubmitRecipeForm({
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        setCategories(await getCategories());
+        const fetchedCats = await getCategories();
+        setCategories(fetchedCats || []);
+
+        const currentCat = form.getValues("category");
+        if ((!currentCat || !currentCat.name) && recipe) {
+          const catId = (recipe as any)?.category_id || recipe?.category?.id;
+          if (catId) {
+            const match = fetchedCats?.find((c: any) => c.id === catId);
+            if (match) {
+              form.setValue("category", { id: match.id, name: match.name });
+            }
+          }
+        }
       } catch (error) {
         console.error("Failed to fetch categories:", error);
       }
     };
 
     fetchCategories();
-  }, []);
+  }, [recipe]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema) as Resolver<FormValues>,
@@ -76,17 +89,21 @@ export default function SubmitRecipeForm({
         author_id: recipe?.author_id || "",
         title: recipe?.title || "",
         description: recipe?.description || "",
-        prepTime: recipe?.preptime || 0,
-        cookTime: recipe?.cooktime || 0,
-        servings: recipe?.servings || 1,
+        prepTime: recipe?.preptime ?? 0,
+        cookTime: recipe?.cooktime ?? 0,
+        servings: recipe?.servings ?? 1,
         difficulty: recipe?.difficulty || "",
         tags: recipe?.tags || [],
-        culturalNote: recipe?.culturalNote || "",
-        image: (recipe?.image || {
-          path: "",
-          url: "",
-          recipe_id: recipe?.id?.toString() || "",
-        }) as any,
+        culturalNote:
+          recipe?.culturalNote || (recipe as any)?.cultural_notes || "",
+        image:
+          recipe?.image && recipe.image.url
+            ? {
+                path: recipe.image.path || "",
+                url: recipe.image.url,
+                recipe_id: recipe.id ? Number(recipe.id) : undefined,
+              }
+            : undefined,
         status: recipe?.status || "draft",
         slug: recipe?.slug || "",
       },
@@ -97,18 +114,24 @@ export default function SubmitRecipeForm({
         fat: 0,
         fiber: 0,
       },
-      category: recipe?.category || { id: 0, name: "" },
+      category:
+        recipe?.category && recipe.category.name
+          ? { id: recipe.category.id, name: recipe.category.name }
+          : undefined,
       ingredients: recipe?.ingredients?.length
         ? recipe.ingredients
             .filter((ing: any) => ing !== null && ing !== undefined)
             .map((ing: any) => ({
               id: ing.id,
               item: ing.item || "",
-              unit: ing.unit ?? undefined,
-              notes: ing.notes ?? undefined,
-              amount: ing.amount ?? undefined,
+              unit: ing.unit ?? "",
+              notes: ing.notes ?? "",
+              amount:
+                ing.amount !== null && ing.amount !== undefined
+                  ? ing.amount
+                  : "",
             }))
-        : [{ item: "", amount: 0, notes: "" }],
+        : [{ item: "", amount: "", notes: "" }],
       instructions: recipe?.instructions?.length
         ? recipe.instructions
             .filter((ins: any) => ins !== null && ins !== undefined)
@@ -117,17 +140,27 @@ export default function SubmitRecipeForm({
               title: ins.title || "",
               description: ins.description || "",
               step: ins.step || 1,
-              time: ins.time ?? undefined,
-              tips: ins.tips ?? undefined,
-              image: ins.image && ins.image !== null ? ins.image : undefined,
+              time:
+                ins.time !== null && ins.time !== undefined && ins.time !== ""
+                  ? Number(ins.time)
+                  : "",
+              tips: ins.tips ?? "",
+              image:
+                ins.image && ins.image.url
+                  ? {
+                      url: ins.image.url,
+                      path: ins.image.path || "",
+                      instruction_id: ins.id ? Number(ins.id) : undefined,
+                    }
+                  : undefined,
             }))
         : [
             {
               step: 1,
               title: "",
               description: "",
-              time: 0,
-              tips: undefined,
+              time: "",
+              tips: "",
               image: undefined,
             },
           ],
@@ -179,17 +212,37 @@ export default function SubmitRecipeForm({
     try {
       data.recipe.author_id = user.id;
       data.recipe.slug = await generateUniqueSlug(data.recipe.title, "recipe");
+      (data.recipe as any).preptime = data.recipe.prepTime ?? 0;
+      (data.recipe as any).cooktime = data.recipe.cookTime ?? 0;
+      (data.recipe as any).totaltime =
+        (data.recipe.prepTime ?? 0) + (data.recipe.cookTime ?? 0);
+      (data.recipe as any).cultural_notes = data.recipe.culturalNote || "";
+      (data.recipe as any).category_id = data.category?.id || null;
+
       const recipe_data = await insertRecipe(data as any);
-      if (shouldUploadRecipeImage(recipeImage)) {
-        await uploadRecipeImage(recipeImage, user.id, recipe_data.recipe.id);
+      if (shouldUploadRecipeImage(recipeImage) && recipe_data?.recipe?.id) {
+        await uploadRecipeImage(
+          recipeImage as File,
+          user.id,
+          recipe_data.recipe.id.toString(),
+        );
       }
 
-      for (const ins of instructionImages) {
-        const instruction = recipe_data.instructions.find(
-          (i: any) => i.step === ins.step,
-        );
-        if (instruction) {
-          await uploadInstructionImage(ins.image, user.id, instruction.id);
+      if (recipe_data?.instructions) {
+        for (const ins of data.instructions) {
+          const imgObj = ins.image as any;
+          if (imgObj?.file instanceof File) {
+            const matchedInstruction = recipe_data.instructions.find(
+              (i: any) => i.step === ins.step,
+            );
+            if (matchedInstruction?.id) {
+              await uploadInstructionImage(
+                imgObj.file,
+                user.id,
+                matchedInstruction.id.toString(),
+              );
+            }
+          }
         }
       }
 
@@ -205,7 +258,7 @@ export default function SubmitRecipeForm({
 
   const updateRecipeHandler = async (data: FormValues) => {
     if (!user?.id) {
-      console.error("User ID is required");
+      toast.error("User ID is required. Please log in.");
       return;
     }
 
@@ -216,23 +269,13 @@ export default function SubmitRecipeForm({
 
     try {
       const titleChanged = data.recipe.title !== recipe.title;
-      let newSlug = data.recipe.slug;
+      let newSlug = data.recipe.slug || recipe.slug;
 
       if (titleChanged) {
         newSlug = await generateUniqueSlug(data.recipe.title, "recipe");
       }
 
-      const recipeData = {
-        ...data.recipe,
-        id: typeof recipe.id === "string" ? parseInt(recipe.id) : recipe.id,
-        slug: newSlug,
-        preptime: data.recipe.prepTime,
-        cooktime: data.recipe.cookTime,
-        cultural_notes: data.recipe.culturalNote,
-        tags: data.recipe.tags,
-      };
-
-      let recipeImageData = data.recipe.image;
+      let recipeImageData: any = data.recipe.image;
       if (shouldUploadRecipeImage(recipeImage)) {
         if (recipe?.image?.path) {
           try {
@@ -242,33 +285,32 @@ export default function SubmitRecipeForm({
           }
         }
 
-        const uploadedImage: any = await uploadRecipeImage(
-          recipeImage,
+        const uploadedImage = await uploadImage(
+          recipeImage as File,
           user.id,
-          recipe.id.toString(),
         );
 
-        if (uploadedImage && uploadedImage[0]) {
+        if (uploadedImage && uploadedImage.url) {
           recipeImageData = {
-            path: uploadedImage[0].path,
-            url: uploadedImage[0].url,
-            recipe_id: recipe.id.toString(),
-          } as any;
+            path: uploadedImage.path,
+            url: uploadedImage.url,
+            recipe_id: recipe.id ? Number(recipe.id) : undefined,
+          };
         }
+      } else if (recipe?.image && recipe.image.url) {
+        recipeImageData = {
+          path: recipe.image.path || "",
+          url: recipe.image.url,
+          recipe_id: recipe.id ? Number(recipe.id) : undefined,
+        };
       }
 
-      recipeData.image = recipeImageData;
-
-      const preparedInstructions = (await Promise.all(
+      const preparedInstructions = await Promise.all(
         data.instructions.map(async (instruction, index) => {
-          const instructionImage = instruction.image;
-          let imageData: any = instructionImage;
+          const imgObj = instruction.image as any;
+          let finalImage = undefined;
 
-          const newImageEntry = instructionImages.find(
-            (img) => img.step === instruction.step,
-          );
-
-          if (newImageEntry && newImageEntry.image instanceof File) {
+          if (imgObj?.file instanceof File) {
             const oldInstruction = recipe?.instructions?.find(
               (ins: any) => ins.step === instruction.step,
             );
@@ -284,64 +326,52 @@ export default function SubmitRecipeForm({
               }
             }
 
-            imageData = {
-              url: "",
-              path: "",
-              instruction_id: undefined,
+            const uploaded = await uploadImage(imgObj.file, user.id);
+            finalImage = {
+              url: uploaded.url,
+              path: uploaded.path,
             };
-          } else if (instructionImage && instructionImage.url) {
-            imageData = {
-              url: instructionImage.url,
-              path: instructionImage.path || "",
-              instruction_id: instructionImage.instruction_id,
+          } else if (imgObj && imgObj.url && imgObj.url !== "") {
+            finalImage = {
+              url: imgObj.url,
+              path: imgObj.path || "",
             };
-          } else {
-            imageData = undefined;
           }
 
           return {
             ...instruction,
-            id: instruction.id || 0,
+            id: instruction.id || undefined,
             step: index + 1,
             time: instruction.time ? String(instruction.time) : undefined,
-            image: imageData,
+            image: finalImage,
           };
         }),
-      )) as any;
+      );
 
-      const updatedRecipeData = await updateRecipe({
+      const recipeData = {
+        ...data.recipe,
+        id: typeof recipe.id === "string" ? parseInt(recipe.id) : recipe.id,
+        author_id: user.id || recipe.author_id,
+        category_id:
+          data.category?.id ||
+          (recipe as any)?.category_id ||
+          (recipe as any)?.category?.id ||
+          null,
+        slug: newSlug,
+        preptime: data.recipe.prepTime ?? 0,
+        cooktime: data.recipe.cookTime ?? 0,
+        totaltime: (data.recipe.prepTime ?? 0) + (data.recipe.cookTime ?? 0),
+        cultural_notes: data.recipe.culturalNote || "",
+        tags: data.recipe.tags || [],
+        image: recipeImageData,
+      };
+
+      await updateRecipe({
         recipe: recipeData,
         ingredients: data.ingredients,
         instructions: preparedInstructions as any,
         nutrition: data.nutrition,
       });
-
-      if (instructionImages.length > 0) {
-        await Promise.all(
-          instructionImages.map(async (insImg) => {
-            if (insImg.image instanceof File) {
-              const updatedInstruction = updatedRecipeData.instructions?.find(
-                (i: any) => i.step === insImg.step,
-              );
-
-              if (updatedInstruction?.id) {
-                try {
-                  await uploadInstructionImage(
-                    insImg.image,
-                    user.id,
-                    updatedInstruction.id.toString(),
-                  );
-                } catch (error) {
-                  console.error(
-                    `Failed to upload instruction image for step ${insImg.step}:`,
-                    error,
-                  );
-                }
-              }
-            }
-          }),
-        );
-      }
 
       toast.success(
         "Recipe updated successfully. Your changes have been saved.",
@@ -370,8 +400,18 @@ export default function SubmitRecipeForm({
   return (
     <Form {...form}>
       <form
-        className="space-y-2 bg-card pb-5 border border-border"
-        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8  mx-auto pb-12"
+        onSubmit={form.handleSubmit(onSubmit, (errors) => {
+          console.error("Form validation errors:", errors);
+          const firstKey = Object.keys(errors)[0];
+          const err = errors[firstKey as keyof typeof errors] as any;
+          const msg =
+            err?.message ||
+            err?.title?.message ||
+            err?.item?.message ||
+            `Please check field: ${firstKey}`;
+          toast.error(msg);
+        })}
       >
         <BasicInfoFields
           form={form}
@@ -392,19 +432,17 @@ export default function SubmitRecipeForm({
           removeInstruction={removeInstruction}
         />
 
-        <Card className="border-none">
-          <CardHeader>
-            <CardTitle>Final touches: Nutrition</CardTitle>
-            <CardDescription>
-              Estimated per serving that help people find and trust your recipe.
+        <Card className="rounded-2xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-none space-y-6">
+          <CardHeader className="p-0 pb-4 border-b border-border/60">
+            <CardTitle className="font-gosh text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              Nutrition Information
+            </CardTitle>
+            <CardDescription className="text-xs sm:text-sm text-muted-foreground">
+              Estimated per serving values that help people find and trust your recipe.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="">
-              <div className="pb-6">
-                <NutritionField form={form} />
-              </div>
-            </div>
+          <CardContent className="p-0">
+            <NutritionField form={form} />
           </CardContent>
         </Card>
 
@@ -418,22 +456,38 @@ export default function SubmitRecipeForm({
         <CulturalNoteField form={form} />
         <StatusField form={form} />
 
-        <div className="flex justify-center">
-          <Button
-            type="submit"
-            size="lg"
-            className="w-full active:scale-[0.98] sm:w-auto"
-            disabled={form.formState.isSubmitting}
-            aria-disabled={form.formState.isSubmitting}
-          >
+        {/* Sticky Action Footer */}
+        <div className="sticky bottom-6 z-20 flex items-center justify-between gap-4 rounded-2xl border border-border/80 bg-card/95 p-4 backdrop-blur-md shadow-none sm:p-5 mx-1">
+          <div className="text-xs text-muted-foreground hidden sm:block">
             {mode === "create"
-              ? form.formState.isSubmitting
-                ? "Publishing..."
-                : "Publish Recipe"
-              : form.formState.isSubmitting
-                ? "Updating..."
-                : "Update Recipe"}
-          </Button>
+              ? "Ready to share with the Gurshaland community?"
+              : "Review and save your changes to this recipe."}
+          </div>
+          <div className="flex items-center gap-3  w-full sm:w-auto justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.back()}
+              className="h-10 rounded-xl px-4 sm:px-5 text-xs sm:text-sm font-medium border-border/80"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              size="lg"
+              className="h-10 rounded-xl px-6 text-xs sm:text-sm font-semibold transition-all active:scale-[0.98]"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  <span>{mode === "create" ? "Publishing…" : "Updating…"}</span>
+                </>
+              ) : (
+                <span>{mode === "create" ? "Publish Recipe" : "Update Recipe"}</span>
+              )}
+            </Button>
+          </div>
         </div>
       </form>
     </Form>

@@ -17,7 +17,6 @@ import { useAutonomousAction } from "@/components/chat/use-autonomous";
 import AutonomousBanner from "@/components/chat/AutonomousBanner";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -37,23 +36,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
   AlertCircle,
   Apple,
-  ArrowLeft,
   Calendar,
   ChefHat,
-  ChevronDown,
   Clock,
   Coins,
   Flame,
   Heart,
   Loader2,
-  RefreshCw,
   Salad,
   SaveIcon,
   TrendingUp,
@@ -62,62 +53,21 @@ import {
 import { mealPlannerType, mealPlannerSchema } from "@/schema/meal-planner";
 import PreviewSection from "./PreviewSection";
 import MealPlanProgressBar from "./MealPlanProgressBar";
-import {
-  heightMeasurements,
-  weightMeasurements,
-} from "@/constants/measurements";
+import AdvancedNutritionFields from "./AdvancedNutritionFields";
+import MealPlanEmptyState from "./MealPlanEmptyState";
 import { IconSparkles2Filled } from "@tabler/icons-react";
-import Link from "next/link";
-import DownloadPdfButton from "@/components/pdf/DownloadPdfButton";
+import MealPlanPdfModal from "@/components/pdf/MealPlanPdfModal";
 import { generateMealPlanPdf } from "@/actions/pdf";
 import { MEAL_PLAN_PDF_CREDIT_COST } from "@/constants/creditCosts";
+import { useTypingPlaceholder } from "@/hooks/useTypingPlaceholder";
 
 const fieldClasses = "h-11 rounded-xl border bg-background";
 
 const PLACEHOLDER_EXAMPLES = [
   "High-protein vegetarian meals, quick breakfasts, avoid peanuts",
-  "Prefer Mediterranean cuisine, keep cooking time under 30 min",
-  "Low-carb dinners, easy to meal prep for the week",
+  "Prefer traditional fasting dishes, keep cooking time under 30 min",
+  "Low-carb dinners, easy to meal prep for the week with teff injera",
 ];
-
-function useTypingPlaceholder(
-  examples: string[],
-  options: { typing?: number; deleting?: number; hold?: number } = {},
-) {
-  const { typing = 45, deleting = 18, hold = 1800 } = options;
-  const [text, setText] = useState("");
-  const [index, setIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const current = examples[index % examples.length];
-    let timeout: ReturnType<typeof setTimeout>;
-
-    if (!isDeleting && text === current) {
-      timeout = setTimeout(() => setIsDeleting(true), hold);
-    } else if (isDeleting && text === "") {
-      timeout = setTimeout(() => {
-        setIsDeleting(false);
-        setIndex((i) => (i + 1) % examples.length);
-      });
-    } else {
-      timeout = setTimeout(
-        () => {
-          setText(
-            isDeleting
-              ? current.slice(0, text.length - 1)
-              : current.slice(0, text.length + 1),
-          );
-        },
-        isDeleting ? deleting : typing,
-      );
-    }
-
-    return () => clearTimeout(timeout);
-  }, [text, isDeleting, index, examples, typing, deleting, hold]);
-
-  return text;
-}
 
 export default function MealPlanner() {
   const user = useAuth((store) => store.user);
@@ -233,12 +183,14 @@ export default function MealPlanner() {
   const handleSave = async () => {
     if (!plan || !user?.id) return;
     try {
-      await saveMealplan({ ...plan, author_id: user.id } as mealPlannerType & { author_id: string });
-      toast.message("Meal plan saved successfully");
+      await saveMealplan({
+        ...plan,
+        author_id: user.id,
+      } as mealPlannerType & { author_id: string });
+      toast.success("Meal plan saved successfully");
       router.push("/meal-planner/my-meal-plans");
-    } catch (error) {
-      console.log(error);
-      toast.message(generate_error(error));
+    } catch (err) {
+      toast.error(generate_error(err));
     }
   };
 
@@ -253,29 +205,13 @@ export default function MealPlanner() {
     }
   }, [isLoading, plan]);
 
-  const activityLevelOptions = [
-    { value: "sedentary", label: "sedentary" },
-    { value: "lightly_active", label: "lightly active" },
-    { value: "moderately_active", label: "moderately active" },
-    { value: "extremely_active", label: "extremely active" },
-  ];
-
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 pb-16 pt-8 sm:px-6">
-      {/* Header */}
-      <Link
-        href="/ai-features"
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to AI Features
-      </Link>
-
-      <div className="mt-6 max-w-2xl  mx-auto text-center">
-        <h1 className="font-gosh text-3xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+    <div className="mx-auto w-full max-w-7xl px-3.5 sm:px-6 lg:px-8 pb-16 pt-6 sm:pt-8">
+      <div className="mt-4 sm:mt-6 max-w-2xl mx-auto text-center">
+        <h1 className="font-gosh text-2xl sm:text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight text-foreground">
           Build your Ethiopian meal plan
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+        <p className="mt-2.5 sm:mt-3 text-xs sm:text-base leading-relaxed text-muted-foreground">
           Set your goals, diet, and preferences. AI assembles an authentic
           Ethiopian meal plan for today or the whole week, with a shopping list
           and pro tips.
@@ -333,14 +269,14 @@ export default function MealPlanner() {
                           <TabsList className="grid w-full grid-cols-2 rounded-xl border border-border bg-muted p-1">
                             <TabsTrigger
                               value="today"
-                              className="rounded-lg text-sm data-[state=active]:bg-card data-[state=active]:font-medium data-[state=active]:shadow-sm"
+                              className="rounded-lg text-sm data-[state=active]:bg-card data-[state=active]:font-medium data-[state=active]:border data-[state=active]:border-border/80"
                             >
                               <Clock className="mr-2 h-4 w-4" />
                               Today
                             </TabsTrigger>
                             <TabsTrigger
                               value="full-week"
-                              className="rounded-lg text-sm data-[state=active]:bg-card data-[state=active]:font-medium data-[state=active]:shadow-sm"
+                              className="rounded-lg text-sm data-[state=active]:bg-card data-[state=active]:font-medium data-[state=active]:border data-[state=active]:border-border/80"
                             >
                               <Calendar className="mr-2 h-4 w-4" />
                               Full Week
@@ -354,7 +290,7 @@ export default function MealPlanner() {
                 />
 
                 {/* Goal, Diet, Meals Grid */}
-                <div className="grid gap-4 @lg:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-3">
                   <FormField
                     control={form.control}
                     name="goal"
@@ -455,7 +391,7 @@ export default function MealPlanner() {
                         <FormLabel>Meals per day</FormLabel>
                         <Select
                           value={String(field.value)}
-                          onValueChange={(v) => field.onChange(parseInt(v))}
+                          onValueChange={(v) => field.onChange(parseInt(v, 10))}
                         >
                           <FormControl>
                             <SelectTrigger
@@ -478,256 +414,11 @@ export default function MealPlanner() {
                   />
                 </div>
 
-                {/* Advanced Options */}
-                <Collapsible className="group">
-                  <CollapsibleTrigger asChild>
-                    <button
-                      type="button"
-                      className="flex items-center gap-1.5 text-sm font-medium text-primary"
-                    >
-                      <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                      Advanced options
-                    </button>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <div className="mt-4 grid gap-4 @md:grid-cols-2">
-                      <FormField
-                        control={form.control}
-                        name="age"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Age</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                inputMode="numeric"
-                                placeholder="e.g., 20"
-                                className={`${fieldClasses} text-base`}
-                                value={field.value ?? ""}
-                                onChange={(e) =>
-                                  field.onChange(
-                                    e.target.value
-                                      ? parseInt(e.target.value)
-                                      : undefined,
-                                  )
-                                }
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              Leave empty for AI to suggest
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="gender"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Gender</FormLabel>
-                            <FormControl>
-                              <Select
-                                value={field.value}
-                                onValueChange={field.onChange}
-                              >
-                                <SelectTrigger
-                                  className={`${fieldClasses} hover:border-primary/60`}
-                                >
-                                  <SelectValue placeholder="Select gender" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="male">Male</SelectItem>
-                                  <SelectItem value="female">Female</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </FormControl>
-                            <FormDescription>
-                              Leave empty for AI to suggest
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <div className="space-y-2">
-                        <FormLabel>Height</FormLabel>
-                        <div className="flex gap-2">
-                          <FormField
-                            control={form.control}
-                            name="height.value"
-                            render={({ field }) => (
-                              <FormItem className="flex-1">
-                                <FormControl>
-                                  <Input
-                                    type="number"
-                                    placeholder="Value"
-                                    className={`${fieldClasses} text-base`}
-                                    {...field}
-                                    onChange={(e) =>
-                                      field.onChange(e.target.valueAsNumber)
-                                    }
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name="height.unit"
-                            render={({ field }) => (
-                              <FormItem className="w-32">
-                                <FormControl>
-                                  <Select
-                                    value={field.value}
-                                    onValueChange={field.onChange}
-                                  >
-                                    <SelectTrigger
-                                      className={`${fieldClasses} hover:border-primary/60`}
-                                    >
-                                      <SelectValue placeholder="Unit" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {heightMeasurements.map((m) => (
-                                        <SelectItem key={m.code} value={m.code}>
-                                          {m.code} ({m.name})
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        <FormDescription>
-                          Leave empty for AI to suggest
-                        </FormDescription>
-                      </div>
-
-                      <div className="space-y-2">
-                        <FormLabel>Weight</FormLabel>
-                        <div className="flex gap-2">
-                          <FormField
-                            control={form.control}
-                            name="weight.value"
-                            render={({ field }) => (
-                              <FormItem className="flex-1">
-                                <FormControl>
-                                  <Input
-                                    type="number"
-                                    placeholder="Value"
-                                    className={`${fieldClasses} text-base`}
-                                    {...field}
-                                    onChange={(e) =>
-                                      field.onChange(e.target.valueAsNumber)
-                                    }
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name="weight.unit"
-                            render={({ field }) => (
-                              <FormItem className="w-32">
-                                <FormControl>
-                                  <Select
-                                    value={field.value}
-                                    onValueChange={field.onChange}
-                                  >
-                                    <SelectTrigger
-                                      className={`${fieldClasses} hover:border-primary/60`}
-                                    >
-                                      <SelectValue placeholder="Unit" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {weightMeasurements.map((m) => (
-                                        <SelectItem key={m.code} value={m.code}>
-                                          {m.code} ({m.name})
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        <FormDescription>
-                          Leave empty for AI to suggest
-                        </FormDescription>
-                      </div>
-
-                      <FormField
-                        control={form.control}
-                        name="activity_level"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Activity level</FormLabel>
-                            <FormControl>
-                              <Select
-                                value={field.value}
-                                onValueChange={field.onChange}
-                              >
-                                <SelectTrigger
-                                  className={`${fieldClasses} hover:border-primary/60`}
-                                >
-                                  <SelectValue placeholder="Select activity level" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {activityLevelOptions.map((option) => (
-                                    <SelectItem
-                                      key={option.value}
-                                      value={option.value}
-                                    >
-                                      {option.label}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </FormControl>
-                            <FormDescription>
-                              How active you are throughout the day
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="calories"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Daily calorie target</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                inputMode="numeric"
-                                min={800}
-                                max={5000}
-                                placeholder="e.g., 2000"
-                                className={`${fieldClasses} text-base`}
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              Leave empty for AI to suggest
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
+                {/* Modular Advanced Nutrition & Body Metrics */}
+                <AdvancedNutritionFields
+                  form={form}
+                  fieldClasses={fieldClasses}
+                />
 
                 {/* Special Instructions */}
                 <FormField
@@ -761,7 +452,7 @@ export default function MealPlanner() {
                   )}
                 />
 
-                {/* Generate Button */}
+                {/* Submit Action Area */}
                 <div>
                   {needsLogin ? (
                     <p className="mb-3 rounded-lg border border-border/80 bg-muted/50 px-3 py-2.5 text-sm text-muted-foreground">
@@ -770,41 +461,37 @@ export default function MealPlanner() {
                         onClick={() => handleLoginRedirect()}
                         className="font-medium text-primary underline underline-offset-2"
                       >
-                        Log in
+                        Sign in
                       </button>{" "}
-                      to generate meal plans. New users get 100 free credits.
+                      to generate and save your personalized meal plans.
                     </p>
                   ) : outOfCredits ? (
-                    <p className="mb-3 rounded-lg border border-error/25 bg-error/5 px-3 py-2.5 text-sm leading-relaxed text-muted-foreground">
-                      You&apos;re out of credits. Each meal plan costs{" "}
-                      {MEAL_PLAN_CREDIT_COST} credits.{" "}
-                      <a
-                        href="/credits"
+                    <p className="mb-3 rounded-lg border border-border/80 bg-muted/50 px-3 py-2.5 text-sm text-muted-foreground">
+                      You need at least {MEAL_PLAN_CREDIT_COST} credits.{" "}
+                      <button
+                        type="button"
+                        onClick={() => router.push("/pricing")}
                         className="font-medium text-primary underline underline-offset-2"
                       >
-                        Buy more credits
-                      </a>
-                      .
+                        Get more credits
+                      </button>
                     </p>
-                  ) : (
-                    <p className="mb-3 text-xs text-muted-foreground">
-                      Costs {MEAL_PLAN_CREDIT_COST} credits per generation.
-                    </p>
-                  )}
+                  ) : null}
+
                   <Button
                     ref={submitBtnRef}
                     type="submit"
                     disabled={isLoading || outOfCredits}
-                    className="h-11 w-full rounded-xl bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
+                    className="h-11 w-full rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 shadow-none"
                   >
                     {isLoading ? (
                       <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Generating your meal plan...
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Generating your plan…
                       </>
                     ) : (
                       <>
-                        <IconSparkles2Filled className="mr-2 h-5 w-5" />
+                        <IconSparkles2Filled className="mr-2 h-4 w-4" />
                         Generate meal plan
                       </>
                     )}
@@ -822,7 +509,7 @@ export default function MealPlanner() {
               <MealPlanProgressBar isGenerating={isLoading} />
             </div>
           ) : plan ? (
-            <div className="w-full space-y-5 rounded-xl bg-card p-4 py-6 ring-1 ring-border/10 ">
+            <div className="w-full space-y-5 rounded-2xl bg-card p-4 sm:p-6 border border-border shadow-none">
               <div className="flex flex-col gap-4 border-b border-border/70 pb-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -832,17 +519,18 @@ export default function MealPlanner() {
                     Review the schedule, then save it when it looks right.
                   </p>
                 </div>
-                <div className="flex items-center gap-2 self-start sm:self-auto">
-                  <DownloadPdfButton
+                <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+                  <MealPlanPdfModal
                     generate={() => generateMealPlanPdf(plan)}
                     cost={MEAL_PLAN_PDF_CREDIT_COST}
+                    plan={plan}
                     variant="outline"
                     size="sm"
                   />
                   <Button
                     type="button"
                     onClick={handleSave}
-                    className="h-9 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+                    className="h-9 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90 shadow-none"
                   >
                     <SaveIcon className="mr-1.5 h-4 w-4" />
                     Save plan
@@ -851,45 +539,11 @@ export default function MealPlanner() {
               </div>
               <PreviewSection plan={plan} />
             </div>
-          ) : error ? (
-            <div className="w-full border-y border-error/30 px-1 py-8">
-              <div className="flex items-start gap-3">
-                <AlertCircle
-                  className="mt-0.5 h-5 w-5 shrink-0 text-error"
-                  strokeWidth={1.75}
-                />
-                <div>
-                  <h3 className="font-gosh text-lg font-semibold tracking-tight text-foreground">
-                    Couldn&apos;t generate your meal plan
-                  </h3>
-                  <p className="mt-1 max-w-sm text-sm leading-relaxed text-muted-foreground">
-                    {error}
-                  </p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="mt-5 rounded-md"
-                    onClick={() => form.handleSubmit(onSubmit)()}
-                  >
-                    <RefreshCw className="mr-2 h-4 w-4" />
-                    Try again
-                  </Button>
-                </div>
-              </div>
-            </div>
           ) : (
-            <div className="flex w-full flex-col items-center justify-center self-stretch rounded-xl   p-8 text-center min-h-[16rem] lg:min-h-0">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <Calendar className="h-6 w-6" strokeWidth={1.75} />
-              </span>
-              <h3 className="mt-5 font-gosh text-lg font-semibold tracking-tight text-foreground">
-                Your meal plan will appear here
-              </h3>
-              <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">
-                Set a timeframe, goal, and diet then generate to see your
-                full Ethiopian menu, nutrition breakdown, and shopping list.
-              </p>
-            </div>
+            <MealPlanEmptyState
+              error={error}
+              onRetry={() => form.handleSubmit(onSubmit)()}
+            />
           )}
         </div>
       </div>

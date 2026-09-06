@@ -10,7 +10,6 @@ import {
   HomeModernIcon as Restaurant,
   StarIcon as Star,
   ChatBubbleLeftRightIcon as MessageRoundedDetail,
-  ArrowLeftIcon as ArrowLeft,
 } from "@heroicons/react/24/outline";
 import { PostComment } from "@/utils/types/recipe";
 import RecipeComment from "@/components/RecipeComment";
@@ -26,7 +25,6 @@ import RecipeCulturalNote from "@/components/RecipeCulturalNote";
 import InstructionsView from "@/components/InstructionsView";
 import IngredientsView from "@/components/IngredientsView";
 import ActionButtons from "@/components/recipe/ActionButtons";
-import Link from "next/link";
 import YoutubeVideoSection from "@/components/recipe/YoutubeVideoSection";
 import { motion, useReducedMotion } from "motion/react";
 import Reveal from "@/components/Reveal";
@@ -66,15 +64,6 @@ export default function RecipePreviewPage() {
     <div className="min-h-screen">
       <Header />
       <div className="w-full max-w-7xl mx-auto px-6 py-12 space-y-6">
-        {/* Back Navigation */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Home
-        </Link>
-
         {/* Preview Banner */}
         <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm text-primary">
           Preview mode  this recipe hasn&apos;t been saved yet.{" "}
@@ -91,7 +80,7 @@ export default function RecipePreviewPage() {
             initial={reduce ? false : { opacity: 0, x: -24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease }}
-            className="group relative overflow-hidden rounded-2xl border border-border shadow-[0_24px_70px_-40px_hsl(var(--foreground)/0.45)]"
+            className="group relative overflow-hidden rounded-2xl border border-border"
           >
             <img
               src={recipe.image.url || "/placeholder.svg"}
@@ -153,7 +142,7 @@ export default function RecipePreviewPage() {
                   initial={reduce ? false : { opacity: 0, y: 14, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.45, delay: 0.3 + i * 0.07, ease }}
-                  className="group/stat relative overflow-hidden rounded-xl border border-border bg-card p-5 text-center transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_16px_40px_-22px_hsl(var(--primary)/0.4)] active:scale-[0.97]"
+                  className="group/stat relative overflow-hidden rounded-xl border border-border bg-card p-5 text-center transition-colors duration-200 hover:border-foreground/30 active:scale-[0.98]"
                 >
                   <span className="absolute inset-x-4 top-0 h-0.5 origin-left scale-x-0 rounded-full bg-primary transition-transform duration-300 group-hover/stat:scale-x-100" />
                   <stat.icon className="w-6 h-6 text-muted-foreground mx-auto mb-2 transition-colors duration-300 group-hover/stat:text-primary" aria-hidden="true" />

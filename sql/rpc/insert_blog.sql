@@ -3,6 +3,8 @@ CREATE OR REPLACE FUNCTION insert_blog(
 )
 RETURNS jsonb
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
 AS $$
 DECLARE
    new_blog jsonb;
@@ -17,31 +19,45 @@ BEGIN
     (_blog ->> 'author_id')::UUID,
     _blog ->> 'read_time',
     _blog ->> 'category',
-    _blog ->> 'tags',
+    CASE 
+      WHEN _blog -> 'tags' IS NULL THEN '{}'::text[]
+      WHEN jsonb_typeof(_blog -> 'tags') != 'array' THEN '{}'::text[]
+      ELSE ARRAY(SELECT jsonb_array_elements_text(_blog -> 'tags'))
+    END,
     _blog ->> 'slug',
-    _blog ->> 'status'
+    COALESCE(_blog ->> 'status', 'draft')
    ) RETURNING id INTO blog_id;
 
    INSERT INTO content(
-     blog_id, label, body, title, instructions, items
+     blog_id, body, title, instructions, items
    )
    SELECT
         blog_id,
-        c ->> 'label',
         c ->> 'body',
         c ->> 'title',
-        ARRAY(SELECT jsonb_array_elements_text(c -> 'instructions')),
-        ARRAY(SELECT jsonb_array_elements_text(c -> 'items'))
-     FROM jsonb_array_elements(_blog -> 'contents') as c;
+        CASE 
+          WHEN c -> 'instructions' IS NOT NULL AND jsonb_typeof(c -> 'instructions') = 'array' 
+          THEN ARRAY(SELECT jsonb_array_elements_text(c -> 'instructions'))
+          ELSE '{}'::text[]
+        END,
+        CASE 
+          WHEN c -> 'items' IS NOT NULL AND jsonb_typeof(c -> 'items') = 'array' 
+          THEN ARRAY(SELECT jsonb_array_elements_text(c -> 'items'))
+          ELSE '{}'::text[]
+        END
+     FROM jsonb_array_elements(COALESCE(_blog -> 'contents', '[]'::jsonb)) as c;
 
-   INSERT INTO blog_ingredient (
-     content_id, amount, name
-   )
-   SELECT
-       (i ->> 'content_id')::BIGINT,
-       (i ->> 'amount')::INT,
-       i ->> 'name'
-   FROM jsonb_array_elements(_blog -> 'ingredients') as i;
+   IF _blog ? 'ingredients' AND jsonb_typeof(_blog -> 'ingredients') = 'array' THEN
+     INSERT INTO blog_ingredient (
+       content_id, amount, name, measurement
+     )
+     SELECT
+         (i ->> 'content_id')::BIGINT,
+         (i ->> 'amount')::INT,
+         i ->> 'name',
+         COALESCE(i ->> 'measurement', i ->> 'unit')
+     FROM jsonb_array_elements(_blog -> 'ingredients') as i;
+   END IF;
 
    SELECT jsonb_build_object(
         'id', b.id,
@@ -67,7 +83,6 @@ BEGIN
             SELECT jsonb_agg(
                 jsonb_build_object(
                     'id', content.id,
-                    'label', content.label,
                     'body', content.body,
                     'title', content.title,
                     'instructions', content.instructions,
@@ -77,7 +92,8 @@ BEGIN
                             jsonb_build_object(
                                 'id', ingredient.id,
                                 'amount', ingredient.amount,
-                                'name', ingredient.name
+                                'name', ingredient.name,
+                                'measurement', ingredient.measurement
                             )
                         )
                         FROM blog_ingredient ingredient
@@ -104,3 +120,5 @@ BEGIN
     RETURN new_blog;
 END;
 $$;
+
+GRANT EXECUTE ON FUNCTION insert_blog(jsonb) TO authenticated, anon;

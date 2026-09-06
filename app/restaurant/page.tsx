@@ -193,14 +193,14 @@ const RestaurantsPageContent = () => {
     <div className="min-h-[100dvh]">
       <Header />
 
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-16">
+      <main className="mx-auto max-w-7xl px-3.5 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
         {/* Page Header */}
         <div className="max-w-3xl">
-          <h1 className="font-gosh text-4xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-5xl">
+          <h1 className="font-gosh text-2xl sm:text-4xl md:text-5xl font-extrabold leading-[1.1] tracking-tight text-foreground">
             Find a table in Addis Ababa
           </h1>
 
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
+          <p className="mt-2.5 sm:mt-4 max-w-xl text-xs sm:text-base leading-relaxed text-muted-foreground md:text-lg">
             From sizzling kitfo joints to sunset terrace lounges, the spots
             where the berbere, the coffee, and the company are all worth
             staying for.
@@ -208,7 +208,7 @@ const RestaurantsPageContent = () => {
         </div>
 
         {/* Search */}
-        <div ref={resultsRef} className="mt-10 max-w-4xl">
+        <div ref={resultsRef} className="mt-6 sm:mt-10 max-w-4xl">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
@@ -217,13 +217,13 @@ const RestaurantsPageContent = () => {
                 render={({ field }) => (
                   <div className="relative">
                     <Search
-                      className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground"
+                      className="absolute left-3.5 sm:left-4 top-1/2 h-4 sm:h-5 w-4 sm:w-5 -translate-y-1/2 text-muted-foreground"
                       strokeWidth={1.5}
                     />
                     <Input
                       {...field}
                       placeholder="Search for a restaurant, cuisine, or area"
-                      className="h-12 border-border bg-card pl-12"
+                      className="h-11 sm:h-12 border-border bg-card pl-11 sm:pl-12 text-sm"
                     />
                   </div>
                 )}

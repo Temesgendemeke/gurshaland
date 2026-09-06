@@ -37,8 +37,8 @@ const CategoryHeader = () => {
   }
 
   return (
-    <header className="mb-12 border-b pb-6">
-      <h1 className="font-bold text-5xl font-semibold leading-[1.04] tracking-tighter text-foreground sm:text-6xl lg:text-7xl">
+    <header className="mb-10 border-b pb-6 sm:mb-12">
+      <h1 className="font-gosh text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
         <span className="capitalize">
           {currentCategory?.name ?? slug.replace(/-/g, " ")}
         </span>

@@ -28,22 +28,17 @@ const ContactLocationForm = ({
   form: UseFormReturn<RestaurantFormType>;
 }) => {
   return (
-    <Card className="border-border/60 bg-card shadow-[0_15px_40px_-30px_hsl(var(--foreground)/0.15)]">
-      <CardHeader>
-        <div className="flex items-center gap-2 text-primary">
-          <MapPin className="h-4 w-4" strokeWidth={1.5} />
-          <span className="text-xs font-semibold uppercase tracking-[0.18em]">
-            Location & Contact
-          </span>
-        </div>
-        <CardTitle className="mt-1 font-gosh text-xl">
-          Where to Find You
+    <Card className="border border-border bg-card/60 rounded-xl">
+      <CardHeader className="p-4 sm:p-6 pb-3 sm:pb-4">
+        <CardTitle className="text-base sm:text-lg font-semibold text-foreground">
+          Location & Contact
         </CardTitle>
-        <CardDescription>
-          Help customers locate and reach you easily.
+        <CardDescription className="text-xs sm:text-sm">
+          Physical location, map coordinates, and primary contact methods for diners.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+
+      <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0 space-y-4 sm:space-y-5">
         <FormField
           control={form.control}
           name="address"
@@ -54,8 +49,8 @@ const ContactLocationForm = ({
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
                   <Input
-                    placeholder="e.g. Bole Road, Addis Ababa"
-                    className="h-11 pl-10"
+                    placeholder="e.g. Bole Road, Behind Edna Mall, Addis Ababa"
+                    className="h-10 pl-9"
                     {...field}
                   />
                 </div>
@@ -70,13 +65,13 @@ const ContactLocationForm = ({
           name="google_map_url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Google Map URL</FormLabel>
+              <FormLabel>Google Maps Link</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Globe className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
                   <Input
-                    placeholder="https://www.google.com/maps"
-                    className="h-11 pl-10"
+                    placeholder="https://maps.google.com/?q=..."
+                    className="h-10 pl-9"
                     {...field}
                   />
                 </div>
@@ -86,7 +81,7 @@ const ContactLocationForm = ({
           )}
         />
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           <FormField
             control={form.control}
             name="phone"
@@ -98,8 +93,8 @@ const ContactLocationForm = ({
                     <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
                     <Input
                       type="tel"
-                      placeholder="+251 911 234 567"
-                      className="h-11 pl-10"
+                      placeholder="+251 91 123 4567"
+                      className="h-10 pl-9"
                       {...field}
                     />
                   </div>
@@ -119,8 +114,9 @@ const ContactLocationForm = ({
                   <div className="relative">
                     <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
                     <Input
-                      placeholder="info@example.com"
-                      className="h-11 pl-10"
+                      type="email"
+                      placeholder="contact@restaurant.com"
+                      className="h-10 pl-9"
                       {...field}
                     />
                   </div>
@@ -136,13 +132,13 @@ const ContactLocationForm = ({
           name="website"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Website</FormLabel>
+              <FormLabel>Official Website</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Globe className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
                   <Input
                     placeholder="https://www.yourrestaurant.com"
-                    className="h-11 pl-10"
+                    className="h-10 pl-9"
                     {...field}
                   />
                 </div>

@@ -12,13 +12,13 @@ export default async function CategoriesPage() {
     <div className="min-h-[100dvh]">
       <Header />
 
-      <main className="mx-auto w-full max-w-7xl px-4 pt-14 pb-24 sm:px-6 md:pt-10">
+      <main className="mx-auto w-full max-w-7xl px-3.5 pt-8 pb-16 sm:px-6 sm:pt-12 sm:pb-24 lg:px-8">
         {/* Header */}
-        <header className=" border-b pb-6">
-          <h1 className="font-gosh text-5xl font-semibold leading-[1.04] tracking-tighter text-foreground sm:text-6xl lg:text-7xl">
+        <header className="border-b pb-6">
+          <h1 className="font-gosh text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Recipe Categories
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
             Explore Ethiopian cuisine by category, from traditional breads to
             aromatic spices
           </p>
@@ -64,31 +64,6 @@ export default async function CategoriesPage() {
                   <p className="mb-4 text-muted-foreground">
                     {category.description}
                   </p>
-
-                    {/* <div className="space-y-2">
-                      <p className="text-sm font-medium text-muted-foreground">
-                        Featured recipes:
-                      </p>
-                      <div className="flex flex-wrap gap-1">
-                        {category.featured
-                          ?.slice(0, 3)
-                          .map((recipe: any, index: number) => (
-                            <Badge
-                              key={index}
-                              variant="secondary"
-                              className="text-xs"
-                            >
-                              {recipe.title}
-                            </Badge>
-                          ))}
-                        {(!category.featured ||
-                          category.featured.length === 0) && (
-                          <Badge variant="secondary" className="text-xs">
-                            No recipes yet
-                          </Badge>
-                        )}
-                      </div>
-                    </div> */}
                 </div>
               </Link>
             );

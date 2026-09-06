@@ -1,12 +1,21 @@
 import { BUCKET } from "@/constants/image";
 import { createClient } from "@/utils/supabase/client";
+import { compressImageToFile } from "@/utils/compressImage";
 
 export const uploadImage = async (file: File, userId: string) => {
   const supabase = createClient();
-  const filePath = `recipe/${userId}/${file.name}_${Date.now()}`;
-  const { error } = await supabase.storage.from(BUCKET).upload(filePath, file, {
-    cacheControl: "3600",
+  const processedFile = await compressImageToFile(file, {
+    maxWidth: 1920,
+    maxHeight: 1920,
+    quality: 0.82,
+    mimeType: "image/webp",
+  });
+
+  const filePath = `recipe/${userId}/${processedFile.name}_${Date.now()}`;
+  const { error } = await supabase.storage.from(BUCKET).upload(filePath, processedFile, {
+    cacheControl: "31536000",
     upsert: true,
+    contentType: processedFile.type || "image/webp",
   });
 
   if (error) throw error;

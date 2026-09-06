@@ -15,11 +15,17 @@ interface MeasurementSelectProps {
 }
 
 const MeasurementSelect = ({ form, name }: MeasurementSelectProps) => {
+  const val = form.watch(name);
+
   return (
     <Select
-      defaultValue="g"
-      onValueChange={(value) => form.setValue(name, value)}
-      value={form.watch(name) || ""}
+      onValueChange={(value) =>
+        form.setValue(name, value, {
+          shouldDirty: true,
+          shouldValidate: true,
+        })
+      }
+      value={val || undefined}
     >
       <SelectTrigger className="w-[11.25rem]">
         <SelectValue placeholder="Select measurement" />

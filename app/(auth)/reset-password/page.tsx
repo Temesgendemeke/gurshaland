@@ -19,8 +19,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import AuthVisual from "@/components/AuthVisual";
-import { ArrowLeft } from "lucide-react";
-import GoBackNoText from "@/components/GoBackNoText";
 import PasswordField from "@/components/PasswordField";
 import { z } from "zod";
 
@@ -125,20 +123,11 @@ const Page = () => {
       {/* Left Side - Visuals */}
       <AuthVisual />
 
-      <GoBackNoText />
-
       {/* Right Side - Form */}
       <div className="flex flex-col relative z-10 lg:min-h-0 lg:overflow-y-auto">
         <div className="w-full mx-auto space-y-6 sm:space-y-8 sm:p-8 md:p-10 rounded-lg max-w-2xl lg:mr-0 lg:my-auto">
           <div className="relative z-10 hidden sm:flex items-center justify-between w-full lg:hidden">
             <Logo />
-            <Link
-              href="/"
-              className="hidden sm:flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-md bg-muted hover:bg-muted/70 border border-border transition-colors duration-200 text-xs sm:text-sm font-medium text-foreground"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back
-            </Link>
           </div>
           <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
             <h1 className="text-[clamp(1.75rem,1.5rem+1.5vw,3rem)] font-bold tracking-tight text-foreground font-gosh">

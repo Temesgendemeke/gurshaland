@@ -1,6 +1,8 @@
 CREATE OR REPLACE FUNCTION get_blogs_by_author(_author_id uuid)
 RETURNS jsonb
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
 AS $$
   SELECT COALESCE(
     jsonb_agg(
@@ -36,3 +38,5 @@ AS $$
   ) v ON true
   WHERE b.author_id = _author_id;
 $$;
+
+GRANT EXECUTE ON FUNCTION get_blogs_by_author(uuid) TO authenticated, anon;

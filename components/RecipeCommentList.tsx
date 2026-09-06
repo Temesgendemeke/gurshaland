@@ -4,7 +4,8 @@ import React from "react";
 import { Button } from "./ui/button";
 import { useRecipeDetailStore } from "@/store/Recipedetail";
 import { format_date } from "@/utils/formatdate";
-import avater from "@/public/placeholder-user.jpg";
+import { UserAvatar } from "@/components/UserAvatar";
+import { PostComment } from "@/utils/types/recipe";
 
 interface RecipeCommentListProps {
   comments: PostComment[];
@@ -21,10 +22,11 @@ const RecipeCommentList = ({ comments, user_id }: RecipeCommentListProps) => {
           className="border-b border-border/50 pb-4 last:border-b-0"
         >
           <div className="flex items-start space-x-3">
-            <img
-              src={comment.author?.avatar_url || avater.src}
-              alt={comment.author.username}
-              className="w-8 h-8 rounded-full"
+            <UserAvatar
+              avatarUrl={comment.author?.avatar_url || (comment.author as any)?.avatar}
+              name={comment.author?.full_name}
+              username={comment.author?.username}
+              className="h-8 w-8 text-xs"
             />
             <div className="flex-1">
               <div className="flex items-center space-x-2 mb-1">

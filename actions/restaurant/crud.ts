@@ -2,13 +2,22 @@ import { GetRestaurentType, RestaurantFormType } from "@/schema/restaurent";
 import { createClient } from "@/utils/supabase/client";
 
 export const createRestaurant = async (
-    restaurant: RestaurantFormType,
+    restaurant: RestaurantFormType & { slug?: string },
 ): Promise<GetRestaurentType | null> => {
     const supabase = createClient();
 
-    const { data, error } = await supabase.from("restaurant").insert(
-        restaurant,
-    );
+    // In DB schema, the column is named 'review', while forms/schemas often use 'reviews'
+    const { reviews, ...rest } = restaurant as any;
+    const payload = {
+        ...rest,
+        review: reviews ?? (restaurant as any).review ?? [],
+    };
+
+    const { data, error } = await supabase
+        .from("restaurant")
+        .insert(payload)
+        .select()
+        .single();
 
     if (error) {
         throw error;
@@ -22,37 +31,39 @@ export const getRestaurantBySlug = async (
 ): Promise<GetRestaurentType | null> => {
     const supabase = createClient();
 
-    const { data, error } = await supabase.from("restaurant").select("*").eq(
-        "slug",
-        slug,
-    );
+    const { data, error } = await supabase
+        .from("restaurant")
+        .select("*")
+        .eq("slug", slug)
+        .maybeSingle();
 
     if (error) {
         throw error;
     }
 
-    return data[0];
+    return data;
 };
 
 export const getRestaurantById = async (
-    id: string,
+    id: string | number,
 ): Promise<GetRestaurentType | null> => {
     const supabase = createClient();
 
-    const { data, error } = await supabase.from("restaurant").select("*").eq(
-        "id",
-        id,
-    );
+    const { data, error } = await supabase
+        .from("restaurant")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
 
     if (error) {
         throw error;
     }
 
-    return data[0];
+    return data;
 };
 
 export const updateRestaurant = async (
-    restaurant: RestaurantFormType,
+    restaurant: RestaurantFormType & { id?: string | number; slug?: string },
 ): Promise<GetRestaurentType | null> => {
     const supabase = createClient();
 
@@ -60,8 +71,19 @@ export const updateRestaurant = async (
         throw new Error("Restaurant ID is required");
     }
 
-    const { data, error } = await supabase.from("restaurant").update(restaurant)
-        .eq("id", restaurant?.id);
+    const { reviews, ...rest } = restaurant as any;
+    const payload = {
+        ...rest,
+        ...(reviews !== undefined ? { review: reviews } : {}),
+        updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await supabase
+        .from("restaurant")
+        .update(payload)
+        .eq("id", restaurant.id)
+        .select()
+        .single();
 
     if (error) {
         throw error;
@@ -71,14 +93,16 @@ export const updateRestaurant = async (
 };
 
 export const deleteRestaurant = async (
-    id: string,
+    id: string | number,
 ): Promise<GetRestaurentType | null> => {
     const supabase = createClient();
 
-    const { data, error } = await supabase.from("restaurant").delete().eq(
-        "id",
-        id,
-    );
+    const { data, error } = await supabase
+        .from("restaurant")
+        .delete()
+        .eq("id", id)
+        .select()
+        .maybeSingle();
 
     if (error) {
         throw error;

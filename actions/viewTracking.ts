@@ -20,16 +20,29 @@ export async function recordView(
   if (!contentId) return;
 
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const ip = await getRequestIp();
 
   const { error } = await supabase.rpc(
     contentType === "recipe" ? "record_recipe_view" : "record_blog_view",
     contentType === "recipe"
-      ? { _recipe_id: contentId, _ip_address: ip }
-      : { _blog_id: contentId, _ip_address: ip },
+      ? { _recipe_id: contentId, _viewer_id: user?.id ?? null, _ip_address: ip }
+      : { _blog_id: contentId, _viewer_id: user?.id ?? null, _ip_address: ip },
   );
 
   if (error) {
-    console.error(`Error recording ${contentType} view:`, error.message);
+    // Direct insert fallback
+    const table = contentType === "recipe" ? "recipe_view" : "blog_view";
+    const idKey = contentType === "recipe" ? "recipe_id" : "blog_id";
+    await supabase
+      .from(table)
+      .insert({
+        [idKey]: contentId,
+        viewer_id: user?.id ?? null,
+        ip_address: ip,
+      })
+      .catch(() => {});
   }
 }
