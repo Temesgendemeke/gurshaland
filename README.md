@@ -1,6 +1,8 @@
 # Gurshaland
 
-A platform for discovering and sharing Ethiopian recipes. Built with Next.js, Supabase, and shadcn/ui.
+A modern platform for discovering and sharing authentic Ethiopian recipes, cultural food stories, restaurants, and AI-powered meal planning. Built with Next.js, Supabase, and shadcn/ui.
+
+![Gurshaland Homepage Preview](./home.png)
 
 ## Features
 
